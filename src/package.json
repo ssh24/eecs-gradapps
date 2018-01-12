@@ -1,19 +1,25 @@
 {
-  "name": "gradapps",
-  "version": "2.0.0",
+  "name": "express-genapp",
+  "version": "0.0.0",
   "private": true,
   "scripts": {
-    "lint": "eslint .",
     "start": "node ./bin/www",
-    "pretest": "node ./test/pretest.js"
+    "devstart": "nodemon ./bin/www"
   },
   "dependencies": {
+    "body-parser": "~1.18.2",
+    "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
-    "ejs": "^2.5.7",
+    "ejs": "~2.5.7",
     "express": "~4.15.5",
+    "morgan": "~1.9.0",
     "serve-favicon": "~2.4.5"
   },
+  "description": "First Express App",
+  "main": "app.js",
   "devDependencies": {
-    "eslint": "^4.13.1"
-  }
+    "nodemon": "^1.14.11"
+  },
+  "author": "Edward Vaisman",
+  "license": "ISC"
 }

@@ -1,8 +1,284 @@
+html {
+    font-family: 'Roboto', 'Open Sans', sans-serif;
+}
+
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    padding-top: 50px;
+    font: 14px 'Roboto', 'Open Sans', sans-serif;
+    color: #1e1e24;
+    background-color: #fff8f0;
+
 }
 
 a {
-  color: #00B7FF;
+    color: #00B7FF;
+}
+
+p {
+    font-size: 18px;
+    padding-bottom: 10px;
+    line-height: 30px;
+}
+
+
+
+h1,
+h2,
+h3,
+h4 {
+    margin-bottom: 8px;
+    padding-bottom: 20px;
+    color: #222;
+}
+
+.list-group-item:first-child {
+    border-top-right-radius: 0;
+    border-top-left-radius: 0;
+}
+
+.list-group-item:last-child {
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.thumbnail {
+    padding: 0 0 15px 0;
+    border: none;
+    border-radius: 0;
+}
+
+.thumbnail p {
+    margin-top: 15px;
+    color: #555;
+}
+
+.nav-tabs li a {
+    color: #777;
+}
+
+.navbar {
+    font-family: Montserrat, sans-serif;
+    margin-bottom: 0;
+    background-color: #1e1e24;
+    border: 0;
+    font-size: 16px !important;
+    opacity: 1.0;
+}
+
+img.logo {
+    max-height: 50px;
+}
+
+
+.navbar li a,
+.navbar .navbar-brand {
+    color: #d5d5d5 !important;
+}
+
+.navbar-nav li a:hover {
+    color: #fff !important;
+}
+
+.navbar-nav li.active a {
+    color: #fff !important;
+    background-color: #1e1e24 !important;
+}
+
+.navbar-default .navbar-toggle {
+    border-color: transparent;
+}
+
+.open .dropdown-toggle {
+    color: #fff;
+    background-color: #555 !important;
+}
+
+.dropdown-menu li a {
+    color: #000 !important;
+}
+
+.dropdown-menu li a:hover {
+    background-color: red !important;
+}
+
+.nav-tabs > li.active > a,
+.nav-tabs > li.active > a:focus,
+.nav-tabs > li.active > a:hover {
+    background-color: #5cb85c;
+    font-weight: bold;
+    color: #f1f1f1;
+}
+
+table .btn {
+    padding: 10px 20px;
+    font-weight: bold;
+    border-radius: 20px;
+    transition: .2s;
+    margin-bottom: 5px;
+    color: #f1f1f1;
+    width: 100%;
+    height: 100%;
+    background-color: #ed5565;
+
+}
+
+.btn {
+    padding: 10px 20px;
+    font-weight: bold;
+    border-radius: 15px;
+    transition: .3s;
+    color: #fff8f0;
+    background-color: #ed5565;
+
+}
+
+.btn:hover,
+.btn:focus
+    {
+    border: 1px solid #333;
+    background-color: #1e1e24;
+    color: #fff8f0;
+}
+
+.select {
+    padding: 10px 20px;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: .3s;
+    color: #fff8f0;
+    background-color: #1e1e24;
+
+}
+
+.select:hover,
+.select:focus
+    {
+    background-color: #1e1e24;
+    color: #fff8f0;
+}
+
+.modal-body .btn {
+    font-weight: bold;
+    transition: .2s;
+    margin-bottom: 5px;
+    color: #f1f1f1;
+}
+
+.modal-header,
+.close {
+    background-color: #333;
+    color: #fff !important;
+    font-weight: bold;
+    text-align: center;
+    font-size: 30px;
+}
+
+.modal-header h2 {
+    color: #fff !important;
+}
+
+.modal-body h4 {
+    padding-bottom: 0px;
+}
+
+.modal-header,
+.modal-body {
+    padding: 7px 50px;
+}
+
+
+footer {
+    background-color: #1e1e24;
+    color: #f5f5f5;
+    padding: 16px;
+    width: 100%;
+    margin-top: 20px;
+}
+
+footer a {
+    color: #f5f5f5;
+}
+
+footer a:hover {
+    color: #777;
+    text-decoration: none;
+}
+
+
+/* Position text in the middle */
+
+.middle {
+    margin: auto;
+    padding-top: 50px;
+}
+
+
+textarea {
+    resize: none;
+}
+
+@media only screen and (max-width:500px) {
+    .container {
+        padding-right: 25px;
+        padding-left: 25px;
+        margin-right: auto;
+        margin-left: auto;
+    }
+    .text-left-mobile {
+        text-align: left;
+    }
+}
+
+
+/*Styling for table*/
+
+th {
+    padding: 26px;
+}
+
+thead {
+    background: #ed5565 none repeat scroll 0 0;
+    color: #fff;
+    font-size: 18px;
+    font-weight: normal;
+    padding: 15px 20px;
+}
+
+tbody {
+    background: #edebea none repeat scroll 0 0;
+    border-radius: 6px;
+    margin: 0px 22px 40px;
+    color: black;
+}
+
+tbody td {
+    padding: 26px;
+}
+
+tbody tr:nth-child(even) {
+    background: #dbd9d7 none repeat scroll 0 0;
+    font-size: 16px;
+}
+
+tbody tr:nth-child(odd) {
+    font-size: 16px;
+}
+
+thead tr th:first-child {
+    border-top-left-radius: 6px;
+}
+
+thead tr th:last-child {
+    border-top-right-radius: 6px;
+}
+
+table {
+    width: 100%;
+    margin-bottom: 30px;
+}
+
+/*remove alignment issue with vertical checkboxes*/
+
+.checkbox-inline:first-child {
+    margin-left: 10px;
 }
