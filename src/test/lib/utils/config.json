@@ -1,0 +1,8 @@
+{
+    "credentials" :{
+        "app" : {
+            "username": "admin",
+            "password": "admin"
+        }
+    }
+}

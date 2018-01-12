@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = {
     "env": {
         "browser": true
@@ -8,7 +10,15 @@ module.exports = {
         "require": false,
         "__dirname": false,
         "module": false,
-        "process": false
+        "process": false,
+        "describe": false,
+        "it": false,
+        "before": false,
+        "after": false,
+        "browser": false,
+        "element": false,
+        "by": false,
+        "exports": false
     },
     "rules": {
         "indent": [

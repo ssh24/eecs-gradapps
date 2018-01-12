@@ -5,15 +5,23 @@
   "scripts": {
     "lint": "eslint .",
     "start": "node ./bin/www",
-    "pretest": "node ./test/pretest.js"
+    "pretest": "node ./test/pretest.js & webdriver-manager update",
+    "test": "protractor config.js",
+    "posttest": "npm run lint"
   },
   "dependencies": {
     "debug": "~2.6.9",
     "ejs": "^2.5.7",
     "express": "~4.15.5",
+    "http-auth": "^3.2.3",
     "serve-favicon": "~2.4.5"
   },
   "devDependencies": {
-    "eslint": "^4.13.1"
+    "chai": "^4.1.2",
+    "chai-as-promised": "^7.1.1",
+    "eslint": "^4.13.1",
+    "htpasswd": "^2.4.0",
+    "mocha": "^4.1.0",
+    "protractor": "^5.2.2"
   }
 }
