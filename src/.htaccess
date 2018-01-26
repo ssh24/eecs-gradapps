@@ -1,0 +1,9 @@
+AuthType Basic
+AuthName "Gradapps"
+AuthBasicProvider file pam
+AuthUserFile /eecs/home/eddyv/www/private/.htpasswd
+AuthGroupFile /eecs/home/eddyv/www/private/.groups
+Require unix-group faculty
+Require group admins
+IndexIgnore .htaccess
+php_value display_errors on
