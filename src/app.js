@@ -9,8 +9,27 @@ var index = require('./routes/index');
 var roles = require('./routes/roles');
 var users = require('./routes/users');
 
-var app = express();
+//authentication
+var auth = require('http-auth');
+var basic = auth.basic({
+    realm: "Gradapps",
+    file: __dirname + "/private/.htpasswd"
+});
 
+basic.on('success', (result, req) => {
+    console.log(`User authenticated: ${result.user}`);
+});
+ 
+basic.on('fail', (result, req) => {
+    console.log(`User authentication failed: ${result.user}`);
+});
+ 
+basic.on('error', (error, req) => {
+    console.log(`Authentication error: ${error.code + " - " + error.message}`);
+});
+
+var app = express();
+app.use(auth.connect(basic));
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
