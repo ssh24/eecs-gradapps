@@ -3,17 +3,22 @@
   "version": "2.0.0",
   "private": true,
   "scripts": {
-    "lint": "eslint .",
+    "lint": "eslint . --fix",
     "start": "node ./bin/www",
-    "pretest": "node ./test/pretest.js & webdriver-manager update",
-    "test": "protractor config.js",
-    "posttest": "npm run lint"
+    "seed:database": "node ./test/pretest.js",
+    "test": "nyc --reporter=html --reporter=text npm run run:test",
+    "run:test": "npm run seed:database && mocha test/specs/database/*.test.js && npm run seed:database && webdriver-manager update && protractor config.js",
+    "posttest": "npm run lint",
+    "db:test": "npm run seed:database && nyc --reporter=text mocha test/specs/database/*.test.js && npm run posttest",
+    "unit:test": "npm run seed:database && webdriver-manager update && nyc --reporter=text protractor config.js && npm run posttest"
   },
   "dependencies": {
+    "assert": "^1.4.1",
     "debug": "~2.6.9",
     "ejs": "^2.5.7",
     "express": "~4.15.5",
     "http-auth": "^3.2.3",
+    "lodash": "^4.17.4",
     "serve-favicon": "~2.4.5"
   },
   "devDependencies": {
@@ -22,6 +27,8 @@
     "eslint": "^4.13.1",
     "htpasswd": "^2.4.0",
     "mocha": "^4.1.0",
+    "mysql2": "^1.5.1",
+    "nyc": "^11.4.1",
     "protractor": "^5.2.2"
   }
 }
