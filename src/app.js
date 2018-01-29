@@ -12,7 +12,7 @@ var users = require('./routes/users');
 //authentication
 var auth = require('http-auth');
 var basic = auth.basic({
-    realm: "Gradapps",
+    realm: "Gradapps v2.0",
     file: __dirname + "/private/.htpasswd"
 });
 
