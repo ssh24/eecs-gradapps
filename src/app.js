@@ -29,7 +29,6 @@ basic.on('error', (error, req) => {
 });
 
 var app = express();
-app.use(auth.connect(basic));
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -45,7 +44,10 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
-app.use('/roles', roles);
+
+//password protected area
+app.use('/roles', auth.connect(basic), roles);
+
 app.use('/users', users);
 
 // catch 404 and forward to error handler
