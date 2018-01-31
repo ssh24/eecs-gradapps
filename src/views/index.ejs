@@ -1,5 +1,4 @@
 <% include partials/header %>
-
     <body>
         <nav class="navbar navbar-default navbar-fixed-top">
             <div class="container">
@@ -20,37 +19,37 @@
                 <!--/.navbar-collapse -->
             </div>
         </nav>
-          
-           <!--Main Message-->
-            <div class="jumbotron">
-                <div class="container text-center">
-                    <h1>Welcome to Gradapps v2.0!</h1>
-                    <p>You will require a valid username and password. Contact your system admin for any complications.</p>
-                    <p><a class="btn btn-primary btn-lg" href="#" role="button">Sign in &raquo;</a></p>
-                </div>
-            </div>
 
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12">
-                        <p class="text-center">
-                            Now with...
-                        </p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-4">
-                        <h2>Application Filtering</h2>
-                        <p>You are now able to search for graduate student applications that matter to you! Simply choose the application attributes along with the desired values and you are good to go! Don't forget to save your most used filter as a <u>preset</u> for future searches!</p>
-                    </div>
-                    <div class="col-md-4">
-                        <h2>A Simply Clean Look</h2>
-                        <p>Built using Bootstrap v3.3.7 with the Readable theme Gradapps v2.0 aims keep content easy to read and navigate.</p>
-                    </div>
-                    <div class="col-md-4">
-                        <h2>Awesome Students!</h2>
-                        <p>With great power comes great responsibility. Use your new powers wisely to find the students you couldn't have before.</p>
-                    </div>
+        <!--Main Message-->
+        <div class="jumbotron" id="homepage">
+            <div class="container text-center">
+                <h1>Welcome to Gradapps v2.0!</h1>
+                <p><a class="btn btn-primary btn-lg" href="./roles" role="button">Sign in &raquo;</a></p>
+                Note: Signing into the Grad Apps portal requires a valid EECS username
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <p class="text-center">
+                        Now with...
+                    </p>
                 </div>
             </div>
-            <% include partials/footer %>
+            <div class="row">
+                <div class="col-md-4">
+                    <h2>Application Filtering</h2>
+                    <p>You are now able to search for graduate student applications that matter to you! Simply choose the application attributes along with the desired values and you are good to go! Don't forget to save your most used filter as a <u>preset</u> for future searches!</p>
+                </div>
+                <div class="col-md-4">
+                    <h2>A Simply Clean Look</h2>
+                    <p>Built using Bootstrap v3.3.7 with the Readable theme Gradapps v2.0 aims keep content easy to read and navigate.</p>
+                </div>
+                <div class="col-md-4">
+                    <h2>Awesome Students!</h2>
+                    <p>With great power comes great responsibility. Use your new powers wisely to find the students you couldn't have before.</p>
+                </div>
+            </div>
+        </div>
+        <% include partials/footer %>
