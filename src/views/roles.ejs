@@ -8,7 +8,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#"><img src="images/logo.png"/></a>
+                <a class="navbar-brand" href="#"><img src="/images/logo.png"/></a>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
@@ -27,13 +27,13 @@
             <p>Please select a role to access the application.</p>
             <div class="row">
                 <div class="col-sm-4">
-                    <a href="#" class="btn btn-primary">Sign in as Professor &raquo;</a>
+                    <a href="./roles/professor" class="btn btn-primary">Sign in as Professor &raquo;</a>
                 </div>
                 <div class="col-sm-4">
-                    <a href="#" class="btn btn-primary">Sign in as Committee &raquo;</a>
+                    <a href="#" data-toggle="modal" data-target="#filterModal" class="btn btn-primary">Sign in as Committee &raquo;</a>
                 </div>
                 <div class="col-sm-4">
-                    <a href="#" class="btn btn-primary">Sign in as Administrator &raquo;</a>
+                    <a href="./roles/admin" class="btn btn-primary">Sign in as Administrator &raquo;</a>
                 </div>
             </div>
         </div>
@@ -61,4 +61,5 @@
             </div>
         </div>
     </div>
+    <% include partials/filter-professor %>
     <% include partials/footer %>

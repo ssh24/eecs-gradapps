@@ -1,0 +1,234 @@
+<% include partials/header %>
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#"><img src="/images/logo.png"/></a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#">Exit</a></li>
+                </ul>
+            </div>
+            <!--/.navbar-collapse -->
+        </div>
+    </nav>
+    <!--tables-->
+    <div class="container">
+
+        <ul class="nav nav-tabs" style="padding-top:10px;">
+            <li class="active"><a data-toggle="tab" href="#menu1">Committee Member Status</a></li>
+            <li><a data-toggle="tab" href="#menu2">Faculty Members</a></li>
+            <li><a data-toggle="tab" href="#menu3">Applications</a></li>
+        </ul>
+
+        <div class="tab-content">
+            <div id="menu1" class="tab-pane fade in active">
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Total Applications</th>
+                                <th># of Applications to Review</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Michael R. M. Jenkin</td>
+                                <td>10</td>
+                                <td>6</td>
+                                <td>
+                                    <button class="btn btn-primary">Remind</button><br>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Franck van Breugel</td>
+                                <td>5</td>
+                                <td>2</td>
+                                <td>
+                                    <button class="btn btn-primary">Remind</button><br>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Andrew Eckford</td>
+                                <td>3</td>
+                                <td>1</td>
+                                <td>
+                                    <button class="btn btn-primary">Remind</button><br>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Jonathan S. Ostroff</td>
+                                <td>7</td>
+                                <td>3</td>
+                                <td>
+                                    <button class="btn btn-primary">Remind</button><br>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Melanie Baljko</td>
+                                <td>5</td>
+                                <td>2</td>
+                                <td>
+                                    <button class="btn btn-primary">Remind</button><br>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Matthew Kyan</td>
+                                <td>6</td>
+                                <td>0</td>
+                                <td>
+                                    <button class="btn btn-primary">Remind</button><br>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div id="menu2" class="tab-pane fade">
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Role(s)</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Michael R. M. Jenkin</td>
+                                <td>Professor</td>
+                                <td>
+                                    <button class="btn btn-primary">Edit Role</button><br>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Franck van Breugel</td>
+                                <td>Admin, Professor, Committee</td>
+                                <td>
+                                    <button class="btn btn-primary">Edit Role</button><br>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Andrew Eckford</td>
+                                <td>Professor</td>
+                                <td>
+                                    <button class="btn btn-primary">Edit Role</button><br>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Jonathan S. Ostroff</td>
+                                <td>Professor</td>
+                                <td>
+                                    <button class="btn btn-primary">Edit Role</button><br>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Melanie Baljko</td>
+                                <td>Committee</td>
+                                <td>
+                                    <button class="btn btn-primary">Edit Role</button><br>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Matthew Kyan</td>
+                                <td>Professor</td>
+                                <td>
+                                    <button class="btn btn-primary">Edit Role</button><br>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Ourma</td>
+                                <td>Admin</td>
+                                <td>
+                                    <button class="btn btn-primary">Edit Role</button><br>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div id="menu3" class="tab-pane fade">
+                <h3># of applications with no reviewers: <strong>3</strong></h3>
+                <button class="btn btn-primary btn btn-primary-info">Create New Application</button>
+                <br>
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>Field of Interest</th>
+                                <th>Committee Ranking</th>
+                                <th>Degree Applied For</th>
+                                <th>Visa Status <a href="#" style="color:#fff">&darr;</a></th>
+                                <th>Application Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>AI</td>
+                                <td>A+</td>
+                                <td>PHD (CS)</td>
+                                <td>CAD</td>
+                                <td>Contacted by Michael R. M. Jenkin</td>
+                                <td>
+                                    <button class="btn btn-primary">View Application</button><br>
+                                    <button class="btn btn-primary">Set to Contacted</button><br>
+                                    <button class="btn btn-primary">Set to Reviewed</button>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>Theory of Computation, Networks, AI</td>
+                                <td>A+</td>
+                                <td>MSc</td>
+                                <td>CAD</td>
+                                <td>Accepted</td>
+                                <td>
+                                    <button class="btn btn-primary">View Application</button><br>
+                                    <button class="btn btn-primary" disabled=true>Set to Contacted</button><br>
+                                    <button class="btn btn-primary">Set to Reviewed</button>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>Biomedical Engineering, Software Engineering, VR</td>
+                                <td>C</td>
+                                <td>MASc</td>
+                                <td>CAD</td>
+                                <td>Rejected</td>
+                                <td>
+                                    <button class="btn btn-primary">View Application</button><br>
+                                    <button class="btn btn-primary" disabled=true>Set to Contacted</button><br>
+                                    <button class="btn btn-primary">Set to Reviewed</button>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>Theory of Computation, Networks</td>
+                                <td>A+</td>
+                                <td>PHD (CS)</td>
+                                <td>VISA</td>
+                                <td>Submitted</td>
+                                <td>
+                                    <button class="btn btn-primary">View Application</button><br>
+                                    <button class="btn btn-primary">Set to Contacted</button><br>
+                                    <button class="btn btn-primary">Set to Reviewed</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <% include partials/filter-admin %>
+        <% include partials/footer %>

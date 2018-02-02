@@ -8,7 +8,45 @@ body {
     background-repeat: no-repeat;
 }
 
-.modal-header,
+/*Nav Tab stylings */
+
+.nav-tabs > li.active > a,
+.nav-tabs > li.active > a:hover,
+.nav-tabs > li.active > a:focus{
+    background-color: #4582ec;
+    color: #fff;
+}
+/*Table stylings */
+
+.table-striped > tbody > tr:nth-child(odd) > td,
+.table-striped > tbody > tr:nth-child(odd) > th {
+    background-color: #;
+}
+
+.table-striped > tbody > tr:nth-child(even) > td,
+.table-striped > tbody > tr:nth-child(even) > th {
+    background-color: #;
+}
+
+.table-hover > tbody > tr:hover > td,
+.table-hover > tbody > tr:hover > th {
+    background-color: #dbd9d7;
+}
+
+table > thead > tr > td,
+table > thead > tr > th {
+    background: #ed5565;
+    color: #fff;
+}
+
+table > tbody > tr > td > button,
+table > tbody > tr > th > button {
+    width: 100%;
+}
+
+/*Modal stylings */
+
+/ .modal-header,
 .close {
     background-color: #222;
     color: #f1f1f1 !important;
@@ -39,6 +77,8 @@ body {
     border-bottom-right-radius: 4px;
     border-top-right-radius: 4px;
 }
+
+/*Footer stylings*/
 
 footer {
     background-color: #222;
