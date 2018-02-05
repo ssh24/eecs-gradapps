@@ -7,7 +7,10 @@ body {
     background-size: cover;
     background-repeat: no-repeat;
 }
-
+/* Button Stylings*/
+.btn-primary{
+    border-color: #3c79c4;
+}
 /*Nav Tab stylings */
 
 .nav-tabs > li.active > a,
@@ -20,12 +23,10 @@ body {
 
 .table-striped > tbody > tr:nth-child(odd) > td,
 .table-striped > tbody > tr:nth-child(odd) > th {
-    background-color: #;
 }
 
 .table-striped > tbody > tr:nth-child(even) > td,
 .table-striped > tbody > tr:nth-child(even) > th {
-    background-color: #;
 }
 
 .table-hover > tbody > tr:hover > td,
