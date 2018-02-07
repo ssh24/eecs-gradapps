@@ -7,37 +7,45 @@ body {
     background-size: cover;
     background-repeat: no-repeat;
 }
+
 /* Button Stylings*/
-.btn-primary{
+
+.btn-primary {
     border-color: #3c79c4;
 }
+
+
 /*Nav Tab stylings */
 
 .nav-tabs > li.active > a,
 .nav-tabs > li.active > a:hover,
-.nav-tabs > li.active > a:focus{
+.nav-tabs > li.active > a:focus {
     background-color: #4582ec;
     color: #fff;
 }
+
 /*Table stylings */
 
-.table-striped > tbody > tr:nth-child(odd) > td,
-.table-striped > tbody > tr:nth-child(odd) > th {
+.table-responsive {
+    max-height: 600px;
 }
 
+.table-striped > tbody > tr:nth-child(odd) > td,
+.table-striped > tbody > tr:nth-child(odd) > th {}
+
 .table-striped > tbody > tr:nth-child(even) > td,
-.table-striped > tbody > tr:nth-child(even) > th {
-}
+.table-striped > tbody > tr:nth-child(even) > th {}
 
 .table-hover > tbody > tr:hover > td,
 .table-hover > tbody > tr:hover > th {
     background-color: #dbd9d7;
 }
 
-table > thead > tr > td,
 table > thead > tr > th {
     background: #ed5565;
     color: #fff;
+    white-space: nowrap;
+    width: 20%;
 }
 
 table > tbody > tr > td > button,
@@ -45,9 +53,12 @@ table > tbody > tr > th > button {
     width: 100%;
 }
 
+table .dropdown-menu {
+    min-width: 100%;
+}
 /*Modal stylings */
 
-/ .modal-header,
+.modal-header,
 .close {
     background-color: #222;
     color: #f1f1f1 !important;
@@ -63,15 +74,26 @@ table > tbody > tr > th > button {
     padding-bottom: 0px;
 }
 
+.modal-body .badge{
+    background-color: #4582ec;
+    border-radius: 3px;
+    top:1px;
+    font-size: 16px;
+}
 .modal-content {
     border: 0px;
 }
 
 .modal-header,
-.modal-body {
+.modal-body,
+.modal-footer{
     padding: 7px 50px;
 }
 
+.modal-footer .btn + .input-group > input{
+    margin-left: 5px;
+    margin-bottom: 0px;
+}
 /*adds border radius for buttons after a textbox*/
 
 .input-group-btn:last-child > .btn {

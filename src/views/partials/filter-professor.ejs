@@ -10,8 +10,14 @@
             </div>
             <form>
                 <div class="modal-body">
-                    <div class="form-group row">
+                    <div id="columns" class="form-group row">
                         <h4>Choose Your Columns</h4>
+                        <select style="display: inline-block;">
+                            <option>Loaded from database...</option>
+                            <option>Preset 2</option>
+                            <option>Preset 3</option>
+                            <option>Preset 4</option>
+                        </select>
                         <hr>
                         <div class="row">
                             <div class="form-group btn-group btn-group-justified" role="group" aria-label="...">
@@ -178,8 +184,16 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <div class="form-group">
+                    <div class="form-group row">
+                        <button type="submit" class="btn btn-danger btn-default pull-left" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+                        <button type="submit" class="btn btn-success btn-default pull-left" data-dismiss="modal"><span class="glyphicon glyphicon-check"></span> Submit</button>
 
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Preset Name" id="">
+                            <span class="input-group-btn">
+                                            <button class="btn btn-primary form-control" type="button">Save Preset</button>
+                            </span>
+                        </div>
                     </div>
                 </div>
             </form>

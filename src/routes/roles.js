@@ -9,6 +9,11 @@ router.get('/', function(req, res, next) {
 /* GET Admin Page */
 router.get('/admin', function(req,res, next){
     res.render('admin', { title: 'Administrator'});
-})
+});
+
+/* GET Professor Page */
+router.get('/professor', function(req,res, next){
+    res.render('professor', { title: 'Professor <Name>'});
+});
 
 module.exports = router;

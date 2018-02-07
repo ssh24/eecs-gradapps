@@ -20,6 +20,7 @@ basic.on('success', (result, req) => {
     console.log(`User authenticated: ${result.user}`);
 });
  
+//try reading another file here....
 basic.on('fail', (result, req) => {
     console.log(`User authentication failed: ${result.user}`);
 });
