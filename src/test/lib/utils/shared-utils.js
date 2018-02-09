@@ -5,7 +5,12 @@ var EC = protractor.ExpectedConditions;
 
 // Utility functions that are shared across views and specs
 
-var Utils = function() {};
+var Utils = function() {
+	this.shared = {};
+	this.shared.logout = by.id('logout-btn');
+	this.shared.user = by.id('logged-in-as');
+	this.shared.role = by.id('role-selected');
+};
 
 var server;
 
@@ -19,12 +24,24 @@ Utils.prototype.stopApp = function(done) {
 	server.close(done);
 };
 
-Utils.prototype.getAppAddress = function() {
-	return server.address();
-};
-
 Utils.prototype.openView = function(link) {
 	return browser.get(link);
+};
+
+Utils.prototype.logOut = function() {
+	return element(this.shared.logout).click();
+};
+
+Utils.prototype.getUser = function() {
+	return element(this.shared.user).getText();
+};
+
+Utils.prototype.getRole = function() {
+	return element(this.shared.role).getText();
+};
+
+Utils.prototype.openRoleDropDown = function() {
+	return element(this.shared.role).click();
 };
 
 Utils.prototype.getButtonEnableStatus = function(element) {

@@ -34,9 +34,3 @@ if (process.env.TEST_MYSQL_PASSWORD) {
 console.log('seeding DB ...');
 var mysql = cp.spawn('mysql', args, {stdio: stdio});
 sql.pipe(mysql.stdin);
-mysql.on('exit', function(code) {
-	console.log('done seeding DB');
-	setTimeout(function() {
-		process.exit(code);
-	}, 200);
-});

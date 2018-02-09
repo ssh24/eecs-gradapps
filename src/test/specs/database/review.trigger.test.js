@@ -1,42 +1,99 @@
 'use strict';
 
 var assert = require('assert');
+var async = require('async');
 var config = require('../../lib/utils/config');
 var mysql = require('mysql2');
 
-var Review = require('../../../lib/review');
+var Review = require('../../../controller/review');
+var Auth = require('../../../controller/auth');
 
-var connection, review;
+var auth, connection, review;
 var creds = config.credentials.database;
 
 describe('Review Triggers', function() {
-	before(function(done) {
+	before(function overallSetup(done) {
 		connection = mysql.createConnection(creds);
-		connection.connect(done);
 		review = new Review(connection);
+		auth = new Auth(connection);
+		async.series([
+			function(callback) {
+				connection.connect(callback);
+			},
+			function(callback) {
+				auth.logIn(1, callback);
+			},
+			function(callback) {
+				auth.selectRole(1, 'Admin', callback);
+			},
+			function(callback) {
+				auth.logIn(20, callback);
+			},
+			function(callback) {
+				auth.selectRole(20, 'Committee Member', callback);
+			}
+		], done);
 	});
     
-	after(function(done) {
-		connection.end(done);
+	after(function overallCleanUp(done) {
+		async.series([
+			function(callback) {
+				auth.logOut(1, callback);
+			},
+			function(callback) {
+				auth.logOut(20, callback);
+			},
+			function(callback) {
+				connection.end(callback);
+			}
+		], done);
 	});
 
 	describe('assign a review', function() {
+		before(function setUp(done) {
+			auth.logIn(19, function(err) {
+				if (err) done(err);
+				auth.selectRole(19, 'Professor', done);
+			});
+		});
+
 		after(function cleanUp(done) {
-			review.unassignReview(12, 20, done);
+			auth.logOut(19, function(err) {
+				if (err) done(err);
+				review.unassignReview(12, 20, 1, done);
+			});
 		});
             
 		it('assign a valid review to a valid committee member', 
 			function(done) {
-				review.assignReview(12, 20, function(err, result) {
+				review.assignReview(12, 20, 1, function(err, result) {
 					if (err) done(err);
 					assert(result, 'Result should exist');
 					done();
 				});
 			});
 
+		it('assign a valid review by a not logged in faculty member', 
+			function(done) {
+				review.assignReview(12, 20, 2, function(err, result) {
+					assert(err, 'Error should exist');
+					assert(!result, 'Result should exist');
+					done();
+				});
+			});
+
+		it('assign a valid review by a not an admin', 
+			function(done) {
+				review.assignReview(12, 20, 19, function(err, result) {
+					assert(err, 'Error should exist');
+					assert(!result, 'Result should exist');
+					done();
+				});
+			});
+
 		it('assign a valid review to an invalid committee member', 
 			function(done) {
-				review.assignReview(12, 0, function(err, result) {
+				review.assignReview(12, 0, 1, function(err, result) {
 					assert(err, 'Error should exist');
 					assert(!result, 'Result should exist');
 					done();
@@ -45,7 +102,7 @@ describe('Review Triggers', function() {
             
 		it('assign an invalid review to a valid committee member', 
 			function(done) {
-				review.assignReview(0, 20, function(err, result) {
+				review.assignReview(0, 20, 1, function(err, result) {
 					assert(err, 'Error should exist');
 					assert(!result, 'Result should not exist');
 					done();
@@ -54,7 +111,7 @@ describe('Review Triggers', function() {
 
 		it('assign an invalid review to an invalid committee member', 
 			function(done) {
-				review.assignReview(0, 1, function(err, result) {
+				review.assignReview(0, 1, 1, function(err, result) {
 					assert(err, 'Error should exist');
 					assert(!result, 'Result should not exist');
 					done();
@@ -63,13 +120,45 @@ describe('Review Triggers', function() {
 	});
 
 	describe('unassign a review', function() {
-		after(function cleanUp(done) {
-			review.assignReview(16, 10, done);
+		before(function setUp(done) {
+			async.series([
+				function(callback) {
+					auth.logIn(19, callback);
+				},
+				function(callback) {
+					auth.selectRole(19, 'Professor', callback);
+				},
+				function(callback) {
+					review.assignReview(12, 20, 1, callback);
+				}
+			], done);
 		});
+
+		after(function cleanUp(done) {
+			auth.logOut(19, done);
+		});
+
+		it('unassign a valid review by a not logged in faculty member', 
+			function(done) {
+				review.unassignReview(12, 20, 2, function(err, result) {
+					assert(err, 'Error should exist');
+					assert(!result, 'Result should exist');
+					done();
+				});
+			});
+
+		it('unassign a valid review by an invalid admin', 
+			function(done) {
+				review.unassignReview(12, 20, 19, function(err, result) {
+					assert(err, 'Error should exist');
+					assert(!result, 'Result should exist');
+					done();
+				});
+			});
 
 		it('unassign a review in-progress from a committee member', 
 			function(done) {
-				review.unassignReview(17, 16, function(err, result) {
+				review.unassignReview(17, 16, 1, function(err, result) {
 					assert(err, 'Error should exist');
 					assert(!result, 'Result should exist');
 					done();
@@ -78,16 +167,16 @@ describe('Review Triggers', function() {
                 
 		it('unassign a completed review from a committee member', 
 			function(done) {
-				review.unassignReview(19, 17, function(err, result) {
+				review.unassignReview(19, 17, 1, function(err, result) {
 					assert(err, 'Error should exist');
 					assert(!result, 'Result should exist');
 					done();
 				});
 			});
                 
-		it('unassign a submiited review from a committee member', 
+		it('unassign a submited review from a committee member', 
 			function(done) {
-				review.unassignReview(16, 11, function(err, result) {
+				review.unassignReview(16, 11, 1, function(err, result) {
 					assert(err, 'Error should exist');
 					assert(!result, 'Result should exist');
 					done();
@@ -97,7 +186,7 @@ describe('Review Triggers', function() {
             
 		it('unassign a valid review from an invalid committee member', 
 			function(done) {
-				review.unassignReview(17, 1, function(err, result) {
+				review.unassignReview(17, 1, 1, function(err, result) {
 					assert(err, 'Error should exist');
 					assert(!result, 'Result should exist');
 					done();
@@ -106,7 +195,7 @@ describe('Review Triggers', function() {
 
 		it('uassign an invalid review from valid committee member', 
 			function(done) {
-				review.unassignReview(0, 20, function(err, result) {
+				review.unassignReview(0, 20, 1, function(err, result) {
 					assert(err, 'Error should exist');
 					assert(!result, 'Result should not exist');
 					done();
@@ -116,7 +205,7 @@ describe('Review Triggers', function() {
             
 		it('unassign a valid review from an invalid committee member', 
 			function(done) {
-				review.unassignReview(16, 10, function(err, result) {
+				review.unassignReview(12, 20, 1, function(err, result) {
 					if (err) done(err);
 					assert(result, 'Result should exist');
 					done();
@@ -125,7 +214,7 @@ describe('Review Triggers', function() {
                 
 		it('unassign an invalid review from invalid committee member', 
 			function(done) {
-				review.unassignReview(0, 1, function(err, result) {
+				review.unassignReview(0, 1, 1, function(err, result) {
 					assert(err, 'Error should exist');
 					assert(!result, 'Result should not exist');
 					done();
@@ -134,9 +223,44 @@ describe('Review Triggers', function() {
 	});
         
 	describe('remind a review', function() {
+		before(function setUp(done) {
+			async.series([
+				function(callback) {
+					auth.logIn(19, callback);
+				},
+				function(callback) {
+					auth.selectRole(19, 'Professor', callback);
+				},
+				function(callback) {
+					review.assignReview(12, 20, 1, callback);
+				}
+			], done);
+		});
+
+		after(function cleanUp(done) {
+			async.series([
+				function(callback) {
+					auth.logOut(19, callback);
+				},
+				function(callback) {
+					review.unassignReview(12, 20, 1, callback);
+				}
+			], done);
+		});
+
+		it('remind a review by an invalid admin', 
+			function(done) {
+				review.remindReview(16, 11, 19, 
+					function(err, result) {
+						assert(err, 'Error should exist');
+						assert(!result, 'Result should exist');
+						done();
+					});
+			});
+
 		it('remind a submitted review to a committee member', 
 			function(done) {
-				review.remindReview(1, 11, 16, 
+				review.remindReview(16, 11, 1, 
 					function(err, result) {
 						assert(err, 'Error should exist');
 						assert(!result, 'Result should exist');
@@ -146,7 +270,7 @@ describe('Review Triggers', function() {
 
 		it('remind a valid review by a valid admin to a valid committee member', 
 			function(done) {
-				review.remindReview(1, 16, 17, 
+				review.remindReview(12, 20, 1, 
 					function(err, result) {
 						if (err) done(err);
 						assert(result, 'Result should exist');
@@ -156,7 +280,7 @@ describe('Review Triggers', function() {
         
 		it('remind a valid review by a valid admin to an invalid committee member', 
 			function(done) {
-				review.remindReview(1, 1, 17, function(err, result) {
+				review.remindReview(17, 1, 1, function(err, result) {
 					assert(err, 'Error should exist');
 					assert(!result, 'Result should exist');
 					done();
@@ -165,7 +289,7 @@ describe('Review Triggers', function() {
 
 		it('remind a valid review by an invalid admin to a valid committee member', 
 			function(done) {
-				review.remindReview(3, 20, 17, function(err, result) {
+				review.remindReview(17, 20, 13, function(err, result) {
 					assert(err, 'Error should exist');
 					assert(!result, 'Result should exist');
 					done();
@@ -174,7 +298,7 @@ describe('Review Triggers', function() {
 
 		it('remind a valid review by an invalid admin to an invalid committee member', 
 			function(done) {
-				review.remindReview(3, 9, 17, function(err, result) {
+				review.remindReview(17, 9, 3, function(err, result) {
 					assert(err, 'Error should exist');
 					assert(!result, 'Result should exist');
 					done();
@@ -183,7 +307,7 @@ describe('Review Triggers', function() {
 
 		it('remind an invalid review by a valid admin to valid committee member', 
 			function(done) {
-				review.remindReview(1, 20, 0, function(err, result) {
+				review.remindReview(0, 20, 1, function(err, result) {
 					assert(err, 'Error should exist');
 					assert(!result, 'Result should not exist');
 					done();
@@ -192,7 +316,7 @@ describe('Review Triggers', function() {
 
 		it('remind an invalid review by a valid admin to an invalid committee member', 
 			function(done) {
-				review.remindReview(1, 9, 0, function(err, result) {
+				review.remindReview(0, 9, 1, function(err, result) {
 					assert(err, 'Error should exist');
 					assert(!result, 'Result should not exist');
 					done();
@@ -201,7 +325,7 @@ describe('Review Triggers', function() {
 
 		it('remind an invalid review by an invalid admin to valid committee member', 
 			function(done) {
-				review.remindReview(3, 20, 0, function(err, result) {
+				review.remindReview(0, 20, 3, function(err, result) {
 					assert(err, 'Error should exist');
 					assert(!result, 'Result should not exist');
 					done();
@@ -210,7 +334,7 @@ describe('Review Triggers', function() {
 
 		it('remind an invalid review by an invalid admin to an invalid committee member', 
 			function(done) {
-				review.remindReview(3, 9, 0, function(err, result) {
+				review.remindReview(0, 9, 3, function(err, result) {
 					assert(err, 'Error should exist');
 					assert(!result, 'Result should not exist');
 					done();
@@ -220,13 +344,47 @@ describe('Review Triggers', function() {
 
 	describe('open a review', function() {
 		before(function setUp(done) {
-			review.assignReview(12, 20, done);
+			async.series([
+				function(callback) {
+					auth.logIn(16, callback);
+				},
+				function(callback) {
+					auth.selectRole(16, 'Committee Member', callback);
+				},
+				function(callback) {
+					review.assignReview(12, 20, 1, callback);
+				},
+				function(callback) {
+					auth.logIn(19, callback);
+				},
+				function(callback) {
+					auth.selectRole(19, 'Committee Member', callback);
+				}
+			], done);
 		});
 
 		after(function cleanUp(done) {
-			review.saveReview(12, 20, function(err) {
+			async.series([
+				function(callback) {
+					auth.logOut(16, callback);
+				},
+				function(callback) {
+					auth.logOut(19, callback);
+				},
+				function(callback) {
+					review.saveReview(12, 20, callback);
+				},
+				function(callback) {
+					review.unassignReview(12, 20, 1, callback);
+				}
+			], done);
+		});
+
+		it('open a review that has been saved as a draft', function(done) {
+			review.openReview(19, 19, function(err, result) {
 				if (err) done(err);
-				review.unassignReview(12, 20, done);
+				assert(result, 'Result should exist');
+				done();
 			});
 		});
 
@@ -242,7 +400,7 @@ describe('Review Triggers', function() {
 
 		it('open a submitted review as a committee member', 
 			function(done) {
-				review.openReview(16, 11, function(err, result) {
+				review.openReview(20, 16, function(err, result) {
 					assert(err, 'Error should exist');
 					assert(!result, 'Result should exist');
 					done();
@@ -288,14 +446,18 @@ describe('Review Triggers', function() {
 
 	describe('begin a review', function() {
 		before(function setUp(done) {
-			review.assignReview(12, 20, done);
+			review.assignReview(12, 20, 1, done);
 		});
 
 		after(function cleanUp(done) {
-			review.saveReview(12, 20, function(err) {
-				if (err) done(err);
-				review.unassignReview(12, 20, done);
-			});
+			async.series([
+				function(callback) {
+					review.saveReview(12, 20, callback);
+				},
+				function(callback) {
+					review.unassignReview(12, 20, 1, callback);
+				}
+			], done);
 		});
 
 		it('begin a submitted review as a committee member', 
@@ -346,17 +508,34 @@ describe('Review Triggers', function() {
 
 	describe('write a review', function() {
 		before(function setUp(done) {
-			review.assignReview(12, 20, function(err) {
-				if (err) done(err);
-				review.beginReview(12, 20, done);
-			});
+			async.series([
+				function(callback) {
+					auth.logIn(17, callback);
+				},
+				function(callback) {
+					auth.selectRole(17, 'Committee Member', callback);
+				},
+				function(callback) {
+					review.assignReview(12, 20, 1, callback);
+				},
+				function(callback) {
+					review.beginReview(12, 20, callback);
+				}
+			], done);
 		});
 
 		after(function cleanUp(done) {
-			review.saveReview(12, 20, function(err) {
-				if (err) done(err);
-				review.unassignReview(12, 20, done);
-			});
+			async.series([
+				function(callback) {
+					auth.logOut(17, callback);
+				},
+				function(callback) {
+					review.saveReview(12, 20, callback);
+				},
+				function(callback) {
+					review.unassignReview(12, 20, 1, callback);
+				}
+			], done);
 		});
 
 		it('write a completed review as a committee member', 
@@ -432,14 +611,31 @@ describe('Review Triggers', function() {
 
 	describe('save a review', function() {
 		before(function setUp(done) {
-			review.assignReview(12, 20, function(err) {
-				if (err) done(err);
-				review.beginReview(12, 20, done);
-			});
+			async.series([
+				function(callback) {
+					auth.logIn(11, callback);
+				},
+				function(callback) {
+					auth.selectRole(11, 'Committee Member', callback);
+				},
+				function(callback) {
+					review.assignReview(12, 20, 1, callback);
+				},
+				function(callback) {
+					review.beginReview(12, 20, callback);
+				}
+			], done);
 		});
 
 		after(function cleanUp(done) {
-			review.unassignReview(12, 20, done);
+			async.series([
+				function(callback) {
+					auth.logOut(11, callback);
+				},
+				function(callback) {
+					review.unassignReview(12, 20, 1, callback);
+				}
+			], done);
 		});
 
 		it('save a submitted review as a committee member', 
@@ -491,14 +687,18 @@ describe('Review Triggers', function() {
 
 	describe('resume a review', function() {
 		before(function setUp(done) {
-			review.assignReview(12, 20, done);
+			review.assignReview(12, 20, 1, done);
 		});
 
 		after(function cleanUp(done) {
-			review.saveReview(12, 20, function(err) {
-				if (err) done(err);
-				review.unassignReview(12, 20, done);
-			});
+			async.series([
+				function(callback) {
+					review.saveReview(12, 20, callback);
+				},
+				function(callback) {
+					review.unassignReview(12, 20, 1, callback);
+				}
+			], done);
 		});
 
 		it('resume a submitted review as a committee member', 
@@ -550,18 +750,62 @@ describe('Review Triggers', function() {
 
 	describe('complete a review', function() {
 		before(function setUp(done) {
-			review.assignReview(12, 20, function(err) {
-				if (err) done(err);
-				review.beginReview(12, 20, function(err) {
-					if (err) done(err);
+			async.series([
+				function(callback) {
+					auth.logIn(11, callback);
+				},
+				function(callback) {
+					auth.logIn(12, callback);
+				},
+				function(callback) {
+					auth.logIn(16, callback);
+				},
+				function(callback) {
+					auth.selectRole(11, 'Committee Member', callback);
+				},
+				function(callback) {
+					auth.selectRole(12, 'Committee Member', callback);
+				},
+				function(callback) {
+					auth.selectRole(16, 'Committee Member', callback);
+				},
+				function(callback) {
+					review.assignReview(12, 20, 1, callback);
+				},
+				function(callback) {
+					review.beginReview(12, 20, callback);
+				},
+				function(callback) {
 					review.writeReview(12, 20, {
 						'fieldNames': [
 							'Background', 'researchExp', 'c_Rank'
 						],
 						'values': ['"Some background"', '"Some research"', 
-							'"B+"']}, done);
-				});
-			});
+							'"B+"']}, callback);
+				},
+				function(callback) {
+					review.writeReview(20, 16, {
+						'fieldNames': [
+							'Background', 'researchExp'
+						],
+						'values': ['"Some background"', '"Some research"']}, 
+					callback);
+				}
+			], done);
+		});
+
+		after(function cleanUp(done) {
+			async.series([
+				function(callback) {
+					auth.logOut(11, callback);
+				},
+				function(callback) {
+					auth.logOut(12, callback);
+				},
+				function(callback) {
+					auth.logOut(16, callback);
+				}
+			], done);
 		});
         
 		it('complete a review not assigned to the committee member', 
@@ -584,18 +828,10 @@ describe('Review Triggers', function() {
 
 		it('complete a review without a rank as a committee member', 
 			function(done) {
-				review.writeReview(20, 16, {
-					'fieldNames': [
-						'Background', 'researchExp'
-					],
-					'values': ['"Some background"', '"Some research"']}, 
-				function(err) {
-					if (err) done(err);
-					review.completeReview(20, 16, function(err, result) {
-						assert(err, 'Error should exist');
-						assert(!result, 'Result should exist');
-						done();
-					});
+				review.completeReview(20, 16, function(err, result) {
+					assert(err, 'Error should exist');
+					assert(!result, 'Result should exist');
+					done();
 				});
 			});
 
@@ -646,6 +882,21 @@ describe('Review Triggers', function() {
 	});
 
 	describe('submit a review', function() {
+		before(function setUp(done) {
+			async.series([
+				function(callback) {
+					auth.logIn(11, callback);
+				},
+				function(callback) {
+					auth.selectRole(11, 'Committee Member', callback);
+				}
+			], done);
+		});
+
+		after(function cleanUp(done) {
+			auth.logOut(11, done);
+		});
+
 		it('submit a submitted review as a committee member', 
 			function(done) {
 				review.submitReview(16, 11, function(err, result) {
@@ -692,7 +943,7 @@ describe('Review Triggers', function() {
 			});
 	});
 
-	describe('helper review functions', function() {
+	describe('helper functions', function() {
 		describe('getCommitteeRank', function() {
 			it('get a committee rank of an application not assigned to a member', 
 				function(done) {

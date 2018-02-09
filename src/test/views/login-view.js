@@ -7,44 +7,42 @@ var Utils = require('../lib/utils/shared-utils');
 function Login() {
 	this.utils = new Utils();
     
-	this.welcome = {};
-	this.welcome.header = by.id('welcome-header');
-    
-	this.signin = {};
-	this.signin.message = by.id('sign-in-message');
-	this.signin.note = by.id('sign-in-note');
-	this.signin.button = by.id('sign-in-btn');
+	this.login = {};
+	this.login.header = by.id('login-header');
+	this.login.username = by.id('username');
+	this.login.password = by.id('password');
+	this.login.submit = by.id('login-btn');
+	this.login.errorMessage = by.id('error-message');
 }
 
-Login.prototype.getWelcomeText = function() {
-	return element(this.welcome.header).getText();
+Login.prototype.getLoginText = function() {
+	return element(this.login.header).getText();
 };
 
-Login.prototype.getSignInMessage = function() {
-	return element(this.signin.message).getText();
+Login.prototype.enterUsername = function(username) {
+	return this.utils.clearThenSendKeys(element(this.login.username), username);
 };
 
-Login.prototype.getSignInNote = function() {
-	return element(this.signin.note).getText();
+Login.prototype.enterPassword = function(password) {
+	return this.utils.clearThenSendKeys(element(this.login.password), password);
 };
 
-Login.prototype.clickSignInButton = function() {
-	return element(this.signin.button).click();
+Login.prototype.clickLogIn = function() {
+	return element(this.login.submit).click();
 };
 
-Login.prototype.getSignInBtnText = function() {
-	return element(this.signin.button).getText();
+Login.prototype.getErrorMessage = function() {
+	return element(this.login.errorMessage).getText();
 };
 
-Login.prototype.signIn = function(credentials, route) {
+Login.prototype.fullSignIn = function(credentials) {
 	var username = credentials.username;
 	var password = credentials.password;
-	var address = this.utils.getAppAddress();
-	var host = address.address === '::' ? 'localhost' : address.address;
-	var port = address.port;
-	var link = 'http://' + username + ':' + password + '@' + host + ':' + port 
-        + '/' + route;
-	return browser.get(link);
+
+	return this.utils.clearThenSendKeys(element(this.login.username), username)
+		.then(this.utils.clearThenSendKeys.call(this.utils, element(this.login.
+			password), password))
+		.then(element(this.login.submit).click());
 };
 
 module.exports = Login;

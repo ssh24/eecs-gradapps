@@ -26,24 +26,26 @@ Application.prototype.markApplicationSeen = function(appId, memberId, cb) {
 	var self = this;
 	var updateStmt;
 
-	this.utils.getRoles(memberId, function(err, roles) {
-		if (err) return cb(err);
-		if (roles.includes('Admin') || roles.includes('Professor')) {
+	this.utils.getSelectedRole(memberId, function(err, role) {
+		if (err) return cb (err);
+		if (role === 'Professor' || role === 'Admin') {
 			self.review.isSubmitted(appId, function(err, result) {
 				if (err) return cb(err);
 				if (result) {
-					updateStmt = self.utils.createUpdateStatement('application_seen', 
-						['seen'], [1], ['fmId', 'appId'], [memberId, appId]);
+					updateStmt = self.utils.
+						createUpdateStatement('application_seen', 
+							['seen'], [1], ['fmId', 'appId'], [memberId, 
+								appId]);
 					self.conn.query(updateStmt, cb);
 				} else {
-					err = new Error('Application ' + appId + ' has not been ' 
-                    + ' reviewed yet');
+					err = new Error('Application ' + appId + 
+							' has not been reviewed yet');
 					return cb(err);
 				}
 			});  
 		} else {
 			err = new Error('Member ' + memberId + 
-            ' does not have access to see application ' + appId); 
+					' does not have access to see application ' + appId); 
 			return cb(err);
 		}
 	});

@@ -35,7 +35,7 @@ INSERT INTO `APPLICATION_REVIEW` (`committeeId`, `appId`, `c_Rank`, `Status`)
 INSERT INTO `APPLICATION_REVIEW` (`committeeId`, `appId`, `c_Rank`, `Status`) 
     VALUES (17, 20, 'B', 'In-Progress');
 INSERT INTO `APPLICATION_REVIEW` (`committeeId`, `appId`, `c_Rank`, `Status`) 
-    VALUES (19, 20, 'A+', 'Submitted');
+    VALUES (19, 19, 'A+', 'Draft');
 INSERT INTO `APPLICATION_REVIEW` (`committeeId`, `appId`, `c_Rank`, `Status`) 
     VALUES (11, 15, 'A+', 'Submitted');
 INSERT INTO `APPLICATION_REVIEW` (`committeeId`, `appId`, `c_Rank`, `Status`) 
