@@ -11,7 +11,7 @@ var Utils = require('../../lib/utils/shared-utils');
 var config = require('../../lib/utils/config');
 
 describe('Login Test', function() {
-	this.timeout(10000);
+	this.timeout(5000);
 
 	var utils = new Utils();
 	var login = new Login();

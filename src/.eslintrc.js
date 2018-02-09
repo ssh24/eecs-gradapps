@@ -18,7 +18,8 @@ module.exports = {
         "browser": false,
         "element": false,
         "by": false,
-        "exports": false
+        "exports": false,
+        "afterEach": false
     },
     "rules": {
         "indent": [
