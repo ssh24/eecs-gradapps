@@ -1,13 +1,38 @@
-<% include static/header %>
-    <div class="container middle">
-        <div class="row text-center">
-            <h1 id="welcome-header"><%= title %></h1>
-            <h3 id="sign-in-message">Sign in to the application to get started</h3>
-            <a id="sign-in-btn" class="btn" href="/roles" role="button">Sign In</a>
-            <br></br>
-            <h4 id="sign-in-note"><b>Note: Signing into the Grad Apps portal requires a valid EECS username</b></h4>
+<% include partials/header %>
+    <% include partials/navbar %>
+        <!--Main Message-->
+        <div class="jumbotron">
+            <div class="container text-center">
+                <h1 id="welcome-header">
+                    <%= title %>
+                </h1>
+                <h3 id="sign-in-message">Sign in to the application to get started</h3>
+                <p><a id="sign-in-btn" class="btn btn-primary btn-lg" href="./roles" role="button">Sign in &raquo;</a></p>
+                <h4 id="sign-in-note">Note: Signing into the Grad Apps portal requires a valid EECS username</h4>
+            </div>
         </div>
-    </div>
-<% include static/footer %>
-</body>
-</html>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <p class="text-center">
+                        Now with...
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <h2>Application Filtering</h2>
+                    <p>You are now able to search for graduate student applications that matter to you! Simply choose the application attributes along with the desired values and you are good to go! Don't forget to save your most used filter as a <u>preset</u> for future searches!</p>
+                </div>
+                <div class="col-md-4">
+                    <h2>A Simply Clean Look</h2>
+                    <p>Built using Bootstrap v3.3.7 with the Readable theme Gradapps v2.0 aims keep content easy to read and navigate.</p>
+                </div>
+                <div class="col-md-4">
+                    <h2>Awesome Students!</h2>
+                    <p>With great power comes great responsibility. Use your new powers wisely to find the students you couldn't have before.</p>
+                </div>
+            </div>
+        </div>
+        <% include partials/footer %>

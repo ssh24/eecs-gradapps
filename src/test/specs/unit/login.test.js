@@ -48,7 +48,7 @@ describe('Login Test', function() {
 
 	it('- get sign in button text', function() {
 		expect(login.getSignInBtnText.call(login)).to.eventually
-			.equal('Sign In');
+			.equal('Sign in »');
 	});
 
 	it('- success authentication', function() {
