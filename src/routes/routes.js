@@ -36,7 +36,7 @@ module.exports = function(app, passport) {
 	// committee page route
 	require('./committee.js')(app, utils, application, fm, [isLoggedIn, hasRole]);	
 	// professor page route
-	require('./professor.js')(app, [isLoggedIn, hasRole]);
+	require('./professor.js')(app, utils, application, [isLoggedIn, hasRole]);
 };
 
 // route middleware to make sure a user is logged in

@@ -1,13 +1,12 @@
 'use strict';
 
-var _= require('lodash');
-
+var _ = require('lodash');
 var assert = require('assert');
 
 var Review = require('./review');
 var Utils = require('./utils');
 
-var Application = function(connection) {
+var Application = function (connection) {
 	this.conn = connection;
 	this.utils = new Utils(this.conn);
 	this.review = new Review(this.conn);
@@ -101,12 +100,12 @@ Application.prototype.getApplications = function(sql, memberId, cb) {
 	sql = sql || 'SELECT app_Id, CONCAT_WS(\' \', `FName`, `LName`) AS `Applicant Name`, ' +
     ' Gender, FOI as `Fields of Interest`, prefProfs as `Preferred Professors`, ' +
     'Rank as `Committee Rank`, GPA, Degree as `Degree Applied For`,' +
-	' VStatus as `Visa Status`, programDecision as `Program Decision`, ' +
-	'profContacted as `Contacted By`,' +
-	' profRequested as `Requested By`, ' +
-	'seen as `My Interest Status` FROM APPLICATION LEFT JOIN APPLICATION_SEEN ' + 
-	'ON APPLICATION.app_Id = APPLICATION_SEEN.appId and APPLICATION_SEEN.fmId=' + memberId +
-	' where committeeReviewed=1 and Rank is not null';
+    ' VStatus as `Visa Status`, programDecision as `Program Decision`, ' +
+    'profContacted as `Contacted By`,' +
+    ' profRequested as `Requested By`, ' +
+    'seen as `My Interest Status` FROM APPLICATION LEFT JOIN APPLICATION_SEEN ' +
+    'ON APPLICATION.app_Id = APPLICATION_SEEN.appId and APPLICATION_SEEN.fmId=' + memberId +
+    ' where committeeReviewed=1 and Rank is not null';
 
 	assert(typeof sql === 'string');
 	assert(typeof memberId === 'number');
@@ -119,13 +118,13 @@ Application.prototype.getApplications = function(sql, memberId, cb) {
 		if (roles.includes('Professor') || roles.includes('Admin')) {
 			self.conn.query(sql, function(err, result1) {
 				if (err) return cb(err);
-				if(result1.length > 0) {
+				if (result1.length > 0) {
 					_.forEach(result1, function(res1) {
-						if(res1['My Interest Status'] === null) {
+						if (res1['My Interest Status'] === null) {
 							res1['My Interest Status'] = '-';
 						} else if (res1['My Interest Status'] === 1) {
 							res1['My Interest Status'] = 'Interested';
-						} else if (res1['My Interest Status'] === 0) {
+						} else {
 							res1['My Interest Status'] = 'Not Interested';
 						}
 					});
@@ -136,8 +135,8 @@ Application.prototype.getApplications = function(sql, memberId, cb) {
 				}
 			});
 		} else {
-			err = new Error('Member ' + memberId + 
-							' does not have access to see all applications'); 
+			err = new Error('Member ' + memberId +
+        ' does not have access to see all applications');
 			return cb(err);
 		}
 	});
