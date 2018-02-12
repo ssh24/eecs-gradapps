@@ -49,40 +49,40 @@ describe('Application Triggers', function() {
 					});
 			});
 
-		it('valid application with a committee member', 
-			function(done) {
-				application.markApplicationSeen(15, 10, 
-					function(err, result) {
+		it('valid application with a committee member',
+			function (done) {
+				application.markApplicationSeen(15, 10,
+					function (err, result) {
 						assert(err, 'Error should exist');
 						assert(!result, 'Result should not exist');
 						done();
 					});
 			});
 
-		it('valid application with an invalid faculty member', 
-			function(done) {
-				application.markApplicationSeen(20, 0, 
-					function(err, result) {
+		it('valid application with an invalid faculty member',
+			function (done) {
+				application.markApplicationSeen(20, 0,
+					function (err, result) {
 						assert(err, 'Error should exist');
 						assert(!result, 'Result should not exist');
 						done();
 					});
 			});
 
-		it('invalid application with a valid faculty member', 
-			function(done) {
-				application.markApplicationSeen(0, 20, 
-					function(err, result) {
+		it('invalid application with a valid faculty member',
+			function (done) {
+				application.markApplicationSeen(0, 20,
+					function (err, result) {
 						assert(err, 'Error should exist');
 						assert(!result, 'Result should not exist');
 						done();
 					});
 			});
 
-		it('invalid application with an invalid faculty member', 
-			function(done) {
-				application.markApplicationSeen(0, 0, 
-					function(err, result) {
+		it('invalid application with an invalid faculty member',
+			function (done) {
+				application.markApplicationSeen(0, 0,
+					function (err, result) {
 						assert(err, 'Error should exist');
 						assert(!result, 'Result should not exist');
 						done();
