@@ -1,12 +1,13 @@
 'use strict';
 
+var _ = require('lodash');
 var assert = require('assert');
 
 var Review = require('./review');
 var Utils = require('./utils');
 
 
-var Application = function(connection) {
+var Application = function (connection) {
 	this.conn = connection;
 	this.utils = new Utils(this.conn);
 	this.review = new Review(this.conn);
@@ -46,6 +47,52 @@ Application.prototype.markApplicationSeen = function(appId, memberId, cb) {
 		} else {
 			err = new Error('Member ' + memberId + 
 					' does not have access to see application ' + appId); 
+			return cb(err);
+		}
+	});
+};
+
+/**
+ * Get all the applications
+ * @param {Function} cb 
+ */
+Application.prototype.getApplications = function (memberId, cb) {
+	assert(typeof memberId === 'number');
+	assert(typeof cb === 'function');
+
+	var sql = 'SELECT app_Id, CONCAT_WS(\' \', `FName`, `LName`) AS `Applicant Name`, ' + 
+	'FOI as `Field of Interests`, prefProfs as `Preferred Professors`, ' + 
+	'Rank as `Committee Rank`, GPA, Degree as `Degree Applied For`,' + 
+	' VStatus as `Visa Status`, profContacted as `Contacted by`,' + 
+	' profRequested as `Requested by`  FROM' + 
+	' APPLICATION where committeeReviewed=1';
+	var self = this;
+
+	this.conn.query(sql, function(err, result1) {
+		if (err) return cb(err);
+		if(result1.length > 0) {
+			self.conn.query('Select appId, seen from application_seen where ' + 
+			'fmId=? and seen=?', 
+			[memberId, 1], function(err, result2) {
+				if (err) return cb(err);
+				if (result2.length > 0) {
+					var appIds = _.map(result2, 'appId');
+					_.forEach(result1, function(res1) {
+						if(appIds.includes(res1['app_Id'])) {
+							res1['My Interest Status'] = 'Interested';
+						} else {
+							res1['My Interest Status'] = '-';
+						}
+						delete res1['app_Id'];
+					});
+					return cb(err, result1);
+				} else {
+					err = new Error('No applications found');
+					return cb(err);
+				}
+			});
+		} else {
+			err = new Error('No applications found');
 			return cb(err);
 		}
 	});
