@@ -5,7 +5,10 @@ var creds = require('../config/database');
 var connection = mysql.createConnection(creds);
 connection.connect();
 
+var Application = require('../controller/application');
 var Utils = require('../controller/utils');
+
+var application = new Application(connection);
 var utils = new Utils(connection);
 
 module.exports = function(app, passport) {
@@ -55,7 +58,7 @@ module.exports = function(app, passport) {
 	});
     
 	// professor page route
-	app.get('/roles/professor', [isLoggedIn, hasRole], function(req, res) {
+	app.get('/roles/professor', [isLoggedIn, hasRole, getApps], function(req, res) {
 		var userInfo = req.user;
 		var role = 'Professor';
 		res.render(role, { 
@@ -63,7 +66,9 @@ module.exports = function(app, passport) {
 			user: userInfo.id,
 			fullname: userInfo.fullname,
 			roles: userInfo.roles,
-			role: role
+			role: role,
+			apps: req.apps.appls,
+			fields: req.apps.fields
 		});
 	});
     
@@ -113,4 +118,17 @@ function hasRole(req, res, next) {
 		if (hasRole) next(err, hasRole);
 		else res.redirect('/roles');
 	}
+}
+
+function getApps(req,res,next) {
+	application.getApplications(req.user.id, function (err,results) {
+		if (err) next(err);
+		var fields = [];
+		var obj = results[0];
+		for(var key in obj)
+			fields.push(key);
+		req.apps = {appls: results};
+		req.apps.fields = fields;
+		next();
+	});
 }
