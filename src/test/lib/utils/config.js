@@ -4,7 +4,8 @@ module.exports = {
 	'credentials' :{
 		'app' : {
 			'username': 'admin',
-			'password': 'admin'
+			'password': 'admin',
+			'fullname': 'John Doe'
 		},
 		'database' : {
 			'host': process.env.MYSQL_HOST,
@@ -36,7 +37,7 @@ module.exports = {
 		'fields': {
 			'faculty_member': ['fm_Id', 'fm_Username', 'fm_Lname', 'fm_Fname', 
 				'fm_Email', 'fm_Roles', 'presetProf', 'presetCommittee', 
-				'presetAdmin', 'is_LoggedIn'],
+				'presetAdmin', 'is_LoggedIn', 'selectedRole'],
 			'application': ['app_Id', 'app_Date', 'app_Session', 'LName', 
 				'FName', 'Email', 'Gender', 'GPA', 'GPA_FINAL', 'GRE', 'Rank',
 				'Degree', 'VStatus', 'committeeReviewed', 'FOI', 'prefProfs', 

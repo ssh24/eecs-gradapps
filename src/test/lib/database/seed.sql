@@ -22,7 +22,7 @@ USE `testdb`;
 
 CREATE TABLE `FACULTY_MEMBER` (
     `fm_Id` INT NOT NULL AUTO_INCREMENT,
-    `fm_Username` VARCHAR(50) DEFAULT NULL,
+    `fm_Username` VARCHAR(50) UNIQUE DEFAULT NULL,
     `fm_Lname` VARCHAR(50) NOT NULL,
     `fm_Fname` VARCHAR(50) NOT NULL,
     `fm_Email` VARCHAR(255) DEFAULT NULL,
@@ -31,6 +31,7 @@ CREATE TABLE `FACULTY_MEMBER` (
     `presetCommittee` JSON DEFAULT NULL,
     `presetAdmin` JSON DEFAULT NULL,
     `is_LoggedIn` TINYINT(0) DEFAULT 0,
+    `selectedRole` ENUM('Admin', 'Professor', 'Committee Member') DEFAULT NULL,
     PRIMARY KEY(`fm_Id`)
 ) ENGINE=INNODB;
 

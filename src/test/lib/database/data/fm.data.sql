@@ -7,10 +7,10 @@
 
 ---- ONLY ADMIN ROLE ----
 
-INSERT INTO `FACULTY_MEMBER` (`fm_Lname`, `fm_Fname`, `fm_Email`, `fm_Roles`) 
-    VALUES ('Cristofolo', 'Arri', 'acristofolo0@furl.net', '["Admin"]');
-INSERT INTO `FACULTY_MEMBER` (`fm_Lname`, `fm_Fname`, `fm_Email`, `fm_Roles`) 
-    VALUES ('Dearlove', 'Sophey', 'sdearlove1@usnews.com', '["Admin"]');
+INSERT INTO `FACULTY_MEMBER` (`fm_Username`, `fm_Lname`, `fm_Fname`, `fm_Email`, `fm_Roles`) 
+    VALUES ('arri', 'Cristofolo', 'Arri', 'acristofolo0@furl.net', '["Admin"]');
+INSERT INTO `FACULTY_MEMBER` (`fm_Username`, `fm_Lname`, `fm_Fname`, `fm_Email`, `fm_Roles`) 
+    VALUES ('sophey', 'Dearlove', 'Sophey', 'sdearlove1@usnews.com', '["Admin"]');
 
 
 ---- ONLY PROFESSOR ROLE ----
@@ -71,6 +71,10 @@ INSERT INTO `FACULTY_MEMBER` (`fm_Lname`, `fm_Fname`, `fm_Email`, `fm_Roles`)
 INSERT INTO `FACULTY_MEMBER` (`fm_Username`, `fm_Lname`, `fm_Fname`, `fm_Email`, 
     `fm_Roles`) VALUES ('admin', 'Doe', 'John', 'john_doe@example.com', 
     '["Admin", "Professor", "Committee Member"]');
+INSERT INTO `FACULTY_MEMBER` (`fm_Username`, `fm_Lname`, `fm_Fname`, `fm_Email`, 
+    `fm_Roles`, `is_LoggedIn`, `selectedRole`) VALUES ('admin2', 'Roberston', 
+    'John', 'john_r@example.com', '["Admin", "Professor", "Committee Member"]', 
+    1, 'Professor');
 
 
 /****************** ACTUAL FACULTY MEMBER DATA ******************/
