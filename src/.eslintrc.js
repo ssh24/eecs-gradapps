@@ -14,6 +14,7 @@ module.exports = {
         "describe": false,
         "it": false,
         "before": false,
+        "beforeEach": false,
         "after": false,
         "browser": false,
         "element": false,
