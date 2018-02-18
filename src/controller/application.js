@@ -287,4 +287,170 @@ Application.prototype.getApplicationData = function(appId, memberId, cb) {
 	});
 };
 
+/**
+ * Update application interest status
+ * @param {Number} appId
+ * @param {Number} memberId
+ * @param {Number} status
+ * @param {Function} cb
+ */
+Application.prototype.updateInterestedStatus = function(appId, memberId, status,
+	cb) {
+	appId = parseInt(appId, 10);
+	assert(typeof appId === 'number');
+	assert(typeof memberId === 'number');
+	assert(typeof status === 'number');
+	assert(typeof cb === 'function');
+
+	var updateStmt, insertStmt;
+	var self = this;
+
+	this.utils.getRoles(memberId, function(err, roles) {
+		if (err) return cb(err);
+		if (roles.includes('Professor')) {
+			updateStmt = self.utils.
+				createUpdateStatement('application_seen', ['seen'], [status], ['fmId', 'appId'], [memberId, appId]);
+			self.conn.query(updateStmt, function(err, result) {
+				if (err) return cb(err);
+				if (result.affectedRows === 0) {
+					insertStmt = self.utils.createInsertStatement('application_seen', ['fmId', 'appId', 'seen'], [memberId, appId, status]);
+					self.conn.query(insertStmt, cb);
+				} else {
+					return cb(err, result);
+				}
+			});
+		} else {
+			err = new Error('Member ' + memberId +
+        ' does not have access to set interested status');
+			return cb(err);
+		}
+	});
+};
+
+/**
+ * Update application contacted status
+ * @param {Number} appId
+ * @param {Number} memberId
+ * @param {String} memberName
+ * @param {Number} status
+ * @param {Function} cb
+ */
+Application.prototype.updateContactedStatus = function(appId, memberId, memberName,
+	status, cb) {
+	appId = parseInt(appId, 10);
+	assert(typeof appId === 'number');
+	assert(typeof memberId === 'number');
+	assert(typeof memberName === 'string');
+	assert(typeof cb === 'function');
+
+	var updateStmt;
+	var self = this;
+	var profContacted = [];
+
+	this.utils.getRoles(memberId, function(err, roles) {
+		if (err) return cb(err);
+		if (roles.includes('Professor')) {
+			self.conn.query('select profContacted from application where app_Id=?', [appId], function(err, result) {
+				if (err) return cb(err);
+				if (result.length > 0) {
+					profContacted = result[0]['profContacted'] ?
+						result[0]['profContacted'] : profContacted;
+					if (profContacted && profContacted.includes(memberName)) {
+						if (status === 0) {
+							profContacted.splice(profContacted.indexOf(memberName), 1);
+						} else {
+							err = new Error('Cannot set contacted to an ' +
+                'already contacted applicant');
+							return cb(err);
+						}
+					} else {
+						if (status === 1) {
+							profContacted.push(memberName);
+						} else {
+							err = new Error('Cannot set uncontacted to a ' +
+                'not contacted applicant');
+							return cb(err);
+						}
+					}
+					updateStmt = self.utils.
+						createUpdateStatement('application', ['profContacted'], [JSON.stringify(JSON.stringify(profContacted))], ['app_Id'], [appId]);
+					self.conn.query(updateStmt, cb);
+				} else {
+					err = new Error('No application found for application id ' +
+            appId);
+					return cb(err);
+				}
+			});
+		} else {
+			err = new Error('Member ' + memberId +
+        ' does not have access to set contacted status');
+			return cb(err);
+		}
+	});
+};
+
+/**
+ * Update application requested status
+ * @param {Number} appId
+ * @param {Number} memberId
+ * @param {String} memberName
+ * @param {Number} status
+ * @param {Function} cb
+ */
+Application.prototype.updateRequestedStatus = function(appId, memberId, memberName,
+	status, cb) {
+	appId = parseInt(appId, 10);
+	assert(typeof appId === 'number');
+	assert(typeof memberId === 'number');
+	assert(typeof memberName === 'string');
+	assert(typeof cb === 'function');
+
+	var updateStmt;
+	var self = this;
+	var profRequested = [];
+
+	this.utils.getRoles(memberId, function(err, roles) {
+		if (err) return cb(err);
+		if (roles.includes('Professor')) {
+			self.conn.query('select profRequested from application where app_Id=?', [appId], function(err, result) {
+				if (err) return cb(err);
+				if (result.length > 0) {
+					profRequested = result[0]['profRequested'] ?
+						result[0]['profRequested'] : profRequested;
+					if (profRequested && profRequested
+						.includes(memberName)) {
+						if (status === 0) {
+							profRequested.splice(profRequested
+								.indexOf(memberName), 1);
+						} else {
+							err = new Error('Cannot set requested to an ' +
+                'already requested applicant');
+							return cb(err);
+						}
+					} else {
+						if (status === 1) {
+							profRequested.push(memberName);
+						} else {
+							err = new Error('Cannot set unrequested to a ' +
+                'not requested applicant');
+							return cb(err);
+						}
+					}
+					updateStmt = self.utils.
+						createUpdateStatement('application', ['profRequested'], [JSON.stringify(JSON.stringify(profRequested))], ['app_Id'], [appId]);
+					self.conn.query(updateStmt, cb);
+				} else {
+					err = new Error('No application found for application id ' +
+            appId);
+					return cb(err);
+				}
+			});
+		} else {
+			err = new Error('Member ' + memberId +
+        ' does not have access to set requested status');
+			return cb(err);
+		}
+	});
+};
+
 module.exports = Application;
