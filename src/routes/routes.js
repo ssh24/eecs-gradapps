@@ -111,7 +111,7 @@ module.exports = function(app, passport) {
 function isLoggedIn(req, res, next) {
 	// if user is authenticated in the session, carry on
 	if (req.isAuthenticated())
-		return next();
+	return next();
 	// if they aren't redirect them to the home page
 	res.redirect('/');
 }
@@ -135,7 +135,11 @@ function hasRole(req, res, next) {
 }
 
 function getApps(req,res,next) {
+<<<<<<< HEAD
 	console.log('getApps: ' + defaultSQL);
+=======
+	console.log("getApps: " + defaultSQL);
+>>>>>>> f45b828... init form filter
 	var defaultSQL = 'SELECT app_Id, CONCAT_WS(\' \', `FName`, `LName`) AS `Applicant Name`, ' +
 		'FOI as `Field of Interests`, prefProfs as `Preferred Professors`, ' +
 		'Rank as `Committee Rank`, GPA, Degree as `Degree Applied For`,' +
@@ -147,15 +151,24 @@ function getApps(req,res,next) {
 		var fields = [];
 		var obj = results[0];
 		for(var key in obj)
+<<<<<<< HEAD
 			fields.push(key);
+=======
+		fields.push(key);
+>>>>>>> f45b828... init form filter
 		req.apps = {appls: results};
 		req.apps.fields = fields;
 		next();
 	});
 }
 function getApps2(req,res,next) {
+<<<<<<< HEAD
 	console.log('getApps2: ' + req.body.sql);
 	var emptyString='';
+=======
+	console.log("getApps2: " + req.body.sql);
+	var emptyString="";
+>>>>>>> f45b828... init form filter
 	var defaultSQL = 'SELECT app_Id, CONCAT_WS(\' \', `FName`, `LName`) AS `Applicant Name`, ' +
 		'FOI as `Field of Interests`, prefProfs as `Preferred Professors`, ' +
 		'Rank as `Committee Rank`, GPA, Degree as `Degree Applied For`,' +
@@ -171,7 +184,7 @@ function getApps2(req,res,next) {
 		var fields = [];
 		var obj = results[0];
 		for(var key in obj)
-			fields.push(key);
+		fields.push(key);
 		req.apps = {appls: results};
 		req.apps.fields = fields;
 		next();
