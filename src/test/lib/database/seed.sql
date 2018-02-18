@@ -159,7 +159,7 @@ CREATE TABLE `university` (
 CREATE TABLE `foi` (
     `field_Id` INT NOT NULL AUTO_INCREMENT,
     `field_Name` VARCHAR(50) NOT NULL,
-    PRIMARY KEY(`field_Id`)
+    PRIMARY KEY(`field_Id`, `field_Name`)
 ) ENGINE=INNODB;
 
 -- GPA table
