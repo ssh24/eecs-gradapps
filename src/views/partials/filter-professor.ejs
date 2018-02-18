@@ -1,14 +1,13 @@
 <!-- Modal Filter Section-->
 <div class="modal fade" id="filterModal">
     <div class="modal-dialog modal-lg">
-
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">—</button>
                 <h2>Filter <span class="glyphicon glyphicon-pencil"></span></h2>
             </div>
-            <form>
+            <form action="/roles/professor" method="post">
                 <div class="modal-body">
                     <div id="columns" class="form-group row">
                         <h4>Choose Your Columns</h4>
@@ -180,13 +179,14 @@
                     <div class="form-group row">
                         <h4>Selected Filter</h4>
                         <hr>
+                        <input id="sql" name="sql" type="hidden" value="">
                         <p>Visa Status = VISA <span style="color:red">AND</span> GPA >= C <span style="color:red">AND</span> Committee Ranking > C</p>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <div class="form-group row">
-                        <button type="submit" class="btn btn-danger btn-default pull-left" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
-                        <button type="submit" class="btn btn-success btn-default pull-left" data-dismiss="modal"><span class="glyphicon glyphicon-check"></span> Submit</button>
+                        <button class="btn btn-danger btn-default pull-left" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+                        <button type="submit" class="btn btn-success btn-default pull-left" ><span class="glyphicon glyphicon-check"></span> Submit</button>
 
                         <div class="input-group">
                             <input type="text" class="form-control" placeholder="Preset Name" id="">
