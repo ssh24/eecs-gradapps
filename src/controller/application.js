@@ -6,7 +6,7 @@ var assert = require('assert');
 var Review = require('./review');
 var Utils = require('./utils');
 
-var Application = function (connection) {
+var Application = function(connection) {
 	this.conn = connection;
 	this.utils = new Utils(this.conn);
 	this.review = new Review(this.conn);
