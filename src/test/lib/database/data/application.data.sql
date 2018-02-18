@@ -22,7 +22,7 @@ INSERT INTO `APPLICATION` (`app_Session`, `LName`, `FName`, `Email`, `Gender`,
     ('Fall', 'Genni', 'Bittlestone', 'gbittlestone1@telegraph.co.uk', 'F', 'A', 
     1, 'PhD', 'Visa', '["A+"]', 1, '["Human-Computer Interaction", 
     "Micro/Nano Electronic Systems", "Software Engineering"]', 
-    '["Susanna Chesher", "Chad Donaghie"]', '["Chad Donaghie"]', 
+    '["Susanna Chesher", "Chad Donaghie", "John Doe"]', '["Chad Donaghie","John Doe"]', 
     '["Chad Donaghie"]', CURRENT_TIMESTAMP, 'Accepted', 'Accepted', 1);
 
 INSERT INTO `APPLICATION` (`app_Session`, `LName`, `FName`, `Email`, `Gender`, 
@@ -43,8 +43,9 @@ INSERT INTO `APPLICATION` (`app_Session`, `LName`, `FName`, `Email`, `Gender`,
     ('Winter', 'Birgitta', 'Bohlsen', 'bbohlsenk@cafepress.com', 'F', 'A', 0,
     'MSc', 'Visa', '["B+"]', 1, 
     '["Bioinformatics", "Embedded Systems", "Data Mining"]', 
-    '["Sheff Boneham", "Buiron Truran", "Reamonn Cleef"]', '["Reamonn Cleef"]', 
-    '["Reamonn Cleef"]', CURRENT_TIMESTAMP, 'Accepted', 'Accepted', 0);
+    '["Sheff Boneham", "John Doe", "Buiron Truran", "Reamonn Cleef"]', 
+    '["Reamonn Cleef", "John Doe"]', 
+    '["Reamonn Cleef", "John Doe"]', CURRENT_TIMESTAMP, 'Accepted', 'Accepted', 0);
 
 INSERT INTO `APPLICATION` (`app_Session`, `LName`, `FName`, `Email`, `Gender`, 
     `GPA`, `GPA_FINAL`, `Degree`, `VStatus`, `Rank`, `committeeReviewed`, `FOI`, 
@@ -61,8 +62,8 @@ INSERT INTO `APPLICATION` (`app_Session`, `LName`, `FName`, `Email`, `Gender`,
     `programDecision`, `studentDecision`, `ygsAwarded`) VALUES  
     ('Summer', 'Panchito', 'Barnett', 'pbarnett13@guardian.co.uk', 'M', 'B+', 
     1, 'MASc', 'Visa', '["B+"]', 1, '["Artificial Intelligence", "Graph Mining"]',
-    '["Winny Dalyell", "Buiron Truran"]', '["Winny Dalyell", "Buiron Truran"]', 
-    '["Buiron Truran"]', CURRENT_TIMESTAMP, 'Accepted', 'Accepted', 0);
+    '["Winny Dalyell", "Buiron Truran"]', '["John Doe", "Winny Dalyell", "Buiron Truran"]', 
+    '["Buiron Truran", "John Doe"]', CURRENT_TIMESTAMP, 'Accepted', 'Accepted', 0);
 
 INSERT INTO `APPLICATION` (`app_Session`, `LName`, `FName`, `Email`, `Gender`, 
     `GPA`, `GPA_FINAL`, `Degree`, `VStatus`, `Rank`, `committeeReviewed`, `FOI`, 
@@ -94,8 +95,9 @@ INSERT INTO `APPLICATION` (`app_Session`, `LName`, `FName`, `Email`, `Gender`,
     ('Fall', 'Caryl', 'Strongitharm', 'cstrongitharmg@foxnews.com', 'M', 'B+', 
     0, 'MASc', 'Domestic', '["B+", "B+"]', 1, 
     '["Artificial Intelligence", "Graph Mining"]',
-    '["Winny Dalyell", "Buiron Truran"]', '["Winny Dalyell", "Buiron Truran"]', 
-    '["Buiron Truran"]', 'Accepted', 'Declined', 
+    '["John Doe", "Winny Dalyell", "Buiron Truran"]', 
+    '["John Doe", "Winny Dalyell", "Buiron Truran"]', 
+    '["John Doe", "Buiron Truran"]', 'Accepted', 'Declined', 
     'Accepted offer from other university.');
 
 INSERT INTO `APPLICATION` (`app_Session`, `LName`, `FName`, `Email`, `Gender`, 
