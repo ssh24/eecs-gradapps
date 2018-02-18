@@ -2,18 +2,17 @@
     <% include partials/navbar %>
         <!--Main Message-->
         <div class="jumbotron">
-            <form action="/login" method="post">
                 <div class="container">
 
                     <div class="col-sm-6 col-sm-offset-3">
-                    
+
                         <h1 id="login-header"><span class="fa fa-sign-in"></span> Login</h1>
-                    
+
                         <!-- show any messages that come back with authentication -->
                         <% if (message.length > 0) { %>
                             <div id="error-message" class="alert alert-danger"><%= message %></div>
                         <% } %>
-                    
+
                         <!-- LOGIN FORM -->
                         <form action="/login" method="post">
                             <div class="form-group">
@@ -24,14 +23,14 @@
                                 <label>Password</label>
                                 <input id="password" type="password" class="form-control" name="password">
                             </div>
-                    
-                            <button id='login-btn' type="submit" class="btn btn-warning btn-lg">Login</button>
+
+                            <button id='login-btn' type="submit" class="btn btn-success btn-lg">Login</button>
                         </form>
-                    
+
                         <hr>
-                    
+
                     </div>
-                    
+
                     </div>
         </div>
         <% include partials/footer %>
