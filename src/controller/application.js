@@ -15,9 +15,9 @@ var Application = function (connection) {
 
 /**
  * Mark an application as seen. Can be done by either an admin or a professor.
- * @param {Number} appId 
- * @param {Number} memberId 
- * @param {Function} cb 
+ * @param {Number} appId
+ * @param {Number} memberId
+ * @param {Function} cb
  */
 Application.prototype.markApplicationSeen = function(appId, memberId, cb) {
 	assert(typeof appId === 'number');
@@ -34,19 +34,19 @@ Application.prototype.markApplicationSeen = function(appId, memberId, cb) {
 				if (err) return cb(err);
 				if (result) {
 					updateStmt = self.utils.
-						createUpdateStatement('application_seen', 
-							['seen'], [1], ['fmId', 'appId'], [memberId, 
+						createUpdateStatement('application_seen',
+							['seen'], [1], ['fmId', 'appId'], [memberId,
 								appId]);
 					self.conn.query(updateStmt, cb);
 				} else {
-					err = new Error('Application ' + appId + 
+					err = new Error('Application ' + appId +
 							' has not been reviewed yet');
 					return cb(err);
 				}
-			});  
+			});
 		} else {
-			err = new Error('Member ' + memberId + 
-					' does not have access to see application ' + appId); 
+			err = new Error('Member ' + memberId +
+					' does not have access to see application ' + appId);
 			return cb(err);
 		}
 	});
@@ -54,25 +54,22 @@ Application.prototype.markApplicationSeen = function(appId, memberId, cb) {
 
 /**
  * Get all the applications
- * @param {Function} cb 
+ * @param {String} sql
+ * @param {Number} memberId
+ * @param {Function} cb
  */
-Application.prototype.getApplications = function (memberId, cb) {
+Application.prototype.getApplications = function (sql, memberId, cb) {
+	assert(typeof sql === 'string');
 	assert(typeof memberId === 'number');
 	assert(typeof cb === 'function');
 
-	var sql = 'SELECT app_Id, CONCAT_WS(\' \', `FName`, `LName`) AS `Applicant Name`, ' + 
-	'FOI as `Field of Interests`, prefProfs as `Preferred Professors`, ' + 
-	'Rank as `Committee Rank`, GPA, Degree as `Degree Applied For`,' + 
-	' VStatus as `Visa Status`, profContacted as `Contacted by`,' + 
-	' profRequested as `Requested by`  FROM' + 
-	' APPLICATION where committeeReviewed=1';
 	var self = this;
 
 	this.conn.query(sql, function(err, result1) {
 		if (err) return cb(err);
 		if(result1.length > 0) {
-			self.conn.query('Select appId, seen from application_seen where ' + 
-			'fmId=? and seen=?', 
+			self.conn.query('Select appId, seen from application_seen where ' +
+			'fmId=? and seen=?',
 			[memberId, 1], function(err, result2) {
 				if (err) return cb(err);
 				if (result2.length > 0) {
