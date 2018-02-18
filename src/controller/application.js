@@ -14,9 +14,9 @@ var Application = function (connection) {
 
 /**
  * Mark an application as seen. Can be done by either an admin or a professor.
- * @param {Number} appId 
- * @param {Number} memberId 
- * @param {Function} cb 
+ * @param {Number} appId
+ * @param {Number} memberId
+ * @param {Function} cb
  */
 Application.prototype.markApplicationSeen = function(appId, memberId, cb) {
 	assert(typeof appId === 'number');
@@ -33,19 +33,19 @@ Application.prototype.markApplicationSeen = function(appId, memberId, cb) {
 				if (err) return cb(err);
 				if (result) {
 					updateStmt = self.utils.
-						createUpdateStatement('application_seen', 
-							['seen'], [1], ['fmId', 'appId'], [memberId, 
+						createUpdateStatement('application_seen',
+							['seen'], [1], ['fmId', 'appId'], [memberId,
 								appId]);
 					self.conn.query(updateStmt, cb);
 				} else {
-					err = new Error('Application ' + appId + 
+					err = new Error('Application ' + appId +
 							' has not been reviewed yet');
 					return cb(err);
 				}
-			});  
+			});
 		} else {
-			err = new Error('Member ' + memberId + 
-					' does not have access to see application ' + appId); 
+			err = new Error('Member ' + memberId +
+					' does not have access to see application ' + appId);
 			return cb(err);
 		}
 	});
