@@ -14,17 +14,17 @@ var utils = new Utils(connection);
 module.exports = function(app, passport) {
 	// home page route
 	app.get('/', function(req, res) {
-		res.render('index', { title: 'Welcome to Grad Apps', user: null, 
+		res.render('index', { title: 'Welcome to Grad Apps', user: null,
 			role: null});
 	});
-    
+
 	/** LOGIN PAGE ROUTE */
 	app.get('/login', function(req, res) {
-		res.render('login', { message: req.flash('loginMessage'), title: 'Login', 
-			user: null, 
+		res.render('login', { message: req.flash('loginMessage'), title: 'Login',
+			user: null,
 			role: null});
 	});
-    
+
 	app.post('/login', passport.authenticate('local-login', {
 		successRedirect : '/roles', // redirect to the secure profile section
 		failureRedirect : '/login', // redirect back to the signup page if there is an error
@@ -34,21 +34,21 @@ module.exports = function(app, passport) {
 	// roles page route
 	app.get('/roles', isLoggedIn, function(req, res) {
 		var userInfo = req.user;
-		res.render('roles', { 
+		res.render('roles', {
 			title: 'Role Selection',
 			confirmation: 'You have been successfully logged into the system.',
 			user: userInfo.id,
-			roles: userInfo.roles, 
+			roles: userInfo.roles,
 			fname: userInfo.fname,
 			role: null
 		});
 	});
-    
+
 	// admin page route
 	app.get('/roles/admin', [isLoggedIn, hasRole], function(req, res) {
 		var userInfo = req.user;
 		var role = 'Admin';
-		res.render(role, { 
+		res.render(role, {
 			title: 'Welcome ' + role,
 			user: userInfo.id,
 			fullname: userInfo.fullname,
@@ -56,7 +56,7 @@ module.exports = function(app, passport) {
 			role: role
 		});
 	});
-    
+
 	// professor page route
 	app.get('/roles/professor', [isLoggedIn, hasRole, getApps], function(req, res) {
 		var userInfo = req.user;
@@ -71,12 +71,26 @@ module.exports = function(app, passport) {
 			fields: req.apps.fields
 		});
 	});
-    
+
+	app.post('/roles/professor', [isLoggedIn, hasRole, getApps2],
+		function(req, res) {
+			var userInfo = req.user;
+			var role = 'Professor';
+			res.render(role, {
+				title: 'Posted ' + role,
+				user: userInfo.id,
+				fullname: userInfo.fullname,
+				roles: userInfo.roles,
+				role: role,
+				apps: req.apps.appls,
+				fields: req.apps.fields
+			});
+		});
 	// committee page route
 	app.get('/roles/committee', [isLoggedIn, hasRole], function(req, res) {
 		var userInfo = req.user;
 		var role = 'Committee Member';
-		res.render('Committee', { 
+		res.render('Committee', {
 			title: 'Welcome ' + role,
 			user: userInfo.id,
 			fullname: userInfo.fullname,
@@ -84,7 +98,7 @@ module.exports = function(app, passport) {
 			role: role
 		});
 	});
-    
+
 	// logout page route
 	app.get('/logout', [isLoggedIn], function(req, res) {
 		req.session.destroy(function () {
@@ -95,7 +109,7 @@ module.exports = function(app, passport) {
 
 // route middleware to make sure a user is logged in
 function isLoggedIn(req, res, next) {
-	// if user is authenticated in the session, carry on 
+	// if user is authenticated in the session, carry on
 	if (req.isAuthenticated())
 		return next();
 	// if they aren't redirect them to the home page
@@ -121,7 +135,38 @@ function hasRole(req, res, next) {
 }
 
 function getApps(req,res,next) {
-	application.getApplications(req.user.id, function (err,results) {
+	console.log('getApps: ' + defaultSQL);
+	var defaultSQL = 'SELECT app_Id, CONCAT_WS(\' \', `FName`, `LName`) AS `Applicant Name`, ' +
+		'FOI as `Field of Interests`, prefProfs as `Preferred Professors`, ' +
+		'Rank as `Committee Rank`, GPA, Degree as `Degree Applied For`,' +
+		' VStatus as `Visa Status`, profContacted as `Contacted by`,' +
+		' profRequested as `Requested by`  FROM' +
+		' APPLICATION where committeeReviewed=1';
+	application.getApplications(defaultSQL, req.user.id, function (err,results) {
+		if (err) next(err);
+		var fields = [];
+		var obj = results[0];
+		for(var key in obj)
+			fields.push(key);
+		req.apps = {appls: results};
+		req.apps.fields = fields;
+		next();
+	});
+}
+function getApps2(req,res,next) {
+	console.log('getApps2: ' + req.body.sql);
+	var emptyString='';
+	var defaultSQL = 'SELECT app_Id, CONCAT_WS(\' \', `FName`, `LName`) AS `Applicant Name`, ' +
+		'FOI as `Field of Interests`, prefProfs as `Preferred Professors`, ' +
+		'Rank as `Committee Rank`, GPA, Degree as `Degree Applied For`,' +
+		' VStatus as `Visa Status`, profContacted as `Contacted by`,' +
+		' profRequested as `Requested by`  FROM' +
+		' APPLICATION where committeeReviewed=1';
+	if(req.body.sql.localeCompare(emptyString) === 0)
+	{
+		req.body.sql = defaultSQL;
+	}
+	application.getApplications(req.body.sql, req.user.id, function (err,results) {
 		if (err) next(err);
 		var fields = [];
 		var obj = results[0];
