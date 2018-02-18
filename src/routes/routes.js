@@ -67,7 +67,7 @@ module.exports = function(app, passport) {
 	});
 
 	// professor page route
-	app.get('/roles/professor', [isLoggedIn, selectRole, applyApplicationActions, 
+	app.get('/roles/professor', [isLoggedIn, selectRole, applyApplicationActions,
 		getApps],
 	function(req, res) {
 		var userInfo = req.user;
@@ -103,7 +103,6 @@ module.exports = function(app, passport) {
 				profs: req.apps.profs
 			});
 		});
-    
 	// committee page route
 	app.get('/roles/committee', [isLoggedIn, selectRole], function(req, res) {
 		var userInfo = req.user;
