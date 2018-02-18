@@ -268,4 +268,54 @@ Application.prototype.updateRequestedStatus = function(appId, memberId, memberNa
 	});
 };
 
+Application.prototype.getApplicantNames = function(cb) {
+	var sql = 'SELECT CONCAT_WS(\' \', `FName`, `LName`) AS `Applicant Name`' + 
+	' FROM APPLICATION where committeeReviewed=1';
+	var applicants;
+	this.conn.query(sql, function(err, result) {
+		if (err) return cb(err);
+		if(result.length > 0) {
+			applicants = _.map(result, 'Applicant Name');
+			return cb(err, applicants);
+		} else {
+			err = new Error('No applicants found');
+			return cb(err);
+		}
+	});
+};
+
+Application.prototype.getFieldOfInterests = function(cb) {
+	var sql = 'SELECT field_Name from foi';
+	var foi;
+	this.conn.query(sql, function(err, result) {
+		if (err) return cb(err);
+		if(result.length > 0) {
+			foi = _.map(result, 'field_Name');
+			return cb(err, foi);
+		} else {
+			err = new Error('No field of interest found');
+			return cb(err);
+		}
+	});
+};
+
+Application.prototype.getAllProfessors = function(cb) {
+	var sql = 'SELECT CONCAT_WS(\' \', `fm_Fname`, `fm_Lname`) AS `Professor Name`' + 
+	', fm_Roles from faculty_member where fm_Roles is not null';
+	var professors = [];
+	this.conn.query(sql, function(err, result) {
+		if (err) return cb(err);
+		if(result.length > 0) {
+			_.forEach(result, function(res) {
+				if(res['fm_Roles'].includes('Professor'))
+					professors.push(res['Professor Name']);
+			});
+			return cb(err, professors);
+		} else {
+			err = new Error('No professors found');
+			return cb(err);
+		}
+	});
+};
+
 module.exports = Application;
