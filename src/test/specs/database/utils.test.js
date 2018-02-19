@@ -163,4 +163,52 @@ describe('Util Functionalities', function() {
 			utils.getUniversityDescriptions(done);
 		});
 	});
+
+	describe('get professors name function', function(){
+		it('return all professor names', function(done) {
+			utils.getAllProfessors(function(err, result) {
+				if (err) done(err);
+				assert(result, 'Result should exist');
+				done();
+			});
+		});
+	});
+
+	describe('get field of interests function', function(){
+		it('return all field of interests', function(done) {
+			utils.getFieldOfInterests(function(err, result) {
+				if (err) done(err);
+				assert(result, 'Result should exist');
+				done();
+			});
+		});
+	});
+
+	describe('get gpa function', function(){
+		it('return all gpas', function(done) {
+			utils.getGPA(function(err, result) {
+				if (err) done(err);
+				assert(result, 'Result should exist');
+				done();
+			});
+		});
+	});
+
+	describe('build committee rank function', function(){
+		it('build committee rank: > B', function(done) {
+			utils.buildCommitteeRankFilter('>', 'B', function(err, result) {
+				if (err) done(err);
+				assert(result, 'Result should exist');
+				done();
+			});
+		});
+
+		it('build committee rank with invalid grade', function(done) {
+			utils.buildCommitteeRankFilter('>', 'G', function(err, result) {
+				assert(err, 'Error should exist');
+				assert(!result, 'Result should exist');
+				done();
+			});
+		});
+	});
 });
