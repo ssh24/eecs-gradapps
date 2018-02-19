@@ -124,6 +124,8 @@ module.exports = function(app, passport) {
 	});
 };
 
+/************ HELPER FUNCTIONS ************/
+
 // route middleware to make sure a user is logged in
 function isLoggedIn(req, res, next) {
 	// if user is authenticated in the session, carry on
