@@ -1,5 +1,6 @@
 'use strict';
 
+var _ = require('lodash');
 var assert = require('assert');
 
 var Utils = function(connection) {
@@ -372,6 +373,68 @@ Utils.prototype.getMemberFullName = function(memberId, cb) {
 					return cb(err, fullname);
 				}
 			});
+		}
+	});
+};
+
+/**
+ * Get all professor names
+ * @param {Function} cb 
+ */
+Utils.prototype.getAllProfessors = function(cb) {
+	var sql = 'SELECT CONCAT_WS(\' \', `fm_Fname`, `fm_Lname`) AS `Professor Name`' 
+	+ ', fm_Roles from faculty_member where fm_Roles is not null';
+	var professors = [];
+	this.conn.query(sql, function(err, result) {
+		if (err) return cb(err);
+		if(result.length > 0) {
+			_.forEach(result, function(res) {
+				if(res['fm_Roles'].includes('Professor'))
+					professors.push(res['Professor Name']);
+			});
+			return cb(err, professors.sort());
+		} else {
+			err = new Error('No professors found');
+			return cb(err);
+		}
+	});
+};
+
+/**
+ * Get list of all field of interests
+ * @param {Function} cb 
+ */
+Utils.prototype.getFieldOfInterests = function(cb) {
+	var sql = 'SELECT field_Name from foi';
+	var foi;
+	this.conn.query(sql, function(err, result) {
+		if (err) return cb(err);
+		if(result.length > 0) {
+			foi = _.map(result, 'field_Name');
+			return cb(err, foi.sort());
+		} else {
+			err = new Error('No field of interest found');
+			return cb(err);
+		}
+	});
+};
+
+/**
+ * Get all applicant names
+ * @param {Function} cb 
+ */
+Utils.prototype.getApplicantNames = function(cb) {
+	var sql = 'SELECT CONCAT_WS(\' \', `FName`, `LName`) AS `Applicant Name`' + 
+	' FROM APPLICATION where committeeReviewed=1';
+	var applicants;
+	this.conn.query(sql, function(err, result) {
+		if (err) return cb(err);
+		if(result.length > 0) {
+			applicants = _.map(result, 'Applicant Name');
+			return cb(err, applicants.sort());
+		} else {
+			err = new Error('No applicants found');
+			return cb(err);
 		}
 	});
 };
