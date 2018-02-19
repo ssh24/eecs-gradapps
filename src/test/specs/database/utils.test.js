@@ -145,4 +145,34 @@ describe('Util Functionalities', function() {
 			});
 		});
 	});
+
+	describe('get professors name function', function(){
+		it('return all professor names', function(done) {
+			utils.getAllProfessors(function(err, result) {
+				if (err) done(err);
+				assert(result, 'Result should exist');
+				done();
+			});
+		});
+	});
+
+	describe('get field of interests function', function(){
+		it('return all field of interests', function(done) {
+			utils.getFieldOfInterests(function(err, result) {
+				if (err) done(err);
+				assert(result, 'Result should exist');
+				done();
+			});
+		});
+	});
+
+	describe('get applicant names function', function(){
+		it('return all applicant names', function(done) {
+			utils.getApplicantNames(function(err, result) {
+				if (err) done(err);
+				assert(result, 'Result should exist');
+				done();
+			});
+		});
+	});
 });
