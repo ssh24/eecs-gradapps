@@ -20,20 +20,19 @@ describe('Logout Test', function() {
 	var utils = new Utils();
 	var welcome = new Welcome();
 
-	before(function () {
+	before(function overallSetup() {
 		require('../../pretest');
 		utils.startApp();
 		utils.openView('#');
 		utils.maximizeBrowserWindow();
 	});
     
-	beforeEach(function() {
+	beforeEach(function setUp() {
 		welcome.clickSignInButton()
 			.then(login.fullSignIn.bind(login, config.credentials.app));
 	});
 
-	after(function (done) {
-		require('../../pretest');
+	after(function overallCleanUp(done) {
 		browser.restart();
 		utils.stopApp(done);
 	});

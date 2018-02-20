@@ -2,10 +2,10 @@
     <% include partials/navbar %>
         <!--tables-->
         <div class="container-fluid">
-            <a href="/roles/professor" class="btn btn-primary">Refresh Table <span class="glyphicon glyphicon-refresh"></span></a>
+            <a id="refresh-table" href="/roles/professor" class="btn btn-primary">Refresh Table <span class="glyphicon glyphicon-refresh"></span></a>
             <div class="table-responsive">
-                <table class="table table-striped table-hover">
-                    <thead>
+                <table id="applicant-table" class="table table-striped table-hover">
+                    <thead id="table-head">
                         <tr>
                             <% for(var i = 1; i < fields.length; i++){ %>
                                 <th class="text-center"><%= fields[i]%></th>
@@ -15,36 +15,36 @@
                             </th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="table-body">
                         <% for(var i = 0; i < apps.length; i++){ %>
                             <tr>
                             <% for(var j = 1; j < fields.length; j++){ %>
-                                <td class="text-center">
+                                <td id="data-<%=i%>-<%=j%>" class="text-center">
                                     <%= apps[i][fields[j]]%>
                                 </td>                                
                             <%}%>
                                 <td class="text-center">
                                     <div class="btn-group-vertical">
                                         <button class="btn btn-primary">View Application</button>
-                                        <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown">Set to <span class="caret"></span></button>
+                                        <button id="set-to-<%=i%>" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">Set to <span class="caret"></span></button>
                                         <ul class="dropdown-menu" role="menu">
                                             <% if (apps[i]['Contacted by'] && apps[i]['Contacted by'].indexOf(fullname) > -1) { %>
-                                                <li><a href="/roles/professor?contacted=false&appId=<%= apps[i][fields[0]]%>">Not Contacted</a></li>
+                                                <li><a id="not-contacted-<%=i%>" href="/roles/professor?contacted=false&appId=<%= apps[i][fields[0]]%>">Not Contacted</a></li>
                                             <% } %>
                                             <% if (!(apps[i]['Contacted by'] && apps[i]['Contacted by'].indexOf(fullname) > -1)) { %>
-                                                <li><a href="/roles/professor?contacted=true&appId=<%= apps[i][fields[0]]%>">Contacted</a></li>
+                                                <li><a id="contacted-<%=i%>" href="/roles/professor?contacted=true&appId=<%= apps[i][fields[0]]%>">Contacted</a></li>
                                             <% } %>
                                             <% if (apps[i]['Requested by'] && apps[i]['Requested by'].indexOf(fullname) > -1) { %>
-                                                <li><a href="/roles/professor?requested=false&appId=<%= apps[i][fields[0]]%>">Not Requested</a></li>
+                                                <li><a id="not-requested-<%=i%>" href="/roles/professor?requested=false&appId=<%= apps[i][fields[0]]%>">Not Requested</a></li>
                                             <% } %>
                                             <% if (!(apps[i]['Requested by'] && apps[i]['Requested by'].indexOf(fullname) > -1)) { %>
-                                                <li><a href="/roles/professor?requested=true&appId=<%= apps[i][fields[0]]%>">Requested</a></li>
+                                                <li><a id="requested-<%=i%>" href="/roles/professor?requested=true&appId=<%= apps[i][fields[0]]%>">Requested</a></li>
                                             <% } %>
                                             <% if (apps[i]['My Interest Status'] === 'Interested') { %>
-                                                <li><a href="/roles/professor?interest=false&appId=<%= apps[i][fields[0]]%>"</a>Not Interested</a></li>
+                                                <li><a id="not-interested-<%=i%>" href="/roles/professor?interest=false&appId=<%= apps[i][fields[0]]%>">Not Interested</a></li>
                                             <% } %>
                                             <% if (apps[i]['My Interest Status'] === '-') { %>
-                                                <li><a href="/roles/professor?interest=true&appId=<%= apps[i][fields[0]]%>"</a>Interested</a></li>
+                                                <li><a id="interested-<%=i%>" href="/roles/professor?interest=true&appId=<%= apps[i][fields[0]]%>">Interested</a></li>
                                             <% } %>
                                         </ul>
                                     </div>
