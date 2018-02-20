@@ -20,15 +20,15 @@ describe('Login Test', function() {
 	var utils = new Utils();
 	var welcome = new Welcome();
 
-	before(function () {
+	before(function setUp() {
+		require('../../pretest');
 		utils.startApp();
 		utils.openView('#');
 		utils.maximizeBrowserWindow();
 		welcome.clickSignInButton();
 	});
 
-	after(function (done) {
-		require('../../pretest');
+	after(function cleanUp(done) {
 		browser.restart();
 		utils.stopApp(done);
 	});
