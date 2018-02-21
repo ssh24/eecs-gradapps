@@ -3,57 +3,57 @@
 var _ = require('lodash');
 var assert = require('assert');
 
-var Utils = function (connection) {
+var Utils = function(connection) {
 	this.conn = connection;
 };
 
 /**
  * Create an insert statement given the table name, field names and their corresponding values.
- * @param {String} tableName 
- * @param {Array} fieldNames 
- * @param {Array} values 
+ * @param {String} tableName
+ * @param {Array} fieldNames
+ * @param {Array} values
  */
-Utils.prototype.createInsertStatement = function(tableName, fieldNames, values){
+Utils.prototype.createInsertStatement = function(tableName, fieldNames, values) {
 	assert(typeof tableName === 'string');
 	assert(Array.isArray(fieldNames));
 	assert(Array.isArray(values));
 	assert(fieldNames.length === values.length);
-    
+
 	var statement = 'INSERT INTO ' + tableName + ' (';
 	var commaDelimeter = ',';
-    
+
 	var fnStatement = '';
-	for(var i = 0; i < fieldNames.length; i++) {
+	for (var i = 0; i < fieldNames.length; i++) {
 		if (i < fieldNames.length - 1) {
 			fnStatement = fnStatement + fieldNames[i] + commaDelimeter;
 		} else {
 			fnStatement = fnStatement + fieldNames[i] + ') VALUES (';
 		}
 	}
-    
+
 	var valueStatement = '';
-	for(var j = 0; j < values.length; j++) {
+	for (var j = 0; j < values.length; j++) {
 		if (j < values.length - 1) {
 			valueStatement = valueStatement + values[j] + commaDelimeter;
 		} else {
 			valueStatement = valueStatement + values[j] + ')';
 		}
 	}
-    
+
 	statement = statement + fnStatement + valueStatement;
 	return statement;
 };
 
 /**
  * Create an update statement given the table name, field names and their corresponding values.
- * @param {String} tableName 
- * @param {Array} fieldNames 
- * @param {Array} values 
- * @param {Array} whereFields 
- * @param {Array} whereValues 
+ * @param {String} tableName
+ * @param {Array} fieldNames
+ * @param {Array} values
+ * @param {Array} whereFields
+ * @param {Array} whereValues
  */
-Utils.prototype.createUpdateStatement = function(tableName, fieldNames, values, 
-	whereFields, whereValues){
+Utils.prototype.createUpdateStatement = function(tableName, fieldNames, values,
+	whereFields, whereValues) {
 	assert(typeof tableName === 'string');
 	assert(Array.isArray(fieldNames));
 	assert(Array.isArray(values));
@@ -61,30 +61,30 @@ Utils.prototype.createUpdateStatement = function(tableName, fieldNames, values,
 	assert(Array.isArray(whereFields));
 	assert(Array.isArray(whereValues));
 	assert(whereFields.length === whereValues.length);
-    
+
 	var statement = 'UPDATE ' + tableName + ' SET ';
 	var commaDelimeter = ',';
 	var andDelimeter = ' AND ';
-    
+
 	var fnStatement = '';
-	for(var i = 0; i < fieldNames.length; i++) {
+	for (var i = 0; i < fieldNames.length; i++) {
 		if (i < fieldNames.length - 1) {
-			fnStatement = fnStatement + fieldNames[i] + '=' + values[i] + 
-			commaDelimeter;
+			fnStatement = fnStatement + fieldNames[i] + '=' + values[i] +
+        commaDelimeter;
 		} else {
-			fnStatement = fnStatement + fieldNames[i] + '=' + values[i] + 
-			' WHERE ';
+			fnStatement = fnStatement + fieldNames[i] + '=' + values[i] +
+        ' WHERE ';
 		}
 	}
 
 	var whereStatement = '';
-	for(var j = 0; j < whereFields.length; j++) {
+	for (var j = 0; j < whereFields.length; j++) {
 		if (j < whereFields.length - 1) {
-			whereStatement = whereStatement + whereFields[j] + '=' + 
-			whereValues[j] + andDelimeter;
+			whereStatement = whereStatement + whereFields[j] + '=' +
+        whereValues[j] + andDelimeter;
 		} else {
-			whereStatement = whereStatement + whereFields[j] + '=' + 
-			whereValues[j];
+			whereStatement = whereStatement + whereFields[j] + '=' +
+        whereValues[j];
 		}
 	}
 
@@ -94,24 +94,24 @@ Utils.prototype.createUpdateStatement = function(tableName, fieldNames, values,
 
 /**
  * Create a delete statement given the table name, field names and their corresponding values.
- * @param {String} tableName 
- * @param {Array} fieldNames 
+ * @param {String} tableName
+ * @param {Array} fieldNames
  * @param {Array} values
  */
-Utils.prototype.createDeleteStatement = function(tableName, fieldNames, values){
+Utils.prototype.createDeleteStatement = function(tableName, fieldNames, values) {
 	assert(typeof tableName === 'string');
 	assert(Array.isArray(fieldNames));
 	assert(Array.isArray(values));
 	assert(fieldNames.length === values.length);
-    
+
 	var statement = 'DELETE FROM ' + tableName + ' WHERE ';
 	var andDelimeter = ' AND ';
-    
+
 	var fnStatement = '';
-	for(var i = 0; i < fieldNames.length; i++) {
+	for (var i = 0; i < fieldNames.length; i++) {
 		if (i < fieldNames.length - 1) {
-			fnStatement = fnStatement + fieldNames[i] + '=' + values[i] + 
-			andDelimeter;
+			fnStatement = fnStatement + fieldNames[i] + '=' + values[i] +
+        andDelimeter;
 		} else {
 			fnStatement = fnStatement + fieldNames[i] + '=' + values[i];
 		}
@@ -122,18 +122,17 @@ Utils.prototype.createDeleteStatement = function(tableName, fieldNames, values){
 
 /**
  * Returns true if member is a member of the grad apps system.
- * @param {Number} memberId 
+ * @param {Number} memberId
  * @param {Function} cb
  */
 Utils.prototype.isMember = function(memberId, cb) {
 	assert(typeof memberId === 'number');
 	assert(typeof cb === 'function');
 
-	this.conn.query('Select * from faculty_member where fm_Id = ?', 
-		[memberId], function(err, results) {
-			if (err) return cb(err);
-			return cb(err, results.length === 1);
-		});
+	this.conn.query('Select * from faculty_member where fm_Id = ?', [memberId], function(err, results) {
+		if (err) return cb(err);
+		return cb(err, results.length === 1);
+	});
 };
 
 /**
@@ -221,50 +220,48 @@ Utils.prototype.clearUserSession = function(username, cb) {
 
 /**
  * Returns true if memberId is assigned to the given role.
- * @param {Number} memberId 
- * @param {String} role 
- * @param {Function} cb 
+ * @param {Number} memberId
+ * @param {String} role
+ * @param {Function} cb
  */
 Utils.prototype.hasRole = function(memberId, role, cb) {
 	assert(typeof memberId === 'number');
 	assert(typeof role === 'string');
 	assert(typeof cb === 'function');
 
-	this.conn.query('Select fm_Roles from faculty_member where fm_Id = ?', 
-		[memberId], function(err, results) {
-			if (err) return cb(err);
-			if (results.length === 0) {
-				err = new Error('Member with id ' + memberId + 
-                ' does not exist');
-				return cb(err);
-			}
-			assert(1, results.length);
-			var roles = results[0]['fm_Roles'];
-			return cb(err, roles.includes(role));
-		});
+	this.conn.query('Select fm_Roles from faculty_member where fm_Id = ?', [memberId], function(err, results) {
+		if (err) return cb(err);
+		if (results.length === 0) {
+			err = new Error('Member with id ' + memberId +
+        ' does not exist');
+			return cb(err);
+		}
+		assert(1, results.length);
+		var roles = results[0]['fm_Roles'];
+		return cb(err, roles.includes(role));
+	});
 };
 
 /**
  * Returns an array of the roles of the selected member.
- * @param {Number} memberId 
- * @param {Function} cb 
+ * @param {Number} memberId
+ * @param {Function} cb
  */
 Utils.prototype.getRoles = function(memberId, cb) {
 	assert(typeof memberId === 'number');
 	assert(typeof cb === 'function');
 
-	this.conn.query('Select fm_Roles from faculty_member where fm_Id = ?', 
-		[memberId], function(err, results) {
-			if (err) return cb(err);
-			if (results.length === 0) {
-				err = new Error('Member with id ' + memberId + 
-                ' does not exist');
-				return cb(err);
-			}
-			assert(1, results.length);
-			var roles = results[0]['fm_Roles'];
-			return cb(err, roles);
-		});
+	this.conn.query('Select fm_Roles from faculty_member where fm_Id = ?', [memberId], function(err, results) {
+		if (err) return cb(err);
+		if (results.length === 0) {
+			err = new Error('Member with id ' + memberId +
+        ' does not exist');
+			return cb(err);
+		}
+		assert(1, results.length);
+		var roles = results[0]['fm_Roles'];
+		return cb(err, roles);
+	});
 };
 
 /**
@@ -276,12 +273,13 @@ Utils.prototype.getMemberId = function(username, cb) {
 	assert(typeof username === 'string');
 	assert(typeof cb === 'function');
 
-	this.conn.query('Select fm_Id from faculty_member where fm_Username="' + 
-	username + '"', function(err, result) {
+	this.conn.query('Select fm_Id from faculty_member where fm_Username="' +
+    username + '"',
+	function(err, result) {
 		if (err) return cb(err);
 		if (result.length === 0) {
-			err = new Error('Member with username ' + JSON.stringify(username) + 
-				' does not exist');
+			err = new Error('Member with username ' + JSON.stringify(username) +
+          ' does not exist');
 			return cb(err);
 		} else {
 			return cb(err, result[0]['fm_Id']);
@@ -292,73 +290,70 @@ Utils.prototype.getMemberId = function(username, cb) {
 /**
  * Get member username
  * @param {Number} memberId
- * @param {Function} cb 
+ * @param {Function} cb
  */
 Utils.prototype.getMemberUsername = function(memberId, cb) {
 	assert(typeof memberId === 'number');
 	assert(typeof cb === 'function');
 
-	this.conn.query('Select fm_Username from faculty_member where fm_Id=?', 
-		[memberId], function(err, result) {
-			if (err) return cb(err);
-			if (result.length === 0) {
-				err = new Error('Member with id ' + memberId + 
-				' does not exist');
-				return cb(err);
-			} else {
-				return cb(err, result[0]['fm_Username']);
-			}
-		});
+	this.conn.query('Select fm_Username from faculty_member where fm_Id=?', [memberId], function(err, result) {
+		if (err) return cb(err);
+		if (result.length === 0) {
+			err = new Error('Member with id ' + memberId +
+        ' does not exist');
+			return cb(err);
+		} else {
+			return cb(err, result[0]['fm_Username']);
+		}
+	});
 };
 
 /**
  * Get member first name
  * @param {Number} memberId
- * @param {Function} cb 
+ * @param {Function} cb
  */
 Utils.prototype.getMemberFirstName = function(memberId, cb) {
 	assert(typeof memberId === 'number');
 	assert(typeof cb === 'function');
 
-	this.conn.query('Select fm_FName from faculty_member where fm_Id=?', 
-		[memberId], function(err, result) {
-			if (err) return cb(err);
-			if (result.length === 0) {
-				err = new Error('Member with id ' + memberId + 
-				' does not exist');
-				return cb(err);
-			} else {
-				return cb(err, result[0]['fm_FName']);
-			}
-		});
+	this.conn.query('Select fm_FName from faculty_member where fm_Id=?', [memberId], function(err, result) {
+		if (err) return cb(err);
+		if (result.length === 0) {
+			err = new Error('Member with id ' + memberId +
+        ' does not exist');
+			return cb(err);
+		} else {
+			return cb(err, result[0]['fm_FName']);
+		}
+	});
 };
 
 /**
  * Get member last name
  * @param {Number} memberId
- * @param {Function} cb 
+ * @param {Function} cb
  */
 Utils.prototype.getMemberLastName = function(memberId, cb) {
 	assert(typeof memberId === 'number');
 	assert(typeof cb === 'function');
 
-	this.conn.query('Select fm_LName from faculty_member where fm_Id=?', 
-		[memberId], function(err, result) {
-			if (err) return cb(err);
-			if (result.length === 0) {
-				err = new Error('Member with id ' + memberId + 
-				' does not exist');
-				return cb(err);
-			} else {
-				return cb(err, result[0]['fm_LName']);
-			}
-		});
+	this.conn.query('Select fm_LName from faculty_member where fm_Id=?', [memberId], function(err, result) {
+		if (err) return cb(err);
+		if (result.length === 0) {
+			err = new Error('Member with id ' + memberId +
+        ' does not exist');
+			return cb(err);
+		} else {
+			return cb(err, result[0]['fm_LName']);
+		}
+	});
 };
 
 /**
  * Get member full name
  * @param {Number} memberId
- * @param {Function} cb 
+ * @param {Function} cb
  */
 Utils.prototype.getMemberFullName = function(memberId, cb) {
 	assert(typeof memberId === 'number');

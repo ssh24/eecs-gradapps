@@ -166,8 +166,8 @@ User.prototype.removeUser = function(username, cb) {
 
 /**
  * Find a user by the username.
- * @param {String} username 
- * @param {Function} cb 
+ * @param {String} username
+ * @param {Function} cb
  */
 User.prototype.findUser = function(username, cb) {
 	assert(typeof username === 'string');
@@ -218,8 +218,8 @@ User.prototype.getPassword = function(username, cb) {
 
 /**
  * Check if a password is correct for the specific user.
- * @param {String} username 
- * @param {HashedString} password 
+ * @param {String} username
+ * @param {HashedString} password
  */
 User.prototype.validPassword = function(username, password) {
 	var lines, user, pass;
