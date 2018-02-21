@@ -17,12 +17,16 @@
 <script src="/js/bootstrap.min.js"></script>
 <script src="/js/jquery.metadata.js"></script>
 <script src="/js/jquery.tablesorter.min.js"></script>
-<script src="https://web.archive.org/web/20161124120603js_/http://www.papercut.com/products/free-software/are-you-sure/jquery.are-you-sure.js"></script>
-<!-- Latest compiled and minified JavaScript -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
+
+<% if (role==='Professor') {%>
+    <script src="/js/professor.js"></script>
+    <script type="text/javascript"> var presets = <%-JSON.stringify(presets)%>;</script>
+<%}%>
 <% if (role === 'Committee Member') {%>
     <script src="/js/committee.js"></script>
     <script type="text/javascript"> var presets = <%-JSON.stringify(presets)%>;</script>
+    <script src="https://web.archive.org/web/20161124120603js_/http://www.papercut.com/products/free-software/are-you-sure/jquery.are-you-sure.js"></script>
 <%}%>
 </body>
 </html>
