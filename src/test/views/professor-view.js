@@ -17,7 +17,7 @@ function Professor() {
 
 	this.tables.actions.setTo = {};
 	this.tables.actions.setTo.show = by.id('set-to-0');
-	this.tables.actions.setTo.hide = by.css('.dropdown-backdrop');
+	this.tables.actions.setTo.hide = by.css('.navbar.navbar-default.navbar-fixed-top');
 	this.tables.actions.setTo.contacted = by.id('contacted-0');
 	this.tables.actions.setTo.requested = by.id('requested-0');
 	this.tables.actions.setTo.interested = by.id('interested-0');
