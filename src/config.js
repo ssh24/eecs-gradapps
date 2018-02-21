@@ -3,10 +3,10 @@
 /* config file for running test suite */
 
 exports.config = {
-	baseUrl: 'http://localhost:3000',
-	framework: 'mocha',
-	specs: ['test/specs/unit/*'],
-	capabilities: {
-		browserName: 'chrome'
-	}
+  baseUrl: 'http://localhost:3000',
+  framework: 'mocha',
+  specs: ['test/specs/unit/*'],
+  capabilities: {
+    browserName: 'chrome'
+  }
 };
