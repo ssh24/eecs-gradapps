@@ -7,7 +7,7 @@
     "start": "npm run seed:database && nodemon ./bin/www",
     "seed:database": "node ./test/pretest.js",
     "test": "nyc --reporter=html --reporter=text npm run run:test",
-    "run:test": "npm run seed:database && mocha test/specs/database/*.test.js && webdriver-manager update && protractor config.js",
+    "run:test": "npm run seed:database && mocha --timeout 5000 test/specs/database/*.test.js && webdriver-manager update && protractor config.js",
     "posttest": "npm run lint",
     "db:test": "npm run seed:database && nyc --reporter=text --reporter=html mocha test/specs/database/*.test.js && npm run posttest",
     "unit:test": "npm run seed:database && webdriver-manager update && nyc --reporter=text --reporter=html protractor config.js && npm run posttest"
