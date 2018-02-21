@@ -7,7 +7,7 @@ var Review = require('./review');
 var Utils = require('./utils');
 
 
-var Application = function (connection) {
+var Application = function(connection) {
 	this.conn = connection;
 	this.utils = new Utils(this.conn);
 	this.review = new Review(this.conn);
@@ -58,7 +58,7 @@ Application.prototype.markApplicationSeen = function(appId, memberId, cb) {
  * @param {Number} memberId
  * @param {Function} cb
  */
-Application.prototype.getApplications = function (sql, memberId, cb) {
+Application.prototype.getApplications = function(sql, memberId, cb) {
 	assert(typeof sql === 'string');
 	assert(typeof memberId === 'number');
 	assert(typeof cb === 'function');
@@ -67,15 +67,15 @@ Application.prototype.getApplications = function (sql, memberId, cb) {
 
 	this.conn.query(sql, function(err, result1) {
 		if (err) return cb(err);
-		if(result1.length > 0) {
+		if (result1.length > 0) {
 			self.conn.query('Select appId, seen from application_seen where ' +
-			'fmId=? and seen=?',
-			[memberId, 1], function(err, result2) {
+        'fmId=? and seen=?', [memberId, 1],
+			function(err, result2) {
 				if (err) return cb(err);
 				if (result2.length > 0) {
 					var appIds = _.map(result2, 'appId');
 					_.forEach(result1, function(res1) {
-						if(appIds.includes(res1['app_Id'])) {
+						if (appIds.includes(res1['app_Id'])) {
 							res1['My Interest Status'] = 'Interested';
 						} else {
 							res1['My Interest Status'] = '-';
