@@ -7,7 +7,7 @@ var Filter = function() {
 
 	this.filter = {};
 	this.filter.open = by.id('filter-btn');
-	this.filter.close = by.className('close');
+	this.filter.close = by.id('close-btn');
 
 	this.filter.fields = {};
 	this.filter.fields.hideDD = by.css('.dropdown-backdrop');
@@ -18,14 +18,14 @@ var Filter = function() {
 	this.filter.fields.selected.active = by.css('.btn-group.bootstrap-select.dropup > button');
 	this.filter.fields.selected.inner = by.css('.btn-group.bootstrap-select.dropup > .dropdown-menu.open > .dropdown-menu.inner');
 
-	this.filter.fields.applicant = by.id('applicant-picker');
-	this.filter.fields.applicant.openDD = by.css('button[data-id="applicant-picker"]');
+	this.filter.fields.applicant = by.id('btn_filter_name');
+	this.filter.fields.applicant.openDD = by.css('button[data-id="btn_filter_name"]');
 	
-	this.filter.fields.foi = by.id('foi-picker');
-	this.filter.fields.foi.openDD = by.css('button[data-id="foi-picker"]');
+	this.filter.fields.foi = by.id('btn_filter_foi');
+	this.filter.fields.foi.openDD = by.css('button[data-id="btn_filter_foi"]');
 
-	this.filter.fields.professor = by.id('professor-picker');
-	this.filter.fields.professor.openDD = by.css('button[data-id="professor-picker"]');
+	this.filter.fields.professor = by.id('btn_filter_prof');
+	this.filter.fields.professor.openDD = by.css('button[data-id="btn_filter_prof"]');
 };
 
 Filter.prototype.openFilterModal = function() {
