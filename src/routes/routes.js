@@ -71,7 +71,6 @@ module.exports = function(app, passport) {
     function(req, res) {
       var userInfo = req.user;
       var role = 'Professor';
-      console.log(req.apps.applicants);
       res.render(role, {
         title: 'Welcome ' + role,
         user: userInfo.id,
@@ -156,7 +155,6 @@ function getApps(req, res, next) {
     ' VStatus as `Visa Status`, profContacted as `Contacted by`,' +
     ' profRequested as `Requested by`  FROM' +
     ' APPLICATION where committeeReviewed=1';
-  console.log("getApps: " + defaultSQL);
   application.getApplications(defaultSQL, req.user.id, function(err, results) {
     if (err) next(err);
     var fields = [];
@@ -167,24 +165,10 @@ function getApps(req, res, next) {
       appls: results
     };
     req.apps.fields = fields;
-    utils.getApplicantNames(function(err, result) {
-      if (err) next(err);
-      req.apps['applicants'] = result;
-      utils.getFieldOfInterests(function(err, result) {
-        if (err) next(err);
-        req.apps['foi'] = result;
-        utils.getAllProfessors(function(err, result) {
-          if (err) next(err);
-          req.apps['profs'] = result;
-          next();
-        });
-      });
-    });
   });
 }
 
 function filterApps(req, res, next) {
-  console.log("filterApps-req.body: " + JSON.stringify(req.body));
   var cols = req.body.selectedCol;
   var sql = 'SELECT ';
   var sqlCol = '';
@@ -197,14 +181,12 @@ function filterApps(req, res, next) {
     ' VStatus as `Visa Status`, profContacted as `Contacted by`,' +
     ' profRequested as `Requested by`';
   if (cols) {
-    console.log('if statement passed');
     for (var i = 0; i < cols.length; i++) {
       if (i !== 0) {
         sqlCol += ', ';
       } else {
         //overwrite default sql col
         sqlCol = '';
-        console.log('overwrote sqlCol');
       }
       if (cols[i] === 'btn_col_name') {
         sqlCol += 'CONCAT_WS(\' \', `FName`, `LName`) AS `Applicant Name`';
@@ -226,12 +208,11 @@ function filterApps(req, res, next) {
         interestField = true;
         sqlCol += 'seen as `My Interest Status`';
       }
-      console.log('cols[' + i + '] = ' + cols[i]);
     }
   }
 
   if (req.body.btn_filter_name !== 'Any' && req.body.btn_filter_name !== '') {
-    sqlFilt += " and CONCAT_WS('', `FName`, `LName`)=" + req.body.btn_filter_name;
+    sqlFilt += ' and CONCAT_WS(\'\', `FName`, `LName`)=' + req.body.btn_filter_name;
   }
   if (req.body.btn_filter_foi !== 'Any' && req.body.btn_filter_foi !== '') {
     sqlFilt += ' and JSON_CONTAINS(foi, \'"' + req.body.btn_filter_foi + '"\')';
@@ -252,7 +233,7 @@ function filterApps(req, res, next) {
     sqlFilt += ' and VStatus="' + req.body.btn_filter_visa + '"';
   }
   if (req.body.btn_filter_status !== 'Any' && req.body.btn_filter_status !== '') {
-
+    /*App Status stuff here*/
   }
   if (req.body.btn_filter_interest !== 'Any' && req.body.btn_filter_interest !== '') {
     interestField = true;
@@ -268,7 +249,6 @@ function filterApps(req, res, next) {
     sql = sql + sqlCol + ' FROM APPLICATION';
   }
   sql += ' WHERE committeeReviewed=1' + sqlFilt;
-  console.log("filterApps-sql: " + sql);
   connection.query(sql, function(err, results) {
     if (err) next(err);
     var fields = [];
