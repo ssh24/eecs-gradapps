@@ -11,9 +11,8 @@
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav navbar-right">
-                            <% if (role && fullname) { %>
+                            <% if (user && role && fullname) { %>
                                 <li><a id="logged-in-as" style="color:white">Logged in as: <%= fullname %></a></li>
-                                <li><a href="#" data-toggle="modal" data-target="#filterModal">Filter<span class="glyphicon glyphicon-pencil"></span></a></li>
                                 <li class="dropdown"><a id="role-selected" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Role: <%= role %><span class="caret"></span></a>
                                     <% if (roles.length > 1) { %>
                                         <ul class="dropdown-menu">
@@ -44,6 +43,9 @@
                                             </ul>
                                     <% } %>
                                 </li>
+                                <li><a id="filter-btn" href="#" data-toggle="modal" data-target="#filterModal">Filter <span class="glyphicon glyphicon-pencil"></span></a></li>
+                            <% } %>
+                            <% if (user) { %>
                                 <li><a id="logout-btn" href="/logout">Sign out &raquo;</a></li>
                             <% } %>
                     </ul>

@@ -20,7 +20,8 @@ describe('Role Test', function() {
 	var utils = new Utils();
 	var welcome = new Welcome();
 
-	before(function () {
+	before(function setUp() {
+		require('../../pretest');
 		utils.startApp();
 		utils.openView('#');
 		utils.maximizeBrowserWindow();
@@ -28,7 +29,7 @@ describe('Role Test', function() {
 			.then(login.fullSignIn.bind(login, config.credentials.app));
 	});
 
-	after(function (done) {
+	after(function cleanUp(done) {
 		browser.restart();
 		utils.stopApp(done);
 	});
