@@ -28,7 +28,7 @@ body {
 /*Table stylings */
 
 .table-responsive {
-    max-height: 450px;
+    max-height: auto;
 }
 
 .table-striped > tbody > tr:nth-child(odd) > td,
