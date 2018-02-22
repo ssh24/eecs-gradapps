@@ -20,6 +20,12 @@ var Application = function(connection) {
  * @param {Function} cb
  */
 Application.prototype.getApplications = function(sql, memberId, cb) {
+	sql = sql || 'SELECT app_Id, CONCAT_WS(\' \', `FName`, `LName`) AS `Applicant Name`, ' +
+    'FOI as `Field of Interests`, prefProfs as `Preferred Professors`, ' +
+    'Rank as `Committee Rank`, GPA, Degree as `Degree Applied For`,' +
+    ' VStatus as `Visa Status`, profContacted as `Contacted by`,' +
+    ' profRequested as `Requested by`  FROM' +
+    ' APPLICATION where committeeReviewed=1';
 	assert(typeof sql === 'string');
 	assert(typeof memberId === 'number');
 	assert(typeof cb === 'function');

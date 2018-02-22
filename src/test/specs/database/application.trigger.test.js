@@ -71,7 +71,7 @@ describe('Application Triggers', function() {
 
 		it('get all applications available in the portal as a professor', 
 			function(done) {
-				application.getApplications(20, function(err, result) {
+				application.getApplications(null, 20, function(err, result) {
 					if (err) done(err);
 					assert(result, 'Result should exist');
 					done();
@@ -80,7 +80,7 @@ describe('Application Triggers', function() {
 
 		it('get all applications available in the portal as an admin', 
 			function(done) {
-				application.getApplications(1, function(err, result) {
+				application.getApplications(null, 1, function(err, result) {
 					if (err) done(err);
 					assert(result, 'Result should exist');
 					done();
@@ -89,7 +89,7 @@ describe('Application Triggers', function() {
 
 		it('get all applications available in the portal as a committee member', 
 			function(done) {
-				application.getApplications(10, function(err, result) {
+				application.getApplications(null, 10, function(err, result) {
 					assert(err, 'Error should exist');
 					assert(!result, 'Result should exist');
 					done();
@@ -98,7 +98,7 @@ describe('Application Triggers', function() {
 
 		it('get all applications available in the portal as a not logged in member', 
 			function(done) {
-				application.getApplications(11, function(err, result) {
+				application.getApplications(null, 11, function(err, result) {
 					assert(err, 'Error should exist');
 					assert(!result, 'Result should exist');
 					done();

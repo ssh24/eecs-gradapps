@@ -68,8 +68,7 @@ module.exports = function(app, passport) {
 
 	// professor page route
 	app.get('/roles/professor', [isLoggedIn, selectRole, applyApplicationActions,
-		getApps],
-	function(req, res) {
+		getApps], function(req, res) {
 		var userInfo = req.user;
 		var role = 'Professor';
 		res.render(role, {
@@ -82,27 +81,28 @@ module.exports = function(app, passport) {
 			fields: req.apps.fields,
 			applicants: req.apps.applicants,
 			foi: req.apps.foi,
-			profs: req.apps.profs
+			profs: req.apps.profs,
+			filter: req.apps.filter 
 		});
 	});
 
-	app.post('/roles/professor', [isLoggedIn, selectRole, filterApps],
-		function(req, res) {
-			var userInfo = req.user;
-			var role = 'Professor';
-			res.render(role, {
-				title: 'Posted ' + role,
-				user: userInfo.id,
-				fullname: userInfo.fullname,
-				roles: userInfo.roles,
-				role: role,
-				apps: req.apps.appls,
-				fields: req.apps.fields,
-				applicants: req.apps.applicants,
-				foi: req.apps.foi,
-				profs: req.apps.profs
-			});
+	app.post('/roles/professor', [isLoggedIn, selectRole, filterApps], function(req, res) {
+		var userInfo = req.user;
+		var role = 'Professor';
+		res.render(role, {
+			title: 'Posted ' + role,
+			user: userInfo.id,
+			fullname: userInfo.fullname,
+			roles: userInfo.roles,
+			role: role,
+			apps: req.apps.appls,
+			fields: req.apps.fields,
+			applicants: req.apps.applicants,
+			foi: req.apps.foi,
+			profs: req.apps.profs,
+			filter: req.apps.filter
 		});
+	});
 	// committee page route
 	app.get('/roles/committee', [isLoggedIn, selectRole], function(req, res) {
 		var userInfo = req.user;
@@ -152,13 +152,7 @@ function performLogout(req, res, next) {
 }
 
 function getApps(req, res, next) {
-	var defaultSQL = 'SELECT app_Id, CONCAT_WS(\' \', `FName`, `LName`) AS `Applicant Name`, ' +
-    'FOI as `Field of Interests`, prefProfs as `Preferred Professors`, ' +
-    'Rank as `Committee Rank`, GPA, Degree as `Degree Applied For`,' +
-    ' VStatus as `Visa Status`, profContacted as `Contacted by`,' +
-    ' profRequested as `Requested by`  FROM' +
-    ' APPLICATION where committeeReviewed=1';
-	application.getApplications(defaultSQL, req.user.id, function(err, results) {
+	application.getApplications(null, req.user.id, function(err, results) {
 		if (err) next(err);
 		var fields = [];
 		var obj = results[0];
@@ -168,6 +162,7 @@ function getApps(req, res, next) {
 			appls: results
 		};
 		req.apps.fields = fields;
+		setLiveSearchData(req, res, next);
 	});
 }
 
@@ -262,19 +257,8 @@ function filterApps(req, res, next) {
 			appls: results
 		};
 		req.apps.fields = fields;
-		utils.getApplicantNames(function(err, result) {
-			if (err) next(err);
-			req.apps['applicants'] = result;
-			utils.getFieldOfInterests(function(err, result) {
-				if (err) next(err);
-				req.apps['foi'] = result;
-				utils.getAllProfessors(function(err, result) {
-					if (err) next(err);
-					req.apps['profs'] = result;
-					next();
-				});
-			});
-		});
+		req.apps.filter = true;
+		setLiveSearchData(req, res, next);
 	});
 }
 
@@ -299,4 +283,20 @@ function applyApplicationActions(req, res, next) {
 	} else {
 		next();
 	}
+}
+
+function setLiveSearchData(req, res, next) {
+	utils.getApplicantNames(function(err, result) {
+		if (err) next(err);
+		req.apps['applicants'] = result;
+		utils.getFieldOfInterests(function(err, result) {
+			if (err) next(err);
+			req.apps['foi'] = result;
+			utils.getAllProfessors(function(err, result) {
+				if (err) next(err);
+				req.apps['profs'] = result;
+				next();
+			});
+		});
+	});
 }
