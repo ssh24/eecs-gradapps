@@ -5,6 +5,7 @@
   "scripts": {
     "lint": "eslint . --fix && ejslint views/*",
     "start": "nodemon ./bin/www",
+    "dev:start": "npm run seed:database && npm start",
     "seed:database": "node ./test/pretest.js",
     "test": "nyc --reporter=html --reporter=text npm run run:test",
     "run:test": "npm run seed:database && mocha --timeout 5000 test/specs/database/*.test.js && webdriver-manager update && protractor config.js",
