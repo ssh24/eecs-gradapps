@@ -84,7 +84,7 @@ CREATE TABLE `APPLICATION` (
     `profContacted` JSON DEFAULT NULL,
     `profRequested` JSON DEFAULT NULL,
     `letterDate` DATETIME DEFAULT NULL,
-    `programDecision` ENUM('Accepted', 'Declined') DEFAULT NULL,
+    `programDecision` ENUM('Under Review', 'Accepted', 'Declined') NOT NULL,
     `studentDecision` ENUM('Accepted', 'Declined') DEFAULT NULL,
     `declineReason` LONGTEXT DEFAULT NULL,
     `ygsAwarded` TINYINT(1) NOT NULL DEFAULT 0,
