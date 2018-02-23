@@ -173,7 +173,7 @@ function filterApps(req, res, next) {
 	var sqlFilt = '';
 	var interestField = false;
 	//default sql
-	sqlCol += 'CONCAT_WS(\' \', `FName`, `LName`) AS `Applicant Name`, ' +
+	sqlCol += 'app_Id, CONCAT_WS(\' \', `FName`, `LName`) AS `Applicant Name`, ' +
     'FOI as `Field of Interests`, prefProfs as `Preferred Professors`, ' +
     'Rank as `Committee Rank`, GPA, Degree as `Degree Applied For`,' +
     ' VStatus as `Visa Status`, profContacted as `Contacted by`,' +
@@ -184,7 +184,7 @@ function filterApps(req, res, next) {
 				sqlCol += ', ';
 			} else {
 				//overwrite default sql col
-				sqlCol = '';
+				sqlCol = 'app_Id, ';
 			}
 			if (cols[i] === 'btn_col_name') {
 				sqlCol += 'CONCAT_WS(\' \', `FName`, `LName`) AS `Applicant Name`';

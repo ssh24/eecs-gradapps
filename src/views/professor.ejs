@@ -24,13 +24,23 @@
                         </tr>
                     </thead>
                     <tbody id="table-body">
-                        <% for(var i = 0; i < apps.length; i++){ %>
-                            <tr>
-                            <% for(var j = index; j < fields.length; j++){ %>
-                                <td id="data-<%=i%>-<%=j%>" class="text-center">
-                                    <%= apps[i][fields[j]]%>
-                                </td>                                
+                      <% for(var i = 0; i < apps.length; i++){ %>
+                        <tr>
+                          <% for(var j = index; j < fields.length; j++){ %>
+                            <td class="text-center">
+                            <% if(fields[j]==='My Interest Status') {%>
+                              <% if (apps[i][fields[j]] === 1){ %>
+                                Interested
+                              <% } else if (apps[i][fields[j]] === 0 || apps[i][fields[j]] === null){ %>
+                                -
+                              <%} else{ %>
+                              <%= apps[i][fields[j]]%>
+                              <%}%>
+                            <%} else{ %>
+                              <%= apps[i][fields[j]]%>
                             <%}%>
+                            </td>
+                          <%}%>
                                 <td class="text-center">
                                     <div class="btn-group-vertical">
                                         <button class="btn btn-primary">View Application</button>
@@ -48,15 +58,14 @@
                                             <% if (!(apps[i]['Requested by'] && apps[i]['Requested by'].indexOf(fullname) > -1)) { %>
                                                 <li><a id="requested-<%=i%>" href="/roles/professor?requested=true&appId=<%= apps[i][fields[0]]%>">Requested</a></li>
                                             <% } %>
-                                            <% if (apps[i]['My Interest Status'] === 'Interested') { %>
+                                            <% if (apps[i]['My Interest Status'] === 'Interested' || apps[i]['My Interest Status'] === 1) { %>
                                                 <li><a id="not-interested-<%=i%>" href="/roles/professor?interest=false&appId=<%= apps[i][fields[0]]%>">Not Interested</a></li>
-                                            <% } %>
-                                            <% if (apps[i]['My Interest Status'] === '-') { %>
+                                            <% } else if (apps[i]['My Interest Status'] === '-' || apps[i]['My Interest Status'] === 0 || apps[i]['My Interest Status'] === null) { %>
                                                 <li><a id="interested-<%=i%>" href="/roles/professor?interest=true&appId=<%= apps[i][fields[0]]%>">Interested</a></li>
                                             <% } %>
                                         </ul>
                                     </div>
-                                </td> 
+                                </td>
                             </tr>
                         <%}%>
                     </tbody>
