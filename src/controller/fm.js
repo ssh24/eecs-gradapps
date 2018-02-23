@@ -222,7 +222,7 @@ FM.prototype.deleteUser = function(userId, memberId, cb) {
 	this.utils.getRoles(memberId, function(err, roles) {
 		if (err) return cb(err);
 		if (roles.includes('Admin')) {
-			self.conn.query('DELETE FROM FACULTY_MEMBER WHERE fm_Id=?', userId, 
+			self.conn.query('DELETE FROM faculty_member WHERE fm_Id=?', userId, 
 				function(err, result) {
 					if (err) return cb(err);
 					return cb(err, result);
