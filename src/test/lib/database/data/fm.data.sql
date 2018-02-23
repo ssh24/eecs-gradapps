@@ -84,8 +84,8 @@ INSERT INTO `FACULTY_MEMBER` (`fm_Lname`, `fm_Fname`, `fm_Email`, `fm_Roles`)
     VALUES ('Jaipaul-Gill', 'Ouma', 'gradasst@eecs.yorku.ca', '["Admin"]');
 
 ---- ADMIN, PROFESSOR, COMMITTEE MEMBER ROLE ----
-INSERT INTO `FACULTY_MEMBER` (`fm_Lname`, `fm_Fname`, `fm_Email`, `fm_Roles`) 
-    VALUES ('van Breugel', 'Franck', 'franck@eecs.yorku.ca', 
+INSERT INTO `FACULTY_MEMBER` (`fm_Username`, `fm_Lname`, `fm_Fname`, `fm_Email`, `fm_Roles`) 
+    VALUES ('franck', 'van Breugel', 'Franck', 'franck@eecs.yorku.ca', 
     '["Admin", "Professor", "Committee Member"]');
 
 ---- PROFESSOR & COMMITTEE MEMBER ROLE ----
