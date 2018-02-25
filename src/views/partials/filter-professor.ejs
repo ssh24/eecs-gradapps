@@ -133,16 +133,13 @@
                 <label for="">GPA</label>
                 <select id="btn_filter_gpa" name="btn_filter_gpa" class="form-control selectpicker" data-live-search="true">
                     <option selected="selected">Any</option>
-                    <option>A+</option>
-                    <option>A</option>
-                    <option>B+</option>
-                    <option>B</option>
-                    <option>C+</option>
-                    <option>C</option>
-                    <option>D+</option>
-                    <option>D</option>
-                    <option>E</option>
-                    <option>F</option>            
+                    <% for(var i = 0; i < gpa.length; i++){ %>
+                      <option>>= <%= gpa[i]%></option>
+                      <option>&gt; <%= gpa[i]%></option>
+                      <option>= <%= gpa[i]%></option>
+                      <option><= <%= gpa[i]%></option>
+                      <option>&lt; <%= gpa[i]%></option>
+                    <%}%>         
                 </select>
               </div>
             </div>
