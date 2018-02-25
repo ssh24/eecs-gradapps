@@ -27,7 +27,7 @@ Application.prototype.getApplications = function(sql, memberId, cb) {
 	' profRequested as `Requested By`, programDecision as `Program Decision`, ' +
 	'seen as `My Interest Status` FROM APPLICATION LEFT JOIN APPLICATION_SEEN ' + 
 	'ON APPLICATION.app_Id = APPLICATION_SEEN.appId and APPLICATION_SEEN.fmId=' + memberId +
-	' where committeeReviewed=1';
+	' where committeeReviewed=1 and Rank is not null';
 
 	assert(typeof sql === 'string');
 	assert(typeof memberId === 'number');

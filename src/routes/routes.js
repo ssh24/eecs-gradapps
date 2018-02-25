@@ -83,6 +83,7 @@ module.exports = function(app, passport) {
 			applicants: req.apps.applicants,
 			foi: req.apps.foi,
 			profs: req.apps.profs,
+			gpa: req.apps.gpa,
 			filter: req.apps.filter 
 		});
 	});
@@ -102,9 +103,11 @@ module.exports = function(app, passport) {
 			applicants: req.apps.applicants,
 			foi: req.apps.foi,
 			profs: req.apps.profs,
+			gpa: req.apps.gpa,
 			filter: req.apps.filter
 		});
 	});
+
 	// committee page route
 	app.get('/roles/committee', [isLoggedIn, selectRole], function(req, res) {
 		var userInfo = req.user;
@@ -185,6 +188,10 @@ function filterApps(req, res, next) {
 	var interestField = false;
 	var actionsField = false;
 	var actionFieldNum;
+	var gpaFilt = false;
+
+	var interestStatusSql = ' LEFT JOIN APPLICATION_SEEN ON APPLICATION.app_Id = APPLICATION_SEEN.appId and APPLICATION_SEEN.fmId=' + req.user.id;
+	var gpaSql = ' INNER JOIN GPA on APPLICATION.GPA = GPA.letter_grade';
 
 	// default sql
 	sqlCol += 'app_Id, CONCAT_WS(\' \', `FName`, `LName`) AS `Applicant Name`, ' +
@@ -248,7 +255,11 @@ function filterApps(req, res, next) {
 		req.body.btn_filter_ranking + '"\')';
 	}
 	if (req.body.btn_filter_gpa !== 'Any' && req.body.btn_filter_gpa !== '') {
-		sqlFilt += ' and GPA="' + req.body.btn_filter_gpa + '"';
+		gpaFilt = true;
+		var operation = req.body.btn_filter_gpa.split(' ')[0];
+		var letter_grade = req.body.btn_filter_gpa.split(' ')[1];
+		sqlFilt += ' and gpa.grade_point' + operation + '(select grade_point ' + 
+		'from gpa where letter_grade = "' + letter_grade + '")';
 	}
 	if (req.body.btn_filter_degree !== 'Any' && 
 	req.body.btn_filter_degree !== '') {
@@ -280,12 +291,13 @@ function filterApps(req, res, next) {
 			sqlFilt += ' and seen is null';
 		}
 	}
-
+	
+	var joinSql = gpaFilt ? gpaSql + interestStatusSql : interestStatusSql;
 	sql += sqlCol + 'profContacted as `Contacted By`, profRequested as ' + 
-	'`Requested By`, seen as `My Interest Status` FROM APPLICATION LEFT JOIN ' + 
-	'APPLICATION_SEEN ON APPLICATION.app_Id = APPLICATION_SEEN.appId and ' + 
-	'APPLICATION_SEEN.fmId=' + req.user.id + ' WHERE committeeReviewed=1' + 
-	sqlFilt;
+	'`Requested By`, seen as `My Interest Status` FROM APPLICATION' + joinSql +
+	' WHERE committeeReviewed=1 and Rank is not null' + sqlFilt;
+
+	console.log('SQL query >>> %s', sql);
 
 	application.getApplications(sql, req.user.id, function(err, results) {
 		if (err) next(err);
@@ -350,7 +362,11 @@ function setLiveSearchData(req, res, next) {
 			utils.getAllProfessors(function(err, result) {
 				if (err) next(err);
 				req.apps['profs'] = result;
-				next();
+				utils.getGPA(function(err, result) {
+					if (err) next(err);
+					req.apps['gpa'] = result;
+					next();
+				});
 			});
 		});
 	});

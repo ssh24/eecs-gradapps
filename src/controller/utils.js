@@ -446,13 +446,32 @@ Utils.prototype.getFieldOfInterests = function(cb) {
  */
 Utils.prototype.getApplicantNames = function(cb) {
 	var sql = 'SELECT CONCAT_WS(\' \', `FName`, `LName`) AS `Applicant Name`' + 
-	' FROM APPLICATION where committeeReviewed=1';
+	' FROM APPLICATION where committeeReviewed=1 and Rank is not null';
 	var applicants;
 	this.conn.query(sql, function(err, result) {
 		if (err) return cb(err);
 		if(result.length > 0) {
 			applicants = _.map(result, 'Applicant Name');
 			return cb(err, applicants.sort());
+		} else {
+			err = new Error('No applicants found');
+			return cb(err);
+		}
+	});
+};
+
+/**
+ * Get all gpa
+ * @param {Function} cb 
+ */
+Utils.prototype.getGPA = function(cb) {
+	var sql = 'SELECT letter_grade as `GPA` from gpa';
+	var gpas;
+	this.conn.query(sql, function(err, result) {
+		if (err) return cb(err);
+		if(result.length > 0) {
+			gpas = _.map(result, 'GPA');
+			return cb(err, gpas);
 		} else {
 			err = new Error('No applicants found');
 			return cb(err);
