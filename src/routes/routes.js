@@ -67,18 +67,19 @@ module.exports = function(app, passport) {
 	});
 
 	// professor page route
-	app.get('/roles/professor', [isLoggedIn, selectRole, applyApplicationActions,
+	app.get('/roles/professor', [isLoggedIn, selectRole, applyApplicationActions, 
 		getApps], function(req, res) {
 		var userInfo = req.user;
 		var role = 'Professor';
 		res.render(role, {
-			title: 'Welcome ' + role,
+			title: 'Applications',
 			user: userInfo.id,
 			fullname: userInfo.fullname,
 			roles: userInfo.roles,
 			role: role,
 			apps: req.apps.appls,
-			fields: req.apps.fields,
+			fields: req.apps.flds.fields,
+			hidden: req.apps.flds.hidden,
 			applicants: req.apps.applicants,
 			foi: req.apps.foi,
 			profs: req.apps.profs,
@@ -90,13 +91,14 @@ module.exports = function(app, passport) {
 		var userInfo = req.user;
 		var role = 'Professor';
 		res.render(role, {
-			title: 'Posted ' + role,
+			title: 'Filtered Applications',
 			user: userInfo.id,
 			fullname: userInfo.fullname,
 			roles: userInfo.roles,
 			role: role,
 			apps: req.apps.appls,
-			fields: req.apps.fields,
+			fields: req.apps.flds.fields,
+			hidden: req.apps.flds.hidden,
 			applicants: req.apps.applicants,
 			foi: req.apps.foi,
 			profs: req.apps.profs,
@@ -159,9 +161,13 @@ function getApps(req, res, next) {
 		for (var key in obj)
 			fields.push(key);
 		req.apps = {
-			appls: results
+			appls: results,
+			flds: {
+				fields: fields,
+				hidden: ['app_Id']
+			},
+			filter: false
 		};
-		req.apps.fields = fields;
 		setLiveSearchData(req, res, next);
 	});
 }
@@ -171,93 +177,133 @@ function filterApps(req, res, next) {
 	var sql = 'SELECT ';
 	var sqlCol = '';
 	var sqlFilt = '';
+	var contactedField = false;
+	var requestedField = false;
 	var interestField = false;
-	//default sql
+
+	// default sql
 	sqlCol += 'app_Id, CONCAT_WS(\' \', `FName`, `LName`) AS `Applicant Name`, ' +
     'FOI as `Field of Interests`, prefProfs as `Preferred Professors`, ' +
     'Rank as `Committee Rank`, GPA, Degree as `Degree Applied For`,' +
-    ' VStatus as `Visa Status`, profContacted as `Contacted by`,' +
-    ' profRequested as `Requested by`';
+    ' VStatus as `Visa Status`,';
+
+	/* build columns */
 	if (cols) {
 		for (var i = 0; i < cols.length; i++) {
-			if (i !== 0) {
-				sqlCol += ', ';
-			} else {
-				//overwrite default sql col
-				sqlCol = 'app_Id, ';
-			}
+			if (i === 0) sqlCol = 'app_Id, ';
+
 			if (cols[i] === 'btn_col_name') {
-				sqlCol += 'CONCAT_WS(\' \', `FName`, `LName`) AS `Applicant Name`';
+				sqlCol += 'CONCAT_WS(\' \', `FName`, `LName`) AS `Applicant Name`,';
+			} else if (cols[i] === 'btn_col_gender') {
+				sqlCol += 'Gender,';
 			} else if (cols[i] === 'btn_col_foi') {
-				sqlCol += 'FOI as `Field of Interests`';
+				sqlCol += 'FOI as `Field of Interests`,';
 			} else if (cols[i] === 'btn_col_prof') {
-				sqlCol += 'prefProfs as `Preferred Professors`';
+				sqlCol += 'prefProfs as `Preferred Professors`,';
 			} else if (cols[i] === 'btn_col_ranking') {
-				sqlCol += 'Rank as `Committee Rank`';
+				sqlCol += 'Rank as `Committee Rank`,';
 			} else if (cols[i] === 'btn_col_gpa') {
-				sqlCol += 'GPA';
+				sqlCol += 'GPA,';
 			} else if (cols[i] === 'btn_col_degree') {
-				sqlCol += 'Degree as `Degree Applied For`';
+				sqlCol += 'Degree as `Degree Applied For`,';
 			} else if (cols[i] === 'btn_col_visa') {
-				sqlCol += 'VStatus as `Visa Status`';
-			} else if (cols[i] === 'btn_col_status') {
-				sqlCol += 'profContacted as `Contacted by`, profRequested as `Requested by`';
+				sqlCol += 'VStatus as `Visa Status`,';
+			} else if (cols[i] === 'btn_col_contacted_status') {
+				contactedField = true;
+			} else if (cols[i] === 'btn_col_requested_status') {
+				requestedField = true;
 			} else if (cols[i] === 'btn_col_interest') {
 				interestField = true;
-				sqlCol += 'seen as `My Interest Status`';
 			}
 		}
 	}
 
+	/* build where statements */
 	if (req.body.btn_filter_name !== 'Any' && req.body.btn_filter_name !== '') {
-		sqlFilt += ' and CONCAT_WS(\'\', `FName`, `LName`)=' + req.body.btn_filter_name;
+		sqlFilt += ' and CONCAT_WS(\'\', `FName`, `LName`)=' + 
+		req.body.btn_filter_name;
+	}
+	if (req.body.btn_filter_gender !== 'Any' && req.body.btn_filter_gender !== '') {
+		sqlFilt += ' and Gender="' + req.body.btn_filter_gender + '"';
 	}
 	if (req.body.btn_filter_foi !== 'Any' && req.body.btn_filter_foi !== '') {
-		sqlFilt += ' and JSON_CONTAINS(foi, \'"' + req.body.btn_filter_foi + '"\')';
+		sqlFilt += ' and JSON_CONTAINS(foi, \'"' + 
+		req.body.btn_filter_foi + '"\')';
 	}
 	if (req.body.btn_filter_prof !== 'Any' && req.body.btn_filter_prof !== '') {
-		sqlFilt += ' and JSON_CONTAINS(prefProfs, \'"' + req.body.btn_filter_prof + '"\')';
+		sqlFilt += ' and JSON_CONTAINS(prefProfs, \'"' + 
+		req.body.btn_filter_prof + '"\')';
 	}
-	if (req.body.btn_filter_ranking !== 'Any' && req.body.btn_filter_ranking !== '') {
-		sqlFilt += ' and JSON_CONTAINS(Rank, \'"' + req.body.btn_filter_ranking + '"\')';
+	if (req.body.btn_filter_ranking !== 'Any' && 
+	req.body.btn_filter_ranking !== '') {
+		sqlFilt += ' and JSON_CONTAINS(Rank, \'"' + 
+		req.body.btn_filter_ranking + '"\')';
 	}
 	if (req.body.btn_filter_gpa !== 'Any' && req.body.btn_filter_gpa !== '') {
 		sqlFilt += ' and GPA="' + req.body.btn_filter_gpa + '"';
 	}
-	if (req.body.btn_filter_degree !== 'Any' && req.body.btn_filter_degree !== '') {
+	if (req.body.btn_filter_degree !== 'Any' && 
+	req.body.btn_filter_degree !== '') {
 		sqlFilt += ' and Degree="' + req.body.btn_filter_degree + '"';
 	}
 	if (req.body.btn_filter_visa !== 'Any' && req.body.btn_filter_visa !== '') {
 		sqlFilt += ' and VStatus="' + req.body.btn_filter_visa + '"';
 	}
-	if (req.body.btn_filter_status !== 'Any' && req.body.btn_filter_status !== '') {
-		/*App Status stuff here*/
+	if (req.body.btn_filter_contacted_by !== 'Any' && 
+	req.body.btn_filter_contacted_by !== '') {
+		contactedField = true;
+		sqlFilt += ' and JSON_CONTAINS(profContacted, \'"' + 
+		req.body.btn_filter_contacted_by + '"\')';
 	}
-	if (req.body.btn_filter_interest !== 'Any' && req.body.btn_filter_interest !== '') {
+	if (req.body.btn_filter_requested_by !== 'Any' && 
+	req.body.btn_filter_requested_by !== '') {
+		requestedField = true;
+		sqlFilt += ' and JSON_CONTAINS(profRequested, \'"' + 
+		req.body.btn_filter_requested_by + '"\')';
+	}
+	if (req.body.btn_filter_interest !== 'Any' && 
+	req.body.btn_filter_interest !== '') {
 		interestField = true;
 		if (req.body.btn_filter_interest === 'Interested') {
 			sqlFilt += ' and seen=1';
 		} else if (req.body.btn_filter_interest === 'Not Interested') {
 			sqlFilt += ' and seen=0';
+		} else if (req.body.btn_filter_interest === '-') {
+			sqlFilt += ' and seen is null';
 		}
 	}
-	if (interestField) {
-		sql = sql + sqlCol + ' FROM APPLICATION LEFT JOIN APPLICATION_SEEN ON APPLICATION.app_Id = APPLICATION_SEEN.appId and fmId=' + req.user.id;
-	} else {
-		sql = sql + sqlCol + ' FROM APPLICATION';
-	}
-	sql += ' WHERE committeeReviewed=1' + sqlFilt;
-	connection.query(sql, function(err, results) {
+
+	sql += sqlCol + 'profContacted as `Contacted By`, profRequested as ' + 
+	'`Requested By`, seen as `My Interest Status` FROM APPLICATION LEFT JOIN ' + 
+	'APPLICATION_SEEN ON APPLICATION.app_Id = APPLICATION_SEEN.appId and ' + 
+	'APPLICATION_SEEN.fmId=' + req.user.id + ' WHERE committeeReviewed=1' + 
+	sqlFilt;
+
+	console.log('SQL query >> %s', sql)
+
+	application.getApplications(sql, req.user.id, function(err, results) {
 		if (err) next(err);
 		var fields = [];
+		var hidden = ['app_Id'];
 		var obj = results[0];
 		for (var key in obj)
 			fields.push(key);
+		
+		if (!interestField)
+			hidden.push('My Interest Status');
+		if (!contactedField)
+			hidden.push('Contacted By');
+		if (!requestedField)
+			hidden.push('Requested By');
+
 		req.apps = {
-			appls: results
+			appls: results,
+			flds: {
+				fields: fields,
+				hidden: hidden
+			},
+			filter: true
 		};
-		req.apps.fields = fields;
-		req.apps.filter = true;
 		setLiveSearchData(req, res, next);
 	});
 }

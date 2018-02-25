@@ -24,8 +24,11 @@ Application.prototype.getApplications = function(sql, memberId, cb) {
     ' Gender, FOI as `Fields of Interest`, prefProfs as `Preferred Professors`, ' +
     'Rank as `Committee Rank`, GPA, Degree as `Degree Applied For`,' +
     ' VStatus as `Visa Status`, profContacted as `Contacted By`,' +
-    ' profRequested as `Requested By`, programDecision as `Program Decision` FROM' +
-    ' APPLICATION where committeeReviewed=1';
+	' profRequested as `Requested By`, programDecision as `Program Decision`, ' +
+	'seen as `My Interest Status` FROM APPLICATION LEFT JOIN APPLICATION_SEEN ' + 
+	'ON APPLICATION.app_Id = APPLICATION_SEEN.appId and APPLICATION_SEEN.fmId=' + memberId +
+	' where committeeReviewed=1';
+
 	assert(typeof sql === 'string');
 	assert(typeof memberId === 'number');
 	assert(typeof cb === 'function');
@@ -41,20 +44,16 @@ Application.prototype.getApplications = function(sql, memberId, cb) {
 					self.conn.query(sql, function(err, result1) {
 						if (err) return cb(err);
 						if(result1.length > 0) {
-							self.conn.query('Select appId, seen from application_seen where ' + 
-							'fmId=? and seen=?', 
-							[memberId, 1], function(err, result2) {
-								if (err) return cb(err);
-								var appIds = _.map(result2, 'appId');
-								_.forEach(result1, function(res1) {
-									if(appIds.includes(res1['app_Id'])) {
-										res1['My Interest Status'] = 'Interested';
-									} else {
-										res1['My Interest Status'] = '-';
-									}
-								});
-								return cb(err, result1);
+							_.forEach(result1, function(res1) {
+								if(res1['My Interest Status'] === null) {
+									res1['My Interest Status'] = '-';
+								} else if (res1['My Interest Status'] === 1) {
+									res1['My Interest Status'] = 'Interested';
+								} else {
+									res1['My Interest Status'] = 'Not Interested';
+								}
 							});
+							return cb(err, result1);
 						} else {
 							err = new Error('No applications found');
 							return cb(err);
