@@ -61,12 +61,20 @@ Application.prototype.getApplications = function(sql, memberId, cb) {
 	sql = sql || 'SELECT app_Id, CONCAT_WS(\' \', `FName`, `LName`) AS `Applicant Name`, ' +
     ' Gender, FOI as `Fields of Interest`, prefProfs as `Preferred Professors`, ' +
     'Rank as `Committee Rank`, GPA, Degree as `Degree Applied For`,' +
+<<<<<<< HEAD
 	' VStatus as `Visa Status`, programDecision as `Program Decision`, ' +
 	'profContacted as `Contacted By`,' +
 	' profRequested as `Requested By`, ' +
 	'seen as `My Interest Status` FROM APPLICATION LEFT JOIN APPLICATION_SEEN ' + 
 	'ON APPLICATION.app_Id = APPLICATION_SEEN.appId and APPLICATION_SEEN.fmId=' + memberId +
 	' where committeeReviewed=1 and Rank is not null';
+=======
+    ' VStatus as `Visa Status`, profContacted as `Contacted By`,' +
+	' profRequested as `Requested By`, programDecision as `Program Decision`, ' +
+	'seen as `My Interest Status` FROM APPLICATION LEFT JOIN APPLICATION_SEEN ' + 
+	'ON APPLICATION.app_Id = APPLICATION_SEEN.appId and APPLICATION_SEEN.fmId=' + memberId +
+	' where committeeReviewed=1';
+>>>>>>> 1fc6565... Add filtering on gender, contacted by and requested by
 
 	assert(typeof sql === 'string');
 	assert(typeof memberId === 'number');
@@ -79,6 +87,7 @@ Application.prototype.getApplications = function(sql, memberId, cb) {
 		if (roles.includes('Professor') || roles.includes('Admin')) {
 			self.conn.query(sql, function(err, result1) {
 				if (err) return cb(err);
+<<<<<<< HEAD
 				if(result1.length > 0) {
 					self.conn.query('Select appId, seen from application_seen where ' + 
 							'fmId=? and seen=?', 
@@ -93,6 +102,26 @@ Application.prototype.getApplications = function(sql, memberId, cb) {
 							}
 						});
 						return cb(err, result1);
+=======
+				if (role === 'Professor' || role === 'Admin') {
+					self.conn.query(sql, function(err, result1) {
+						if (err) return cb(err);
+						if(result1.length > 0) {
+							_.forEach(result1, function(res1) {
+								if(res1['My Interest Status'] === null) {
+									res1['My Interest Status'] = '-';
+								} else if (res1['My Interest Status'] === 1) {
+									res1['My Interest Status'] = 'Interested';
+								} else {
+									res1['My Interest Status'] = 'Not Interested';
+								}
+							});
+							return cb(err, result1);
+						} else {
+							err = new Error('No applications found');
+							return cb(err);
+						}
+>>>>>>> 1fc6565... Add filtering on gender, contacted by and requested by
 					});
 				} else {
 					err = new Error('No applications found');
