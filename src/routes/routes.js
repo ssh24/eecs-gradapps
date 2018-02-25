@@ -158,8 +158,11 @@ function getApps(req, res, next) {
 		if (err) next(err);
 		var fields = [];
 		var obj = results[0];
+
 		for (var key in obj)
 			fields.push(key);
+		fields.push('Actions');
+
 		req.apps = {
 			appls: results,
 			flds: {
@@ -180,6 +183,8 @@ function filterApps(req, res, next) {
 	var contactedField = false;
 	var requestedField = false;
 	var interestField = false;
+	var actionsField = false;
+	var actionFieldNum;
 
 	// default sql
 	sqlCol += 'app_Id, CONCAT_WS(\' \', `FName`, `LName`) AS `Applicant Name`, ' +
@@ -214,6 +219,9 @@ function filterApps(req, res, next) {
 				requestedField = true;
 			} else if (cols[i] === 'btn_col_interest') {
 				interestField = true;
+			} else if (cols[i] === 'btn_col_actions') {
+				actionsField = true;
+				actionFieldNum = i + 1; // the one is for the offset of the appId
 			}
 		}
 	}
@@ -279,8 +287,6 @@ function filterApps(req, res, next) {
 	'APPLICATION_SEEN.fmId=' + req.user.id + ' WHERE committeeReviewed=1' + 
 	sqlFilt;
 
-	console.log('SQL query >> %s', sql)
-
 	application.getApplications(sql, req.user.id, function(err, results) {
 		if (err) next(err);
 		var fields = [];
@@ -288,6 +294,9 @@ function filterApps(req, res, next) {
 		var obj = results[0];
 		for (var key in obj)
 			fields.push(key);
+
+		if(!actionsField && !actionFieldNum) fields.push('Actions');
+		else fields.splice(actionFieldNum, 0, 'Actions');
 		
 		if (!interestField)
 			hidden.push('My Interest Status');
