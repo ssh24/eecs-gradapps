@@ -189,8 +189,10 @@ function filterApps(req, res, next) {
 	var actionsField = false;
 	var actionFieldNum;
 	var gpaFilt = false;
+	var rankFilt = false;
 
-	var interestStatusSql = ' LEFT JOIN APPLICATION_SEEN ON APPLICATION.app_Id = APPLICATION_SEEN.appId and APPLICATION_SEEN.fmId=' + req.user.id;
+	var interestStatusSql = ' LEFT JOIN APPLICATION_SEEN ON APPLICATION.app_Id ' + 
+	'= APPLICATION_SEEN.appId and APPLICATION_SEEN.fmId=' + req.user.id;
 	var gpaSql = ' INNER JOIN GPA on APPLICATION.GPA = GPA.letter_grade';
 
 	// default sql
@@ -228,7 +230,7 @@ function filterApps(req, res, next) {
 				interestField = true;
 			} else if (cols[i] === 'btn_col_actions') {
 				actionsField = true;
-				actionFieldNum = i + 1; // the one is for the offset of the appId
+				actionFieldNum = i + 1; // offset of the appId
 			}
 		}
 	}
@@ -251,15 +253,13 @@ function filterApps(req, res, next) {
 	}
 	if (req.body.btn_filter_ranking !== 'Any' && 
 	req.body.btn_filter_ranking !== '') {
-		sqlFilt += ' and JSON_CONTAINS(Rank, \'"' + 
-		req.body.btn_filter_ranking + '"\')';
+		rankFilt = true;
 	}
 	if (req.body.btn_filter_gpa !== 'Any' && req.body.btn_filter_gpa !== '') {
 		gpaFilt = true;
-		var operation = req.body.btn_filter_gpa.split(' ')[0];
-		var letter_grade = req.body.btn_filter_gpa.split(' ')[1];
-		sqlFilt += ' and gpa.grade_point' + operation + '(select grade_point ' + 
-		'from gpa where letter_grade = "' + letter_grade + '")';
+		sqlFilt += ' and gpa.grade_point' + req.body.btn_filter_gpa.split(' ')[0] 
+		+ '(select grade_point ' + 'from gpa where letter_grade = "' + 
+		req.body.btn_filter_gpa.split(' ')[1] + '")';
 	}
 	if (req.body.btn_filter_degree !== 'Any' && 
 	req.body.btn_filter_degree !== '') {
@@ -291,42 +291,57 @@ function filterApps(req, res, next) {
 			sqlFilt += ' and seen is null';
 		}
 	}
-	
+
 	var joinSql = gpaFilt ? gpaSql + interestStatusSql : interestStatusSql;
-	sql += sqlCol + 'profContacted as `Contacted By`, profRequested as ' + 
-	'`Requested By`, seen as `My Interest Status` FROM APPLICATION' + joinSql +
-	' WHERE committeeReviewed=1 and Rank is not null' + sqlFilt;
+	if (rankFilt) {
+		utils.buildCommitteeRankFilter(req.body.btn_filter_ranking.
+			split(' ')[0], req.body.btn_filter_ranking.split(' ')[1], 
+		function(err, result) {
+			if (err) next(err);
+			if (result) {
+				sqlFilt += ' and ' + result;
+				getApplications();
+			}
+		});
+	} else {
+		getApplications();
+	}
 
-	console.log('SQL query >>> %s', sql);
+	function getApplications() {
+		sql += sqlCol + 'profContacted as `Contacted By`, profRequested as ' 
+		+ '`Requested By`, seen as `My Interest Status` FROM APPLICATION' 
+		+ joinSql + ' WHERE committeeReviewed=1 and Rank is not null' 
+		+ sqlFilt;
 
-	application.getApplications(sql, req.user.id, function(err, results) {
-		if (err) next(err);
-		var fields = [];
-		var hidden = ['app_Id'];
-		var obj = results[0];
-		for (var key in obj)
-			fields.push(key);
-
-		if(!actionsField && !actionFieldNum) fields.push('Actions');
-		else fields.splice(actionFieldNum, 0, 'Actions');
-		
-		if (!interestField)
-			hidden.push('My Interest Status');
-		if (!contactedField)
-			hidden.push('Contacted By');
-		if (!requestedField)
-			hidden.push('Requested By');
-
-		req.apps = {
-			appls: results,
-			flds: {
-				fields: fields,
-				hidden: hidden
-			},
-			filter: true
-		};
-		setLiveSearchData(req, res, next);
-	});
+		application.getApplications(sql, req.user.id, function(err, results) {
+			if (err) next(err);
+			var fields = [];
+			var hidden = ['app_Id'];
+			var obj = results[0];
+			for (var key in obj)
+				fields.push(key);
+	
+			if(!actionsField && !actionFieldNum) fields.push('Actions');
+			else fields.splice(actionFieldNum, 0, 'Actions');
+			
+			if (!interestField)
+				hidden.push('My Interest Status');
+			if (!contactedField)
+				hidden.push('Contacted By');
+			if (!requestedField)
+				hidden.push('Requested By');
+	
+			req.apps = {
+				appls: results,
+				flds: {
+					fields: fields,
+					hidden: hidden
+				},
+				filter: true
+			};
+			setLiveSearchData(req, res, next);
+		});
+	}
 }
 
 function applyApplicationActions(req, res, next) {
