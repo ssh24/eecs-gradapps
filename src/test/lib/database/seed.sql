@@ -161,6 +161,16 @@ CREATE TABLE `FOI` (
     PRIMARY KEY(`field_Id`, `field_Name`)
 ) ENGINE=INNODB;
 
+-- GPA table
+-- @letter_grade: letter grade corressponding to the York University scale
+-- @grade_point: grade point corresponding to the York University scale
+
+CREATE TABLE `GPA` (
+    `letter_grade` ENUM('A+', 'A', 'B+', 'B', 'C+', 'C', 'D+', 'D', 'E', 'F') NOT NULL,
+    `grade_point` INT NOT NULL,
+    PRIMARY KEY(`letter_grade`)
+) ENGINE=INNODB;
+
 -- SESSIONS table
 -- @session_id: unique session id
 -- @expires: time milliseconds of the session expiry
@@ -183,6 +193,7 @@ source test/lib/database/trigger/application_seen.trigger.sql;COMMIT;
 -- Source all the data sql files
 SET autocommit=0; source test/lib/database/data/foi.data.sql; COMMIT;
 SET autocommit=0; source test/lib/database/data/fm.data.sql; COMMIT;
+SET autocommit=0; source test/lib/database/data/gpa.data.sql; COMMIT;
 SET autocommit=0; source test/lib/database/data/application.data.sql; COMMIT;
 SET autocommit=0; source test/lib/database/data/university.data.sql; COMMIT;
 SET autocommit=0; source test/lib/database/data/application_rev.data.sql; COMMIT;
