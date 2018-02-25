@@ -24,6 +24,9 @@
                   <button id="btn_col_name" name="btn_col_name" type="button" class="btn btn-default">Name</button>
                 </div>
                 <div class="btn-group" role="group">
+                    <button id="btn_col_gender" name="btn_col_gender" type="button" class="btn btn-default">Gender</button>
+                  </div>
+                <div class="btn-group" role="group">
                   <button id="btn_col_foi" name="btn_col_foi" type="button" class="btn btn-default">Field of Interest</button>
                 </div>
                 <div class="btn-group" role="group">
@@ -42,16 +45,19 @@
                 <div class="btn-group" role="group">
                   <button id="btn_col_degree" name="btn_col_degree" type="button" class="btn btn-default">Degree Applied For</button>
                 </div>
+                <div class="btn-group" role="group">
+                    <button id="btn_col_visa" name="btn_col_visa" type="button" class="btn btn-default">Visa Status</button>
+                </div>
               </div>
             </div>
             <div class="row">
               <div class="form-group btn-group btn-group-justified" role="group" aria-label="...">
                 <div class="btn-group" role="group">
-                  <button id="btn_col_visa" name="btn_col_visa" type="button" class="btn btn-default">Visa Status</button>
+                  <button id="btn_col_contacted_status" name="btn_col_contacted_status" type="button" class="btn btn-default">Contacted By</button>
                 </div>
                 <div class="btn-group" role="group">
-                  <button id="btn_col_status" name="btn_col_status" type="button" class="btn btn-default">Application Status</button>
-                </div>
+                    <button id="btn_col_requested_status" name="btn_col_requested_status" type="button" class="btn btn-default">Requested By</button>
+                  </div>
                 <div class="btn-group" role="group">
                   <button id="btn_col_interest" name="btn_col_interest" type="button" class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="This field is private and can only be seen by you.">My Interest Status</button>
                 </div>
@@ -66,115 +72,135 @@
                 <div class="form-group">
                   <label for="">Name</label>
                   <select id="btn_filter_name" name="btn_filter_name" class="form-control selectpicker" data-live-search="true">
+                        <option selected="selected">Any</option>
                         <% for(var i = 0; i < applicants.length; i++){ %>
                             <option><%= applicants[i]%></option>
                         <%}%>
-                        <option selected="selected">Any</option>
                     </select>
                 </div>
               </div>
               <div class="col-xs-4">
+                  <div class="form-group">
+                    <label for="">Gender</label>
+                    <select id="btn_filter_gender" name="btn_filter_gender" class="form-control selectpicker" data-live-search="true">
+                          <option selected="selected">Any</option>
+                          <option>M</option>
+                          <option>F</option>
+                      </select>
+                  </div>
+                </div>
+              <div class="col-xs-4">
                 <div class="form-group">
-                  <label for="">Field of Interest</label>
+                  <label for="">Fields of Interest</label>
                   <select id="btn_filter_foi" name="btn_filter_foi" class="form-control selectpicker" data-live-search="true">
+                      <option selected="selected">Any</option>
                       <% for(var i = 0; i < foi.length; i++){ %>
                           <option><%= foi[i]%></option>
                       <%}%>
-                      <option selected="selected">Any</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-xs-4">
-                <div class="form-group">
-                  <label for="">Preferred Professor</label>
-                  <select id="btn_filter_prof" name="btn_filter_prof" class="form-control selectpicker" data-live-search="true">
-                      <% for(var i = 0; i < profs.length; i++){ %>
-                          <option><%= profs[i]%></option>
-                      <%}%>
-                      <option selected="selected">Any</option>
-
                   </select>
                 </div>
               </div>
             </div>
             <div class="row">
+                <div class="col-xs-4">
+                    <div class="form-group">
+                      <label for="">Preferred Professor</label>
+                      <select id="btn_filter_prof" name="btn_filter_prof" class="form-control selectpicker" data-live-search="true">
+                          <option selected="selected">Any</option>
+                          <% for(var i = 0; i < profs.length; i++){ %>
+                              <option><%= profs[i]%></option>
+                          <%}%>
+                      </select>
+                    </div>
+                  </div>
               <div class="col-xs-4">
                 <div class="form-group">
                   <label for="">Committee Ranking</label>
                   <select id="btn_filter_ranking" name="btn_filter_ranking" class="form-control selectpicker" data-live-search="true">
-                                <option>A+</option>
-                                <option>A</option>
-                                <option>B+</option>
-                                <option>B</option>
-                                <option>C</option>
-                                <option selected="selected">Any</option>
+                      <option selected="selected">Any</option>
+                      <option>A+</option>
+                      <option>A</option>
+                      <option>B+</option>
+                      <option>B</option>
+                      <option>C</option>    
                   </select>
                 </div>
               </div>
               <div class="col-xs-4">
                 <label for="">GPA</label>
                 <select id="btn_filter_gpa" name="btn_filter_gpa" class="form-control selectpicker" data-live-search="true">
-                                <option>A+</option>
-                                <option>A</option>
-                                <option>B+</option>
-                                <option>B</option>
-                                <option>C+</option>
-                                <option>C</option>
-                                <option>D+</option>
-                                <option>D</option>
-                                <option>E</option>
-                                <option>F</option>
-                                <option selected="selected">Any</option>
+                    <option selected="selected">Any</option>
+                    <option>A+</option>
+                    <option>A</option>
+                    <option>B+</option>
+                    <option>B</option>
+                    <option>C+</option>
+                    <option>C</option>
+                    <option>D+</option>
+                    <option>D</option>
+                    <option>E</option>
+                    <option>F</option>            
                 </select>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-4">
+                    <div class="form-group">
+                      <label for="">Degree Applied For</label>
+                      <select id="btn_filter_degree" name="btn_filter_degree" class="form-control selectpicker" data-live-search="true">
+                          <option selected="selected">Any</option>
+                          <option>PhD</option>
+                          <option>MSc</option>
+                          <option>MASc</option>
+                      </select>
+                    </div>
+              </div>
+              <div class="col-xs-4">
+                      <div class="form-group">
+                        <label for="">Visa Status</label>
+                        <select id="btn_filter_visa" name="btn_filter_visa"class="form-control selectpicker" data-live-search="true">
+                            <option selected="selected">Any</option>
+                            <option>Domestic</option>
+                            <option>Visa</option>
+                        </select>
+                      </div>
               </div>
               <div class="col-xs-4">
                 <div class="form-group">
-                  <label for="">Degree Applied For</label>
-                  <select id="btn_filter_degree" name="btn_filter_degree" class="form-control selectpicker" data-live-search="true">
-                                <option>PhD</option>
-                                <option>MSc</option>
-                                <option>MASc</option>
-                                <option selected="selected">Any</option>
+                  <label for="">Contacted By</label>
+                  <select id="btn_filter_contacted_by" name="btn_filter_contacted_by" class="form-control selectpicker" data-live-search="true">
+                    <option selected="selected">Any</option>
+                    <% for(var i = 0; i < profs.length; i++){ %>
+                      <option><%= profs[i]%></option>
+                    <%}%>
                   </select>
                 </div>
               </div>
             </div>
             <div class="row">
-              <div class="col-xs-4">
-                <div class="form-group">
-                  <label for="">Visa Status</label>
-                  <select id="btn_filter_visa" name="btn_filter_visa"class="form-control selectpicker" data-live-search="true">
-                                <option>Domestic</option>
-                                <option>Visa</option>
-                                <option selected="selected">Any</option>
-                  </select>
+                <div class="col-xs-4">
+                    <div class="form-group">
+                      <label for="">Requested By</label>
+                      <select id="btn_filter_requested_by" name="btn_filter_requested_by" class="form-control selectpicker" data-live-search="true">
+                        <option selected="selected">Any</option>
+                        <% for(var i = 0; i < profs.length; i++){ %>
+                          <option><%= profs[i]%></option>
+                        <%}%>
+                      </select>
+                    </div>
+                  </div>
+                <div class="col-xs-4">
+                  <div class="form-group">
+                    <label for="">My Interest Status</label>
+                    <select id="btn_filter_interest" name="btn_filter_interest" class="form-control selectpicker" data-live-search="true">
+                          <option selected="selected">Any</option>
+                          <option>-</option>
+                          <option>Interested</option>
+                          <option>Not Interested</option>      
+                    </select>
+                  </div>
                 </div>
-              </div>
-              <div class="col-xs-4">
-                <div class="form-group">
-                  <label for="">Application Status</label>
-                  <select id="btn_filter_status" name="btn_filter_status" class="form-control selectpicker" data-live-search="true">
-                                <option>Date Uploaded</option>
-                                <option>Contacted</option>
-                                <option>Requested</option>
-                                <option>Program Decision</option>
-                                <option>Student Decision</option>
-                                <option selected="selected">Any</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-xs-4">
-                <div class="form-group">
-                  <label for="">My Interest Status</label>
-                  <select id="btn_filter_interest" name="btn_filter_interest" class="form-control selectpicker" data-live-search="true">
-                                <option>Interested</option>
-                                <option>Not Interested</option>
-                                <option selected="selected">Any</option>
-                  </select>
-                </div>
-              </div>
             </div>
-
           </div>
           <div class="form-group row">
             <h4>Selected Filter</h4>
