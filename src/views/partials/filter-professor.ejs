@@ -121,11 +121,15 @@
                   <label for="">Committee Ranking</label>
                   <select id="btn_filter_ranking" name="btn_filter_ranking" class="form-control selectpicker" data-live-search="true">
                       <option selected="selected">Any</option>
-                      <option>A+</option>
-                      <option>A</option>
-                      <option>B+</option>
-                      <option>B</option>
-                      <option>C</option>    
+                      <% for(var i = 0; i < gpa.length; i++){ %>
+                        <% if (gpa[i] === 'A+' || gpa[i] === 'A' || gpa[i] === 'B+' || gpa[i] === 'B' || gpa[i] === 'C') { %>
+                          <option>>= <%= gpa[i]%></option>
+                          <option>&gt; <%= gpa[i]%></option>
+                          <option>= <%= gpa[i]%></option>
+                        <% } else { %>
+                          <% continue; %>
+                        <%}%>
+                      <%}%>  
                   </select>
                 </div>
               </div>
@@ -137,8 +141,6 @@
                       <option>>= <%= gpa[i]%></option>
                       <option>&gt; <%= gpa[i]%></option>
                       <option>= <%= gpa[i]%></option>
-                      <option><= <%= gpa[i]%></option>
-                      <option>&lt; <%= gpa[i]%></option>
                     <%}%>         
                 </select>
               </div>
