@@ -3,9 +3,10 @@
         <!--tables-->
         <div class="container-fluid">
             <% if (!filter) { %>
-                <a id="refresh-table" href="/roles/professor" class="btn btn-primary">Refresh Table <span class="glyphicon glyphicon-refresh"></span></a>
+                <a id="refresh-table" href="/roles/professor" class="btn btn-primary">Refresh Current Table <span class="glyphicon glyphicon-refresh"></span></a>
             <% } else{ %>
-                <a id="reset-table" href="/roles/professor" class="btn btn-primary">Default Table <span class="glyphicon glyphicon-repeat"></span></a>
+                <a id="reset-table" href="/roles/professor" class="btn btn-primary"><span class="glyphicon glyphicon-arrow-left"></span> Load Default Table</span></a>
+                <a id="refresh-table" href="/roles/professor/filter" class="btn btn-primary">Refresh Current Table <span class="glyphicon glyphicon-refresh"></span></a>
             <% } %>
             <div class="table-responsive">
                 <table id="applicant-table" class="table table-striped table-hover">
@@ -38,21 +39,45 @@
                                                     <button id="set-to-<%=i%>" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">Set to <span class="caret"></span></button>
                                                     <ul class="dropdown-menu" role="menu">
                                                         <% if (apps[i]['Contacted By'] && apps[i]['Contacted By'].indexOf(fullname) > -1) { %>
-                                                            <li><a id="not-contacted-<%=i%>" href="/roles/professor?contacted=false&appId=<%= apps[i][fields[0]]%>">Not Contacted</a></li>
+                                                            <% if (!filter) { %>
+                                                                <li><a id="not-contacted-<%=i%>" href="/roles/professor?contacted=false&appId=<%= apps[i][fields[0]]%>">Not Contacted</a></li>
+                                                            <% } else{ %>
+                                                                <li><a id="not-contacted-<%=i%>" href="/roles/professor/filter?contacted=false&appId=<%= apps[i][fields[0]]%>">Not Contacted</a></li>
+                                                            <% } %>
                                                         <% } %>
                                                         <% if (!(apps[i]['Contacted By'] && apps[i]['Contacted By'].indexOf(fullname) > -1)) { %>
-                                                            <li><a id="contacted-<%=i%>" href="/roles/professor?contacted=true&appId=<%= apps[i][fields[0]]%>">Contacted</a></li>
+                                                            <% if (!filter) { %>
+                                                                <li><a id="contacted-<%=i%>" href="/roles/professor?contacted=true&appId=<%= apps[i][fields[0]]%>">Contacted</a></li>
+                                                            <% } else{ %>
+                                                                <li><a id="contacted-<%=i%>" href="/roles/professor/filter?contacted=true&appId=<%= apps[i][fields[0]]%>">Contacted</a></li>
+                                                            <% } %>
                                                         <% } %>
                                                         <% if (apps[i]['Requested By'] && apps[i]['Requested By'].indexOf(fullname) > -1) { %>
-                                                            <li><a id="not-requested-<%=i%>" href="/roles/professor?requested=false&appId=<%= apps[i][fields[0]]%>">Not Requested</a></li>
+                                                            <% if (!filter) { %>
+                                                                <li><a id="not-requested-<%=i%>" href="/roles/professor?requested=false&appId=<%= apps[i][fields[0]]%>">Not Requested</a></li>
+                                                            <% } else{ %>
+                                                                <li><a id="not-requested-<%=i%>" href="/roles/professor/filter?requested=false&appId=<%= apps[i][fields[0]]%>">Not Requested</a></li>
+                                                            <% } %> 
                                                         <% } %>
                                                         <% if (!(apps[i]['Requested By'] && apps[i]['Requested By'].indexOf(fullname) > -1)) { %>
-                                                            <li><a id="requested-<%=i%>" href="/roles/professor?requested=true&appId=<%= apps[i][fields[0]]%>">Requested</a></li>
+                                                            <% if (!filter) { %>
+                                                                <li><a id="requested-<%=i%>" href="/roles/professor?requested=true&appId=<%= apps[i][fields[0]]%>">Requested</a></li>
+                                                            <% } else{ %>
+                                                                <li><a id="requested-<%=i%>" href="/roles/professor/filter?requested=true&appId=<%= apps[i][fields[0]]%>">Requested</a></li>
+                                                            <% } %>
                                                         <% } %>
                                                         <% if (apps[i]['My Interest Status'] === 'Interested') { %>
-                                                            <li><a id="not-interested-<%=i%>" href="/roles/professor?interest=false&appId=<%= apps[i][fields[0]]%>">Not Interested</a></li>
+                                                            <% if (!filter) { %>
+                                                                <li><a id="not-interested-<%=i%>" href="/roles/professor?interest=false&appId=<%= apps[i][fields[0]]%>">Not Interested</a></li>
+                                                            <% } else{ %>
+                                                                <li><a id="not-interested-<%=i%>" href="/roles/professor/filter?interest=false&appId=<%= apps[i][fields[0]]%>">Not Interested</a></li>
+                                                            <% } %>
                                                         <% } if (apps[i]['My Interest Status'] === '-' || apps[i]['My Interest Status'] === 'Not Interested') { %>
-                                                            <li><a id="interested-<%=i%>" href="/roles/professor?interest=true&appId=<%= apps[i][fields[0]]%>">Interested</a></li>
+                                                            <% if (!filter) { %>
+                                                                <li><a id="interested-<%=i%>" href="/roles/professor?interest=true&appId=<%= apps[i][fields[0]]%>">Interested</a></li>
+                                                            <% } else{ %>
+                                                                <li><a id="interested-<%=i%>" href="/roles/professor/filter?interest=true&appId=<%= apps[i][fields[0]]%>">Interested</a></li>
+                                                            <% } %>
                                                         <% } %>
                                                     </ul>
                                                 </div>
