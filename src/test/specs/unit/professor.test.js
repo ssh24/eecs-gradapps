@@ -336,7 +336,7 @@ describe('Professor Test', function() {
 		
 		it('- get refresh table text', function() {
 			expect(prof.getRefreshTableText.call(prof)).to.eventually
-				.contain('Refresh Table');
+				.contain('Refresh Current Table');
 		});
 
 		it('- perform refresh table action', function() {
@@ -382,7 +382,7 @@ describe('Professor Test', function() {
 				.then(filter.openApplicantDD.call(filter))
 				.then(expect(filter.isApplicantDDOpen.call(filter)).to
 					.eventually.be.true)
-				.then(filter.selectIthElement.call(filter, 5))
+				.then(filter.selectIthElement.call(filter, 8))
 				.then(expect(filter.getSelectedElement.call(filter)).to
 					.eventually.contain('Chrysa Really'))
 				.then(filter.closeFilterModal.call(filter));
@@ -393,7 +393,7 @@ describe('Professor Test', function() {
 				.then(filter.openFoiDD.call(filter))
 				.then(expect(filter.isFoiDDOpen.call(filter)).to
 					.eventually.be.true)
-				.then(filter.selectIthElement.call(filter, 1))
+				.then(filter.selectIthElement.call(filter, 2))
 				.then(expect(filter.getSelectedElement.call(filter)).to
 					.eventually.contain('Bioinformatics'))
 				.then(filter.closeFilterModal.call(filter));
@@ -404,7 +404,7 @@ describe('Professor Test', function() {
 				.then(filter.openProfessorDD.call(filter))
 				.then(expect(filter.isProfessorDDOpen.call(filter)).to
 					.eventually.be.true)
-				.then(filter.selectIthElement.call(filter, 1))
+				.then(filter.selectIthElement.call(filter, 2))
 				.then(expect(filter.getSelectedElement.call(filter)).to
 					.eventually.contain('Aijun An'))
 				.then(filter.closeFilterModal.call(filter));
