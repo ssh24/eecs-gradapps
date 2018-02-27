@@ -26,9 +26,9 @@ function Professor() {
 	this.tables.actions.setTo.notInterested = by.id('not-interested-0');
 
 	this.tables.data = {};
-	this.tables.data.contacted = by.id('data-0-8');
-	this.tables.data.requested = by.id('data-0-9');
-	this.tables.data.interested = by.id('data-0-10');
+	this.tables.data.contacted = by.id('data-0-9');
+	this.tables.data.requested = by.id('data-0-10');
+	this.tables.data.interested = by.id('data-0-12');
 }
 
 Professor.prototype.applicationTableIsDisplayed = function() {
