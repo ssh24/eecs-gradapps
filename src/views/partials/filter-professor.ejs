@@ -58,13 +58,13 @@
               </div>
             </div>
           </div>
-          <div class="form-group row">
+          <div id="div_filt" class="form-group row">
             <h4>Choose Your Filters</h4>
             <hr>
             <div class="row">
               <div class="col-xs-4">
                 <div class="form-group">
-                  <label for="">Name</label>
+                  <label for="btn_filter_name">Name</label>
                   <select id="btn_filter_name" name="btn_filter_name" class="form-control selectpicker" data-live-search="true">
                         <% for(var i = 0; i < applicants.length; i++){ %>
                             <option><%= applicants[i]%></option>
@@ -75,7 +75,7 @@
               </div>
               <div class="col-xs-4">
                 <div class="form-group">
-                  <label for="">Field of Interest</label>
+                  <label for="btn_filter_foi">Field of Interest</label>
                   <select id="btn_filter_foi" name="btn_filter_foi" class="form-control selectpicker" data-live-search="true">
                       <% for(var i = 0; i < foi.length; i++){ %>
                           <option><%= foi[i]%></option>
@@ -86,7 +86,7 @@
               </div>
               <div class="col-xs-4">
                 <div class="form-group">
-                  <label for="">Preferred Professor</label>
+                  <label for="btn_filter_prof">Preferred Professor</label>
                   <select id="btn_filter_prof" name="btn_filter_prof" class="form-control selectpicker" data-live-search="true">
                       <% for(var i = 0; i < profs.length; i++){ %>
                           <option><%= profs[i]%></option>
@@ -100,7 +100,7 @@
             <div class="row">
               <div class="col-xs-4">
                 <div class="form-group">
-                  <label for="">Committee Ranking</label>
+                  <label for="btn_filter_ranking">Committee Ranking</label>
                   <select id="btn_filter_ranking" name="btn_filter_ranking" class="form-control selectpicker" data-live-search="true">
                                 <option>A+</option>
                                 <option>A</option>
@@ -112,7 +112,7 @@
                 </div>
               </div>
               <div class="col-xs-4">
-                <label for="">GPA</label>
+                <label for="btn_filter_gpa">GPA</label>
                 <select id="btn_filter_gpa" name="btn_filter_gpa" class="form-control selectpicker" data-live-search="true">
                                 <option>A+</option>
                                 <option>A</option>
@@ -129,7 +129,7 @@
               </div>
               <div class="col-xs-4">
                 <div class="form-group">
-                  <label for="">Degree Applied For</label>
+                  <label for="btn_filter_degree">Degree Applied For</label>
                   <select id="btn_filter_degree" name="btn_filter_degree" class="form-control selectpicker" data-live-search="true">
                                 <option>PhD</option>
                                 <option>MSc</option>
@@ -142,8 +142,8 @@
             <div class="row">
               <div class="col-xs-4">
                 <div class="form-group">
-                  <label for="">Visa Status</label>
-                  <select id="btn_filter_visa" name="btn_filter_visa"class="form-control selectpicker" data-live-search="true">
+                  <label for="btn_filter_visa">Visa Status</label>
+                  <select id="btn_filter_visa" name="btn_filter_visa" class="form-control selectpicker" data-live-search="true">
                                 <option>Domestic</option>
                                 <option>Visa</option>
                                 <option selected="selected">Any</option>
@@ -152,7 +152,7 @@
               </div>
               <div class="col-xs-4">
                 <div class="form-group">
-                  <label for="">Application Status</label>
+                  <label for="btn_filter_status">Application Status</label>
                   <select id="btn_filter_status" name="btn_filter_status" class="form-control selectpicker" data-live-search="true">
                                 <option>Date Uploaded</option>
                                 <option>Contacted</option>
@@ -165,7 +165,7 @@
               </div>
               <div class="col-xs-4">
                 <div class="form-group">
-                  <label for="">My Interest Status</label>
+                  <label for="btn_filter_interest">My Interest Status</label>
                   <select id="btn_filter_interest" name="btn_filter_interest" class="form-control selectpicker" data-live-search="true">
                                 <option>Interested</option>
                                 <option>Not Interested</option>
@@ -179,7 +179,7 @@
           <div class="form-group row">
             <h4>Selected Filter</h4>
             <hr>
-            <p>Visa Status = VISA <span style="color:red">AND</span> GPA >= C <span style="color:red">AND</span> Committee Ranking > C</p>
+            <p id="selectedFilter"></p>
           </div>
         </div>
         <div class="modal-footer">
