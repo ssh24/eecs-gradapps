@@ -23,8 +23,9 @@ Application.prototype.getApplications = function(sql, memberId, cb) {
 	sql = sql || 'SELECT app_Id, CONCAT_WS(\' \', `FName`, `LName`) AS `Applicant Name`, ' +
     ' Gender, FOI as `Fields of Interest`, prefProfs as `Preferred Professors`, ' +
     'Rank as `Committee Rank`, GPA, Degree as `Degree Applied For`,' +
-    ' VStatus as `Visa Status`, profContacted as `Contacted By`,' +
-	' profRequested as `Requested By`, programDecision as `Program Decision`, ' +
+	' VStatus as `Visa Status`, programDecision as `Program Decision`, ' +
+	'profContacted as `Contacted By`,' +
+	' profRequested as `Requested By`, ' +
 	'seen as `My Interest Status` FROM APPLICATION LEFT JOIN APPLICATION_SEEN ' + 
 	'ON APPLICATION.app_Id = APPLICATION_SEEN.appId and APPLICATION_SEEN.fmId=' + memberId +
 	' where committeeReviewed=1 and Rank is not null';

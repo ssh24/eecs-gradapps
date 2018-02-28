@@ -216,9 +216,9 @@ function filterApps(req, res, next) {
 
 	// default sql
 	sqlCol += 'app_Id, CONCAT_WS(\' \', `FName`, `LName`) AS `Applicant Name`, ' +
-    'Gender, FOI as `Field of Interests`, prefProfs as `Preferred Professors`, ' +
+    'Gender, FOI as `Fields of Interest`, prefProfs as `Preferred Professors`, ' +
     'Rank as `Committee Rank`, GPA, Degree as `Degree Applied For`,' +
-    ' VStatus as `Visa Status`,';
+    ' VStatus as `Visa Status`, programDecision as `Program Decision`,';
 
 	/* build columns */
 	if (cols) {
@@ -241,6 +241,8 @@ function filterApps(req, res, next) {
 				sqlCol += 'Degree as `Degree Applied For`,';
 			} else if (cols[i] === 'btn_col_visa') {
 				sqlCol += 'VStatus as `Visa Status`,';
+			} else if (cols[i] === 'btn_col_program_decision') {
+				sqlCol += 'programDecision as `Program Decision`,';
 			} else if (cols[i] === 'btn_col_contacted_status') {
 				contactedField = true;
 			} else if (cols[i] === 'btn_col_requested_status') {
@@ -295,6 +297,12 @@ function filterApps(req, res, next) {
 	if (req.body.btn_filter_visa && req.body.btn_filter_visa !== 'Any' && 
 		req.body.btn_filter_visa !== '') {
 		sqlFilt += ' and VStatus="' + req.body.btn_filter_visa + '"';
+	}
+	if (req.body.btn_filter_program_decision && 
+		req.body.btn_filter_program_decision !== 'Any' && 
+		req.body.btn_filter_program_decision !== '') {
+		sqlFilt += ' and programDecision="' + req.body.btn_filter_program_decision 
+		+ '"';
 	}
 	if (req.body.btn_filter_contacted_by && 
 		req.body.btn_filter_contacted_by !== 'Any' && 
