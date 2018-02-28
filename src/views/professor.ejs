@@ -14,14 +14,20 @@
                         <%= message %>
                     </div>
                 <% } else{ %>
-                    <table id="applicant-table" class="table table-striped table-hover">
+                    <table id="applicant-table" class="table table-striped table-hover tablesorter">
                             <thead id="table-head">
                                 <tr>
                                     <% for(var i = 0; i < fields.length; i++){ %>
                                         <% if (hidden.includes(fields[i])) { %>
                                             <% continue; %>
                                         <% } else { %>
-                                            <th class="text-center"><%= fields[i]%></th>
+                                            <%if (fields[i]==='Committee Rank' || fields[i]==='GPA') { %>
+                                                <th class="text-center sorter-grades"><%= fields[i]%></th>
+                                              <%} else if (fields[i] !== 'Applicant Name' && fields[i] !== 'Degree Applied For' && fields[i] !== 'Visa Status' && fields[i] !== 'Program Decision' && fields[i] !== 'Gender' && fields[i] !== 'My Interest Status'){ %>
+                                                <th class="text-center sorter-false parser-false"><%= fields[i]%></th>
+                                              <%} else {%>
+                                                <th class="text-center"><%= fields[i]%></th>
+                                              <%}%>
                                         <% } %>
                                     <%}%>
                                 </tr>
