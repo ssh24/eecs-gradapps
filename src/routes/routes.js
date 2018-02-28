@@ -77,18 +77,19 @@ module.exports = function(app, passport) {
 		var role = 'Professor';
 		res.render(role, {
 			title: 'Applications',
+			message: req.flash('tableMessage'),
 			user: userInfo.id,
 			fullname: userInfo.fullname,
 			roles: userInfo.roles,
 			role: role,
-			apps: req.apps.appls,
-			fields: req.apps.flds.fields,
-			hidden: req.apps.flds.hidden,
-			applicants: req.apps.applicants,
-			foi: req.apps.foi,
-			profs: req.apps.profs,
-			gpa: req.apps.gpa,
-			filter: req.apps.filter 
+			apps: req.apps.appls || [],
+			fields: req.apps.flds ? (req.apps.flds.fields || []) : [],
+			hidden: req.apps.flds ? (req.apps.flds.hidden || []) : [],
+			applicants: req.apps.applicants || [],
+			foi: req.apps.foi || [],
+			profs: req.apps.profs || [],
+			gpa: req.apps.gpa || [],
+			filter: req.apps.filter
 		});
 	});
 
@@ -98,17 +99,18 @@ module.exports = function(app, passport) {
 		var role = 'Professor';
 		res.render(role, {
 			title: 'Filtered Applications',
+			message: req.flash('tableMessage'),
 			user: userInfo.id,
 			fullname: userInfo.fullname,
 			roles: userInfo.roles,
 			role: role,
-			apps: req.apps.appls,
-			fields: req.apps.flds.fields,
-			hidden: req.apps.flds.hidden,
-			applicants: req.apps.applicants,
-			foi: req.apps.foi,
-			profs: req.apps.profs,
-			gpa: req.apps.gpa,
+			apps: req.apps.appls || [],
+			fields: req.apps.flds ? (req.apps.flds.fields || []) : [],
+			hidden: req.apps.flds ? (req.apps.flds.hidden || []) : [],
+			applicants: req.apps.applicants || [],
+			foi: req.apps.foi || [],
+			profs: req.apps.profs || [],
+			gpa: req.apps.gpa || [],
 			filter: req.apps.filter
 		});
 	});
@@ -119,17 +121,18 @@ module.exports = function(app, passport) {
 			var role = 'Professor';
 			res.render(role, {
 				title: 'Filtered Applications',
+				message: req.flash('tableMessage'),
 				user: userInfo.id,
 				fullname: userInfo.fullname,
 				roles: userInfo.roles,
 				role: role,
-				apps: req.apps.appls,
-				fields: req.apps.flds.fields,
-				hidden: req.apps.flds.hidden,
-				applicants: req.apps.applicants,
-				foi: req.apps.foi,
-				profs: req.apps.profs,
-				gpa: req.apps.gpa,
+				apps: req.apps.appls || [],
+				fields: req.apps.flds ? (req.apps.flds.fields || []) : [],
+				hidden: req.apps.flds ? (req.apps.flds.hidden || []) : [],
+				applicants: req.apps.applicants || [],
+				foi: req.apps.foi || [],
+				profs: req.apps.profs || [],
+				gpa: req.apps.gpa || [],
 				filter: req.apps.filter
 			});
 		});
@@ -360,34 +363,38 @@ function filterApps(req, res, next) {
 
 function getApplications(sql, options, req, res, next) {
 	application.getApplications(sql, req.user.id, function(err, results) {
-		if (err) next(err);
-		var fields = [];
-		var hidden = ['app_Id'];
-		var obj = results[0];
-
-		for (var key in obj)
-			fields.push(key);
-
-		if (options) {
-			if (options.actionFieldNum) 
-				fields.splice(options.actionFieldNum, 0, 'Actions');
-			else 
-				fields.push('Actions');
-			
-			if (!options.interestField)
-				hidden.push('My Interest Status');
-			if (!options.contactedField)
-				hidden.push('Contacted By');
-			if (!options.requestedField)
-				hidden.push('Requested By');
+		if (err) {
+			req.flash('tableMessage', 
+				'Error loading table. Fatal reason: ' + err.message);
+		} else {
+			var fields = [];
+			var hidden = ['app_Id'];
+			var obj = results[0];
+	
+			for (var key in obj)
+				fields.push(key);
+	
+			if (options) {
+				if (options.actionFieldNum) 
+					fields.splice(options.actionFieldNum, 0, 'Actions');
+				else 
+					fields.push('Actions');
+				
+				if (!options.interestField)
+					hidden.push('My Interest Status');
+				if (!options.contactedField)
+					hidden.push('Contacted By');
+				if (!options.requestedField)
+					hidden.push('Requested By');
+			}
+	
+			req.apps.appls = results;
+	
+			req.apps.flds = {};
+			req.apps.flds.fields = fields;
+			req.apps.flds.hidden = hidden;
 		}
-
-		req.apps.appls = results;
-
-		req.apps.flds = {};
-		req.apps.flds.fields = fields;
-		req.apps.flds.hidden = hidden;
-
+			
 		setLiveSearchData(req, res, next);
 	});
 }
