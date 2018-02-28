@@ -16,7 +16,6 @@
   "dependencies": {
     "apache-crypt": "^1.2.1",
     "assert": "^1.4.1",
-    "bluebird": "^3.5.1",
     "body-parser": "^1.18.2",
     "connect-flash": "^0.1.1",
     "cookie-parser": "^1.4.3",
