@@ -21,7 +21,6 @@ describe('Login Test', function() {
 	var welcome = new Welcome();
 
 	before(function setUp() {
-		require('../../pretest');
 		utils.startApp();
 		utils.openView('#');
 		utils.maximizeBrowserWindow();

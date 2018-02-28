@@ -9,7 +9,6 @@ var expect = chai.expect;
 var mysql = require('mysql2');
 
 var Application = require('../../../controller/application');
-var Auth = require('../../../controller/auth');
 
 var Filter = require('../../views/filter-view');
 var Login = require('../../views/login-view');
@@ -18,7 +17,7 @@ var Role = require('../../views/role-view');
 var Utils = require('../../lib/utils/shared-utils');
 var Welcome = require('../../views/welcome-view');
 
-var application, auth, connection;
+var application, connection;
 var creds = config.credentials.database;
 
 describe('Professor Test', function() {
@@ -291,16 +290,9 @@ describe('Professor Test', function() {
 		before(function overallSetup(done) {
 			connection = mysql.createConnection(creds);
 			application = new Application(connection);
-			auth = new Auth(connection);
 			async.series([
 				function(callback) {
 					connection.connect(callback);
-				},
-				function(callback) {
-					auth.logIn(3, callback);
-				},
-				function(callback) {
-					auth.selectRole(3, 'Professor', callback);
 				},
 				function(callback) {
 					application.updateRequestedStatus(1, 3, newUser.fullname, 0, 
@@ -314,14 +306,7 @@ describe('Professor Test', function() {
 		});
 		
 		after(function overallCleanUp(done) {
-			async.series([
-				function(callback) {
-					auth.logOut(3, callback);
-				},
-				function(callback) {
-					connection.end(callback);
-				}
-			], done);
+			connection.end(done);
 		});
 
 		it('- check contacted data to contain name', function() {
