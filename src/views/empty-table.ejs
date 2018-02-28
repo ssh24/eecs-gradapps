@@ -1,0 +1,12 @@
+<% include partials/header %>
+  <% include partials/navbar %>
+    <!--Main Message-->
+    <div class="container-fluid text-center">
+      <div class="col-sm-12">
+        <a id="reset-table" href="/roles/professor" class="btn btn-primary">Reset to Default Table
+          <span class="glyphicon glyphicon-repeat"></span></a>
+        <h4 id="error-msg">Your filter returned no results.<br>Please try another filter or reset to default table.</h4>
+      </div>
+    </div>
+    <% include partials/filter-professor %>
+      <% include partials/footer %>

@@ -5,10 +5,10 @@
             <% if (!filter) { %>
                 <a id="refresh-table" href="/roles/professor" class="btn btn-primary">Refresh Table <span class="glyphicon glyphicon-refresh"></span></a>
             <% } else{ %>
-                <a id="reset-table" href="/roles/professor" class="btn btn-primary">Default Table<span class="glyphicon glyphicon-repeat"></span></a>
+                <a id="reset-table" href="/roles/professor" class="btn btn-primary">Reset to Default Table<span class="glyphicon glyphicon-repeat"></span></a>
             <% } %>
             <div class="table-responsive">
-                <table id="applicant-table" class="table table-striped table-hover">
+                <table id="applicant-table" class="table table-striped table-hover tablesorter">
                     <thead id="table-head">
                         <% var index = 0; %>
                         <tr>
@@ -16,9 +16,15 @@
                                 <% index = 1; %>
                             <% } %>
                             <% for(var i = index; i < fields.length; i++){ %>
-                                <th class="text-center"><%= fields[i]%></th>
+                                <%if (fields[i]==='Committee Rank' || fields[i]==='GPA') { %>
+                                  <th class="text-center sorter-grades"><%= fields[i]%></th>
+                                <%} else if (fields[i] !=='Applicant Name' && fields[i] !=='Degree Applied For' && fields[i] !== 'Visa Status'){ %>
+                                  <th class="text-center sorter-false parser-false"><%= fields[i]%></th>
+                                <%} else {%>
+                                  <th class="text-center"><%= fields[i]%></th>
+                                <%}%>
                             <%}%>
-                            <th class="text-center">
+                            <th class="text-center sorter-false parser-false">
                                 Actions
                             </th>
                         </tr>
@@ -36,6 +42,7 @@
                               <%} else{ %>
                               <%= apps[i][fields[j]]%>
                               <%}%>
+                            <%#} else if (fields[j]==='Committee Rank' || fields[j]==='GPA') { %>
                             <%} else{ %>
                               <%= apps[i][fields[j]]%>
                             <%}%>
