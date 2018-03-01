@@ -5,8 +5,6 @@ var fs = require('fs');
 var path = require('path');
 var endOfLine = require('os').EOL;
 
-// this file path can be pointed to any server located file or local file for htpasswd to work
-// for security reasons, all htpasswd should be bycrypted
 var htpasswdFile = path.resolve(__dirname, '..', '.private', '.htpasswd');
      
 var User = function() {};
@@ -55,6 +53,21 @@ User.prototype.validPassword = function(username, password) {
 		}
 	}
 	return found;
+};
+
+/**
+ * Create a user in the htpasswd file
+ * @param {String} username 
+ * @param {String} password 
+ * @param {Function} cb 
+ */
+User.prototype.createUser = function(username, password, cb) {
+	var encrypted = md5(password);
+	var data = username + ':' + encrypted + endOfLine;
+	fs.appendFile(htpasswdFile, data, function (err) {
+		if (err) throw err;
+		return cb(err, username);
+	});
 };
 
 module.exports = User;

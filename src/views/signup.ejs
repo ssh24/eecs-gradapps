@@ -1,0 +1,53 @@
+<% include partials/header %>
+    <% include partials/navbar %>
+        <!--Main Message-->
+        <div class="jumbotron">
+            <form action="/signup" method="post">
+                <div class="container">
+
+                    <div class="col-sm-6 col-sm-offset-3">
+                    
+                        <h1 id="signup-header"><span class="glyphicon glyphicon-user"></span> Register</h1>
+                    
+                        <!-- show any messages that come back with authentication -->
+                        <% if (message.length > 0) { %>
+                            <div id="error-message" class="alert alert-danger"><%= message %></div>
+                        <% } %>
+                    
+                        <!-- LOGIN FORM -->
+                        <form action="/signup" method="post">
+                            <div class="form-group">
+                                <label>First Name</label>
+                                <input id="f_name" type="text" class="form-control" name="f_name" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Last Name</label>
+                                <input id="l_name" type="text" class="form-control" name="l_name" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input id="email" type="text" class="form-control" name="email">
+                            </div>
+                            <div class="form-group">
+                                <label>Username</label>
+                                <input id="username" type="text" class="form-control" name="username" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Password</label>
+                                <input id="password" type="password" class="form-control" name="password" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Confirm Password</label>
+                                <input id="confirm_password" type="password" class="form-control" name="confirm_password" required>
+                                <span id="pass-message"></span>
+                            </div>
+                            <button id="register-btn" type="submit" class="btn btn-warning btn-lg" disabled>Register &raquo;</button>
+                        </form>
+                    
+                        <hr>
+                    
+                    </div>
+                    
+                    </div>
+        </div>
+<% include partials/footer %>

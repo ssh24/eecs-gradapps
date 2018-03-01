@@ -34,20 +34,38 @@ describe('Welcome Test', function() {
 			.equal('Welcome to Grad Apps');
 	});
 
-	it('- get sign in message', function() {
-		expect(welcome.getSignInMessage.call(welcome)).to.eventually
-			.equal('Sign in to the application to get started');
-	});
-
 	it('- get sign in note', function() {
 		expect(welcome.getSignInNote.call(welcome)).to.eventually
-			.equal('Note: Signing into the Grad Apps portal requires a ' + 
-			'valid EECS username');
+			.equal('Have an account? Sign in to get started');
 	});
 
 	it('- get sign in button text', function() {
 		expect(welcome.getSignInBtnText.call(welcome)).to.eventually
-			.equal('Sign in »');
+			.contain('Sign In');
+	});
+
+	it('- click sign in button and return back', function() {
+		welcome.clickSignInButton()
+			.then(expect(browser.getCurrentUrl()).to.eventually.contain('/login'))
+			.then(utils.openView.call(utils, '#'))
+			.then(expect(browser.getCurrentUrl()).to.eventually.contain('#'));
+	});
+
+	it('- get sign up note', function() {
+		expect(welcome.getSignUpNote.call(welcome)).to.eventually
+			.equal('Need an account? Register as a new user to get started');
+	});
+
+	it('- get sign up button text', function() {
+		expect(welcome.getSignUpBtnText.call(welcome)).to.eventually
+			.contain('Register');
+	});
+
+	it('- click sign up button and return back', function() {
+		welcome.clickSignUpButton()
+			.then(expect(browser.getCurrentUrl()).to.eventually.contain('/signup'))
+			.then(utils.openView.call(utils, '#'))
+			.then(expect(browser.getCurrentUrl()).to.eventually.contain('#'));
 	});
 
 	describe('- get additional messages', function(){

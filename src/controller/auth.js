@@ -10,6 +10,30 @@ var Authentication = function(connection) {
 };
 
 /**
+ * Sign up a user
+ * @param {Object} options 
+ * @param {Function} cb 
+ */
+Authentication.prototype.signUp = function(options, cb) {
+	assert(typeof options === 'object');
+	assert(typeof cb === 'function');
+
+	options.email = options.email || null;
+
+	this.conn.query('insert into faculty_member (`fm_Lname`, `fm_Fname`, ' + 
+	'`fm_Email`, `fm_Username`) VALUES (?, ?, ?, ?)', [options.lname, 
+		options.fname, options.email, options.username], function(err, result) {
+		if (err) return cb(err);
+		else if (result) {
+			return cb(err, result);
+		} else {
+			err = new Error('Failed to create user');
+			return cb(err);
+		}
+	});
+};
+
+/**
  * Login as a member
  * @param {Number} memberId
  * @param {Function} cb

@@ -12,7 +12,8 @@ var auth = new Authentication(connection);
 module.exports = function(app, passport) {
 	// home page route
 	app.get('/', function(req, res) {
-		res.render('index', { title: 'Welcome to Grad Apps', user: null, 
+		res.render('index', { message: req.flash('signupMessage'), 
+			title: 'Welcome to Grad Apps', user: null, 
 			role: null});
 	});
     
@@ -24,15 +25,30 @@ module.exports = function(app, passport) {
 	});
     
 	app.post('/login', passport.authenticate('local-login', {
-		successRedirect : '/roles', // redirect to the secure profile section
+		successRedirect : '/roles', // redirect to the role selection page
 		failureRedirect : '/login', // redirect back to the signup page if there is an error
+		failureFlash : true // allow flash messages
+	}));
+
+	/** SIGN UP PAGE ROUTE */
+	app.get('/signup', function(req, res) {
+		// render the page and pass in any flash data if it exists
+		res.render('signup', { message: req.flash('signupMessage'), 
+			title: 'Register', 
+			user: null, 
+			role: null});
+	});
+
+	app.post('/signup', passport.authenticate('local-signup', {
+		successRedirect : '/', // redirect to the login page
+		failureRedirect : '/signup', // redirect back to the signup page if there is an error
 		failureFlash : true // allow flash messages
 	}));
 
 	// roles page route
 	app.get('/roles', isLoggedIn, function(req, res) {
 		var userInfo = req.user;
-		res.render('roles', { 
+		res.render('roles', {
 			title: 'Role Selection',
 			confirmation: 'You have been successfully logged into the system.',
 			user: userInfo.id,
