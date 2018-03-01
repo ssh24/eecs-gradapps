@@ -13,6 +13,13 @@ module.exports = {
 			'user': process.env.MYSQL_USER,
 			'password': process.env.MYSQL_PASSWORD,
 			'database': 'testdb'
+		},
+		'signup': {
+			'fname': 'Foo',
+			'lname': 'Bar',
+			'email': 'foo@bar.com',
+			'username': 'foo',
+			'password': 'foo'
 		}
 	},
 	'app': {

@@ -100,18 +100,15 @@ module.exports = function(passport) {
 					fname: req.body.f_name,
 					lname: req.body.l_name,
 					email: req.body.email,
-					username: username
+					username: username,
+					password: password
 				};
 				auth.signUp(options, function(err, result) {
 					if (err) return done(null, false, req.flash('signupMessage', 
 						'Fatal Database Error: ' + err.message));
 					else if (result) {
-						User.createUser(username, password, function(err, result) {
-							if (err) return done(null, false, req.flash('signupMessage', 
-								'Fatal Error: ' + err.message));
-							return done(null, result, req.flash('signupMessage', 
-								'User "' + username + '" has been registered. Please contact the system administrator to get roles assigned.'));
-						});
+						return done(null, result, req.flash('signupMessage', 
+							'User "' + username + '" has been registered. Please contact the system administrator to get roles assigned.'));
 					} else {
 						err = new Error('Sign up failure. Please contact the system administrator for more help.');
 						return done(null, false, req.flash('signupMessage', err.message));

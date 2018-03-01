@@ -2,10 +2,12 @@
 
 var assert = require('assert');
 
+var User = require('../model/user');
 var Utils = require('./utils');
 
 var Authentication = function(connection) {
 	this.conn = connection;
+	this.user = new User();
 	this.utils = new Utils(this.conn);
 };
 
@@ -20,14 +22,17 @@ Authentication.prototype.signUp = function(options, cb) {
 
 	options.email = options.email || null;
 
+	var self = this;
+
 	this.conn.query('insert into faculty_member (`fm_Lname`, `fm_Fname`, ' + 
 	'`fm_Email`, `fm_Username`) VALUES (?, ?, ?, ?)', [options.lname, 
 		options.fname, options.email, options.username], function(err, result) {
 		if (err) return cb(err);
-		else if (result) {
-			return cb(err, result);
+		if (result && result.affectedRows === 1) {
+			self.user.createUser(options.username, options.password, cb);
 		} else {
-			err = new Error('Failed to create user');
+			err = new Error('Failed to create user with id "' + options.username 
+			+ '"');
 			return cb(err);
 		}
 	});
