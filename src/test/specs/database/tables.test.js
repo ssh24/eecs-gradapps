@@ -181,6 +181,29 @@ describe('Tables Test', function() {
 					done();
 				});
 		});
+
+		it('gpa', function(done) {
+			var fields = config.database.fields.gpa;
+			connection.query('DESCRIBE gpa', 
+				function(err, descriptions) {
+					if (err) done(err);
+					assert(descriptions, 'Description should exist');
+					assert.equal(fields.length, descriptions.length, 
+						'Field lengths should match');
+					_.forEach(descriptions, function(description) {
+						assert(fields.includes(description['Field']));
+					});
+					var primaryKey = _.filter(descriptions, 
+						function(description) {
+							return description['Key'] === 'PRI';
+						});
+					assert.equal(1, primaryKey.length, 
+						'There should be one PK');
+					assert.equal(fields[0], primaryKey[0]['Field'], 
+						'Primary key should match');
+					done();
+				});
+		});
 	});
 
 	// test table relations

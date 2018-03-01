@@ -33,7 +33,7 @@ module.exports = {
 	},
 	'database': {
 		'tables': ['application', 'application_review', 
-			'application_seen', 'faculty_member', 'university', 'foi'],
+			'application_seen', 'faculty_member', 'university', 'foi', 'gpa'],
 		'fields': {
 			'faculty_member': ['fm_Id', 'fm_Username', 'fm_Lname', 'fm_Fname', 
 				'fm_Email', 'fm_Roles', 'presetProf', 'presetCommittee', 
@@ -49,7 +49,8 @@ module.exports = {
 				'lastReminded'],
 			'application_seen': ['fmId', 'appId', 'seen'],
 			'university': ['u_Id', 'u_Name', 'u_Assessments'],
-			'foi': ['field_Id', 'field_Name']
+			'foi': ['field_Id', 'field_Name'],
+			'gpa': ['letter_grade', 'grade_point']
 		}
 	}
 };

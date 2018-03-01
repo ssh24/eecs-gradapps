@@ -3,6 +3,8 @@
 var _ = require('lodash');
 var assert = require('assert');
 
+var Promise = require('bluebird');
+
 var Utils = function(connection) {
 	this.conn = connection;
 };
@@ -446,7 +448,7 @@ Utils.prototype.getFieldOfInterests = function(cb) {
  */
 Utils.prototype.getApplicantNames = function(cb) {
 	var sql = 'SELECT CONCAT_WS(\' \', `FName`, `LName`) AS `Applicant Name`' + 
-	' FROM APPLICATION where committeeReviewed=1';
+	' FROM APPLICATION where committeeReviewed=1 and Rank is not null';
 	var applicants;
 	this.conn.query(sql, function(err, result) {
 		if (err) return cb(err);
@@ -458,6 +460,67 @@ Utils.prototype.getApplicantNames = function(cb) {
 			return cb(err);
 		}
 	});
+};
+
+/**
+ * Get all gpa
+ * @param {Function} cb 
+ */
+Utils.prototype.getGPA = function(cb) {
+	var sql = 'SELECT letter_grade as `GPA` from gpa';
+	var gpas;
+	this.conn.query(sql, function(err, result) {
+		if (err) return cb(err);
+		if(result.length > 0) {
+			gpas = _.map(result, 'GPA');
+			return cb(err, gpas);
+		} else {
+			err = new Error('No applicants found');
+			return cb(err);
+		}
+	});
+};
+
+Utils.prototype.buildCommitteeRankFilter = function(operand, grade, cb) {
+	cb = cb || this.createPromiseCallback();
+	
+	assert(typeof operand === 'string');
+	assert(typeof grade === 'string');
+	assert(typeof cb === 'function');
+
+	var selectSql = 'Select letter_grade from gpa where grade_point ' + operand + 
+	' (select grade_point from gpa where letter_grade="' + grade + '")';
+	var resultSql = '(';
+
+	this.conn.query(selectSql, function(err, grades) {
+		if (err) return cb(err);
+		if (grades.length > 0) {
+			for(var i = 0; i < grades.length; i++) {
+				var chosen = grades[i]['letter_grade'];
+				resultSql += ('JSON_CONTAINS(Rank, \'"'+chosen+'"\')');
+				if (i != grades.length - 1)
+					resultSql += (' OR ');
+				else
+					resultSql += ')';
+			}
+			return cb(err, resultSql);
+		} else {
+			err = new Error('No grades found with range %s %s', operand, grade);
+			return cb(err);
+		}
+	});
+};
+
+Utils.prototype.createPromiseCallback = function() {
+	var cb;
+	var promise = new Promise(function(resolve, reject) {
+		cb = function(err, data) {
+			if (err) return reject(err);
+			return resolve(data);
+		};
+	});
+	cb.promise = promise;
+	return cb;
 };
 
 module.exports = Utils;
