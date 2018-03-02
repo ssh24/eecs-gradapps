@@ -39,6 +39,27 @@ describe('Login Test', function() {
 			.equal('Login');
 	});
 
+	it('- return to home page', function() {
+		login.goHome()
+			.then(expect(browser.getCurrentUrl()).to.eventually
+				.contain('/'))
+			.then(welcome.clickSignInButton.call(welcome))
+			.then(expect(browser.getCurrentUrl()).to.eventually
+				.contain('login'));
+	});
+
+	it('- return to register page', function() {
+		login.goRegister()
+			.then(expect(browser.getCurrentUrl()).to.eventually
+				.contain('register'))
+			.then(utils.openView.call(utils, '#'))
+			.then(expect(browser.getCurrentUrl()).to.eventually
+				.contain('/'))
+			.then(welcome.clickSignInButton.call(welcome))
+			.then(expect(browser.getCurrentUrl()).to.eventually
+				.contain('login'));
+	});
+
 	it('- log in with only username no password', function() {
 		login.enterUsername(config.credentials.app.username)
 			.then(login.clickLogIn.call(login))

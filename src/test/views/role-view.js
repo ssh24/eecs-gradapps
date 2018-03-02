@@ -11,7 +11,7 @@ function Role() {
 	this.roles.admin = by.id('admin-role');
 	this.roles.professor = by.id('professor-role');
 	this.roles.committee = by.id('committee-role');
-
+	this.roles.missing = by.id('role-missing');
 
 	this.roles.switch = {};
 	this.roles.switch.admin = by.id('switch-to-admin');
@@ -29,6 +29,10 @@ Role.prototype.getProfessorText = function() {
 
 Role.prototype.getCommitteeText = function() {
 	return element(this.roles.committee).getText();
+};
+
+Role.prototype.getRoleMissingText = function() {
+	return element(this.roles.missing).getText();
 };
 
 Role.prototype.selectRole = function(role) {

@@ -1,19 +1,22 @@
 'use strict';
 
+var async = require('async');
 var assert = require('assert');
 var config = require('../../lib/utils/config');
 var mysql = require('mysql2');
 
 var Authentication = require('../../../controller/auth');
+var Member = require('../../../controller/member');
 var Utils = require('../../../controller/utils');
 
-var auth, connection, utils;
+var auth, connection, member, utils;
 var creds = config.credentials.database;
 
 describe('Authentication Triggers', function() {
 	before(function(done) {
 		connection = mysql.createConnection(creds);
 		auth = new Authentication(connection);
+		member = new Member(connection);
 		utils = new Utils(connection);
 		connection.connect(done);
 	});
@@ -162,6 +165,59 @@ describe('Authentication Triggers', function() {
 			auth.logOut(0, function(err, result) {
 				assert(err, 'Error should exist');
 				assert(!result, 'Result should not exist');
+				done();
+			});
+		});
+	});
+
+	describe('signup', function() {
+		var newMemberId;
+
+		before(function setUp(done) {
+			async.series([
+				function(callback) {
+					auth.logIn(1, callback);
+				},	
+				function(callback) {
+					auth.selectRole(1, 'Admin', callback);
+				}
+			], done);
+		});
+
+		after(function cleanUp(done) {
+			async.series([
+				function(callback) {
+					utils.getMemberId(config.credentials.signup.username, 
+						function(err, id) {
+							if (err) callback(err);
+							newMemberId = id;
+							callback();
+						});
+				},	
+				function(callback) {
+					member.removeMember(1, newMemberId, callback);
+				},
+				function(callback) {
+					auth.logOut(1, callback);
+				}
+			], done);
+		});
+		
+		it('sign up with a new username', function(done) {
+			auth.signUp(config.credentials.signup, function(err, result) {
+				if (err) done(err);
+				assert(result, 'Result should exist');
+				done();
+			});
+		});
+
+		it('sign up with a used username', function(done) {
+			var currentUser = config.credentials.signup.username;
+			config.credentials.signup.username = 'admin';
+			auth.signUp(config.credentials.signup, function(err, result) {
+				assert(err, 'Error should exist');
+				assert(!result, 'Result should not exist');
+				config.credentials.signup.username = currentUser;
 				done();
 			});
 		});

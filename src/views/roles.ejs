@@ -10,18 +10,25 @@
             <p id="welcome-header"><%= title %></p>
             <div class="row">
                 <div class="col-sm-4">
-                    <% if (roles.includes('Admin')) { %>
+                    <% if (roles && roles.includes('Admin')) { %>
                         <a id="admin-role" href="/roles/admin" class="btn btn-primary">Continue as an Admin &raquo;</a>
                     <% } %>
                 </div>
                 <div class="col-sm-4">
-                    <% if (roles.includes('Professor')) { %>
+                    <% if (roles && roles.includes('Professor')) { %>
                         <a id="professor-role" href="/roles/professor" class="btn btn-primary">Continue as a Professor &raquo;</a>
                     <% } %>
                 </div>
                 <div class="col-sm-4">
-                    <% if (roles.includes('Committee Member')) { %>
+                    <% if (roles && roles.includes('Committee Member')) { %>
                         <a id="committee-role" href="/roles/committee" class="btn btn-primary">Continue as a Committee Member &raquo;</a>
+                    <% } %>
+                </div>
+                <div>
+                    <% if (!roles) { %>
+                        <div class="alert alert-danger">
+                            <h5 id = "role-missing">Oops! Looks like you have not been assigned a role yet. Please contact a system administrator.</h5>
+                        </div>
                     <% } %>
                 </div>
             </div>

@@ -6,14 +6,19 @@ var Utils = require('../lib/utils/shared-utils');
 
 function Welcome() {
 	this.utils = new Utils();
-    
+	
+	this.timeout = 20000;
+
 	this.welcome = {};
 	this.welcome.header = by.id('welcome-header');
     
 	this.signin = {};
-	this.signin.message = by.id('sign-in-message');
 	this.signin.note = by.id('sign-in-note');
 	this.signin.button = by.id('sign-in-btn');
+
+	this.signup = {};
+	this.signup.note = by.id('sign-up-note');
+	this.signup.button = by.id('sign-up-btn');
 
 	this.extra = {
 		h1: by.id('h1'),
@@ -29,20 +34,30 @@ Welcome.prototype.getWelcomeText = function() {
 	return element(this.welcome.header).getText();
 };
 
-Welcome.prototype.getSignInMessage = function() {
-	return element(this.signin.message).getText();
-};
-
 Welcome.prototype.getSignInNote = function() {
 	return element(this.signin.note).getText();
 };
 
-Welcome.prototype.clickSignInButton = function() {
-	return element(this.signin.button).click();
-};
-
 Welcome.prototype.getSignInBtnText = function() {
 	return element(this.signin.button).getText();
+};
+
+Welcome.prototype.clickSignInButton = function() {
+	return this.utils.waitForElementClickable(this.signin.button, this.timeout)
+		.then(element(this.signin.button).click());
+};
+
+Welcome.prototype.getSignUpNote = function() {
+	return element(this.signup.note).getText();
+};
+
+Welcome.prototype.getSignUpBtnText = function() {
+	return element(this.signup.button).getText();
+};
+
+Welcome.prototype.clickSignUpButton = function() {
+	return this.utils.waitForElementClickable(this.signup.button, this.timeout)
+		.then(element(this.signup.button).click());
 };
 
 Welcome.prototype.isFirstMessageDisplayed = function() {
