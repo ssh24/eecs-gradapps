@@ -2,8 +2,6 @@
 
 var assert = require('assert');
 
-var Promise = require('bluebird');
-
 var Utils = function (connection) {
 	this.conn = connection;
 };
@@ -405,21 +403,6 @@ Utils.prototype.unlockAccount = function(adminId, memberId, cb) {
 			return cb(err);
 		}
 	});
-};
-
-/**
- * A promise callback function
- */
-Utils.prototype.createPromiseCallback = function() {
-	var cb;
-	var promise = new Promise(function(resolve, reject) {
-		cb = function(err, data) {
-			if (err) return reject(err);
-			return resolve(data);
-		};
-	});
-	cb.promise = promise;
-	return cb;
 };
 
 module.exports = Utils;

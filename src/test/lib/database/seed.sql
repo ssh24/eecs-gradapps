@@ -163,6 +163,16 @@ CREATE TABLE `FOI` (
     PRIMARY KEY(`field_Id`)
 ) ENGINE=INNODB;
 
+-- USER table
+-- @username: username of the user
+-- @password: encrypted password of the user (using apache md5)
+
+CREATE TABLE `USER` (
+    `username` VARCHAR(50) NOT NULL,
+    `password` VARCHAR(1023) NOT NULL,
+    PRIMARY KEY(`username`)
+) ENGINE=INNODB;
+
 -- Source all trigger files
 SET autocommit=0;
 source test/lib/database/trigger/application_rev.trigger.sql;COMMIT;
@@ -171,6 +181,7 @@ source test/lib/database/trigger/application_seen.trigger.sql;COMMIT;
 
 
 -- Source all the data sql files
+SET autocommit=0; source test/lib/database/data/user.data.sql; COMMIT;
 SET autocommit=0; source test/lib/database/data/foi.data.sql; COMMIT;
 SET autocommit=0; source test/lib/database/data/fm.data.sql; COMMIT;
 SET autocommit=0; source test/lib/database/data/application.data.sql; COMMIT;

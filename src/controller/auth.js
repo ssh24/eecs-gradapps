@@ -7,7 +7,7 @@ var Utils = require('./utils');
 
 var Authentication = function(connection) {
 	this.conn = connection;
-	this.user = new User();
+	this.user = new User(this.conn);
 	this.utils = new Utils(this.conn);
 };
 

@@ -1,15 +1,82 @@
 'use strict';
 
-var _ = require('lodash');
-
+var assert = require('assert');
 var md5 = require('apache-md5');
-var fs = require('fs');
-var path = require('path');
-var endOfLine = require('os').EOL;
 
-var htpasswdFile = path.resolve(__dirname, '..', '.private', '.htpasswd');
+var Utils = require('../controller/utils');
      
-var User = function() {};
+var User = function(connection) {
+	this.conn = connection;
+	this.utils = new Utils(this.conn);
+};
+
+/**
+ * Create a new user
+ * @param {String} username 
+ * @param {String} password 
+ * @param {Function} cb 
+ */
+User.prototype.createUser = function(username, password, cb) {
+	assert(typeof username === 'string');
+	assert(typeof password === 'string');
+	assert(typeof cb === 'function');
+
+	var self = this;
+	var insertStmt;
+	var encrypted = md5(password);
+
+	this.findUser(username, function(err, isFound) {
+		if (err) return cb(err);
+		else {
+			if (!isFound) {
+				insertStmt = self.utils.createInsertStatement('user', ['username', 
+					'password'], [JSON.stringify(username), 
+					JSON.stringify(encrypted)]);
+				self.conn.query(insertStmt, function(err, result) {
+					if (err) return cb(err);
+					if (result && result.affectedRows === 1) {
+						return cb(err, username);
+					}
+				});
+			} else {
+				err = new Error('User with username "' + username + '" exists');
+				return cb(err);
+			}
+		}
+	});
+};
+
+/**
+ * Remove an existing user
+ * @param {String} username 
+ * @param {Function} cb 
+ */
+User.prototype.removeUser = function(username, cb) {
+	assert(typeof username === 'string');
+	assert(typeof cb === 'function');
+
+	var self = this;
+	var deleteSmt;
+
+	this.findUser(username, function(err, isFound) {
+		if (err) return cb(err);
+		else {
+			if (isFound) {
+				deleteSmt = self.utils.createDeleteStatement('user', 
+					['username'], [JSON.stringify(username)]);
+				self.conn.query(deleteSmt, function(err, result) {
+					if (err) return cb(err);
+					return cb(err, result.affectedRows === 1);
+				});
+			} else {
+				err = new Error('No user found with username '+ 
+				JSON.stringify(username));
+				return cb(err);
+			}
+		}
+	});
+};
+
 
 /**
  * Find a user by the username
@@ -17,20 +84,14 @@ var User = function() {};
  * @param {Function} cb 
  */
 User.prototype.findUser = function(username, cb) {
-	var lines;
-	var user = null;
-	var data = fs.readFileSync(htpasswdFile, 'utf8');
-	lines = data.split('\n');
-	for(var i = 0; i < lines.length; i++) {
-		var line = lines[i];
-		if(line) {
-			if (line.split(':')[0] === username) {
-				user = username;
-				break;
-			}
-		}
-	}
-	return cb(null, user);
+	assert(typeof username === 'string');
+	assert(typeof cb === 'function');
+
+	this.conn.query('select * from user where username=' + JSON.stringify(username), 
+		function(err, result) {
+			if (err) return cb(err);
+			return cb(null, result.length === 1);
+		});
 };
 
 /**
@@ -38,65 +99,31 @@ User.prototype.findUser = function(username, cb) {
  * @param {String} username 
  * @param {HashedString} password 
  */
-User.prototype.validPassword = function(username, password) {
-	var lines, user, pass;
-	var found = false;
-	var data = fs.readFileSync(htpasswdFile, 'utf8');
-	lines = data.split(endOfLine);
-	for(var i = 0; i < lines.length; i++) {
-		var line = lines[i];
-		if(line) {
-			user = line.split(':')[0];
-			pass = line.split(':')[1].trim();
-			if (user === username) {
-				found = (pass === md5(password, pass));
-				break;
-			}
-		}
-	}
-	return found;
-};
+User.prototype.validPassword = function(username, password, cb) {
+	assert(typeof username === 'string');
+	assert(typeof password === 'string');
+	assert(typeof cb === 'function');
 
-/**
- * Create a user in the htpasswd file
- * @param {String} username 
- * @param {String} password 
- * @param {Function} cb 
- */
-User.prototype.createUser = function(username, password, cb) {
-	var encrypted = md5(password);
-	var data = username + ':' + encrypted + endOfLine;
-	fs.appendFile(htpasswdFile, data, function (err) {
-		if (err) throw err;
-		return cb(err, username);
-	});
-};
+	var self = this;
 
-/**
- * Remove a user in the htpasswd file
- * @param {String} username 
- * @param {Function} cb 
- */
-User.prototype.removeUser = function(username, cb) {
-	var lines;
-	var newData = '';
-	var userRemoved = false;
-
-	var data = fs.readFileSync(htpasswdFile, 'utf8');
-	lines = data.split('\n');
-
-	_.forEach(lines, function(line) {
-		if (line) {
-			if (line.split(':')[0].indexOf(username) === -1) {
-				newData = (newData + line).trim() + endOfLine;
-			}
-			else userRemoved = true;
-		}
-	});
-
-	fs.writeFile(htpasswdFile, newData, function(err) {
+	this.findUser(username, function(err, isFound) {
 		if (err) return cb(err);
-		return cb(null, userRemoved);
+		else {
+			if (isFound) {
+				self.conn.query('select * from user where username='+ JSON.stringify(username), 
+					function(err, result) {
+						if (err) return cb(err);
+						if (result && result.length === 1) {
+							var isValid = (result[0]['password'] === 
+							md5(password, result[0]['password']));
+							return cb(err, isValid);
+						}
+					});
+			} else {
+				err = new Error('No user found with username "' + username + '"');
+				return cb(err);
+			}
+		}
 	});
 };
 

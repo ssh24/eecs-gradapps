@@ -63,7 +63,7 @@ describe('Welcome Test', function() {
 
 	it('- click sign up button and return back', function() {
 		welcome.clickSignUpButton()
-			.then(expect(browser.getCurrentUrl()).to.eventually.contain('/signup'))
+			.then(expect(browser.getCurrentUrl()).to.eventually.contain('/register'))
 			.then(utils.openView.call(utils, '#'))
 			.then(expect(browser.getCurrentUrl()).to.eventually.contain('#'));
 	});

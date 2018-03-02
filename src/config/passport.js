@@ -1,24 +1,23 @@
 'use strict';
 
+var config = require('./database');
+var mysql = require('mysql2');
+
 // load all the things we need
 var LocalStrategy  = require('passport-local').Strategy;
 
 // load up the user model
 var USER = require('../model/user');
-var User = new USER();
-
-var mysql = require('mysql2');
-var config = require('../test/lib/utils/config');
-var creds = config.credentials.database;
-var connection = mysql.createConnection(creds);
-connection.connect();
-
 var Utils = require('../controller/utils');
 var Authentication = require('../controller/auth');
+
+var creds = config;
+var connection = mysql.createConnection(creds);
+connection.connect();
 var auth = new Authentication(connection);
 var utils = new Utils(connection);
+var User = new USER(connection);
 
-// expose this function to our app using module.exports
 module.exports = function(passport) {
 	// used to serialize the user for the session
 	passport.serializeUser(function(user, done) {
@@ -48,47 +47,47 @@ module.exports = function(passport) {
 	});
 
 	passport.use('local-login', new LocalStrategy({
-		// by default, local strategy uses username and password, we will override with email
 		usernameField : 'username',
 		passwordField : 'password',
-		passReqToCallback : true // allows us to pass back the entire request to the callback
-	}, function(req, username, password, done) { // callback with username and password from our form
-		// find a user whose email is the same as the forms email
-		// we are checking to see if the user trying to login already exists
+		passReqToCallback : true
+	}, function(req, username, password, done) {
 		User.findUser(username, function(err, user) {
-			// if there are any errors, return the error before anything else
 			if (err) return done(null, false, req.flash('loginMessage', 
 				'Fatal Error: ' + err.message));
 
-			// if no user is found, return the message
 			if (!user)
 				return done(null, false, req.flash('loginMessage', 
-					'Invalid username. Please try again.')); // req.flash is the way to set flashdata using connect-flash
+					'Invalid username. Please try again.'));
 
-			// if the user is found but the password is wrong
-			if (!User.validPassword(username, password))
-				return done(null, false, req.flash('loginMessage', 
-					'Invalid password. Please try again.')); // create the loginMessage and save it to session as flashdata
-
-			utils.getMemberId(user, function(err, id) {
+			User.validPassword(username, password, function(err, isValid) {
 				if (err) return done(null, false, req.flash('loginMessage', 
-					'Fatal Database Error: ' + err.message));
-				auth.logIn(id, function(err) {
-					if (err) return done(null, false, req.flash('loginMessage', 
-						'Account locked due to user "' + user + '" not logging ' + 
-						'out properly.\nPlease contact the system administrator ' + 
-						'for help.'));
-					return done(null, user);
-				});
+					'Fatal Error: ' + err.message));
+				else {
+					if (!isValid) {
+						return done(null, false, req.flash('loginMessage', 
+							'Invalid password. Please try again.'));
+					} else {
+						utils.getMemberId(username, function(err, id) {
+							if (err) return done(null, false, req.flash('loginMessage', 
+								'Fatal Database Error: ' + err.message));
+							auth.logIn(id, function(err) {
+								if (err) return done(null, false, req.flash('loginMessage', 
+									'Account locked due to user "' + username + '" not logging ' + 
+								'out properly.\nPlease contact the system administrator ' + 
+								'for help.'));
+								return done(null, username);
+							});
+						});
+					}
+				}
 			});
 		});
 	}));
 
 	passport.use('local-signup', new LocalStrategy({
-		// by default, local strategy uses username and password, we will override with email
 		usernameField : 'username',
 		passwordField : 'password',
-		passReqToCallback : true // allows us to pass back the entire request to the callback
+		passReqToCallback : true
 	}, function(req, username, password, done) {
 		User.findUser(username, function(err, result) {
 			if (err) return done(null, false, req.flash('signupMessage', 

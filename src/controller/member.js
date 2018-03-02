@@ -8,7 +8,7 @@ var Utils = require('./utils');
 
 var Member = function(connection) {
 	this.conn = connection;
-	this.user = new User();
+	this.user = new User(this.conn);
 	this.utils = new Utils(this.conn);
 	this.review = new Review(this.conn);
 };
@@ -20,8 +20,6 @@ var Member = function(connection) {
  * @param {Function} cb 
  */
 Member.prototype.removeMember = function(adminId, memberId, cb) {
-	cb = cb || this.utils.createPromiseCallback();
-    
 	assert(typeof adminId === 'number');
 	assert(typeof memberId === 'number');
 	assert(typeof cb === 'function');
