@@ -107,8 +107,6 @@ $(document).ready(function() {
         filterText += "Name = ";
       } else if (filters[i] === "btn_filter_gender") {
         filterText += "Gender = ";
-      } else if (filters[i] === "btn_filter_program_decision") {
-        filterText += "Program Decision = ";
       } else if (filters[i] === "btn_filter_foi") {
         filterText += "Field of Interest = ";
       } else if (filters[i] === "btn_filter_prof") {
@@ -121,10 +119,12 @@ $(document).ready(function() {
         filterText += "Degree Applied For = ";
       } else if (filters[i] === "btn_filter_visa") {
         filterText += "Visa Status = ";
+      } else if (filters[i] === "btn_filter_program_decision") {
+        filterText += "Program Decision = ";
       } else if (filters[i] === "btn_filter_contacted_by") {
-        filterText += "Contacted By = ";
+        filterText += "Contacted By "
       } else if (filters[i] === "btn_filter_requested_by") {
-        filterText += "Requested By = ";
+        filterText += "Requested By ";
       } else if (filters[i] === "btn_filter_interest") {
         filterText += "My Interest Status = ";
       }
