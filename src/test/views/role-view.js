@@ -4,8 +4,9 @@
 
 var Utils = require('../lib/utils/shared-utils');
 
-function Role() {
+function Role(timeout) {
 	this.utils = new Utils();
+	this.timeout = timeout;
     
 	this.roles = {};
 	this.roles.admin = by.id('admin-role');
@@ -32,25 +33,31 @@ Role.prototype.getCommitteeText = function() {
 };
 
 Role.prototype.selectRole = function(role) {
+	var elem;
 	if(role === 'Admin')
-		return element(this.roles.admin).click();
+		elem = this.roles.admin;
 	else if (role === 'Professor')
-		return element(this.roles.professor).click();
+		elem = this.roles.professor;
 	else if (role === 'Committee Member')
-		return element(this.roles.committee).click();
+		elem = this.roles.committee;
 	else
 		return;
+	return this.utils.waitForElementClickable(elem, this.timeout)
+		.then(element(elem).click());
 };
 
 Role.prototype.changeRole = function(role) {
+	var elem;
 	if(role === 'Admin')
-		return element(this.roles.switch.admin).click();
+		elem = this.roles.switch.admin;
 	else if (role === 'Professor')
-		return element(this.roles.switch.professor).click();
+		elem = this.roles.switch.professor;
 	else if (role === 'Committee Member')
-		return element(this.roles.switch.committee).click();
+		elem = this.roles.switch.committee;
 	else
 		return;
+	return this.utils.waitForElementClickable(elem, this.timeout)
+		.then(element(elem).click());
 };
 
 module.exports = Role;

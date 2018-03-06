@@ -1,5 +1,7 @@
 'use strict';
 
+var _ = require('lodash');
+
 module.exports = function(app, utils, application, fns) {
 	var basicProfessor = fns.concat([applyApplicationActions, getApps]);
 	var filterProfessor = fns.concat([applyApplicationActions, filterApps]);
