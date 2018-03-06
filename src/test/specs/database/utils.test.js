@@ -246,6 +246,16 @@ describe('Util Functionalities', function() {
 		});
 	});
 
+	describe('get gpa function', function(){
+		it('return all gpas', function(done) {
+			utils.getGPA(function(err, result) {
+				if (err) done(err);
+				assert(result, 'Result should exist');
+				done();
+			});
+		});
+	});
+
 	describe('build committee rank function', function(){
 		it('build committee rank: > B', function(done) {
 			utils.buildCommitteeRankFilter('>', 'B', function(err, result) {
