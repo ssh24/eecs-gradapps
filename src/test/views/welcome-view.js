@@ -4,8 +4,9 @@
 
 var Utils = require('../lib/utils/shared-utils');
 
-function Welcome() {
+function Welcome(timeout) {
 	this.utils = new Utils();
+	this.timeout = timeout;
     
 	this.welcome = {};
 	this.welcome.header = by.id('welcome-header');
@@ -38,7 +39,8 @@ Welcome.prototype.getSignInNote = function() {
 };
 
 Welcome.prototype.clickSignInButton = function() {
-	return element(this.signin.button).click();
+	return this.utils.waitForElementClickable(this.signin.button, this.timeout)
+		.then(element(this.signin.button).click());
 };
 
 Welcome.prototype.getSignInBtnText = function() {

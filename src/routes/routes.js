@@ -230,7 +230,7 @@ function filterApps(req, res, next) {
 			} else if (cols[i] === 'btn_col_gender') {
 				sqlCol += 'Gender,';
 			} else if (cols[i] === 'btn_col_foi') {
-				sqlCol += 'FOI as `Field of Interests`,';
+				sqlCol += 'FOI as `Fields of Interest`,';
 			} else if (cols[i] === 'btn_col_prof') {
 				sqlCol += 'prefProfs as `Preferred Professors`,';
 			} else if (cols[i] === 'btn_col_ranking') {
