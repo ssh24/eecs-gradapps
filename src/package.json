@@ -8,9 +8,9 @@
     "dev:start": "npm run seed:database && npm start",
     "seed:database": "node ./test/pretest.js",
     "test": "nyc --reporter=html --reporter=text npm run run:test",
-    "run:test": "npm run seed:database && mocha --timeout 5000 test/specs/database/*.test.js && webdriver-manager update && protractor config.js",
+    "run:test": "npm run seed:database && mocha --timeout 5000 test/specs/database/*.test.js && npm run seed:database && webdriver-manager update && protractor config.js",
     "posttest": "npm run lint",
-    "db:test": "npm run seed:database && nyc --reporter=text --reporter=html mocha test/specs/database/*.test.js && npm run posttest",
+    "db:test": "npm run seed:database && nyc --reporter=text --reporter=html mocha --timeout 5000 test/specs/database/*.test.js && npm run posttest",
     "unit:test": "npm run seed:database && webdriver-manager update && nyc --reporter=text --reporter=html protractor config.js && npm run posttest"
   },
   "dependencies": {
@@ -39,6 +39,7 @@
     "eslint": "^4.13.1",
     "htpasswd": "^2.4.0",
     "mocha": "^4.1.0",
+    "ms": "^2.1.1",
     "mysql2": "^1.5.1",
     "nodemon": "^1.14.12",
     "nyc": "^11.4.1",

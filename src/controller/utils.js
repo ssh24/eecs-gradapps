@@ -148,18 +148,13 @@ Utils.prototype.isLoggedIn = function(username, cb) {
 
 	this.conn.query('Select * from sessions', function(err, data) {
 		if (err) return cb(err);
-		if (data) {
-			_.forEach(data, function(dt) {
-				if (dt && JSON.parse(dt['data']) && JSON.parse(dt['data'])['passport'] 
+		_.forEach(data, function(dt) {
+			if (dt && JSON.parse(dt['data']) && JSON.parse(dt['data'])['passport'] 
 				&& JSON.parse(dt['data'])['passport']['user'] === username) {
-					foundUser = true;
-				}
-			});
-			return cb(err, foundUser);
-		} else {
-			err = new Error('No user is found logged in as ' + JSON.stringify(username));
-			return cb(err);
-		}
+				foundUser = true;
+			}
+		});
+		return cb(err, foundUser);
 	});
 };
 
@@ -181,35 +176,30 @@ Utils.prototype.clearUserSession = function(username, cb) {
 		if (isLoggedIn) {
 			self.conn.query('Select * from sessions', function(err, data) {
 				if (err) return cb(err);
-				if (data) {
-					var allSessions = _.filter(data, function(element) {
-						element['data'] = JSON.parse(element['data']);
-						return element['data'] && element['data']['passport'] && 
+				var allSessions = _.filter(data, function(element) {
+					element['data'] = JSON.parse(element['data']);
+					return element['data'] && element['data']['passport'] && 
 						element['data']['passport']['user'] === username;
-					});
-					_.forEach(allSessions, function(session) {
-						var obj = {
-							session_id: session.session_id,
-							expires: session.expires
-						};
-						sessionExpiries.push(obj);
-					});
-					var sortedExpiry = _.sortBy(sessionExpiries, ['expires']);
-					for(var i = 0; i < sortedExpiry.length; i++) {
-						deleteStmt += 'delete from sessions where session_id=' + 
+				});
+				_.forEach(allSessions, function(session) {
+					var obj = {
+						session_id: session.session_id,
+						expires: session.expires
+					};
+					sessionExpiries.push(obj);
+				});
+				var sortedExpiry = _.sortBy(sessionExpiries, ['expires']);
+				for(var i = 0; i < sortedExpiry.length; i++) {
+					deleteStmt += 'delete from sessions where session_id=' + 
 						JSON.stringify(sortedExpiry[i].session_id) + ';';
-					}
-					if (deleteStmt) {
-						self.conn.query(deleteStmt, function(err, deleted) {
-							if (err) return cb(err);
-							return cb(err, deleted && deleted.affectedRows > 1);
-						});
-					} else {
-						return cb();
-					}
+				}
+				if (deleteStmt) {
+					self.conn.query(deleteStmt, function(err, deleted) {
+						if (err) return cb(err);
+						return cb(err, deleted && deleted.affectedRows > 1);
+					});
 				} else {
-					err = new Error('No active sessions found');
-					return cb(err);
+					return cb();
 				}
 			});
 		} else {
@@ -505,37 +495,13 @@ Utils.prototype.getGPA = function(cb) {
 	});
 };
 
+/**
+ * Build committee rank
+ * @param {String} operand 
+ * @param {String} grade 
+ * @param {Function} cb 
+ */
 Utils.prototype.buildCommitteeRankFilter = function(operand, grade, cb) {
-	assert(typeof operand === 'string');
-	assert(typeof grade === 'string');
-	assert(typeof cb === 'function');
-
-	var selectSql = 'Select letter_grade from gpa where grade_point ' + operand + 
-	' (select grade_point from gpa where letter_grade="' + grade + '")';
-	var resultSql = '(';
-
-	this.conn.query(selectSql, function(err, grades) {
-		if (err) return cb(err);
-		if (grades.length > 0) {
-			for(var i = 0; i < grades.length; i++) {
-				var chosen = grades[i]['letter_grade'];
-				resultSql += ('JSON_CONTAINS(Rank, \'"'+chosen+'"\')');
-				if (i != grades.length - 1)
-					resultSql += (' OR ');
-				else
-					resultSql += ')';
-			}
-			return cb(err, resultSql);
-		} else {
-			err = new Error('No grades found with range %s %s', operand, grade);
-			return cb(err);
-		}
-	});
-};
-
-Utils.prototype.buildCommitteeRankFilter = function(operand, grade, cb) {
-	cb = cb || this.createPromiseCallback();
-	
 	assert(typeof operand === 'string');
 	assert(typeof grade === 'string');
 	assert(typeof cb === 'function');

@@ -20,6 +20,26 @@ describe('Util Functionalities', function() {
 		connection.end(done);
 	});
 
+	describe('is logged in function', function() {
+		it('check is logged in of a user', function(done) {
+			utils.isLoggedIn('arri', function(err, result) {
+				if (err) done(err);
+				assert(!result, 'Result should not exist');
+				done();
+			});
+		});
+	});
+
+	describe('clear session login function', function() {
+		it('clear session login of a user', function(done) {
+			utils.clearUserSession('arri', function(err, result) {
+				assert(!err, 'Error should not exist');
+				assert(!result, 'Result should not exist');
+				done();
+			});
+		});
+	});
+
 	describe('get member id function', function() {
 		it('get member id of a valid username', function(done) {
 			utils.getMemberId('arri', function(err, result) {
@@ -177,6 +197,16 @@ describe('Util Functionalities', function() {
 	describe('get field of interests function', function(){
 		it('return all field of interests', function(done) {
 			utils.getFieldOfInterests(function(err, result) {
+				if (err) done(err);
+				assert(result, 'Result should exist');
+				done();
+			});
+		});
+	});
+
+	describe('get gpa function', function(){
+		it('return all gpas', function(done) {
+			utils.getGPA(function(err, result) {
 				if (err) done(err);
 				assert(result, 'Result should exist');
 				done();

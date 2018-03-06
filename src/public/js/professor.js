@@ -121,8 +121,10 @@ $(document).ready(function() {
         filterText += "Degree Applied For = ";
       } else if (filters[i] === "btn_filter_visa") {
         filterText += "Visa Status = ";
-      } else if (filters[i] === "btn_filter_status") {
-        filterText += "Application Status = ";
+      } else if (filters[i] === "btn_filter_contacted_by") {
+        filterText += "Contacted By = ";
+      } else if (filters[i] === "btn_filter_requested_by") {
+        filterText += "Requested By = ";
       } else if (filters[i] === "btn_filter_interest") {
         filterText += "My Interest Status = ";
       }
