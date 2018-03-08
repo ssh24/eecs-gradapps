@@ -10,7 +10,7 @@
     "run:test": "npm run seed:database && mocha test/specs/database/*.test.js && webdriver-manager update && protractor config.js",
     "posttest": "npm run lint",
     "db:test": "npm run seed:database && nyc --reporter=text --reporter=html mocha test/specs/database/*.test.js && npm run posttest",
-    "unit:test": "webdriver-manager update && nyc --reporter=text --reporter=html protractor config.js && npm run posttest"
+    "unit:test": "npm run seed:database && webdriver-manager update && nyc --reporter=text --reporter=html protractor config.js && npm run posttest"
   },
   "dependencies": {
     "apache-crypt": "^1.2.1",
@@ -21,10 +21,12 @@
     "debug": "~2.6.9",
     "ejs": "^2.5.7",
     "express": "~4.15.5",
+    "express-mysql-session": "^1.2.3",
     "express-session": "^1.15.6",
     "http-auth": "^3.2.3",
     "lodash": "^4.17.4",
     "morgan": "^1.9.0",
+    "ms": "^2.1.1",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
     "serve-favicon": "~2.4.5"

@@ -38,7 +38,8 @@ Welcome.prototype.getSignInNote = function() {
 };
 
 Welcome.prototype.clickSignInButton = function() {
-	return element(this.signin.button).click();
+	return this.utils.waitForElementClickable(this.signin.button, 20000)
+		.then(element(this.signin.button).click());
 };
 
 Welcome.prototype.getSignInBtnText = function() {

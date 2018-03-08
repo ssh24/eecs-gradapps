@@ -14,8 +14,6 @@ var connection = mysql.createConnection(creds);
 connection.connect();
 
 var Utils = require('../controller/utils');
-var Authentication = require('../controller/auth');
-var auth = new Authentication(connection);
 var utils = new Utils(connection);
 
 // expose this function to our app using module.exports
@@ -70,17 +68,10 @@ module.exports = function(passport) {
 			if (!User.validPassword(username, password))
 				return done(null, false, req.flash('loginMessage', 
 					'Invalid password. Please try again.')); // create the loginMessage and save it to session as flashdata
-
-			utils.getMemberId(user, function(err, id) {
-				if (err) return done(null, false, req.flash('loginMessage', 
-					'Fatal Database Error: ' + err.message));
-				auth.logIn(id, function(err) {
-					if (err) return done(null, false, req.flash('loginMessage', 
-						'Account locked due to user "' + user + '" not logging ' + 
-						'out properly.\nPlease contact the system administrator ' + 
-						'for help.'));
-					return done(null, user);
-				});
+					
+			utils.clearUserSession(user, function(err) {
+				if (err) return done(err);
+				return done(null, user);
 			});
 		});
 	}));

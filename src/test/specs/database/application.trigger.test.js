@@ -1,74 +1,26 @@
 'use strict';
 
 var assert = require('assert');
-var async = require('async');
 var config = require('../../lib/utils/config');
 var mysql = require('mysql2');
 
 var Application = require('../../../controller/application');
-var Auth = require('../../../controller/auth');
 
-var application, auth, connection;
+var application, connection;
 var creds = config.credentials.database;
 
 describe('Application Triggers', function() {
 	before(function overallSetup(done) {
 		connection = mysql.createConnection(creds);
 		application = new Application(connection);
-		auth = new Auth(connection);
-		async.series([
-			function(callback) {
-				connection.connect(callback);
-			},
-			function(callback) {
-				auth.logIn(1, callback);
-			},
-			function(callback) {
-				auth.selectRole(1, 'Admin', callback);
-			}
-		], done);
+		connection.connect(done);
 	});
     
 	after(function overallCleanUp(done) {
-		async.series([
-			function(callback) {
-				auth.logOut(1, callback);
-			},
-			function(callback) {
-				connection.end(callback);
-			}
-		], done);
+		connection.end(done);
 	});
 
 	describe('mark an application seen', function() {
-		before(function setUp(done) {
-			async.series([
-				function(callback) {
-					auth.logIn(7, callback);
-				},
-				function(callback) {
-					auth.logIn(10, callback);
-				},
-				function(callback) {
-					auth.selectRole(7, 'Professor', callback);
-				},
-				function(callback) {
-					auth.selectRole(10, 'Committee Member', callback);
-				}
-			], done);
-		});
-
-		after(function cleanUp(done) {
-			async.series([
-				function(callback) {
-					auth.logOut(7, callback);
-				},
-				function(callback) {
-					auth.logOut(10, callback);
-				}
-			], done);
-		});
-
 		it('not reviewed application', function(done) {
 			application.markApplicationSeen(24, 1, function(err, result) {
 				assert(err, 'Error should exist');
