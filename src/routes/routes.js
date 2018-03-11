@@ -1,13 +1,12 @@
 'use strict';
 
 var mysql = require('mysql2');
-var config = require('../test/lib/utils/config');
-var creds = config.credentials.database;
+var creds = require('../config/database');
 var connection = mysql.createConnection(creds);
 connection.connect();
 
-var Authentication = require('../controller/auth');
-var auth = new Authentication(connection);
+var Utils = require('../controller/utils');
+var utils = new Utils(connection);
 
 module.exports = function(app, passport) {
 	// home page route
@@ -43,7 +42,7 @@ module.exports = function(app, passport) {
 	});
     
 	// admin page route
-	app.get('/roles/admin', [isLoggedIn, selectRole], function(req, res) {
+	app.get('/roles/admin', [isLoggedIn, hasRole], function(req, res) {
 		var userInfo = req.user;
 		var role = 'Admin';
 		res.render(role, { 
@@ -56,7 +55,7 @@ module.exports = function(app, passport) {
 	});
     
 	// professor page route
-	app.get('/roles/professor', [isLoggedIn, selectRole], function(req, res) {
+	app.get('/roles/professor', [isLoggedIn, hasRole], function(req, res) {
 		var userInfo = req.user;
 		var role = 'Professor';
 		res.render(role, { 
@@ -69,7 +68,7 @@ module.exports = function(app, passport) {
 	});
     
 	// committee page route
-	app.get('/roles/committee', [isLoggedIn, selectRole], function(req, res) {
+	app.get('/roles/committee', [isLoggedIn, hasRole], function(req, res) {
 		var userInfo = req.user;
 		var role = 'Committee Member';
 		res.render('Committee', { 
@@ -82,7 +81,7 @@ module.exports = function(app, passport) {
 	});
     
 	// logout page route
-	app.get('/logout', [isLoggedIn, performLogout], function(req, res) {
+	app.get('/logout', [isLoggedIn], function(req, res) {
 		req.session.destroy(function () {
 			res.redirect('/');
 		});
@@ -98,18 +97,20 @@ function isLoggedIn(req, res, next) {
 	res.redirect('/');
 }
 
-function selectRole(req, res, next) {
+function hasRole(req, res, next) {
 	if (req.path.indexOf('admin') > -1) {
-		auth.selectRole(req.user.id, 'Admin', next);
+		utils.hasRole(req.user.id, 'Admin', checkRole);
 	} else if (req.path.indexOf('professor') > -1) {
-		auth.selectRole(req.user.id, 'Professor', next);
+		utils.hasRole(req.user.id, 'Professor', checkRole);
 	} else if (req.path.indexOf('committee') > -1) {
-		auth.selectRole(req.user.id, 'Committee Member', next);
+		utils.hasRole(req.user.id, 'Committee Member', checkRole);
 	} else {
 		next();
 	}
-}
 
-function performLogout(req, res, next) {
-	auth.logOut(req.user.id, next);
+	function checkRole(err, hasRole) {
+		if (err) next(err);
+		if (hasRole) next(err, hasRole);
+		else res.redirect('/roles');
+	}
 }

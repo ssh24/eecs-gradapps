@@ -1,5 +1,6 @@
 'use strict';
 
+var _ = require('lodash');
 var assert = require('assert');
 
 var Utils = function (connection) {
@@ -136,29 +137,84 @@ Utils.prototype.isMember = function(memberId, cb) {
 };
 
 /**
- * Returns true if a member is logged in.
- * @param {Number} memberId 
+ * Check to see if a user is logged in
+ * @param {String} username 
  * @param {Function} cb 
  */
-Utils.prototype.isLoggedIn = function(memberId, cb) {
-	assert(typeof memberId === 'number');
+Utils.prototype.isLoggedIn = function(username, cb) {
+	assert(typeof username === 'string');
 	assert(typeof cb === 'function');
-    
-	var self = this;
-    
-	this.isMember(memberId, function(err, result) {
+
+	var foundUser = false;
+
+	this.conn.query('Select * from sessions', function(err, data) {
 		if (err) return cb(err);
-		if (result) {
-			self.conn.query('Select is_LoggedIn from faculty_member where fm_Id ' 
-            + '= ?', [memberId], function(err, result) {
+		if (data) {
+			_.forEach(data, function(dt) {
+				if (dt && JSON.parse(dt['data']) && JSON.parse(dt['data'])['passport'] 
+				&& JSON.parse(dt['data'])['passport']['user'] === username) {
+					foundUser = true;
+				}
+			});
+			return cb(err, foundUser);
+		} else {
+			err = new Error('No user is found logged in as ' + JSON.stringify(username));
+			return cb(err);
+		}
+	});
+};
+
+/**
+ * Clear an user session
+ * @param {String} username 
+ * @param {Function} cb 
+ */
+Utils.prototype.clearUserSession = function(username, cb) {
+	assert(typeof username === 'string');
+	assert(typeof cb === 'function');
+
+	var self = this;
+	var deleteStmt = '';
+	var sessionExpiries = [];
+
+	this.isLoggedIn(username, function(err, isLoggedIn) {
+		if (err) return cb(err);
+		if (isLoggedIn) {
+			self.conn.query('Select * from sessions', function(err, data) {
 				if (err) return cb(err);
-				assert(result, 'Result should exist');
-				assert.equal(1, result.length, 'Result should exist');
-				return cb(err, result[0]['is_LoggedIn'] === 1);
+				if (data) {
+					var allSessions = _.filter(data, function(element) {
+						element['data'] = JSON.parse(element['data']);
+						return element['data'] && element['data']['passport'] && 
+						element['data']['passport']['user'] === username;
+					});
+					_.forEach(allSessions, function(session) {
+						var obj = {
+							session_id: session.session_id,
+							expires: session.expires
+						};
+						sessionExpiries.push(obj);
+					});
+					var sortedExpiry = _.sortBy(sessionExpiries, ['expires']);
+					for(var i = 0; i < sortedExpiry.length; i++) {
+						deleteStmt += 'delete from sessions where session_id=' + 
+						JSON.stringify(sortedExpiry[i].session_id) + ';';
+					}
+					if (deleteStmt) {
+						self.conn.query(deleteStmt, function(err, deleted) {
+							if (err) return cb(err);
+							return cb(err, deleted && deleted.affectedRows > 1);
+						});
+					} else {
+						return cb();
+					}
+				} else {
+					err = new Error('No active sessions found');
+					return cb(err);
+				}
 			});
 		} else {
-			err = new Error('Member ' + memberId + ' is not a valid member');
-			return cb(err);
+			return cb();
 		}
 	});
 };
@@ -209,34 +265,6 @@ Utils.prototype.getRoles = function(memberId, cb) {
 			var roles = results[0]['fm_Roles'];
 			return cb(err, roles);
 		});
-};
-
-/**
- * Get selected role
- * @param {Number} memberId
- * @param {Function} cb 
- */
-Utils.prototype.getSelectedRole = function(memberId, cb) {
-	assert(typeof memberId === 'number');
-	assert(typeof cb === 'function');
-
-	var self = this;
-
-	this.isLoggedIn(memberId, function(err, result) {
-		if (err) return cb(err);
-		if (result) {
-			self.conn.query('Select selectedRole from faculty_member where fm_Id = ?', 
-				[memberId], function(err, results) {
-					if (err) return cb(err);
-					assert(1, results.length);
-					var role = results[0]['selectedRole'];
-					return cb(err, role);
-				});
-		} else {
-			err = new Error('Member ' + memberId + ' is not logged in');
-			return cb(err);
-		}
-	});
 };
 
 /**
@@ -350,57 +378,6 @@ Utils.prototype.getMemberFullName = function(memberId, cb) {
 					return cb(err, fullname);
 				}
 			});
-		}
-	});
-};
-
-/**
- * Unlock an account that has been blocked. Only avaliable to admins.
- * @param {Number} adminId 
- * @param {Number} memberId 
- * @param {Function} cb 
- */
-Utils.prototype.unlockAccount = function(adminId, memberId, cb) {
-	assert(typeof adminId === 'number');
-	assert(typeof memberId === 'number');
-	assert(typeof cb === 'function');
-
-	var self = this;
-	var updateStmt;
-
-	this.isLoggedIn(adminId, function(err, result) {
-		if (err) return cb(err);
-		if (result) {
-			self.getSelectedRole(adminId, function(err, result) {
-				if (err) return cb(err);
-				if (result.indexOf('Admin') > -1) {
-					self.isMember(memberId, function(err, result) {
-						if (err) return cb(err);
-						if (result) {
-							updateStmt = self.createUpdateStatement(
-								'faculty_member', 
-								['is_LoggedIn', 'selectedRole'], [0, null], 
-								['fm_Id'], 
-								[memberId]);
-							self.conn.query(updateStmt, function(err, result) {
-								if (err) return cb(err);
-								return cb(err, result.affectedRows === 1);
-							});
-						} else {
-							err = new Error('Member ' + memberId + 
-							' does not exist');
-							return cb(err);
-						}
-					});
-				} else {
-					err = new Error('Member ' + adminId + ' is logged in as ' + 
-					result);
-					return cb(err);
-				}
-			});
-		} else {
-			err = new Error('Member ' + adminId + ' is not logged in');
-			return cb(err);
 		}
 	});
 };

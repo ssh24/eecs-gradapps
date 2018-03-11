@@ -72,9 +72,8 @@ INSERT INTO `FACULTY_MEMBER` (`fm_Username`, `fm_Lname`, `fm_Fname`, `fm_Email`,
     `fm_Roles`) VALUES ('admin', 'Doe', 'John', 'john_doe@example.com', 
     '["Admin", "Professor", "Committee Member"]');
 INSERT INTO `FACULTY_MEMBER` (`fm_Username`, `fm_Lname`, `fm_Fname`, `fm_Email`, 
-    `fm_Roles`, `is_LoggedIn`, `selectedRole`) VALUES ('admin2', 'Roberston', 
-    'John', 'john_r@example.com', '["Admin", "Professor", "Committee Member"]', 
-    1, 'Professor');
+    `fm_Roles`) VALUES ('admin2', 'Roberston', 
+    'John', 'john_r@example.com', '["Admin", "Professor", "Committee Member"]');
 
 
 /****************** ACTUAL FACULTY MEMBER DATA ******************/

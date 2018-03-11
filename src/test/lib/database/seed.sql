@@ -30,8 +30,6 @@ CREATE TABLE `FACULTY_MEMBER` (
     `presetProf` JSON DEFAULT NULL,
     `presetCommittee` JSON DEFAULT NULL,
     `presetAdmin` JSON DEFAULT NULL,
-    `is_LoggedIn` TINYINT(0) DEFAULT 0,
-    `selectedRole` ENUM('Admin', 'Professor', 'Committee Member') DEFAULT NULL,
     PRIMARY KEY(`fm_Id`)
 ) ENGINE=INNODB;
 
@@ -162,6 +160,18 @@ CREATE TABLE `FOI` (
     `field_Name` VARCHAR(50) NOT NULL,
     PRIMARY KEY(`field_Id`)
 ) ENGINE=INNODB;
+
+-- SESSIONS table
+-- @session_id: unique session id
+-- @expires: time milliseconds of the session expiry
+-- @data: json data of the cookie
+
+CREATE TABLE `sessions` (
+  `session_id` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `expires` int(11) unsigned NOT NULL,
+  `data` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
+  PRIMARY KEY (`session_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Source all trigger files
 SET autocommit=0;

@@ -21,7 +21,6 @@ describe('Login Test', function() {
 	var welcome = new Welcome();
 
 	before(function () {
-		require('../../pretest');
 		utils.startApp();
 		utils.openView('#');
 		utils.maximizeBrowserWindow();
@@ -86,26 +85,6 @@ describe('Login Test', function() {
 				.equal('Invalid username. Please try again.'));
 	});
 
-	it('- log in with a locked account', function() {
-		var newUser = {
-			username: 'arri',
-			password: config.credentials.app.password
-		};
-		login.fullSignIn(newUser)
-			.then(expect(browser.getCurrentUrl()).to.eventually
-				.contain('roles'))
-			.then(utils.openView.call(utils, '#'))
-			.then(welcome.clickSignInButton.call(welcome))
-			.then(login.fullSignIn.call(login, newUser))
-			.then(expect(browser.getCurrentUrl()).to.eventually
-				.contain('login'))
-			.then(expect(login.getErrorMessage.call(login)).to.eventually
-				.equal('Account locked due to user "' + 
-				newUser.username + '" not logging ' + 
-				'out properly. Please contact the system administrator ' + 
-				'for help.'));
-	});
-
 	it('- log in correct credentials and then logout', function() {
 		login.fullSignIn(config.credentials.app)
 			.then(expect(browser.getCurrentUrl()).to.eventually
@@ -120,5 +99,53 @@ describe('Login Test', function() {
 			.then(utils.logOut.call(utils))
 			.then(expect(browser.getCurrentUrl()).to.eventually
 				.contain('/'));
+	});
+
+	describe('- login sessions', function() {
+		before(function setUp() {
+			welcome.clickSignInButton()
+				.then(login.fullSignIn.call(login, config.credentials.app))
+				.then(role.selectRole.call(role, 'Professor'));
+		});
+
+		after(function cleanUp() {
+			utils.logOut()
+				.then(expect(browser.getCurrentUrl()).to.eventually
+					.contain('/'));
+		});
+
+		it('- open another tab and go to professor page: same user should persist', 
+			function() {
+				utils.openNewTab('/roles/professor')
+					.then(expect(browser.getCurrentUrl()).to.eventually
+						.contain('professor'))
+					.then(expect(utils.getUser.call(utils)).to.eventually.contain(config.
+						credentials.app.fullname))
+					.then(expect(utils.getRole.call(utils)).to.eventually.
+						contain('Professor'))
+					.then(utils.goToTab.call(utils, 0));
+			});
+
+		// this test simulates the behavior of two users logging in from two different machines
+		// it logs out the user from the first machine and creates the session on the second machine
+		it('- open a new tab with cache cleared: same user should not persist', 
+			function() {
+				utils.openNewTab('#')
+					.then(utils.clearBrowserCache.call(utils))
+					.then(utils.openView.call(utils, '/roles'))
+					.then(expect(browser.getCurrentUrl()).to.eventually
+						.contain('/'))
+					.then(welcome.clickSignInButton.call(welcome))
+					.then(login.fullSignIn.call(login, config.credentials.app))
+					.then(expect(browser.getCurrentUrl()).to.eventually
+						.contain('roles'))
+					.then(role.selectRole.call(role, 'Professor'))
+					.then(expect(browser.getCurrentUrl()).to.eventually
+						.contain('professor'))
+					.then(expect(utils.getUser.call(utils)).to.eventually.contain(config.
+						credentials.app.fullname))
+					.then(expect(utils.getRole.call(utils)).to.eventually.
+						contain('Professor'));
+			});
 	});
 });

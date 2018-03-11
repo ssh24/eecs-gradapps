@@ -201,4 +201,25 @@ describe('Role Test', function() {
 			.then(expect(browser.getCurrentUrl()).to.eventually
 				.contain('/'));
 	});
+
+	it('- login as a user and try to access a restricted role page', function() {
+		welcome.clickSignInButton()
+			.then(login.fullSignIn.call(login, {
+				username: 'arri',
+				password: config.credentials.app.password
+			}))
+			.then(utils.openView.call(utils, '/roles/professor'))
+			.then(expect(browser.getCurrentUrl()).to.eventually.contain('roles'))
+			.then(utils.openView.call(utils, '/roles/committee'))
+			.then(expect(browser.getCurrentUrl()).to.eventually.contain('roles'))
+			.then(role.selectRole.call(role, 'Admin'))
+			.then(expect(browser.getCurrentUrl()).to.eventually
+				.contain('admin'))
+			.then(expect(utils.getUser.call(utils)).to.eventually.contain('Arri Cristofolo'))
+			.then(expect(utils.getRole.call(utils)).to.eventually.
+				contain('Admin'))
+			.then(utils.logOut.call(utils))
+			.then(expect(browser.getCurrentUrl()).to.eventually
+				.contain('/'));
+	});
 });

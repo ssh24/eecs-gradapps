@@ -6,62 +6,24 @@ var config = require('../../lib/utils/config');
 var mysql = require('mysql2');
 
 var Review = require('../../../controller/review');
-var Auth = require('../../../controller/auth');
 
-var auth, connection, review;
+var connection, review;
 var creds = config.credentials.database;
 
 describe('Review Triggers', function() {
 	before(function overallSetup(done) {
 		connection = mysql.createConnection(creds);
 		review = new Review(connection);
-		auth = new Auth(connection);
-		async.series([
-			function(callback) {
-				connection.connect(callback);
-			},
-			function(callback) {
-				auth.logIn(1, callback);
-			},
-			function(callback) {
-				auth.selectRole(1, 'Admin', callback);
-			},
-			function(callback) {
-				auth.logIn(20, callback);
-			},
-			function(callback) {
-				auth.selectRole(20, 'Committee Member', callback);
-			}
-		], done);
+		connection.connect(done);
 	});
     
 	after(function overallCleanUp(done) {
-		async.series([
-			function(callback) {
-				auth.logOut(1, callback);
-			},
-			function(callback) {
-				auth.logOut(20, callback);
-			},
-			function(callback) {
-				connection.end(callback);
-			}
-		], done);
+		connection.end(done);
 	});
 
 	describe('assign a review', function() {
-		before(function setUp(done) {
-			auth.logIn(19, function(err) {
-				if (err) done(err);
-				auth.selectRole(19, 'Professor', done);
-			});
-		});
-
 		after(function cleanUp(done) {
-			auth.logOut(19, function(err) {
-				if (err) done(err);
-				review.unassignReview(12, 20, 1, done);
-			});
+			review.unassignReview(12, 20, 1, done);
 		});
             
 		it('assign a valid review to a valid committee member', 
@@ -121,31 +83,8 @@ describe('Review Triggers', function() {
 
 	describe('unassign a review', function() {
 		before(function setUp(done) {
-			async.series([
-				function(callback) {
-					auth.logIn(19, callback);
-				},
-				function(callback) {
-					auth.selectRole(19, 'Professor', callback);
-				},
-				function(callback) {
-					review.assignReview(12, 20, 1, callback);
-				}
-			], done);
+			review.assignReview(12, 20, 1, done);
 		});
-
-		after(function cleanUp(done) {
-			auth.logOut(19, done);
-		});
-
-		it('unassign a valid review by a not logged in faculty member', 
-			function(done) {
-				review.unassignReview(12, 20, 2, function(err, result) {
-					assert(err, 'Error should exist');
-					assert(!result, 'Result should exist');
-					done();
-				});
-			});
 
 		it('unassign a valid review by an invalid admin', 
 			function(done) {
@@ -183,6 +122,14 @@ describe('Review Triggers', function() {
 				});
 			});
 
+		it('unassign a valid review from an valid committee member', 
+			function(done) {
+				review.unassignReview(12, 20, 1, function(err, result) {
+					if (err) done(err);
+					assert(result, 'Result should exist');
+					done();
+				});
+			});
             
 		it('unassign a valid review from an invalid committee member', 
 			function(done) {
@@ -201,16 +148,6 @@ describe('Review Triggers', function() {
 					done();
 				});
 			});
-
-            
-		it('unassign a valid review from an invalid committee member', 
-			function(done) {
-				review.unassignReview(12, 20, 1, function(err, result) {
-					if (err) done(err);
-					assert(result, 'Result should exist');
-					done();
-				});
-			});
                 
 		it('unassign an invalid review from invalid committee member', 
 			function(done) {
@@ -224,28 +161,11 @@ describe('Review Triggers', function() {
         
 	describe('remind a review', function() {
 		before(function setUp(done) {
-			async.series([
-				function(callback) {
-					auth.logIn(19, callback);
-				},
-				function(callback) {
-					auth.selectRole(19, 'Professor', callback);
-				},
-				function(callback) {
-					review.assignReview(12, 20, 1, callback);
-				}
-			], done);
+			review.assignReview(12, 20, 1, done);
 		});
 
 		after(function cleanUp(done) {
-			async.series([
-				function(callback) {
-					auth.logOut(19, callback);
-				},
-				function(callback) {
-					review.unassignReview(12, 20, 1, callback);
-				}
-			], done);
+			review.unassignReview(12, 20, 1, done);
 		});
 
 		it('remind a review by an invalid admin', 
@@ -344,33 +264,11 @@ describe('Review Triggers', function() {
 
 	describe('open a review', function() {
 		before(function setUp(done) {
-			async.series([
-				function(callback) {
-					auth.logIn(16, callback);
-				},
-				function(callback) {
-					auth.selectRole(16, 'Committee Member', callback);
-				},
-				function(callback) {
-					review.assignReview(12, 20, 1, callback);
-				},
-				function(callback) {
-					auth.logIn(19, callback);
-				},
-				function(callback) {
-					auth.selectRole(19, 'Committee Member', callback);
-				}
-			], done);
+			review.assignReview(12, 20, 1, done);
 		});
 
 		after(function cleanUp(done) {
 			async.series([
-				function(callback) {
-					auth.logOut(16, callback);
-				},
-				function(callback) {
-					auth.logOut(19, callback);
-				},
 				function(callback) {
 					review.saveReview(12, 20, callback);
 				},
@@ -510,12 +408,6 @@ describe('Review Triggers', function() {
 		before(function setUp(done) {
 			async.series([
 				function(callback) {
-					auth.logIn(17, callback);
-				},
-				function(callback) {
-					auth.selectRole(17, 'Committee Member', callback);
-				},
-				function(callback) {
 					review.assignReview(12, 20, 1, callback);
 				},
 				function(callback) {
@@ -526,9 +418,6 @@ describe('Review Triggers', function() {
 
 		after(function cleanUp(done) {
 			async.series([
-				function(callback) {
-					auth.logOut(17, callback);
-				},
 				function(callback) {
 					review.saveReview(12, 20, callback);
 				},
@@ -613,12 +502,6 @@ describe('Review Triggers', function() {
 		before(function setUp(done) {
 			async.series([
 				function(callback) {
-					auth.logIn(11, callback);
-				},
-				function(callback) {
-					auth.selectRole(11, 'Committee Member', callback);
-				},
-				function(callback) {
 					review.assignReview(12, 20, 1, callback);
 				},
 				function(callback) {
@@ -629,9 +512,6 @@ describe('Review Triggers', function() {
 
 		after(function cleanUp(done) {
 			async.series([
-				function(callback) {
-					auth.logOut(11, callback);
-				},
 				function(callback) {
 					review.unassignReview(12, 20, 1, callback);
 				}
@@ -752,24 +632,6 @@ describe('Review Triggers', function() {
 		before(function setUp(done) {
 			async.series([
 				function(callback) {
-					auth.logIn(11, callback);
-				},
-				function(callback) {
-					auth.logIn(12, callback);
-				},
-				function(callback) {
-					auth.logIn(16, callback);
-				},
-				function(callback) {
-					auth.selectRole(11, 'Committee Member', callback);
-				},
-				function(callback) {
-					auth.selectRole(12, 'Committee Member', callback);
-				},
-				function(callback) {
-					auth.selectRole(16, 'Committee Member', callback);
-				},
-				function(callback) {
 					review.assignReview(12, 20, 1, callback);
 				},
 				function(callback) {
@@ -790,20 +652,6 @@ describe('Review Triggers', function() {
 						],
 						'values': ['"Some background"', '"Some research"']}, 
 					callback);
-				}
-			], done);
-		});
-
-		after(function cleanUp(done) {
-			async.series([
-				function(callback) {
-					auth.logOut(11, callback);
-				},
-				function(callback) {
-					auth.logOut(12, callback);
-				},
-				function(callback) {
-					auth.logOut(16, callback);
 				}
 			], done);
 		});
@@ -882,21 +730,6 @@ describe('Review Triggers', function() {
 	});
 
 	describe('submit a review', function() {
-		before(function setUp(done) {
-			async.series([
-				function(callback) {
-					auth.logIn(11, callback);
-				},
-				function(callback) {
-					auth.selectRole(11, 'Committee Member', callback);
-				}
-			], done);
-		});
-
-		after(function cleanUp(done) {
-			auth.logOut(11, done);
-		});
-
 		it('submit a submitted review as a committee member', 
 			function(done) {
 				review.submitReview(16, 11, function(err, result) {

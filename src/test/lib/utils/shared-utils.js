@@ -29,7 +29,8 @@ Utils.prototype.openView = function(link) {
 };
 
 Utils.prototype.logOut = function() {
-	return element(this.shared.logout).click();
+	return this.waitForElementClickable(this.shared.logout, 2000)
+		.then(element(this.shared.logout).click());
 };
 
 Utils.prototype.getUser = function() {
@@ -50,6 +51,30 @@ Utils.prototype.getButtonEnableStatus = function(element) {
 
 Utils.prototype.maximizeBrowserWindow = function() {
 	return browser.driver.manage().window().maximize();
+};
+
+Utils.prototype.openNewTab = function(newPageToOpen) {
+	return browser.executeScript('window.open()').then(function () {
+		return browser.getAllWindowHandles().then(function (handles) {
+			var secondWindow = handles[1];
+			return browser.switchTo().window(secondWindow).then(function () {
+				return browser.get(newPageToOpen);
+			});
+		});
+	});
+};
+
+Utils.prototype.clearBrowserCache = function() {
+	return browser.executeScript('window.localStorage.clear();')
+		.then(browser.executeScript('window.sessionStorage.clear();'))
+		.then(browser.driver.manage().deleteAllCookies()); 
+};
+
+Utils.prototype.goToTab = function(goToIndex) {
+	return browser.getAllWindowHandles().then(function (handles) {
+		browser.driver.close();
+		browser.driver.switchTo().window(handles[goToIndex]);
+	});
 };
 
 Utils.prototype.clearThenSendKeys = function(elem, keys) {

@@ -26,9 +26,9 @@ Review.prototype.assignReview = function(appId, committeeId, adminId, cb) {
 	var self = this;
 	var insertStmt;
 	
-	this.utils.getSelectedRole(adminId, function(err, role) {
+	this.utils.getRoles(adminId, function(err, roles) {
 		if (err) return cb (err);
-		if (role === 'Admin') {
+		if (roles.includes('Admin')) {
 			self.utils.hasRole(committeeId, 'Committee Member', 
 				function(err, result) {
 					if (err) return cb(err);
@@ -45,8 +45,7 @@ Review.prototype.assignReview = function(appId, committeeId, adminId, cb) {
 					}
 				});
 		} else {
-			err = new Error('Member ' + adminId + 
-					' cannot assign a review as a ' + role); 
+			err = new Error('Member ' + adminId + ' cannot assign a review'); 
 			return cb(err);
 		}
 	});
@@ -68,9 +67,9 @@ Review.prototype.unassignReview = function(appId, committeeId, adminId, cb) {
 	var self = this;
 	var deleteStmt;
 
-	this.utils.getSelectedRole(adminId, function(err, role) {
+	this.utils.getRoles(adminId, function(err, roles) {
 		if (err) return cb (err);
-		if (role === 'Admin') {
+		if (roles.includes('Admin')) {
 			self.getReviewStatus(appId, committeeId, function(err, status) {
 				if (err) return cb(err);
 				if(status === 'New' || status === 'Draft') {
@@ -98,8 +97,7 @@ Review.prototype.unassignReview = function(appId, committeeId, adminId, cb) {
 				}
 			});
 		} else {
-			err = new Error('Member ' + adminId + 
-					' cannot unassign a review as a ' + role); 
+			err = new Error('Member ' + adminId + ' cannot unassign a review'); 
 			return cb(err);
 		}
 	});
@@ -121,9 +119,9 @@ Review.prototype.remindReview = function(appId, committeeId, adminId, cb) {
 	var self = this;
 	var updateStatement;
 
-	this.utils.getSelectedRole(adminId, function(err, role) {
+	this.utils.getRoles(adminId, function(err, roles) {
 		if (err) return cb (err);
-		if (role === 'Admin') {
+		if (roles.includes('Admin')) {
 			self.utils.hasRole(committeeId, 'Committee Member', 
 				function(err, result) {
 					if (err) return cb(err);
@@ -154,8 +152,7 @@ Review.prototype.remindReview = function(appId, committeeId, adminId, cb) {
 					}
 				});
 		} else {
-			err = new Error('Member ' + adminId + 
-					' cannot remind a review as a ' + role); 
+			err = new Error('Member ' + adminId + ' cannot remind a review'); 
 			return cb(err);
 		}
 	});
@@ -175,9 +172,9 @@ Review.prototype.openReview = function(appId, committeeId, cb) {
 	var self = this;
 	var updateStatement;
 	
-	this.utils.getSelectedRole(committeeId, function(err, role) {
+	this.utils.getRoles(committeeId, function(err, roles) {
 		if (err) return cb (err);
-		if (role === 'Committee Member') {
+		if (roles.includes('Committee Member')) {
 			self.getReviewStatus(appId, committeeId, function(err, status) {
 				if (err) return cb(err);
 				if (status === 'New' || status === 'Draft') {
@@ -205,8 +202,7 @@ Review.prototype.openReview = function(appId, committeeId, cb) {
 				}
 			});
 		} else {
-			err = new Error('Member ' + committeeId + 
-					' cannot open a review as a ' + role); 
+			err = new Error('Member ' + committeeId + ' cannot open a review'); 
 			return cb(err);
 		}
 	});
@@ -247,9 +243,9 @@ Review.prototype.writeReview = function(appId, committeeId, options, cb) {
 	var fieldNames = options['fieldNames'];
 	var values = options['values'];
 	
-	this.utils.getSelectedRole(committeeId, function(err, role) {
+	this.utils.getRoles(committeeId, function(err, roles) {
 		if (err) return cb (err);
-		if (role === 'Committee Member') {
+		if (roles.includes('Committee Member')) {
 			self.conn.query('Select * from application_review where appId = ? and ' 
 			+ 'committeeId = ? and Status = "In-Progress"', [appId, committeeId], 
 			function(err, results) {
@@ -266,8 +262,7 @@ Review.prototype.writeReview = function(appId, committeeId, options, cb) {
 				self.conn.query(updateStatement, cb);
 			});
 		} else {
-			err = new Error('Member ' + committeeId + 
-					' cannot write a review as a ' + role); 
+			err = new Error('Member ' + committeeId + ' cannot write a review'); 
 			return cb(err);
 		}
 	});
@@ -288,9 +283,9 @@ Review.prototype.saveReview = function(appId, committeeId, cb) {
 	var self = this;
 	var updateStatement;
 	
-	this.utils.getSelectedRole(committeeId, function(err, role) {
+	this.utils.getRoles(committeeId, function(err, roles) {
 		if (err) return cb (err);
-		if (role === 'Committee Member') {
+		if (roles.includes('Committee Member')) {
 			self.getReviewStatus(appId, committeeId, function(err, status) {
 				if (err) return cb(err);
 				if(status === 'In-Progress') {
@@ -305,8 +300,7 @@ Review.prototype.saveReview = function(appId, committeeId, cb) {
 				}
 			});
 		} else {
-			err = new Error('Member ' + committeeId + 
-					' cannot save a review as a ' + role); 
+			err = new Error('Member ' + committeeId + ' cannot save a review'); 
 			return cb(err);
 		}
 	});
@@ -327,9 +321,9 @@ Review.prototype.completeReview = function(appId, committeeId, cb) {
 	var self = this;
 	var updateStatement;
 	
-	this.utils.getSelectedRole(committeeId, function(err, role) {
+	this.utils.getRoles(committeeId, function(err, roles) {
 		if (err) return cb (err);
-		if (role === 'Committee Member') {
+		if (roles.includes('Committee Member')) {
 			self.getReviewStatus(appId, committeeId, function(err, status) {
 				if (err) return cb(err);
 				if(status === 'In-Progress') {
@@ -353,8 +347,7 @@ Review.prototype.completeReview = function(appId, committeeId, cb) {
 				}
 			});
 		} else {
-			err = new Error('Member ' + committeeId + 
-					' cannot complete a review as a ' + role); 
+			err = new Error('Member ' + committeeId + ' cannot complete a review'); 
 			return cb(err);
 		}
 	});
@@ -375,9 +368,9 @@ Review.prototype.submitReview = function(appId, committeeId, cb) {
 	var self = this;
 	var updateStatement;
 	
-	this.utils.getSelectedRole(committeeId, function(err, role) {
+	this.utils.getRoles(committeeId, function(err, roles) {
 		if (err) return cb (err);
-		if (role === 'Committee Member') {
+		if (roles.includes('Committee Member')) {
 			self.getReviewStatus(appId, committeeId, function(err, status) {
 				if (err) return cb(err);
 				if(status === 'Reviewed') {
@@ -403,8 +396,7 @@ Review.prototype.submitReview = function(appId, committeeId, cb) {
 				}
 			});
 		} else {
-			err = new Error('Member ' + committeeId + 
-					' cannot submit a review as a ' + role); 
+			err = new Error('Member ' + committeeId + ' cannot submit a review'); 
 			return cb(err);
 		}
 	});

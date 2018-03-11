@@ -26,9 +26,9 @@ Application.prototype.markApplicationSeen = function(appId, memberId, cb) {
 	var self = this;
 	var updateStmt;
 
-	this.utils.getSelectedRole(memberId, function(err, role) {
+	this.utils.getRoles(memberId, function(err, roles) {
 		if (err) return cb (err);
-		if (role === 'Professor' || role === 'Admin') {
+		if (roles.includes('Professor') || roles.includes('Admin')) {
 			self.review.isSubmitted(appId, function(err, result) {
 				if (err) return cb(err);
 				if (result) {
