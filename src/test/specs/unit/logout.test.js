@@ -4,6 +4,7 @@ var chai = require('chai');
 var chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
 var expect = chai.expect;
+var ms = require('ms');
 
 var Login = require('../../views/login-view');
 var Role = require('../../views/role-view');
@@ -12,13 +13,16 @@ var Welcome = require('../../views/welcome-view');
 
 var config = require('../../lib/utils/config');
 
-describe('Logout Test', function() {
-	this.timeout(20000);
+var timeout;
 
-	var login = new Login();
-	var role = new Role();
-	var utils = new Utils();
-	var welcome = new Welcome();
+describe('Logout Test', function() {
+	timeout = ms('20s');
+	this.timeout(timeout);
+
+	var login = new Login(timeout);
+	var role = new Role(timeout);
+	var utils = new Utils(timeout);
+	var welcome = new Welcome(timeout);
 
 	before(function overallSetup() {
 		require('../../pretest');

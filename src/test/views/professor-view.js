@@ -2,16 +2,20 @@
 
 var Utils = require('../lib/utils/shared-utils');
 
-function Professor() {
+function Professor(timeout) {
 	this.utils = new Utils();
-	this.timeout = 10000;
+	this.timeout = timeout;
     
 	this.tables = {};
 	this.tables.table = by.id('applicant-table');
 	this.tables.table.header = by.id('table-head');
 	this.tables.table.body = by.id('table-body');
+
+	this.tables.table.columns = by.css('#table-head > tr > th');
     
 	this.tables.refresh = by.id('refresh-table');
+
+	this.tables.error = by.id('error-message');
     
 	this.tables.actions = {};
 
@@ -26,8 +30,8 @@ function Professor() {
 	this.tables.actions.setTo.notInterested = by.id('not-interested-0');
 
 	this.tables.data = {};
-	this.tables.data.contacted = by.id('data-0-9');
-	this.tables.data.requested = by.id('data-0-10');
+	this.tables.data.contacted = by.id('data-0-10');
+	this.tables.data.requested = by.id('data-0-11');
 	this.tables.data.interested = by.id('data-0-12');
 }
 
@@ -41,6 +45,14 @@ Professor.prototype.tableHeaderExists = function() {
 
 Professor.prototype.tableBodyExists = function() {
 	return element(this.tables.table.body).isPresent();
+};
+
+Professor.prototype.getTableColumns = function() {
+	return element.all(this.tables.table.columns).count();
+};
+
+Professor.prototype.getColumnName = function(index) {
+	return element.all(this.tables.table.columns).get(index).getText();
 };
 
 Professor.prototype.openSetToDropDown = function() {
@@ -121,7 +133,27 @@ Professor.prototype.getRefreshTableText = function() {
 };
 
 Professor.prototype.refreshTable = function() {
-	return element(this.tables.refresh).click();
+	return this.utils.waitForElementClickable(this.tables.refresh, this.timeout)
+		.then(element(this.tables.refresh).click());
+};
+
+Professor.prototype.getTableError = function() {
+	return element(this.tables.error).getText();
+};
+
+Professor.prototype.orderColumn = function(index, sort) {
+	var self = this;
+	return element.all(this.tables.table.columns).get(index).getAttribute('aria-sort')
+		.then(function(type) {
+			if (type === 'none' && sort === -1)
+				return element.all(self.tables.table.columns).get(index).click()
+					.then(self.orderColumn.bind(self, index, sort));
+			return element.all(self.tables.table.columns).get(index).click();
+		});
+};
+
+Professor.prototype.getSortType = function(index) {
+	return element.all(this.tables.table.columns).get(index).getAttribute('aria-sort');
 };
 
 module.exports = Professor;

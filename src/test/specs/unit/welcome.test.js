@@ -4,15 +4,19 @@ var chai = require('chai');
 var chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
 var expect = chai.expect;
+var ms = require('ms');
 
 var Utils = require('../../lib/utils/shared-utils');
 var Welcome = require('../../views/welcome-view');
 
-describe('Welcome Test', function() {
-	this.timeout(20000);
+var timeout;
 
-	var utils = new Utils();
-	var welcome = new Welcome();
+describe('Welcome Test', function() {
+	timeout = ms('20s');
+	this.timeout(timeout);
+
+	var utils = new Utils(timeout);
+	var welcome = new Welcome(timeout);
 
 	before(function setUp() {
 		require('../../pretest');
