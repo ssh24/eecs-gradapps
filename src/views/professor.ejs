@@ -77,7 +77,7 @@
                                                                         <li><a id="requested-<%=i%>" href="/roles/professor/filter?requested=true&appId=<%= apps[i][fields[0]]%>">Requested</a></li>
                                                                     <% } %>
                                                                 <% } %>
-                                                                <% if (apps[i]['My Interest Status'] === 'Interested') { %>
+                                                                <% if (apps[i]['My Interest Status'] === '-' || apps[i]['My Interest Status'] === 'Interested') { %>
                                                                     <% if (!filter) { %>
                                                                         <li><a id="not-interested-<%=i%>" href="/roles/professor?interest=false&appId=<%= apps[i][fields[0]]%>">Not Interested</a></li>
                                                                     <% } else{ %>
