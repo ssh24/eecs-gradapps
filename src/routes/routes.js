@@ -9,83 +9,22 @@ var Utils = require('../controller/utils');
 var utils = new Utils(connection);
 
 module.exports = function(app, passport) {
-	// home page route
-	app.get('/', function(req, res) {
-		res.render('index', { title: 'Welcome to Grad Apps', user: null, 
-			role: null});
-	});
-    
-	/** LOGIN PAGE ROUTE */
-	app.get('/login', function(req, res) {
-		res.render('login', { message: req.flash('loginMessage'), title: 'Login', 
-			user: null, 
-			role: null});
-	});
-    
-	app.post('/login', passport.authenticate('local-login', {
-		successRedirect : '/roles', // redirect to the secure profile section
-		failureRedirect : '/login', // redirect back to the signup page if there is an error
-		failureFlash : true // allow flash messages
-	}));
+
+	// index page route
+	require('./index.js')(app);
+
+	// login and logout page route
+	require('./auth.js')(app, passport, [isLoggedIn]);
 
 	// roles page route
-	app.get('/roles', isLoggedIn, function(req, res) {
-		var userInfo = req.user;
-		res.render('roles', { 
-			title: 'Role Selection',
-			confirmation: 'You have been successfully logged into the system.',
-			user: userInfo.id,
-			roles: userInfo.roles, 
-			fname: userInfo.fname,
-			role: null
-		});
-	});
+	require('./roles.js')(app, [isLoggedIn]);
     
 	// admin page route
-	app.get('/roles/admin', [isLoggedIn, hasRole], function(req, res) {
-		var userInfo = req.user;
-		var role = 'Admin';
-		res.render(role, { 
-			title: 'Welcome ' + role,
-			user: userInfo.id,
-			fullname: userInfo.fullname,
-			roles: userInfo.roles,
-			role: role
-		});
-	});
-    
-	// professor page route
-	app.get('/roles/professor', [isLoggedIn, hasRole], function(req, res) {
-		var userInfo = req.user;
-		var role = 'Professor';
-		res.render(role, { 
-			title: 'Welcome ' + role,
-			user: userInfo.id,
-			fullname: userInfo.fullname,
-			roles: userInfo.roles,
-			role: role
-		});
-	});
-    
+	require('./admin.js')(app, [isLoggedIn, hasRole]);
 	// committee page route
-	app.get('/roles/committee', [isLoggedIn, hasRole], function(req, res) {
-		var userInfo = req.user;
-		var role = 'Committee Member';
-		res.render('Committee', { 
-			title: 'Welcome ' + role,
-			user: userInfo.id,
-			fullname: userInfo.fullname,
-			roles: userInfo.roles,
-			role: role
-		});
-	});
-    
-	// logout page route
-	app.get('/logout', [isLoggedIn], function(req, res) {
-		req.session.destroy(function () {
-			res.redirect('/');
-		});
-	});
+	require('./committee.js')(app, [isLoggedIn, hasRole]);	
+	// professor page route
+	require('./professor.js')(app, [isLoggedIn, hasRole]);
 };
 
 // route middleware to make sure a user is logged in
