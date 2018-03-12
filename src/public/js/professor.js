@@ -122,9 +122,9 @@ $(document).ready(function() {
           } else if (filters[i] === "btn_filter_program_decision") {
             filterText += "Program Decision = ";
           } else if (filters[i] === "btn_filter_contacted_by") {
-            filterText += "Contacted By "
+            filterText += "Contacted By = "
           } else if (filters[i] === "btn_filter_requested_by") {
-            filterText += "Requested By ";
+            filterText += "Requested By = ";
           } else if (filters[i] === "btn_filter_interest") {
             filterText += "My Interest Status = ";
           }
