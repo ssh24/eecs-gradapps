@@ -22,7 +22,7 @@ var application, connection, timeout;
 var creds = config.credentials.database;
 
 describe('Professor Test', function() {
-	timeout = ms('30s');
+	timeout = ms('40s');
 	this.timeout(timeout);
 
 	var filter = new Filter(timeout);
@@ -853,7 +853,6 @@ describe('Professor Test', function() {
 					.then(filter.closeFilterModal.call(filter));
 			});
 
-
 			it('- open contacted by drop down and select an element', function() {
 				filter.openFilterModal().then(filter.waitForModalOpen.call(filter))
 					.then(filter.openFieldDD.call(filter, filter.filter.fields
@@ -1282,8 +1281,43 @@ describe('Professor Test', function() {
 			// stub for filter preset tests
 		});
 
-		describe.skip('- filter highlights', function() {
-			// stub for filter highlight tests
+		describe('- filter highlights', function() {
+			after(function cleanUp() {
+				filter.resetFilteredTable();
+			});
+
+			it('- check for highlights on chosen field', function() {
+				filter.openFilterModal().then(filter.waitForModalOpen.call(filter))
+					.then(filter.openFieldDD.call(filter, filter.filter.fields
+						.contacted.openDD))
+					.then(expect(filter.isFieldDDOpen.call(filter, filter.filter
+						.fields.contacted.openDD)).to
+						.eventually.be.true)
+					.then(filter.searchText.call(filter, 'do'))
+					.then(filter.selectIthElement.call(filter, 30))
+					.then(expect(filter.getSelectedElement.call(filter)).to
+						.eventually.contain('John Doe'))
+					.then(expect(filter.getSelectedFilter.call(filter)).to.eventually
+						.contain('Contacted By = John Doe'))
+					.then(filter.openFieldDD.call(filter, filter.filter.fields
+						.foi.openDD))
+					.then(expect(filter.isFieldDDOpen.call(filter, filter.filter
+						.fields.foi.openDD)).to
+						.eventually.be.true)
+					.then(filter.searchText.call(filter, 'in'))
+					.then(filter.selectIthElement.call(filter, 1))
+					.then(expect(filter.getSelectedElement.call(filter)).to
+						.eventually.contain('Artificial Intelligence'))
+					.then(expect(filter.getSelectedFilter.call(filter)).to.eventually
+						.contain('Field of Interest = Artificial Intelligence'))
+					.then(filter.submitFilter.call(filter))
+					.then(expect(browser.getCurrentUrl()).to.eventually.contain('filter'))
+					.then(expect(prof.applicationTableIsDisplayed.call(prof)).to.eventually.be.true)
+					.then(expect(prof.tableHeaderExists.call(prof)).to.eventually.be.true)
+					.then(expect(prof.tableBodyExists.call(prof)).to.eventually.be.true)
+					.then(expect(prof.isHighlighted.call(prof, 0, 3)).to.eventually.equal('Artificial Intelligence'))
+					.then(expect(prof.isHighlighted.call(prof, 1, 10)).to.eventually.equal('John Doe'));
+			});
 		});
 		
 		describe('- filtering', function() {

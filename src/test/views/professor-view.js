@@ -156,4 +156,9 @@ Professor.prototype.getSortType = function(index) {
 	return element.all(this.tables.table.columns).get(index).getAttribute('aria-sort');
 };
 
+Professor.prototype.isHighlighted = function(row, column) {
+	var elem = by.css('#data-' + row + '-' + column + ' > span[style="color:red"]');
+	return element(elem).getText();
+};
+
 module.exports = Professor;
