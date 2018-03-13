@@ -26,7 +26,20 @@ module.exports = function(app, utils, application, fns) {
 			profs: req.apps.profs || [],
 			gpa: req.apps.gpa || [],
 			filter: req.apps.filter,
-			highlightText: {},
+			highlightText: {
+				name: '',
+				gender: '',
+				foi: '',
+				prof: '',
+				ranking: '',
+				gpa: '',
+				degree: '',
+				visa: '',
+				program_decision: '',
+				contacted_by: '',
+				requested_by: '',
+				interest: ''
+			},
 			highlightFunc: highlight
 		});
 	});
@@ -48,7 +61,9 @@ module.exports = function(app, utils, application, fns) {
 			foi: req.apps.foi || [],
 			profs: req.apps.profs || [],
 			gpa: req.apps.gpa || [],
-			filter: req.apps.filter
+			filter: req.apps.filter,
+			highlightText: req.apps.highlightText,
+			highlightFunc: highlight
 		});
 	});
 
@@ -70,7 +85,9 @@ module.exports = function(app, utils, application, fns) {
 				foi: req.apps.foi || [],
 				profs: req.apps.profs || [],
 				gpa: req.apps.gpa || [],
-				filter: req.apps.filter
+				filter: req.apps.filter,
+				highlightText: req.apps.highlightText,
+				highlightFunc: highlight
 			});
 		});
 
