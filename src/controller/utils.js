@@ -382,4 +382,24 @@ Utils.prototype.getMemberFullName = function(memberId, cb) {
 	});
 };
 
+/**
+ * Get all applicant names
+ * @param {Function} cb 
+ */
+Utils.prototype.getApplicantNames = function(cb) {
+	var sql = 'SELECT CONCAT_WS(\' \', `FName`, `LName`) AS `Applicant Name`' + 
+	' FROM APPLICATION where committeeReviewed=1 and Rank is not null';
+	var applicants;
+	this.conn.query(sql, function(err, result) {
+		if (err) return cb(err);
+		if(result.length > 0) {
+			applicants = _.map(result, 'Applicant Name');
+			return cb(err, applicants.sort());
+		} else {
+			err = new Error('No applicants found');
+			return cb(err);
+		}
+	});
+};
+
 module.exports = Utils;
