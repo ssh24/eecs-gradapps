@@ -13,7 +13,7 @@
                     <div id="error-message" class="alert alert-danger text-center">
                         <%= message %>
                     </div>
-                <% } else{ %>
+                <% } else { %>
                     <table id="applicant-table" class="table table-striped table-hover tablesorter">
                             <thead id="table-head">
                                 <tr>
@@ -21,7 +21,11 @@
                                         <% if (hidden.includes(fields[i])) { %>
                                             <% continue; %>
                                         <% } else { %>
-                                            <th class="text-center"><%= fields[i]%></th>
+                                            <%if (fields[i] === 'Actions'){ %>
+                                                <th class="text-center sorter-false parser-false"><%= fields[i]%></th>
+                                              <%} else {%>
+                                                <th class="text-center"><%= fields[i]%></th>
+                                            <%}%>
                                         <% } %>
                                     <%}%>
                                 </tr>
@@ -40,12 +44,12 @@
                                             <% } else { %>
                                                 <td class="text-center">
                                                         <div class="btn-group-vertical">
+                                                            <button class="btn btn-primary">View Application</button>
                                                             <% if (apps[i]['My Review Status'] && apps[i]['My Review Status'] === 'New') { %>
                                                                 <button class="btn btn-primary">Start Review</button>
                                                             <% } %>
                                                             <% if (apps[i]['My Review Status'] && (apps[i]['My Review Status'] === 'Draft' || apps[i]['My Review Status'] === 'In-Progress')) { %>
                                                                 <button class="btn btn-primary">Continue Review</button>
-                                                                <button class="btn btn-primary">View Review</button>
                                                             <% } %>
                                                             <% if (apps[i]['My Review Status'] && apps[i]['My Review Status'] === 'Reviewed') { %>
                                                                 <button class="btn btn-primary">Submit Review</button>

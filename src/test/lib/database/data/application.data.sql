@@ -165,10 +165,10 @@ INSERT INTO `APPLICATION` (`app_Session`, `LName`, `FName`, `Email`, `Gender`,
     'Domestic', 0, '["Machine Learning", "Data Mining"]', 
     '["Jenna Kubera", "Buiron Truran", "Reamonn Cleef"]');
 
-INSERT INTO `APPLICATION` (`app_Session`, `LName`, `FName`, `Email`, `Gender`, 
+INSERT INTO `APPLICATION` (`app_Session`, `app_Date`, `LName`, `FName`, `Email`, `Gender`, 
     `GPA`, `GPA_FINAL`, `Degree`, `VStatus`, `committeeReviewed`, `FOI`, 
     `prefProfs`) VALUES  
-    ('Fall', 'Tirte', 'Igor', 'itirteb@ifeng.com', 'M', 'C+', 0, 'MSc', 
+    ('Fall', '2018/03/05', 'Tirte', 'Igor', 'itirteb@ifeng.com', 'M', 'C+', 0, 'MSc', 
     'Domestic', 0, '["Data Mining"]', '["Bronny Poole"]');
 
 INSERT INTO `APPLICATION` (`app_Session`, `LName`, `FName`, `Email`, `Gender`, 
@@ -178,9 +178,9 @@ INSERT INTO `APPLICATION` (`app_Session`, `LName`, `FName`, `Email`, `Gender`,
     'Domestic', 0, '["Artificial Intelligence", "Graph Mining"]',
     '["Winny Dalyell", "Buiron Truran"]');
 
-INSERT INTO `APPLICATION` (`app_Session`, `LName`, `FName`, `Email`, `Gender`, 
+INSERT INTO `APPLICATION` (`app_Session`, `app_Date`, `LName`, `FName`, `Email`, `Gender`, 
     `GPA`, `GPA_FINAL`, `Degree`, `VStatus`, `committeeReviewed`, `FOI`, 
-    `prefProfs`) VALUES ('Fall', 
+    `prefProfs`) VALUES ('Fall', '2018/06/30',
     'Enbury', 'Ciro', 'cenburye@jigsy.com', 'M', 'F', 0, 'MASc', 'Domestic', 
     0, '["Human-Computer Interaction", 
     "Micro/Nano Electronic Systems", "Software Engineering"]', 
