@@ -5,7 +5,10 @@ var creds = require('../config/database');
 var connection = mysql.createConnection(creds);
 connection.connect();
 
+var Application = require('../controller/application');
 var Utils = require('../controller/utils');
+
+var application = new Application(connection);
 var utils = new Utils(connection);
 
 module.exports = function(app, passport) {
@@ -22,7 +25,7 @@ module.exports = function(app, passport) {
 	// admin page route
 	require('./admin.js')(app, [isLoggedIn, hasRole]);
 	// committee page route
-	require('./committee.js')(app, [isLoggedIn, hasRole]);	
+	require('./committee.js')(app, utils, application, [isLoggedIn, hasRole]);	
 	// professor page route
 	require('./professor.js')(app, [isLoggedIn, hasRole]);
 };

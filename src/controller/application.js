@@ -51,4 +51,42 @@ Application.prototype.markApplicationSeen = function(appId, memberId, cb) {
 	});
 };
 
+/**
+ * Get all the applications
+ * @param {String} sql
+ * @param {Number} memberId
+ * @param {Function} cb
+ */
+Application.prototype.getReviewApplications = function(sql, memberId, cb) {
+	sql = sql || 'select application.app_Id, CONCAT_WS(\' \', `FName`, `LName`) AS `Applicant Name`, ' + 
+	'FOI as `Fields of Interest`, GPA, Degree as `Degree Applied For`, ' + 
+	'application_review.Status as `My Review Status` from application inner join application_review ' + 
+	'where application.app_Id = application_review.appId and application_review.committeeId=' + memberId;
+
+	assert(typeof sql === 'string');
+	assert(typeof memberId === 'number');
+	assert(typeof cb === 'function');
+
+	var self = this;
+
+	this.utils.getRoles(memberId, function(err, roles) {
+		if (err) return cb(err);
+		if (roles.includes('Committee Member')) {
+			self.conn.query(sql, function(err, result1) {
+				if (err) return cb(err);
+				if(result1.length > 0) {
+					return cb(err, result1);
+				} else {
+					err = new Error('No applications found');
+					return cb(err);
+				}
+			});
+		} else {
+			err = new Error('Member ' + memberId + 
+							' does not have access to see all applications'); 
+			return cb(err);
+		}
+	});
+};
+
 module.exports = Application;
