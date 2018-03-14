@@ -39,22 +39,22 @@ describe('Login Test', function() {
 	});
 
 	it('- log in with only username no password', function() {
-		login.enterUsername(config.credentials.app.username)
+		login.enterUsername(config.credentials.app.admin.username)
 			.then(login.clickLogIn.call(login))
 			.then(expect(browser.getCurrentUrl()).to.eventually
 				.contain('login'));
 	});
     
 	it('- log in with only password no username', function() {
-		login.enterPassword(config.credentials.app.password)
+		login.enterPassword(config.credentials.app.admin.password)
 			.then(login.clickLogIn.call(login))
 			.then(expect(browser.getCurrentUrl()).to.eventually
 				.contain('login'));
 	});
     
 	it('- log in with invalid password', function() {
-		login.enterUsername(config.credentials.app.username)
-			.then(login.enterPassword.call(login, config.credentials.app
+		login.enterUsername(config.credentials.app.admin.username)
+			.then(login.enterPassword.call(login, config.credentials.app.admin
 				.password + '1'))
 			.then(login.clickLogIn.call(login))
 			.then(expect(browser.getCurrentUrl()).to.eventually
@@ -64,8 +64,8 @@ describe('Login Test', function() {
 	});
     
 	it('- log in with invalid username', function() {
-		login.enterUsername(config.credentials.app.username + 'a')
-			.then(login.enterPassword.call(login, config.credentials.app
+		login.enterUsername(config.credentials.app.admin.username + 'a')
+			.then(login.enterPassword.call(login, config.credentials.app.admin
 				.password))
 			.then(login.clickLogIn.call(login))
 			.then(expect(browser.getCurrentUrl()).to.eventually
@@ -75,8 +75,8 @@ describe('Login Test', function() {
 	});
     
 	it('- log in with invalid username and invalid password', function() {
-		login.enterUsername(config.credentials.app.username + 'a')
-			.then(login.enterPassword.call(login, config.credentials.app
+		login.enterUsername(config.credentials.app.admin.username + 'a')
+			.then(login.enterPassword.call(login, config.credentials.app.admin
 				.password + '1'))
 			.then(login.clickLogIn.call(login))
 			.then(expect(browser.getCurrentUrl()).to.eventually
@@ -86,14 +86,14 @@ describe('Login Test', function() {
 	});
 
 	it('- log in correct credentials and then logout', function() {
-		login.fullSignIn(config.credentials.app)
+		login.fullSignIn(config.credentials.app.admin)
 			.then(expect(browser.getCurrentUrl()).to.eventually
 				.contain('roles'))
 			.then(role.selectRole.call(role, 'Professor'))
 			.then(expect(browser.getCurrentUrl()).to.eventually
 				.contain('professor'))
 			.then(expect(utils.getUser.call(utils)).to.eventually.contain(config.
-				credentials.app.fullname))
+				credentials.app.admin.fullname))
 			.then(expect(utils.getRole.call(utils)).to.eventually.
 				contain('Professor'))
 			.then(utils.logOut.call(utils))
@@ -104,7 +104,7 @@ describe('Login Test', function() {
 	describe('- login sessions', function() {
 		before(function setUp() {
 			welcome.clickSignInButton()
-				.then(login.fullSignIn.call(login, config.credentials.app))
+				.then(login.fullSignIn.call(login, config.credentials.app.admin))
 				.then(role.selectRole.call(role, 'Professor'));
 		});
 
@@ -120,7 +120,7 @@ describe('Login Test', function() {
 					.then(expect(browser.getCurrentUrl()).to.eventually
 						.contain('professor'))
 					.then(expect(utils.getUser.call(utils)).to.eventually.contain(config.
-						credentials.app.fullname))
+						credentials.app.admin.fullname))
 					.then(expect(utils.getRole.call(utils)).to.eventually.
 						contain('Professor'))
 					.then(utils.goToTab.call(utils, 0));
@@ -136,14 +136,14 @@ describe('Login Test', function() {
 					.then(expect(browser.getCurrentUrl()).to.eventually
 						.contain('/'))
 					.then(welcome.clickSignInButton.call(welcome))
-					.then(login.fullSignIn.call(login, config.credentials.app))
+					.then(login.fullSignIn.call(login, config.credentials.app.admin))
 					.then(expect(browser.getCurrentUrl()).to.eventually
 						.contain('roles'))
 					.then(role.selectRole.call(role, 'Professor'))
 					.then(expect(browser.getCurrentUrl()).to.eventually
 						.contain('professor'))
 					.then(expect(utils.getUser.call(utils)).to.eventually.contain(config.
-						credentials.app.fullname))
+						credentials.app.admin.fullname))
 					.then(expect(utils.getRole.call(utils)).to.eventually.
 						contain('Professor'));
 			});

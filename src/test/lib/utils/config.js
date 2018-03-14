@@ -3,9 +3,16 @@
 module.exports = {
 	'credentials' :{
 		'app' : {
-			'username': 'admin',
-			'password': 'admin',
-			'fullname': 'John Doe'
+			'admin': {
+				'username': 'admin',
+				'password': 'admin',
+				'fullname': 'John Doe'
+			},
+			'committee': {
+				'username': 'von',
+				'password': 'committee',
+				'fullname': 'Von Brakespear'
+			}
 		},
 		'database' : {
 			'host': process.env.MYSQL_HOST,
