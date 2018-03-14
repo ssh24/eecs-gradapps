@@ -13,27 +13,25 @@
                     <div id="error-message" class="alert alert-danger text-center">
                         <%= message %>
                     </div>
-                <% } else{ %>
+                <% } else { %>
                     <table id="applicant-table" class="table table-striped table-hover tablesorter">
                             <thead id="table-head">
                                 <tr>
-                                    <!-- <% for(var i = 0; i < fields.length; i++){ %>
+                                    <% for(var i = 0; i < fields.length; i++){ %>
                                         <% if (hidden.includes(fields[i])) { %>
                                             <% continue; %>
                                         <% } else { %>
-                                            <%if (fields[i]==='Committee Rank' || fields[i]==='GPA') { %>
-                                                <th class="text-center sorter-grades"><%= fields[i]%></th>
-                                              <%} else if (fields[i] !== 'Applicant Name' && fields[i] !== 'Degree Applied For' && fields[i] !== 'Visa Status' && fields[i] !== 'Program Decision' && fields[i] !== 'Gender' && fields[i] !== 'My Interest Status'){ %>
+                                            <%if (fields[i] === 'Actions'){ %>
                                                 <th class="text-center sorter-false parser-false"><%= fields[i]%></th>
                                               <%} else {%>
                                                 <th class="text-center"><%= fields[i]%></th>
-                                              <%}%>
+                                            <%}%>
                                         <% } %>
-                                    <%}%> -->
+                                    <%}%>
                                 </tr>
                             </thead>
                             <tbody id="table-body">
-                              <!-- <% for(var i = 0; i < apps.length; i++){ %>
+                              <% for(var i = 0; i < apps.length; i++){ %>
                                 <tr>
                                     <% for(var j = 0; j < fields.length; j++){ %>
                                         <% if (hidden.includes(fields[j])) { %>
@@ -41,66 +39,39 @@
                                         <% } else { %>
                                             <% if (fields[j] != 'Actions') { %>
                                                 <td id="data-<%=i%>-<%=j%>" class="text-center">
-                                                    <%= apps[i][fields[j]]%>
+                                                    <%- highlightFunc(apps[i],fields[j], highlightText)%>
                                                 </td>
                                             <% } else { %>
                                                 <td class="text-center">
                                                         <div class="btn-group-vertical">
                                                             <button class="btn btn-primary">View Application</button>
-                                                            <button id="set-to-<%=i%>" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">Set to <span class="caret"></span></button>
-                                                            <ul class="dropdown-menu" role="menu">
-                                                                <% if (apps[i]['Contacted By'] && apps[i]['Contacted By'].indexOf(fullname) > -1) { %>
-                                                                    <% if (!filter) { %>
-                                                                        <li><a id="not-contacted-<%=i%>" href="/roles/professor?contacted=false&appId=<%= apps[i][fields[0]]%>">Not Contacted</a></li>
-                                                                    <% } else{ %>
-                                                                        <li><a id="not-contacted-<%=i%>" href="/roles/professor/filter?contacted=false&appId=<%= apps[i][fields[0]]%>">Not Contacted</a></li>
-                                                                    <% } %>
+                                                            <form action="/roles/committee/review" method="GET">
+                                                                <input type="text" name="appId" value="<%= apps[i][fields[0]]%>" hidden>
+                                                                <input type="text" name="committeeId" value="<%= user%>" hidden>
+                                                                <% if (apps[i]['My Review Status'] && apps[i]['My Review Status'] === 'New') { %>
+                                                                    <button class="btn btn-primary">Start Review</button>
                                                                 <% } %>
-                                                                <% if (!(apps[i]['Contacted By'] && apps[i]['Contacted By'].indexOf(fullname) > -1)) { %>
-                                                                    <% if (!filter) { %>
-                                                                        <li><a id="contacted-<%=i%>" href="/roles/professor?contacted=true&appId=<%= apps[i][fields[0]]%>">Contacted</a></li>
-                                                                    <% } else{ %>
-                                                                        <li><a id="contacted-<%=i%>" href="/roles/professor/filter?contacted=true&appId=<%= apps[i][fields[0]]%>">Contacted</a></li>
-                                                                    <% } %>
+                                                                <% if (apps[i]['My Review Status'] && apps[i]['My Review Status'] === 'Draft') { %>
+                                                                    <button class="btn btn-primary">Continue Review</button>
                                                                 <% } %>
-                                                                <% if (apps[i]['Requested By'] && apps[i]['Requested By'].indexOf(fullname) > -1) { %>
-                                                                    <% if (!filter) { %>
-                                                                        <li><a id="not-requested-<%=i%>" href="/roles/professor?requested=false&appId=<%= apps[i][fields[0]]%>">Not Requested</a></li>
-                                                                    <% } else{ %>
-                                                                        <li><a id="not-requested-<%=i%>" href="/roles/professor/filter?requested=false&appId=<%= apps[i][fields[0]]%>">Not Requested</a></li>
-                                                                    <% } %> 
+                                                                <% if (apps[i]['My Review Status'] && apps[i]['My Review Status'] === 'Reviewed') { %>
+                                                                    <button class="btn btn-primary">Submit Review</button>
                                                                 <% } %>
-                                                                <% if (!(apps[i]['Requested By'] && apps[i]['Requested By'].indexOf(fullname) > -1)) { %>
-                                                                    <% if (!filter) { %>
-                                                                        <li><a id="requested-<%=i%>" href="/roles/professor?requested=true&appId=<%= apps[i][fields[0]]%>">Requested</a></li>
-                                                                    <% } else{ %>
-                                                                        <li><a id="requested-<%=i%>" href="/roles/professor/filter?requested=true&appId=<%= apps[i][fields[0]]%>">Requested</a></li>
-                                                                    <% } %>
+                                                                <% if (apps[i]['My Review Status'] && apps[i]['My Review Status'] === 'Submitted') { %>
+                                                                    <button class="btn btn-primary">View Review</button>
                                                                 <% } %>
-                                                                <% if (apps[i]['My Interest Status'] === '-' || apps[i]['My Interest Status'] === 'Interested') { %>
-                                                                    <% if (!filter) { %>
-                                                                        <li><a id="not-interested-<%=i%>" href="/roles/professor?interest=false&appId=<%= apps[i][fields[0]]%>">Not Interested</a></li>
-                                                                    <% } else{ %>
-                                                                        <li><a id="not-interested-<%=i%>" href="/roles/professor/filter?interest=false&appId=<%= apps[i][fields[0]]%>">Not Interested</a></li>
-                                                                    <% } %>
-                                                                <% } if (apps[i]['My Interest Status'] === '-' || apps[i]['My Interest Status'] === 'Not Interested') { %>
-                                                                    <% if (!filter) { %>
-                                                                        <li><a id="interested-<%=i%>" href="/roles/professor?interest=true&appId=<%= apps[i][fields[0]]%>">Interested</a></li>
-                                                                    <% } else{ %>
-                                                                        <li><a id="interested-<%=i%>" href="/roles/professor/filter?interest=true&appId=<%= apps[i][fields[0]]%>">Interested</a></li>
-                                                                    <% } %>
-                                                                <% } %>
-                                                            </ul>
+                                                            </form>
                                                         </div>
                                                 </td>
                                             <% } %>
                                         <% } %>
                                     <%}%>
                                 </tr>
-                              <%}%> -->
+                              <%}%>
                             </tbody>
                         </table>   
                 <% } %>
             </div>
         </div>
+<% include partials/filter-committee %>
 <% include partials/footer %>

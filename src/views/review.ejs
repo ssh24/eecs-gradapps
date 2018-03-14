@@ -1,0 +1,111 @@
+<% include partials/header %>
+    <% include partials/navbar %>
+    <div class="container-fluid">
+        <h3 class="text-center">Review Form</h3>
+        <% if (message.length > 0) { %>
+            <a id="reset-table" href="/roles/committee" class="btn btn-primary"><span class="glyphicon glyphicon-arrow-left"></span> Load Default Table</span></a>
+            <div id="error-message" class="alert alert-danger text-center">
+                <%= message %>
+            </div>
+        <% } else { %>
+            <div class="text-center"><button class="btn btn-primary">View Application PDF &raquo;</button></div>
+            <hr>
+            <form>
+                    <div class="row" >
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            <label for="lname">Last Name</label>
+                                            <input type="text" class="form-control" id="lname" placeholder="Last Name" value="<%= lname %>" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            <label for="fname">First Name</label>
+                                            <input type="text" class="form-control" id="fname" placeholder="First Name" value="<%= fname %>" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            <label for="degree">Degree Applied For</label>
+                                            <input type="text" class="form-control" id="degree" placeholder="Degree Applied For" value="<%= degree %>" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-1">
+                                            <div class="form-group">
+                                                <label for="gpa">GPA</label>
+                                                <input type="text" class="form-control" id="gpa" placeholder="GPA" value="<%= gpa %>" required>
+                                            </div>
+                                    </div>
+                                    <div class="col-sm-1">
+                                        <div class="form-group">
+                                            <label for="gre">GRE</label>
+                                            <input type="text" class="form-control" id="gre" placeholder="GRE" value="<%= gre %>">
+                                        </div>
+                                    </div>
+                    </div>
+
+                    <div class="row">
+                            <div class="col-sm-4">
+                                    <div class="form-group">
+                                    <label for="prev_uni">Previous Institution</label>
+                                    <select id="prev_uni" name="prev_uni" class="form-control selectpicker" data-live-search="true">
+                                            <option selected="selected">-</option>
+                                            <% for(var i = 0; i < unis.length; i++){ %>
+                                                <option><%= unis[i]%></option>
+                                            <%}%>
+                                        </select>
+                                    </div>
+                            </div>
+
+                            <div class="col-sm-3">
+                                    <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="new_uni" id="new_uni">
+                                            <label class="form-check-label" for="new_uni">Add an Institution</label>
+                                            <input type="text" class="form-control" id="new_uni_name" placeholder="Institution Name" style="margin-bottom:5px" disabled>
+                                            <input class="btn btn-primary" type="button" id="new_uni_btn" value="Add" style="margin-bottom:5px" disabled>
+                                    </div>
+                            </div>
+                    </div>
+
+                    <div class="row">
+                            <div class="col-sm-4">
+                                    <div class="form-group">
+                                    <label for="uni_desc">Institution Assessment</label>
+                                    <label id="all_desc" hidden><%= JSON.stringify(uni_desc)%></label>
+                                    <select id="uni_desc" name="uni_desc" class="form-control selectpicker" data-live-search="true" multiple disabled>
+                                            <option selected="selected">-</option>
+                                        </select>
+                                    </div>
+                            </div>
+
+                            <div class="col-sm-5">
+                                    <div class="form-check">
+                                        <label class="radio-inline"><input type="radio" name="optradio" id="add_assessment" disabled>Add Assessment</label>
+                                        <label class="radio-inline"><input type="radio" name="optradio" id="use_assessment" disabled>Use Assessment</label>
+                                        <textarea class="form-control" id="assessment" rows="2" placeholder="New Assessment" style="margin-bottom:5px" disabled></textarea>
+                                        <input class="btn btn-primary" type="button" id="assessment_btn" value="Add" style="margin-bottom:5px" disabled>
+                                    </div>
+                            </div>
+                    </div>
+
+                    <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="background">Background Information</label>
+                                        <textarea class="form-control" id="background" rows="4" placeholder="Background Information"></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="research">Research Experience</label>
+                                        <textarea class="form-control" id="research" rows="4" placeholder="Research Experience"></textarea>
+                                    </div>
+                                </div>
+                    </div>
+
+                </form>
+                <%}%>
+    </div>
+
+<% include partials/footer %>

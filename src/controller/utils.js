@@ -382,4 +382,78 @@ Utils.prototype.getMemberFullName = function(memberId, cb) {
 	});
 };
 
+/**
+ * Get all applicant names
+ * @param {Function} cb 
+ */
+Utils.prototype.getApplicantNames = function(cb) {
+	var sql = 'SELECT CONCAT_WS(\' \', `FName`, `LName`) AS `Applicant Name`' + 
+	' FROM APPLICATION where committeeReviewed=1 and Rank is not null';
+	var applicants;
+	this.conn.query(sql, function(err, result) {
+		if (err) return cb(err);
+		if(result.length > 0) {
+			applicants = _.map(result, 'Applicant Name');
+			return cb(err, applicants.sort());
+		} else {
+			err = new Error('No applicants found');
+			return cb(err);
+		}
+	});
+};
+
+/**
+ * Get all universities
+ * @param {Function} cb 
+ */
+Utils.prototype.getUniversities = function(cb) {
+	var sql = 'SELECT u_Name from university';
+	var unis;
+	this.conn.query(sql, function(err, result) {
+		if (err) return cb(err);
+		if(result.length > 0) {
+			unis = _.map(result, 'u_Name');
+			return cb(err, unis.sort());
+		} else {
+			err = new Error('No universities found');
+			return cb(err);
+		}
+	});
+};
+
+/**
+ * Get all university descriptions
+ * @param {Function} cb 
+ */
+Utils.prototype.getUniversityDescriptions = function(cb) {
+	var sql = 'SELECT u_Name, u_Assessments from university';
+	this.conn.query(sql, function(err, result) {
+		if (err) return cb(err);
+		if(result.length > 0) {
+			return cb(err, result);
+		} else {
+			err = new Error('No universities found');
+			return cb(err);
+		}
+	});
+};
+
+/**
+ * Get review information given app id
+ * @param {Number} appId
+ * @param {Function} cb 
+ */
+Utils.prototype.autoFillReviewInfo = function(appId, cb) {
+	var sql = 'select lname, fname, degree, gpa, gre from application where app_Id=?';
+	this.conn.query(sql, [appId], function(err, result) {
+		if (err) return cb(err);
+		if(result.length === 1) {
+			return cb(err, result);
+		} else {
+			err = new Error('No application selected for review');
+			return cb(err);
+		}
+	});
+};
+
 module.exports = Utils;

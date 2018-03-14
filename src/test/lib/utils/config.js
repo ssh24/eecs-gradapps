@@ -3,9 +3,16 @@
 module.exports = {
 	'credentials' :{
 		'app' : {
-			'username': 'admin',
-			'password': 'admin',
-			'fullname': 'John Doe'
+			'admin': {
+				'username': 'admin',
+				'password': 'admin',
+				'fullname': 'John Doe'
+			},
+			'committee': {
+				'username': 'von',
+				'password': 'committee',
+				'fullname': 'Von Brakespear'
+			}
 		},
 		'database' : {
 			'host': process.env.MYSQL_HOST,
@@ -46,7 +53,8 @@ module.exports = {
 				'programDecision', 'studentDecision', 'declineReason', 
 				'ygsAwarded', 'app_Comments'],
 			'application_review': ['committeeId', 'appId', 'assignDate', 
-				'Background', 'researchExp', 'Comments', 'c_Rank', 'Status', 
+				'LName', 'FName', 'GPA', 'GRE', 'Degree', 'Background', 
+				'researchExp', 'Comments', 'c_Rank', 'Status', 
 				'lastReminded'],
 			'application_seen': ['fmId', 'appId', 'seen'],
 			'university': ['u_Id', 'u_Name', 'u_Assessments'],

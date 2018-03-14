@@ -25,7 +25,7 @@ describe('Role Test', function() {
 		utils.openView('#');
 		utils.maximizeBrowserWindow();
 		welcome.clickSignInButton()
-			.then(login.fullSignIn.bind(login, config.credentials.app));
+			.then(login.fullSignIn.bind(login, config.credentials.app.admin));
 	});
 
 	after(function (done) {
@@ -53,7 +53,7 @@ describe('Role Test', function() {
 			.then(role.selectRole.call(role, 'Admin'))
 			.then(expect(browser.getCurrentUrl()).to.eventually.contain('admin'))
 			.then(expect(utils.getUser.call(utils)).to.eventually
-				.contain(config.credentials.app.fullname))
+				.contain(config.credentials.app.admin.fullname))
 			.then(expect(utils.getRole.call(utils)).to.eventually.
 				contain('Admin'))
 			.then(utils.openView.bind(utils, '/roles'));
@@ -65,7 +65,7 @@ describe('Role Test', function() {
 			.then(expect(browser.getCurrentUrl()).to.eventually
 				.contain('professor'))
 			.then(expect(utils.getUser.call(utils)).to.eventually.contain(config.
-				credentials.app.fullname))
+				credentials.app.admin.fullname))
 			.then(expect(utils.getRole.call(utils)).to.eventually.
 				contain('Professor'))
 			.then(utils.openView.bind(utils, '/roles'));
@@ -77,7 +77,7 @@ describe('Role Test', function() {
 			.then(expect(browser.getCurrentUrl()).to.eventually
 				.contain('committee'))
 			.then(expect(utils.getUser.call(utils)).to.eventually.contain(config.
-				credentials.app.fullname))
+				credentials.app.admin.fullname))
 			.then(expect(utils.getRole.call(utils)).to.eventually.
 				contain('Committee Member'))
 			.then(utils.openView.bind(utils, '/roles'));
@@ -88,14 +88,14 @@ describe('Role Test', function() {
 			.then(role.selectRole.call(role, 'Admin'))
 			.then(expect(browser.getCurrentUrl()).to.eventually.contain('admin'))
 			.then(expect(utils.getUser.call(utils)).to.eventually
-				.contain(config.credentials.app.fullname))
+				.contain(config.credentials.app.admin.fullname))
 			.then(expect(utils.getRole.call(utils)).to.eventually.
 				contain('Admin'))
 			.then(utils.openRoleDropDown.call(utils))
 			.then(role.changeRole.call(role, 'Professor'))
 			.then(expect(browser.getCurrentUrl()).to.eventually.contain('professor'))
 			.then(expect(utils.getUser.call(utils)).to.eventually
-				.contain(config.credentials.app.fullname))
+				.contain(config.credentials.app.admin.fullname))
 			.then(expect(utils.getRole.call(utils)).to.eventually.
 				contain('Professor'))
 			.then(utils.openRoleDropDown.call(utils))
@@ -106,14 +106,14 @@ describe('Role Test', function() {
 	it('- switch from admin to committee member', function() {
 		expect(browser.getCurrentUrl()).to.eventually.contain('admin')
 			.then(expect(utils.getUser.call(utils)).to.eventually
-				.contain(config.credentials.app.fullname))
+				.contain(config.credentials.app.admin.fullname))
 			.then(expect(utils.getRole.call(utils)).to.eventually.
 				contain('Admin'))
 			.then(utils.openRoleDropDown.call(utils))
 			.then(role.changeRole.call(role, 'Committee Member'))
 			.then(expect(browser.getCurrentUrl()).to.eventually.contain('committee'))
 			.then(expect(utils.getUser.call(utils)).to.eventually
-				.contain(config.credentials.app.fullname))
+				.contain(config.credentials.app.admin.fullname))
 			.then(expect(utils.getRole.call(utils)).to.eventually.
 				contain('Committee Member'))
 			.then(utils.openRoleDropDown.call(utils))
@@ -127,14 +127,14 @@ describe('Role Test', function() {
 			.then(role.changeRole.call(role, 'Professor'))
 			.then(expect(browser.getCurrentUrl()).to.eventually.contain('professor'))
 			.then(expect(utils.getUser.call(utils)).to.eventually
-				.contain(config.credentials.app.fullname))
+				.contain(config.credentials.app.admin.fullname))
 			.then(expect(utils.getRole.call(utils)).to.eventually.
 				contain('Professor'))
 			.then(utils.openRoleDropDown.call(utils))
 			.then(role.changeRole.call(role, 'Admin'))
 			.then(expect(browser.getCurrentUrl()).to.eventually.contain('admin'))
 			.then(expect(utils.getUser.call(utils)).to.eventually
-				.contain(config.credentials.app.fullname))
+				.contain(config.credentials.app.admin.fullname))
 			.then(expect(utils.getRole.call(utils)).to.eventually.
 				contain('Admin'))
 			.then(utils.openRoleDropDown.call(utils))
@@ -145,14 +145,14 @@ describe('Role Test', function() {
 	it('- switch from professor to committee member', function() {
 		expect(browser.getCurrentUrl()).to.eventually.contain('professor')
 			.then(expect(utils.getUser.call(utils)).to.eventually
-				.contain(config.credentials.app.fullname))
+				.contain(config.credentials.app.admin.fullname))
 			.then(expect(utils.getRole.call(utils)).to.eventually.
 				contain('Professor'))
 			.then(utils.openRoleDropDown.call(utils))
 			.then(role.changeRole.call(role, 'Committee Member'))
 			.then(expect(browser.getCurrentUrl()).to.eventually.contain('committee'))
 			.then(expect(utils.getUser.call(utils)).to.eventually
-				.contain(config.credentials.app.fullname))
+				.contain(config.credentials.app.admin.fullname))
 			.then(expect(utils.getRole.call(utils)).to.eventually.
 				contain('Committee Member'))
 			.then(utils.openRoleDropDown.call(utils))
@@ -166,14 +166,14 @@ describe('Role Test', function() {
 			.then(role.changeRole.call(role, 'Committee Member'))
 			.then(expect(browser.getCurrentUrl()).to.eventually.contain('committee'))
 			.then(expect(utils.getUser.call(utils)).to.eventually
-				.contain(config.credentials.app.fullname))
+				.contain(config.credentials.app.admin.fullname))
 			.then(expect(utils.getRole.call(utils)).to.eventually.
 				contain('Committee Member'))
 			.then(utils.openRoleDropDown.call(utils))
 			.then(role.changeRole.call(role, 'Admin'))
 			.then(expect(browser.getCurrentUrl()).to.eventually.contain('admin'))
 			.then(expect(utils.getUser.call(utils)).to.eventually
-				.contain(config.credentials.app.fullname))
+				.contain(config.credentials.app.admin.fullname))
 			.then(expect(utils.getRole.call(utils)).to.eventually.
 				contain('Admin'))
 			.then(utils.openRoleDropDown.call(utils))
@@ -184,14 +184,14 @@ describe('Role Test', function() {
 	it('- switch from committee to professor', function() {
 		expect(browser.getCurrentUrl()).to.eventually.contain('committee')
 			.then(expect(utils.getUser.call(utils)).to.eventually
-				.contain(config.credentials.app.fullname))
+				.contain(config.credentials.app.admin.fullname))
 			.then(expect(utils.getRole.call(utils)).to.eventually.
 				contain('Committee Member'))
 			.then(utils.openRoleDropDown.call(utils))
 			.then(role.changeRole.call(role, 'Professor'))
 			.then(expect(browser.getCurrentUrl()).to.eventually.contain('professor'))
 			.then(expect(utils.getUser.call(utils)).to.eventually
-				.contain(config.credentials.app.fullname))
+				.contain(config.credentials.app.admin.fullname))
 			.then(expect(utils.getRole.call(utils)).to.eventually.
 				contain('Professor'))
 			.then(utils.openRoleDropDown.call(utils))
@@ -206,7 +206,7 @@ describe('Role Test', function() {
 		welcome.clickSignInButton()
 			.then(login.fullSignIn.call(login, {
 				username: 'arri',
-				password: config.credentials.app.password
+				password: config.credentials.app.admin.password
 			}))
 			.then(utils.openView.call(utils, '/roles/professor'))
 			.then(expect(browser.getCurrentUrl()).to.eventually.contain('roles'))
