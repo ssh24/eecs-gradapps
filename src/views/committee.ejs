@@ -39,7 +39,7 @@
                                         <% } else { %>
                                             <% if (fields[j] != 'Actions') { %>
                                                 <td id="data-<%=i%>-<%=j%>" class="text-center">
-                                                    <%= apps[i][fields[j]]%>
+                                                    <%- highlightFunc(apps[i],fields[j], highlightText)%>
                                                 </td>
                                             <% } else { %>
                                                 <td class="text-center">

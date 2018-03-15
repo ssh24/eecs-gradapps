@@ -6,7 +6,7 @@ module.exports = function(app, utils, application, fns) {
 	var basicCommittee = fns.concat([getApps]);
 	var filterCommittee = fns.concat([filterApps]);
 	var filterPost = fns.concat([filterApps]);
-	var builtSql, builtOptions;
+	var builtSql, builtOptions, builtHighlight;
 
 	// committee page route
 	app.get('/roles/committee', basicCommittee, function(req, res) {
@@ -23,7 +23,9 @@ module.exports = function(app, utils, application, fns) {
 			fields: req.apps.flds ? (req.apps.flds.fields || []) : [],
 			hidden: req.apps.flds ? (req.apps.flds.hidden || []) : [],
 			applicants: req.apps.applicants || [],
-			filter: req.apps.filter || false
+			filter: req.apps.filter || false,
+			highlightText: {},
+			highlightFunc: highlight
 		});
 	});
 
@@ -41,7 +43,9 @@ module.exports = function(app, utils, application, fns) {
 			fields: req.apps.flds ? (req.apps.flds.fields || []) : [],
 			hidden: req.apps.flds ? (req.apps.flds.hidden || []) : [],
 			applicants: req.apps.applicants || [],
-			filter: req.apps.filter || false
+			filter: req.apps.filter || false,
+			highlightText: req.apps.highlightText,
+			highlightFunc: highlight
 		});
 	});
 
@@ -59,7 +63,9 @@ module.exports = function(app, utils, application, fns) {
 			fields: req.apps.flds ? (req.apps.flds.fields || []) : [],
 			hidden: req.apps.flds ? (req.apps.flds.hidden || []) : [],
 			applicants: req.apps.applicants || [],
-			filter: req.apps.filter || false
+			filter: req.apps.filter || false,
+			highlightText: req.apps.highlightText,
+			highlightFunc: highlight
 		});
 	});
 
@@ -74,6 +80,7 @@ module.exports = function(app, utils, application, fns) {
 
 		var reviewField;
 		var actionFieldNum;
+		var highlightText = {};
 		
 		// default sql
 		var defaultSql = 'select application.app_Id, DATE_FORMAT(application.app_Date, "%d/%m/%Y") as `Date Uploaded`, ' + 
@@ -112,14 +119,17 @@ module.exports = function(app, utils, application, fns) {
 				req.body.btn_filter_name !== '') {
 			sqlFilt += ' and CONCAT_WS(\'\', application.FName, application.LName)=' + 
 				req.body.btn_filter_name;
+			highlightText.name = req.body.btn_filter_name;
 		}
 		if (req.body.btn_filter_degree && req.body.btn_filter_degree !== 'Any' && 
 				req.body.btn_filter_degree !== '') {
 			sqlFilt += ' and application.Degree="' + req.body.btn_filter_degree + '"';
+			highlightText.degree = req.body.btn_filter_degree;
 		}
 		if (req.body.btn_filter_review && req.body.btn_filter_review !== 'Any' && 
 				req.body.btn_filter_review !== '') {
 			sqlFilt += ' and application_review.Status="' + req.body.btn_filter_review + '"';
+			highlightText.review = req.body.btn_filter_review;
 		}
 
 		var whereClause = ' where application.app_Id = application_review.appId and application_review.committeeId=' 
@@ -135,6 +145,10 @@ module.exports = function(app, utils, application, fns) {
 		if (!(_.isEmpty(req.body))) {
 			builtSql = sql;
 			builtOptions = options;
+			req.apps.highlightText = highlightText;
+			builtHighlight = highlightText;
+		} else {
+			req.apps.highlightText = builtHighlight;
 		}
 
 		getApplications(builtSql, (builtOptions || options), req, res, next);
@@ -185,5 +199,31 @@ module.exports = function(app, utils, application, fns) {
 			req.apps['applicants'] = result;
 			next();
 		});
+	}
+
+	function highlight(app, field, highlightText) {
+		var patternHighlight = null;
+		var returnString = app[field];
+	
+		if (field === 'Applicant Name' && highlightText.name && 
+		highlightText.name !== '') {
+			patternHighlight = new RegExp('('+highlightText.name+')', 'gi');
+		} else if (field === 'Degree Applied For' && highlightText.degree && 
+		highlightText.degree !== '') {
+			patternHighlight = new RegExp('('+highlightText.degree+')', 'gi');
+		} else if (field === 'My Review Status' && highlightText.review && 
+		highlightText.review !== '') {
+			patternHighlight = new RegExp('('+highlightText.review+')', 'gi');
+		} else {
+			patternHighlight = null;
+		}
+		if (patternHighlight) {
+			if (app[field]) {
+				var word = app[field].toString();
+				returnString = word.replace(patternHighlight, 
+					'<span style="color:red">$1</span>');
+			}
+		}
+		return returnString;
 	}
 };

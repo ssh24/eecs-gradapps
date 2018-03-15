@@ -425,8 +425,43 @@ describe('Committee Test', function() {
 			// stub for filter preset tests
 		});
 
-		describe.skip('- filter highlights', function() {
-			// stub for filter highlight tests
+		describe('- filter highlights', function() {
+			after(function cleanUp() {
+				filter.resetFilteredTable();
+			});
+
+			it('- check for highlights on chosen field', function() {
+				filter.openFilterModal().then(filter.waitForModalOpen.call(filter))
+					.then(filter.openFieldDD.call(filter, filter.filter.fields
+						.degree.openDD))
+					.then(expect(filter.isFieldDDOpen.call(filter, filter.filter
+						.fields.degree.openDD)).to
+						.eventually.be.true)
+					.then(filter.searchText.call(filter, 'm'))
+					.then(filter.selectIthElement.call(filter, 3))
+					.then(expect(filter.getSelectedElement.call(filter)).to
+						.eventually.contain('MASc'))
+					.then(expect(filter.getSelectedFilter.call(filter)).to.eventually
+						.contain('Degree Applied For = MASc'))
+					.then(filter.openFieldDD.call(filter, filter.filter.fields
+						.rstatus.openDD))
+					.then(expect(filter.isFieldDDOpen.call(filter, filter.filter
+						.fields.rstatus.openDD)).to
+						.eventually.be.true)
+					.then(filter.searchText.call(filter, 'I'))
+					.then(filter.selectIthElement.call(filter, 3))
+					.then(expect(filter.getSelectedElement.call(filter)).to
+						.eventually.contain('In-Progress'))
+					.then(expect(filter.getSelectedFilter.call(filter)).to.eventually
+						.contain('My Review Status = In-Progress'))
+					.then(filter.submitFilter.call(filter))
+					.then(expect(browser.getCurrentUrl()).to.eventually.contain('filter'))
+					.then(expect(committee.applicationTableIsDisplayed.call(committee)).to.eventually.be.true)
+					.then(expect(committee.tableHeaderExists.call(committee)).to.eventually.be.true)
+					.then(expect(committee.tableBodyExists.call(committee)).to.eventually.be.true)
+					.then(expect(committee.isHighlighted.call(committee, 0, 3)).to.eventually.equal('MASc'))
+					.then(expect(committee.isHighlighted.call(committee, 0, 4)).to.eventually.equal('In-Progress'));
+			});
 		});
 		
 		describe('- filtering', function() {
