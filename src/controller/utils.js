@@ -438,22 +438,4 @@ Utils.prototype.getUniversityDescriptions = function(cb) {
 	});
 };
 
-/**
- * Get review information given app id
- * @param {Number} appId
- * @param {Function} cb 
- */
-Utils.prototype.autoFillReviewInfo = function(appId, cb) {
-	var sql = 'select lname, fname, degree, gpa, gre from application where app_Id=?';
-	this.conn.query(sql, [appId], function(err, result) {
-		if (err) return cb(err);
-		if(result.length === 1) {
-			return cb(err, result);
-		} else {
-			err = new Error('No application selected for review');
-			return cb(err);
-		}
-	});
-};
-
 module.exports = Utils;

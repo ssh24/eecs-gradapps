@@ -5,7 +5,10 @@ module.exports = function(app, passport, fns) {
 	app.get('/login', function(req, res) {
 		res.render('login', { message: req.flash('loginMessage'), title: 'Login', 
 			user: null, 
-			role: null});
+			role: null,
+			showfilter: true,
+			review: false
+		});
 	});
 
 	app.post('/login', passport.authenticate('local-login', {

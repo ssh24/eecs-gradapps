@@ -274,11 +274,11 @@ describe('Committee Test', function() {
 					.then(expect(filter.isFieldDDOpen.call(filter, filter.filter
 						.fields.rstatus.openDD)).to
 						.eventually.be.true)
-					.then(filter.selectIthElement.call(filter, 3))
+					.then(filter.selectIthElement.call(filter, 2))
 					.then(expect(filter.getSelectedElement.call(filter)).to
-						.eventually.contain('In-Progress'))
+						.eventually.contain('Draft'))
 					.then(expect(filter.getSelectedFilter.call(filter)).to.eventually
-						.contain('My Review Status = In-Progress'))
+						.contain('My Review Status = Draft'))
 					.then(filter.closeFilterModal.call(filter));
 			});
 		});
@@ -327,12 +327,12 @@ describe('Committee Test', function() {
 					.then(expect(filter.isFieldDDOpen.call(filter, filter.filter
 						.fields.rstatus.openDD)).to
 						.eventually.be.true)
-					.then(filter.searchText.call(filter, 'I'))
-					.then(filter.selectIthElement.call(filter, 3))
+					.then(filter.searchText.call(filter, 'D'))
+					.then(filter.selectIthElement.call(filter, 2))
 					.then(expect(filter.getSelectedElement.call(filter)).to
-						.eventually.contain('In-Progress'))
+						.eventually.contain('Draft'))
 					.then(expect(filter.getSelectedFilter.call(filter)).to.eventually
-						.contain('My Review Status = In-Progress'))
+						.contain('My Review Status = Draft'))
 					.then(filter.closeFilterModal.call(filter));
 			});
 		});
@@ -448,19 +448,19 @@ describe('Committee Test', function() {
 					.then(expect(filter.isFieldDDOpen.call(filter, filter.filter
 						.fields.rstatus.openDD)).to
 						.eventually.be.true)
-					.then(filter.searchText.call(filter, 'I'))
-					.then(filter.selectIthElement.call(filter, 3))
+					.then(filter.searchText.call(filter, 'D'))
+					.then(filter.selectIthElement.call(filter, 2))
 					.then(expect(filter.getSelectedElement.call(filter)).to
-						.eventually.contain('In-Progress'))
+						.eventually.contain('Draft'))
 					.then(expect(filter.getSelectedFilter.call(filter)).to.eventually
-						.contain('My Review Status = In-Progress'))
+						.contain('My Review Status = Draft'))
 					.then(filter.submitFilter.call(filter))
 					.then(expect(browser.getCurrentUrl()).to.eventually.contain('filter'))
 					.then(expect(committee.applicationTableIsDisplayed.call(committee)).to.eventually.be.true)
 					.then(expect(committee.tableHeaderExists.call(committee)).to.eventually.be.true)
 					.then(expect(committee.tableBodyExists.call(committee)).to.eventually.be.true)
 					.then(expect(committee.isHighlighted.call(committee, 0, 3)).to.eventually.equal('MASc'))
-					.then(expect(committee.isHighlighted.call(committee, 0, 4)).to.eventually.equal('In-Progress'));
+					.then(expect(committee.isHighlighted.call(committee, 0, 4)).to.eventually.equal('Draft'));
 			});
 		});
 		
@@ -541,7 +541,7 @@ describe('Committee Test', function() {
 						.fields.rstatus.openDD)).to
 						.eventually.be.true)
 					.then(filter.searchText.call(filter, 't'))
-					.then(filter.selectIthElement.call(filter, 5))
+					.then(filter.selectIthElement.call(filter, 3))
 					.then(expect(filter.getSelectedElement.call(filter)).to
 						.eventually.contain('Submitted'))
 					.then(expect(filter.getSelectedFilter.call(filter)).to.eventually

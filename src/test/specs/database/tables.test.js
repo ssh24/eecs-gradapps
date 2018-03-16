@@ -151,9 +151,11 @@ describe('Tables Test', function() {
 						function(description) {
 							return description['Key'] === 'PRI';
 						});
-					assert.equal(1, primaryKey.length, 
-						'There should be only one PK');
+					assert.equal(2, primaryKey.length, 
+						'There should be two PK');
 					assert.equal(fields[0], primaryKey[0]['Field'], 
+						'Primary key should match');
+					assert.equal(fields[1], primaryKey[1]['Field'], 
 						'Primary key should match');
 					done();
 				});

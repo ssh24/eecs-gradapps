@@ -78,17 +78,6 @@ Review.prototype.unassignReview = function(appId, committeeId, adminId, cb) {
 							['committeeId', 'appId'], [committeeId, 
 								appId]);
 					self.conn.query(deleteStmt, cb);
-				} else if(status === 'In-Progress') {
-					err = new Error('Application ' + appId + 
-							' is under review by ' + 
-							'member ' + committeeId);
-					return cb(err);
-				}
-				else if (status === 'Reviewed') {
-					err = new Error('Application ' + appId + 
-							' has been reviewed by ' + 
-							'member ' + committeeId);
-					return cb(err);
 				} else {
 					err = new Error('Application ' + appId + 
 							' has been submitted by ' + 
@@ -164,42 +153,31 @@ Review.prototype.remindReview = function(appId, committeeId, adminId, cb) {
  * @param {Number} committeeId
  * @param {Function} cb
  */
-Review.prototype.openReview = function(appId, committeeId, cb) {
+Review.prototype.loadReview = function(appId, committeeId, cb) {
 	assert(typeof appId == 'number');
 	assert(typeof committeeId == 'number');
 	assert(typeof cb === 'function');
     
 	var self = this;
-	var updateStatement;
 	
 	this.utils.getRoles(committeeId, function(err, roles) {
 		if (err) return cb (err);
 		if (roles.includes('Committee Member')) {
-			self.getReviewStatus(appId, committeeId, function(err, status) {
+			self.getReviewStatus(appId, committeeId, function(err) {
 				if (err) return cb(err);
-				if (status === 'New' || status === 'Draft') {
-					self.conn.query('Select * from application_review where ' + 
-							'committeeId = ? and Status = "In-Progress"', 
-					[committeeId], 
-					function(err, results) {
-						if (err) return cb(err);
-						if (results.length >= 1) {
-							err = new Error('Member ' + committeeId + 
-									' has more than one ' 
-									+ 'on-going review application open ');
-							return cb(err);
-						}
-						updateStatement = self.utils.createUpdateStatement(
-							'application_review', ['Status'], 
-							['"In-Progress"'], 
-							['committeeId', 'appId'], [committeeId, appId]);
-						self.conn.query(updateStatement, cb);
-					});
-				} else {
-					err = new Error('Application ' + appId + ' is in ' 
-							+ status + ' stage by member ' + committeeId);
-					return cb(err);
-				}
+				self.conn.query('Select * from application_review where ' + 
+							'committeeId = ? and appId = ?', 
+				[committeeId, appId], 
+				function(err, results) {
+					if (err) return cb(err);
+					if (results && results.length === 1) {
+						return cb(err, results);
+					} else {
+						err = new Error('No application review found for app ' 
+							+ appId + ' by committee member ' + committeeId);
+						return cb(err);
+					}
+				});
 			});
 		} else {
 			err = new Error('Member ' + committeeId + ' cannot open a review'); 
@@ -209,90 +187,79 @@ Review.prototype.openReview = function(appId, committeeId, cb) {
 };
 
 /**
- * Begin a new review.
- * @param {Number} appId 
- * @param {Number} committeeId
- * @param {Function} cb
- */
-Review.prototype.beginReview = Review.prototype.resumeReview = 
-function(appId, committeeId, cb) {
-	assert(typeof appId == 'number');
-	assert(typeof committeeId == 'number');
-	assert(typeof cb === 'function');
-    
-	this.openReview(appId, committeeId, cb);
-};
-
-/**
- * Write a review for an application.
- * @param {Number} appId 
- * @param {Number} committeeId 
- * @param {*} options 
- * @param {Function} cb 
- */
-Review.prototype.writeReview = function(appId, committeeId, options, cb) {
-	assert(typeof appId == 'number');
-	assert(typeof committeeId == 'number');
-	assert(typeof options === 'object');
-	assert(Array.isArray(options['fieldNames']));
-	assert(Array.isArray(options['values']));
-	assert(typeof cb === 'function');
-    
-	var self = this;
-	var updateStatement;
-	var fieldNames = options['fieldNames'];
-	var values = options['values'];
-	
-	this.utils.getRoles(committeeId, function(err, roles) {
-		if (err) return cb (err);
-		if (roles.includes('Committee Member')) {
-			self.conn.query('Select * from application_review where appId = ? and ' 
-			+ 'committeeId = ? and Status = "In-Progress"', [appId, committeeId], 
-			function(err, results) {
-				if(err) return cb(err);
-				if (results.length === 0) {
-					err = new Error('Application ' + appId + 
-					' is not in-progress by member ' + committeeId);
-					return cb(err);
-				}
-				assert(1, results.length);
-				updateStatement = self.utils.createUpdateStatement('application_review', 
-					fieldNames, values, ['appId', 'committeeId'], [appId, 
-						committeeId]);
-				self.conn.query(updateStatement, cb);
-			});
-		} else {
-			err = new Error('Member ' + committeeId + ' cannot write a review'); 
-			return cb(err);
-		}
-	});
-
-};
-
-/**
  * Save an on-going review.
  * @param {Number} appId 
  * @param {Number} committeeId
  * @param {Function} cb
  */
-Review.prototype.saveReview = function(appId, committeeId, cb) {
+Review.prototype.saveReview = function(appId, committeeId, data, cb) {
+	if (typeof data === 'function') {
+		cb = data;
+		data = {};
+	}
+	data = data || {}; 
 	assert(typeof appId == 'number');
 	assert(typeof committeeId == 'number');
+	assert(typeof data === 'object');
 	assert(typeof cb === 'function');
     
 	var self = this;
 	var updateStatement;
-	
+
+	var dt = {
+		LName: data['LName'] ? JSON.stringify(data['LName']) : null,
+		FName:  data['FName'] ? JSON.stringify(data['FName']) : null,
+		GPA: data['GPA'] ? JSON.stringify(data['GPA']) : null,
+		GRE: data['GRE'] ? JSON.stringify(data['GRE']) : null,
+		Degree: data['Degree'] ? JSON.stringify(data['Degree']) : null,
+		PreviousInst: data['PreviousInst'] ? 
+			JSON.stringify(data['PreviousInst']) : null,
+		UniAssessment: data['UniAssessment'] ? JSON.stringify(JSON
+			.stringify(data['UniAssessment'])) : null,
+		Background: data['Background'] ? JSON.stringify(data['Background']) 
+			: null,
+		researchExp: data['researchExp'] ? JSON.stringify(data['researchExp']) 
+			: null,
+		Comments: data['Comments'] ? JSON.stringify(data['Comments']) : null,
+		c_Rank: data['c_Rank'] ? JSON.stringify(data['c_Rank']) : null
+	};
+
+	var assesmentArray;
+	if (dt.UniAssessment) {
+		assesmentArray = data['UniAssessment'];
+	}
+
 	this.utils.getRoles(committeeId, function(err, roles) {
 		if (err) return cb (err);
 		if (roles.includes('Committee Member')) {
 			self.getReviewStatus(appId, committeeId, function(err, status) {
 				if (err) return cb(err);
-				if(status === 'In-Progress') {
+				if(status === 'New' || status === 'Draft') {
 					updateStatement = self.utils.createUpdateStatement(
-						'application_review', ['Status'], ['"Draft"'], 
+						'application_review', ['Status', 'LName', 'FName', 'GPA', 'GRE', 
+							'Degree', 'PreviousInst', 'UniAssessment', 'Background', 
+							'researchExp', 'Comments', 'c_Rank'], ['"Draft"', 
+							dt.LName, dt.FName, 
+							dt.GPA, dt.GRE, 
+							dt.Degree, 
+							dt.PreviousInst, 
+							dt.UniAssessment, 
+							dt.Background, 
+							dt.researchExp, 
+							dt.Comments, dt.c_Rank], 
 						['committeeId', 'appId'], [committeeId, appId]);
-					self.conn.query(updateStatement, cb);
+					self.conn.query(updateStatement, function(err, result) {
+						if (err) return cb(err);
+						if (result && result.affectedRows === 1) {
+							if (dt.PreviousInst && assesmentArray)
+								self.addUniAssessment(dt.PreviousInst, assesmentArray, cb);
+							else return cb(err, result.affectedRows === 1);
+						}
+						else {
+							err = new Error('Could not save review for app ' + appId);
+							return cb(err);
+						}
+					});
 				} else {
 					err = new Error('Application ' + appId + ' is in ' + status + 
 					' stage by member ' + committeeId);
@@ -304,54 +271,60 @@ Review.prototype.saveReview = function(appId, committeeId, cb) {
 			return cb(err);
 		}
 	});
-
 };
 
-/**
- * Complete a review.
- * @param {Number} appId 
- * @param {Number} committeeId
- * @param {Function} cb
- */
-Review.prototype.completeReview = function(appId, committeeId, cb) {
-	assert(typeof appId == 'number');
-	assert(typeof committeeId == 'number');
+Review.prototype.addUniAssessment = function(uni, assessment, cb) {
+	assert(typeof uni === 'string');
+	assert(Array.isArray(assessment));
 	assert(typeof cb === 'function');
-    
+
 	var self = this;
-	var updateStatement;
-	
-	this.utils.getRoles(committeeId, function(err, roles) {
-		if (err) return cb (err);
-		if (roles.includes('Committee Member')) {
-			self.getReviewStatus(appId, committeeId, function(err, status) {
+	var updateStatement, insertStmt;
+
+	this.conn.query('select * from university where u_Name=' + uni, function(err, result) {
+		if (err) return cb(err);
+		var assmt = [];
+		if (result.length === 1) {
+			for (var i = 0; i < assessment.length; i++) {
+				if (typeof assessment[i] !== 'undefined')
+					assmt.push(assessment[i]);
+			}
+			var prevAssessment = _.uniq(result[0]['u_Assessments'].concat(assmt));
+			updateStatement = self.utils.createUpdateStatement('university', 
+				['u_Name', 'u_Assessments'], [uni, JSON.stringify(JSON.stringify(prevAssessment))], ['u_Name'], 
+				[uni]);
+			self.conn.query(updateStatement, function(err, result) {
 				if (err) return cb(err);
-				if(status === 'In-Progress') {
-					self.getCommitteeRank(appId, committeeId, function(err, cRank) {
-						if (err) return cb(err);
-						if(cRank != null) {
-							updateStatement = self.utils.createUpdateStatement(
-								'application_review', ['Status'], ['"Reviewed"'], 
-								['committeeId', 'appId'], [committeeId, appId]);
-							self.conn.query(updateStatement, cb);
-						} else {
-							err = new Error('Application ' + appId + 
-							' by member ' + committeeId + ' does not have a valid rank');
-							return cb(err);
-						}
-					});
-				} else {
-					err = new Error('Application ' + appId + 
-						' is in ' + status + ' stage by member ' + committeeId);
+				if (result && result.affectedRows === 1)
+					return cb(err, result.affectedRows === 1);
+				else {
+					err = new Error('Could not update record for university: ' + JSON.stringify(uni));
 					return cb(err);
 				}
 			});
-		} else {
-			err = new Error('Member ' + committeeId + ' cannot complete a review'); 
+		} else if (result.length === 0) {
+			for (var j = 0; j < assessment.length; j++) {
+				if (typeof assessment[j] !== 'undefined')
+					assmt.push(assessment[j]);
+			}
+			insertStmt = self.utils.createInsertStatement('university', 
+				['u_Name', 'u_Assessments'], [uni, JSON.stringify(JSON.stringify(assmt))]);
+			self.conn.query(insertStmt, function(err, result) {
+				if (err) return cb(err);
+				if (result && result.affectedRows === 1)
+					return cb(err, true);
+				else {
+					err = new Error('Could not create a new record for university: ' 
+					+ JSON.stringify(uni));
+					return cb(err);
+				}
+			});
+		} 	else {
+			err = new Error('Multiple records found for university: ' + 
+			JSON.stringify(uni));
 			return cb(err);
 		}
 	});
-
 };
 
 /**
@@ -373,25 +346,36 @@ Review.prototype.submitReview = function(appId, committeeId, cb) {
 		if (roles.includes('Committee Member')) {
 			self.getReviewStatus(appId, committeeId, function(err, status) {
 				if (err) return cb(err);
-				if(status === 'Reviewed') {
-					updateStatement = self.utils.createUpdateStatement(
-						'application_review', ['Status'], ['"Submitted"'], 
-						['committeeId', 'appId'], [committeeId, appId]);
-					self.conn.query(updateStatement, function(err, results) {
+				if (status != 'Submitted') {
+					self.conn.query('select c_Rank from application_review where ' + 
+					'committeeId=? and appId=?', [committeeId, appId], 
+					function(err, result) {
 						if (err) return cb(err);
-						assert(1, results.length);
-						self.getCommitteeRanks(appId, function(err, cRanks) {
-							if (err) return cb(err);
+						if (result && result.length === 1 && result[0]['c_Rank'] 
+						!= null) {
 							updateStatement = self.utils.createUpdateStatement(
-								'application', ['Rank'], ['\'' + 
-								JSON.stringify(cRanks) + '\''], ['app_Id'], 
-								[appId]);
-							self.conn.query(updateStatement, cb);
-						});
+								'application_review', ['Status'], ['"Submitted"'], 
+								['committeeId', 'appId'], [committeeId, appId]);
+							self.conn.query(updateStatement, function(err, results) {
+								if (err) return cb(err);
+								assert(1, results.length);
+								self.getCommitteeRanks(appId, function(err, cRanks) {
+									if (err) return cb(err);
+									updateStatement = self.utils.createUpdateStatement(
+										'application', ['Rank'], ['\'' + 
+										JSON.stringify(cRanks) + '\''], ['app_Id'], 
+										[appId]);
+									self.conn.query(updateStatement, cb);
+								});
+							});
+						} else {
+							err = new Error('Cannot submit a review without a committee rank');
+							return cb(err);
+						}
 					});
 				} else {
 					err = new Error('Application ' + appId + 
-					' is in ' + status + ' stage by member ' + committeeId);
+					' has been submitted by member ' + committeeId);
 					return cb(err);
 				}
 			});
@@ -470,13 +454,47 @@ Review.prototype.getReviewStatus = function(appId, committeeId, cb) {
 };
 
 /**
+ * set the review status of an application assigned to a member.
+ * @param {Number} appId 
+ * @param {Number} committeeId 
+ * @param {Function} cb 
+ */
+Review.prototype.setReviewStatus = function(appId, committeeId, status, cb) {
+	assert(typeof appId == 'number');
+	assert(typeof committeeId == 'number');
+	assert(typeof status == 'string');
+	assert(typeof cb === 'function');
+    
+	var self = this;
+	var updateStatement;
+    
+	this.isAssigned(appId, committeeId, function(err, result) {
+		if (err) return cb(err);
+		else if(!result) {
+			err = new Error('Application ' + appId + 
+            ' is not assigned to member ' + committeeId);
+			return cb(err);
+		} else {
+			updateStatement = self.utils.createUpdateStatement('application_review', 
+				['Status'], [JSON.stringify(status)], ['appId', 'committeeId'], [appId, 
+					committeeId]);
+			self.conn.query(updateStatement, function(err, results) {
+				if (err) return cb (err);
+				if (results && results.affectedRows)
+					return cb(err, results.affectedRows === 1);
+			});
+		}
+	});
+};
+
+/**
  * Get the commmittee rank of an application assigned to a member.
  * @param {Number} appId 
  * @param {Number} committeeId 
  * @param {Function} cb 
  */
 Review.prototype.getCommitteeRank = function(appId, committeeId, cb) {
-	assert(typeof appId == 'number');
+	assert(typeof appId === 'number');
 	assert(typeof committeeId == 'number');
 	assert(typeof cb === 'function');
     
@@ -505,12 +523,10 @@ Review.prototype.getCommitteeRank = function(appId, committeeId, cb) {
  * @param {Function} cb
  */
 Review.prototype.getCommitteeRanks = function(appId, cb) {
-	assert(typeof appId == 'number');
+	assert(typeof appId === 'number');
 	assert(typeof cb === 'function');
-    
-	var self = this;
 
-	self.conn.query('Select c_Rank from application_review where ' + 
+	this.conn.query('Select c_Rank from application_review where ' + 
     'appId = ? and Status = "Submitted"', [appId], 
 	function(err, results) {
 		if (err) return cb(err);
@@ -525,5 +541,22 @@ Review.prototype.getCommitteeRanks = function(appId, cb) {
 	});
 };
 
+/**
+ * Get review information given app id
+ * @param {Number} appId
+ * @param {Function} cb 
+ */
+Review.prototype.autoFillReviewInfo = function(appId, cb) {
+	var sql = 'select lname, fname, degree, gpa, gre from application where app_Id=?';
+	this.conn.query(sql, [appId], function(err, result) {
+		if (err) return cb(err);
+		if(result.length === 1) {
+			return cb(err, result);
+		} else {
+			err = new Error('No application selected for review');
+			return cb(err);
+		}
+	});
+};
 
 module.exports = Review;

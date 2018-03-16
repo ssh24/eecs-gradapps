@@ -10,7 +10,9 @@ module.exports = function(app, fns) {
 			user: userInfo.id,
 			roles: userInfo.roles, 
 			fname: userInfo.fname,
-			role: null
+			role: null,
+			showfilter: true,
+			review: false
 		});
 	});
 };

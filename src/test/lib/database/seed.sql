@@ -108,11 +108,13 @@ CREATE TABLE `APPLICATION_REVIEW` (
     `GPA` ENUM('A+', 'A', 'B+', 'B', 'C+', 'C', 'D+', 'D', 'E', 'F') DEFAULT NULL,
     `GRE` INT DEFAULT NULL,
     `Degree` ENUM('PhD', 'MSc', 'MASc') DEFAULT NULL,
+    `PreviousInst` VARCHAR (128) DEFAULT NULL,
+    `UniAssessment` VARCHAR (2048) DEFAULT NULL,
     `Background` VARCHAR(2048) DEFAULT NULL,
     `researchExp` VARCHAR(2048) DEFAULT NULL,
     `Comments` VARCHAR(1024) DEFAULT NULL,
     `c_Rank` ENUM('A+', 'A', 'B+', 'B', 'C') DEFAULT NULL,
-    `Status` ENUM('New', 'Draft', 'In-Progress', 'Reviewed', 'Submitted') NOT NULL,
+    `Status` ENUM('New', 'Draft', 'Submitted') NOT NULL,
     `lastReminded` DATETIME DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY(`committeeId`, `appId`),
     FOREIGN KEY (`committeeId`) REFERENCES `FACULTY_MEMBER`(`fm_Id`) 
@@ -152,7 +154,7 @@ CREATE TABLE `UNIVERSITY` (
     `u_Id` INT NOT NULL AUTO_INCREMENT,
     `u_Name` VARCHAR(50) NOT NULL,
     `u_Assessments` JSON DEFAULT NULL,
-    PRIMARY KEY(`u_Id`)
+    PRIMARY KEY(`u_Id`, `u_Name`)
 ) ENGINE=INNODB;
 
 

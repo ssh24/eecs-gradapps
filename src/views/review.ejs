@@ -10,36 +10,36 @@
         <% } else { %>
             <div class="text-center"><button class="btn btn-primary">View Application PDF &raquo;</button></div>
             <hr>
-            <form>
+            <form id="review-form" action="/roles/committee/" method="POST">
                     <div class="row" >
                                     <div class="col-sm-3">
                                         <div class="form-group">
                                             <label for="lname">Last Name</label>
-                                            <input type="text" class="form-control" id="lname" placeholder="Last Name" value="<%= lname %>" required>
+                                            <input type="text" class="form-control" id="lname" name="lname" placeholder="Last Name" value="<%= loaded_lname || lname %>" disabled>
                                         </div>
                                     </div>
                                     <div class="col-sm-3">
                                         <div class="form-group">
                                             <label for="fname">First Name</label>
-                                            <input type="text" class="form-control" id="fname" placeholder="First Name" value="<%= fname %>" required>
+                                            <input type="text" class="form-control" id="fname" name="fname" placeholder="First Name" value="<%= loaded_fname || fname %>" disabled>
                                         </div>
                                     </div>
                                     <div class="col-sm-3">
                                         <div class="form-group">
                                             <label for="degree">Degree Applied For</label>
-                                            <input type="text" class="form-control" id="degree" placeholder="Degree Applied For" value="<%= degree %>" required>
+                                            <input type="text" class="form-control" id="degree" name="degree" placeholder="Degree Applied For" value="<%= loaded_degree || degree %>" disabled>
                                         </div>
                                     </div>
                                     <div class="col-sm-1">
                                             <div class="form-group">
                                                 <label for="gpa">GPA</label>
-                                                <input type="text" class="form-control" id="gpa" placeholder="GPA" value="<%= gpa %>" required>
+                                                <input type="text" class="form-control" id="gpa" name="gpa" placeholder="GPA" value="<%= loaded_gpa || gpa %>" disabled>
                                             </div>
                                     </div>
                                     <div class="col-sm-1">
                                         <div class="form-group">
                                             <label for="gre">GRE</label>
-                                            <input type="text" class="form-control" id="gre" placeholder="GRE" value="<%= gre %>">
+                                            <input type="text" class="form-control" id="gre" name="gre" placeholder="GRE" value="<%= loaded_gre || gre %>" <% if(status === 'Submitted') {%> disabled="true" <% } %>>
                                         </div>
                                     </div>
                     </div>
@@ -48,10 +48,21 @@
                             <div class="col-sm-4">
                                     <div class="form-group">
                                     <label for="prev_uni">Previous Institution</label>
-                                    <select id="prev_uni" name="prev_uni" class="form-control selectpicker" data-live-search="true">
-                                            <option selected="selected">-</option>
-                                            <% for(var i = 0; i < unis.length; i++){ %>
-                                                <option><%= unis[i]%></option>
+                                    <select id="prev_uni" name="prev_uni" class="form-control selectpicker" data-live-search="true" <% if(status === 'Submitted') {%> disabled="true" <% } %>>
+                                            <% if (!loaded_uni) { %>
+                                                <option selected>-</option>
+                                                <% for(var i = 0; i < unis.length; i++){ %>
+                                                    <option><%= unis[i]%></option>
+                                                <%}%>
+                                            <%} else { %>
+                                                <option>-</option>
+                                                <% for(var i = 0; i < unis.length; i++){ %>
+                                                    <% if (unis[i] === loaded_uni) { %>
+                                                        <option selected><%= loaded_uni%></option>
+                                                    <%} else { %>
+                                                        <option><%= unis[i]%></option>
+                                                    <%} %>
+                                                <%}%> 
                                             <%}%>
                                         </select>
                                     </div>
@@ -59,10 +70,11 @@
 
                             <div class="col-sm-3">
                                     <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" name="new_uni" id="new_uni">
-                                            <label class="form-check-label" for="new_uni">Add an Institution</label>
-                                            <input type="text" class="form-control" id="new_uni_name" placeholder="Institution Name" style="margin-bottom:5px" disabled>
-                                            <input class="btn btn-primary" type="button" id="new_uni_btn" value="Add" style="margin-bottom:5px" disabled>
+                                            <input class="form-check-input" type="checkbox" name="new_uni" id="new_uni" <% if(status === 'Submitted') {%> disabled="true" <% } %>>
+                                            <label class="form-check-label" for="new_uni">Add Institution</label>
+                                            <input type="text" class="form-control" id="new_uni_name" name="new_uni_name" placeholder="Institution Name" style="margin-bottom:5px" disabled>
+                                            <input class="btn btn-primary" type="button" id="new_uni_btn" name="new_uni_btn" value="Add" style="margin-bottom:5px" disabled>
+                                            <p id="inst_exists" class="text-danger" hidden></p>
                                     </div>
                             </div>
                     </div>
@@ -72,18 +84,41 @@
                                     <div class="form-group">
                                     <label for="uni_desc">Institution Assessment</label>
                                     <label id="all_desc" hidden><%= JSON.stringify(uni_desc)%></label>
-                                    <select id="uni_desc" name="uni_desc" class="form-control selectpicker" data-live-search="true" multiple disabled>
-                                            <option selected="selected">-</option>
+                                    <select id="uni_desc" name="uni_desc" class="form-control selectpicker" data-live-search="true" multiple <% if(status === 'Submitted') {%> disabled="true" <% } %>>
+                                            <% if (!loaded_uni && !loaded_assessment) { %>
+                                                <option selected>-</option>
+                                            <%} else { %>
+                                                <% for(var i = 0; i < uni_desc.length; i++){ %>
+                                                    <% if (uni_desc[i]['u_Name'] === loaded_uni) { %>
+                                                        <% var assmnts = uni_desc[i]['u_Assessments']; %>
+                                                        <% for(var j = 0; j < assmnts.length; j++) { %>
+                                                            <% if (JSON.parse(loaded_assessment).includes(assmnts[j])) { %>
+                                                                <option selected><%= assmnts[j]%></option>
+                                                            <%} else { %> 
+                                                                <option><%= assmnts[j]%></option>
+                                                            <%} %>
+                                                        <%} %>
+                                                    <%} %>  
+                                                <%}%>
+                                            <%}%>
                                         </select>
                                     </div>
                             </div>
 
-                            <div class="col-sm-5">
+                            <div class="col-sm-4">
                                     <div class="form-check">
-                                        <label class="radio-inline"><input type="radio" name="optradio" id="add_assessment" disabled>Add Assessment</label>
-                                        <label class="radio-inline"><input type="radio" name="optradio" id="use_assessment" disabled>Use Assessment</label>
-                                        <textarea class="form-control" id="assessment" rows="2" placeholder="New Assessment" style="margin-bottom:5px" disabled></textarea>
-                                        <input class="btn btn-primary" type="button" id="assessment_btn" value="Add" style="margin-bottom:5px" disabled>
+                                        <input type="checkbox" name="asstradio" id="add_assessment" disabled>
+                                        <label class="form-check-label" for="add_assessment">Add Assessment</label>
+                                        <textarea class="form-control" id="assessment" name="assessment" rows="2" placeholder="New Assessment" style="margin-bottom:5px" disabled></textarea>
+                                        <input class="btn btn-primary" type="button" id="assessment_btn" name="assessment_btn" value="Add" style="margin-bottom:5px" disabled>
+                                        <p id="assmt_exists" class="text-danger" hidden></p>
+                                    </div>
+                            </div>
+
+                            <div class="col-sm-4">
+                                    <div class="form-check">
+                                        <label for="assessment_txt">Chosen Assessment</label>
+                                        <textarea class="form-control" id="assessment_txt" name="assessment_txt" rows="2" style="margin-bottom:5px" disabled><%= loaded_assessment ? (JSON.parse(loaded_assessment).toString().replace(new RegExp(',', 'g'), '\n')) : '' %></textarea>
                                     </div>
                             </div>
                     </div>
@@ -92,18 +127,49 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label for="background">Background Information</label>
-                                        <textarea class="form-control" id="background" rows="4" placeholder="Background Information"></textarea>
+                                        <textarea class="form-control" id="background" name="background" rows="4" placeholder="Background Information" <% if(status === 'Submitted') {%> disabled="true" <% } %>><%= loaded_background%></textarea>
                                     </div>
                                 </div>
 
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label for="research">Research Experience</label>
-                                        <textarea class="form-control" id="research" rows="4" placeholder="Research Experience"></textarea>
+                                        <textarea class="form-control" id="research" name="research" rows="4" placeholder="Research Experience" <% if(status === 'Submitted') {%> disabled="true" <% } %>><%= loaded_research%></textarea>
                                     </div>
                                 </div>
                     </div>
 
+                    <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="comments">Additional Comments</label>
+                                    <textarea class="form-control" id="comments" name="comments" rows="4" placeholder="Additional Comments" <% if(status === 'Submitted') {%> disabled="true" <% } %>><%= loaded_comments%></textarea>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-4">
+                                    <div class="form-group">
+                                    <label for="rank">Applicant Rank</label>
+                                    <select id="rank" name="rank" class="form-control selectpicker" data-live-search="true" required <% if(status === 'Submitted') {%> disabled="true" <% } %>>
+                                            <option <%= !loaded_rank ? "selected" : "" %>>-</option>
+                                            <option <%= loaded_rank && loaded_rank === 'A+' ? "selected" : "" %>>A+</option>
+                                            <option <%= loaded_rank && loaded_rank === 'A' ? "selected" : "" %>>A</option>
+                                            <option <%= loaded_rank && loaded_rank === 'B+' ? "selected" : "" %>>B+</option>
+                                            <option <%= loaded_rank && loaded_rank === 'B' ? "selected" : "" %>>B</option>
+                                            <option <%= loaded_rank && loaded_rank === 'C' ? "selected" : "" %>>C</option>
+                                    </select>
+                                    <p id="rank_exists" class="text-danger" hidden></p>
+                                    </div>
+                            </div>
+                </div>
+
+                    <% if (status === 'New' || status === 'Draft') { %>
+                        <button id="review-close" type="submit" name="cancel" class="btn btn-danger btn-default pull-center"><span class="glyphicon glyphicon-remove"></span> Cancel Review</button>
+                        <button id="review-save" type="submit" name="draft" class="btn btn-success btn-default pull-center"><span class="glyphicon glyphicon-save"></span> Draft Review</button>
+                        <button id="review-submit" type="submit" name="upload" class="btn btn-success btn-default pull-center" disabled><span class="glyphicon glyphicon-cloud-upload"></span> Submit Review</button>
+                    <% } else { %>
+                        <a id="review-close" href="/roles/committee" class="btn btn-danger btn-default"><span class="glyphicon glyphicon-arrow-left"></span> Exit</a>
+                    <%}%>
                 </form>
                 <%}%>
     </div>

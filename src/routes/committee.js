@@ -1,14 +1,24 @@
 'use strict';
 
 var _ = require('lodash');
+var mysql = require('mysql2');
+
+var creds = require('../config/database');
+var connection = mysql.createConnection(creds);
+connection.connect();
+
+var Review = require('../controller/review');
+var review = new Review(connection);
 
 module.exports = function(app, utils, application, fns) {
 	var basicCommittee = fns.concat([getApps]);
 	var filterCommittee = fns.concat([filterApps]);
 	var filterPost = fns.concat([filterApps]);
-	var getReview = fns.concat([getReviews]);
+	var getReview = fns.concat([setUpReview, getReviews]);
+	var saveReviews = fns.concat([saveReview, getApps]);
 
 	var builtSql, builtOptions, builtHighlight;
+	var prevAppId, prevStatus;
 
 	// committee page route
 	app.get('/roles/committee', basicCommittee, function(req, res) {
@@ -26,28 +36,32 @@ module.exports = function(app, utils, application, fns) {
 			hidden: req.apps.flds ? (req.apps.flds.hidden || []) : [],
 			applicants: req.apps.applicants || [],
 			filter: req.apps.filter || false,
+			showfilter: true,
+			review: false,
 			highlightText: {},
 			highlightFunc: highlight
 		});
 	});
 
-	app.get('/roles/committee/review', getReview, function(req, res) {
+	app.post('/roles/committee/', saveReviews, function(req, res) {
 		var userInfo = req.user;
 		var role = 'Committee Member';
-		res.render('review', {
-			title: 'Application Review',
-			message: req.flash('reviewError'),
+		res.render('committee', {
+			title: 'Review Applications',
+			message: req.flash('tableMessage'),
 			user: userInfo.id,
 			fullname: userInfo.fullname,
 			roles: userInfo.roles,
 			role: role,
-			lname: req.review.auto.lname || '',
-			fname: req.review.auto.fname || '',
-			degree: req.review.auto.degree || '',
-			gpa: req.review.auto.gpa || '',
-			gre: req.review.auto.gre || '',
-			unis: req.review.unis || [],
-			uni_desc: req.review.unis.descriptions || []
+			apps: req.apps.appls || [],
+			fields: req.apps.flds ? (req.apps.flds.fields || []) : [],
+			hidden: req.apps.flds ? (req.apps.flds.hidden || []) : [],
+			applicants: req.apps.applicants || [],
+			filter: req.apps.filter || false,
+			showfilter: true,
+			review: false,
+			highlightText: {},
+			highlightFunc: highlight
 		});
 	});
 
@@ -66,6 +80,8 @@ module.exports = function(app, utils, application, fns) {
 			hidden: req.apps.flds ? (req.apps.flds.hidden || []) : [],
 			applicants: req.apps.applicants || [],
 			filter: req.apps.filter || false,
+			showfilter: true,
+			review: false,
 			highlightText: req.apps.highlightText,
 			highlightFunc: highlight
 		});
@@ -86,20 +102,88 @@ module.exports = function(app, utils, application, fns) {
 			hidden: req.apps.flds ? (req.apps.flds.hidden || []) : [],
 			applicants: req.apps.applicants || [],
 			filter: req.apps.filter || false,
+			showfilter: true,
+			review: false, 
 			highlightText: req.apps.highlightText,
 			highlightFunc: highlight
 		});
 	});
 
-	function getReviews(req, res, next) {
+	app.get('/roles/committee/review', getReview, function(req, res) {
+		var userInfo = req.user;
+		var role = 'Committee Member';
+		res.render('review', {
+			title: 'Application Review',
+			message: req.flash('reviewError'),
+			user: userInfo.id,
+			fullname: userInfo.fullname,
+			roles: userInfo.roles,
+			role: role,
+			lname: req.review.auto.lname || '',
+			fname: req.review.auto.fname || '',
+			degree: req.review.auto.degree || '',
+			gpa: req.review.auto.gpa || '',
+			gre: req.review.auto.gre || '',
+			unis: req.review.unis || [],
+			uni_desc: req.review.unis.descriptions || [],
+			status: req.review.status,
+			loaded_lname: req.review.load.loaded_lname || '',
+			loaded_fname: req.review.load.loaded_fname || '',
+			loaded_degree: req.review.load.loaded_degree || '',
+			loaded_gpa: req.review.load.loaded_gpa || '',
+			loaded_gre: req.review.load.loaded_gre || '',
+			loaded_background: req.review.load.loaded_background || '',
+			loaded_research: req.review.load.loaded_research || '',
+			loaded_comments: req.review.load.loaded_comments || '',
+			loaded_rank: req.review.load.loaded_rank || '',
+			loaded_uni: req.review.load.loaded_uni || '',
+			loaded_assessment: req.review.load.loaded_assessment || '',
+			showfilter: false,
+			review: true
+		});
+	});
+
+	function getApps(req, res, next) {
+		req.apps = {};
+		builtSql = builtOptions = null;
+		getApplications(null, {reviewField: true}, req, res, next);
+	}
+
+	function setUpReview(req, res, next) {
 		req.review = {};
-		utils.autoFillReviewInfo(req.query.appId, function(err, info) {
+		prevAppId = req.review.appId = parseInt(req.query.appId, 10);
+		review.getReviewStatus(req.review.appId, req.user.id, function(err, status) {
+			if (err) next(err);
+			prevStatus = req.review.status = status;
+			review.loadReview(req.review.appId, req.user.id, function(err, results) {
+				if (err) {
+					req.flash('reviewError', 
+						'Could not load review. Fatal reason: ' + err.message);
+				}
+				req.review.load = {};
+				req.review.load.loaded_lname = results[0]['LName'];
+				req.review.load.loaded_fname = results[0]['FName'];
+				req.review.load.loaded_degree = results[0]['Degree'];
+				req.review.load.loaded_gpa = results[0]['GPA'];
+				req.review.load.loaded_gre = results[0]['GRE'];
+				req.review.load.loaded_background = results[0]['Background'];
+				req.review.load.loaded_research = results[0]['researchExp'];
+				req.review.load.loaded_comments = results[0]['Comments'];
+				req.review.load.loaded_rank = results[0]['c_Rank'];
+				req.review.load.loaded_uni = results[0]['PreviousInst'];
+				req.review.load.loaded_assessment = results[0]['UniAssessment'];
+				next();
+			});
+		});
+	}
+
+	function getReviews(req, res, next) {
+		review.autoFillReviewInfo(req.query.appId, function(err, info) {
 			if (err) {
 				req.flash('reviewError', 
 					'Could not load review. Fatal reason: ' + err.message);
 			}
-			req.review = {};
-			req.review.auto = info[0];
+			req.review.auto = info && info.length === 1 ? info[0]: {};
 			utils.getUniversities(function(err, unis) {
 				if (err) next(err);
 				req.review.unis = unis;
@@ -110,7 +194,126 @@ module.exports = function(app, utils, application, fns) {
 				});
 			});
 		});
+	}
 
+	function saveReview(req, res, next) {
+		var body = req.body;
+		var uni_assessment;
+		if (body.uni_desc === '-') {
+			uni_assessment = null;
+		} else if (Array.isArray(body.uni_desc)) {
+			uni_assessment = body.uni_desc;
+		} else {
+			uni_assessment = [];
+			uni_assessment.push(body.uni_desc);
+		}
+		var data = {
+			LName: body.lname,
+			FName: body.fname,
+			Degree: body.degree,
+			GPA: body.gpa,
+			GRE:  body.gre,
+			PreviousInst: body.prev_uni === '-' ? null : body.prev_uni,
+			UniAssessment: uni_assessment,
+			Background: body.background,
+			researchExp: body.research,
+			Comments: body.comments,
+			c_Rank: body.rank === '-' ? null : body.rank,
+		};
+		if(body.hasOwnProperty('cancel')){
+			review.setReviewStatus(prevAppId, req.user.id, prevStatus, 
+				function(err, isSet) {
+					prevAppId = prevStatus = null;
+					if (err) {
+						req.flash('tableMessage', 
+							'Could not load table. Fatal reason: ' + err.message);
+					}
+					if (isSet) {
+						next();
+					}
+					else {
+						req.flash('tableMessage', 
+							'Could not load table. Fatal reason: Invalid Review Status');
+					}
+				});
+		} else if (body.hasOwnProperty('draft')){
+			review.saveReview(prevAppId, req.user.id, data, function(err, isSaved) {
+				prevAppId = prevStatus = null;
+				if (err) {
+					req.flash('tableMessage', 
+						'Could not load table. Fatal reason: ' + err.message);
+				}
+				if (isSaved) {
+					next();
+				}
+				else {
+					req.flash('tableMessage', 
+						'Fatal reason: Could not save review');
+				}
+			});
+		} else if (body.hasOwnProperty('upload')) {
+			review.saveReview(prevAppId, req.user.id, data, function(err, isSaved) {
+				if (err) {
+					req.flash('tableMessage', 
+						'Could not load table. Fatal reason: ' + err.message);
+				}
+				if (isSaved) {
+					review.submitReview(prevAppId, req.user.id, function(err, result) {
+						prevAppId = prevStatus = null;
+						if (err) {
+							req.flash('tableMessage', 
+								'Could not load table. Fatal reason: ' + err.message);
+						}
+						if (result && result.affectedRows === 1) {
+							next();
+						}
+						else {
+							req.flash('tableMessage', 
+								'Fatal reason: Could not submit review');
+						}
+					});
+				}
+				else {
+					req.flash('tableMessage', 
+						'Fatal reason: Could not save review');
+				}
+			});
+		} else {
+			next();
+		}
+	}
+
+	function getApplications(sql, options, req, res, next) {
+		application.getReviewApplications(sql, req.user.id, function(err, results) {
+			if (err) {
+				req.flash('tableMessage', 
+					'Error loading table. Fatal reason: ' + err.message);
+			} else {
+				var fields = [];
+				var hidden = ['app_Id'];
+				var obj = results[0];
+			
+				for (var key in obj)
+					fields.push(key);
+			
+				if (options) {
+					if (options.actionFieldNum) 
+						fields.splice(options.actionFieldNum, 0, 'Actions');
+					else 
+						fields.push('Actions');
+
+					if (!options.reviewField)
+						hidden.push('My Review Status');
+				}
+			
+				req.apps.appls = results;
+			
+				req.apps.flds = {};
+				req.apps.flds.fields = fields;
+				req.apps.flds.hidden = hidden;
+			}
+			setLiveSearchData(req, res, next);	
+		});
 	}
 
 	function filterApps(req, res, next) {
@@ -196,45 +399,6 @@ module.exports = function(app, utils, application, fns) {
 		}
 
 		getApplications(builtSql, (builtOptions || options), req, res, next);
-	}
-
-	function getApps(req, res, next) {
-		req.apps = {};
-		builtSql = builtOptions = null;
-		getApplications(null, {reviewField: true}, req, res, next);
-	}
-
-	function getApplications(sql, options, req, res, next) {
-		application.getReviewApplications(sql, req.user.id, function(err, results) {
-			if (err) {
-				req.flash('tableMessage', 
-					'Error loading table. Fatal reason: ' + err.message);
-			} else {
-				var fields = [];
-				var hidden = ['app_Id'];
-				var obj = results[0];
-			
-				for (var key in obj)
-					fields.push(key);
-			
-				if (options) {
-					if (options.actionFieldNum) 
-						fields.splice(options.actionFieldNum, 0, 'Actions');
-					else 
-						fields.push('Actions');
-
-					if (!options.reviewField)
-						hidden.push('My Review Status');
-				}
-			
-				req.apps.appls = results;
-			
-				req.apps.flds = {};
-				req.apps.flds.fields = fields;
-				req.apps.flds.hidden = hidden;
-			}
-			setLiveSearchData(req, res, next);	
-		});
 	}
 
 	function setLiveSearchData(req, res, next) {

@@ -44,21 +44,18 @@
                                             <% } else { %>
                                                 <td class="text-center">
                                                         <div class="btn-group-vertical">
-                                                            <button class="btn btn-primary">View Application</button>
+                                                            <button class="btn btn-primary" style="margin-bottom: 3px">View Application</button>
                                                             <form action="/roles/committee/review" method="GET">
                                                                 <input type="text" name="appId" value="<%= apps[i][fields[0]]%>" hidden>
                                                                 <input type="text" name="committeeId" value="<%= user%>" hidden>
                                                                 <% if (apps[i]['My Review Status'] && apps[i]['My Review Status'] === 'New') { %>
-                                                                    <button class="btn btn-primary">Start Review</button>
+                                                                    <button id="continue-rev" class="btn btn-primary">Start Review &raquo;</button>
                                                                 <% } %>
                                                                 <% if (apps[i]['My Review Status'] && apps[i]['My Review Status'] === 'Draft') { %>
-                                                                    <button class="btn btn-primary">Continue Review</button>
-                                                                <% } %>
-                                                                <% if (apps[i]['My Review Status'] && apps[i]['My Review Status'] === 'Reviewed') { %>
-                                                                    <button class="btn btn-primary">Submit Review</button>
+                                                                    <button id="continue-rev" class="btn btn-primary">Continue Review &raquo;</button>
                                                                 <% } %>
                                                                 <% if (apps[i]['My Review Status'] && apps[i]['My Review Status'] === 'Submitted') { %>
-                                                                    <button class="btn btn-primary">View Review</button>
+                                                                    <button id="view-rev" class="btn btn-primary">View Review &raquo;</button>
                                                                 <% } %>
                                                             </form>
                                                         </div>

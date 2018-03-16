@@ -55,7 +55,7 @@ module.exports = {
 			'application_review': ['committeeId', 'appId', 'assignDate', 
 				'LName', 'FName', 'GPA', 'GRE', 'Degree', 'Background', 
 				'researchExp', 'Comments', 'c_Rank', 'Status', 
-				'lastReminded'],
+				'lastReminded', 'PreviousInst', 'UniAssessment'],
 			'application_seen': ['fmId', 'appId', 'seen'],
 			'university': ['u_Id', 'u_Name', 'u_Assessments'],
 			'foi': ['field_Id', 'field_Name'],
