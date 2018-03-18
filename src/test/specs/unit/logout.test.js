@@ -32,7 +32,7 @@ describe('Logout Test', function() {
     
 	beforeEach(function setUp() {
 		welcome.clickSignInButton()
-			.then(login.fullSignIn.bind(login, config.credentials.app));
+			.then(login.fullSignIn.bind(login, config.credentials.app.admin));
 	});
 
 	after(function overallCleanUp(done) {
