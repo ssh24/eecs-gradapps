@@ -10,6 +10,7 @@ var ms = require('ms');
 var mysql = require('mysql2');
 
 var Application = require('../../../controller/application');
+//var Faculty_Member = require('../../../controller/faculty_member');
 
 var Filter = require('../../views/filter-view');
 var Login = require('../../views/login-view');
@@ -42,7 +43,7 @@ describe('Professor Test', function() {
 		utils.openView('#');
 		utils.maximizeBrowserWindow();
 		welcome.clickSignInButton()
-			.then(login.fullSignIn.bind(login, config.credentials.app))
+			.then(login.fullSignIn.bind(login, config.credentials.app.admin))
 			.then(role.selectRole.bind(role, 'Professor'));
 	});
 
@@ -54,19 +55,19 @@ describe('Professor Test', function() {
 				utils.stopApp(done);
 			});
 	});
-    
+
 	it('- table loads properly', function() {
 		expect(prof.applicationTableIsDisplayed.call(prof)).to.eventually.be.true;
 	});
-    
+
 	it('- table header loads properly', function() {
 		expect(prof.tableHeaderExists.call(prof)).to.eventually.be.true;
 	});
-    
+
 	it('- table body loads properly', function() {
 		expect(prof.tableBodyExists.call(prof)).to.eventually.be.true;
 	});
-    
+
 	it('- get contact status text', function() {
 		expect(browser.getCurrentUrl()).to.eventually.contain('professor')
 			.then(prof.openSetToDropDown.call(prof))
@@ -74,7 +75,7 @@ describe('Professor Test', function() {
 				.contain('Contacted'))
 			.then(prof.closeSetToDropDown.call(prof));
 	});
-    
+
 	it('- get request status text', function() {
 		expect(browser.getCurrentUrl()).to.eventually.contain('professor')
 			.then(prof.openSetToDropDown.call(prof))
@@ -82,7 +83,7 @@ describe('Professor Test', function() {
 				.contain('Requested'))
 			.then(prof.closeSetToDropDown.call(prof));
 	});
-    
+
 	it('- get interest status text', function() {
 		expect(browser.getCurrentUrl()).to.eventually.contain('professor')
 			.then(prof.openSetToDropDown.call(prof))
@@ -90,14 +91,14 @@ describe('Professor Test', function() {
 				.contain('Interested'))
 			.then(prof.closeSetToDropDown.call(prof));
 	});
-    
+
 	it('- open set to drop down menu', function() {
 		expect(browser.getCurrentUrl()).to.eventually.contain('professor')
 			.then(prof.openSetToDropDown.call(prof))
 			.then(expect(prof.isSetToDDOpen.call(prof)).to.eventually.be.true)
 			.then(prof.closeSetToDropDown.call(prof));
 	});
-    
+
 	it('- close set to drop down menu', function() {
 		expect(browser.getCurrentUrl()).to.eventually.contain('professor')
 			.then(prof.openSetToDropDown.call(prof))
@@ -105,7 +106,7 @@ describe('Professor Test', function() {
 			.then(prof.closeSetToDropDown.call(prof))
 			.then(expect(prof.isSetToDDOpen.call(prof)).to.eventually.be.false);
 	});
-    
+
 	it('- set to contacted', function() {
 		expect(browser.getCurrentUrl()).to.eventually.contain('professor')
 			.then(prof.openSetToDropDown.call(prof))
@@ -119,7 +120,7 @@ describe('Professor Test', function() {
 				.contain('Not Contacted'))
 			.then(prof.closeSetToDropDown.call(prof));
 	});
-    
+
 	it('- set to requested', function() {
 		expect(browser.getCurrentUrl()).to.eventually.contain('professor')
 			.then(prof.openSetToDropDown.call(prof))
@@ -133,7 +134,7 @@ describe('Professor Test', function() {
 				.contain('Not Requested'))
 			.then(prof.closeSetToDropDown.call(prof));
 	});
-    
+
 	it('- set to interested', function() {
 		expect(browser.getCurrentUrl()).to.eventually.contain('professor')
 			.then(prof.openSetToDropDown.call(prof))
@@ -147,7 +148,7 @@ describe('Professor Test', function() {
 				.contain('Not Interested'))
 			.then(prof.closeSetToDropDown.call(prof));
 	});
-    
+
 	it('- set to not contacted', function() {
 		expect(browser.getCurrentUrl()).to.eventually.contain('professor')
 			.then(prof.openSetToDropDown.call(prof))
@@ -161,7 +162,7 @@ describe('Professor Test', function() {
 				.contain('Contacted'))
 			.then(prof.closeSetToDropDown.call(prof));
 	});
-    
+
 	it('- set to not requested', function() {
 		expect(browser.getCurrentUrl()).to.eventually.contain('professor')
 			.then(prof.openSetToDropDown.call(prof))
@@ -175,7 +176,7 @@ describe('Professor Test', function() {
 				.contain('Requested'))
 			.then(prof.closeSetToDropDown.call(prof));
 	});
-    
+
 	it('- set to not interested', function() {
 		expect(browser.getCurrentUrl()).to.eventually.contain('professor')
 			.then(prof.openSetToDropDown.call(prof))
@@ -189,7 +190,7 @@ describe('Professor Test', function() {
 				.contain('Interested'))
 			.then(prof.closeSetToDropDown.call(prof));
 	});
-    
+
 	it('- set to contacted and check data', function() {
 		expect(browser.getCurrentUrl()).to.eventually.contain('professor')
 			.then(prof.openSetToDropDown.call(prof))
@@ -203,9 +204,9 @@ describe('Professor Test', function() {
 				.contain('Not Contacted'))
 			.then(prof.closeSetToDropDown.call(prof))
 			.then(expect(prof.getContactedData.call(prof)).to.eventually
-				.contain(config.credentials.app.fullname));
+				.contain(config.credentials.app.admin.fullname));
 	});
-    
+
 	it('- set to requested and check data', function() {
 		expect(browser.getCurrentUrl()).to.eventually.contain('professor')
 			.then(prof.openSetToDropDown.call(prof))
@@ -219,9 +220,9 @@ describe('Professor Test', function() {
 				.contain('Not Requested'))
 			.then(prof.closeSetToDropDown.call(prof))
 			.then(expect(prof.getRequestedData.call(prof)).to.eventually
-				.contain(config.credentials.app.fullname));
+				.contain(config.credentials.app.admin.fullname));
 	});
-    
+
 	it('- set to interested and check data', function() {
 		expect(browser.getCurrentUrl()).to.eventually.contain('professor')
 			.then(prof.openSetToDropDown.call(prof))
@@ -237,7 +238,7 @@ describe('Professor Test', function() {
 			.then(expect(prof.getInterestedData.call(prof)).to.eventually
 				.equal('Interested'));
 	});
-    
+
 	it('- set to not contacted and check data', function() {
 		expect(browser.getCurrentUrl()).to.eventually.contain('professor')
 			.then(prof.openSetToDropDown.call(prof))
@@ -251,9 +252,9 @@ describe('Professor Test', function() {
 				.contain('Contacted'))
 			.then(prof.closeSetToDropDown.call(prof))
 			.then(expect(prof.getContactedData.call(prof)).to.eventually.not
-				.contain(config.credentials.app.fullname));
+				.contain(config.credentials.app.admin.fullname));
 	});
-    
+
 	it('- set to not requested and check data', function() {
 		expect(browser.getCurrentUrl()).to.eventually.contain('professor')
 			.then(prof.openSetToDropDown.call(prof))
@@ -267,9 +268,9 @@ describe('Professor Test', function() {
 				.contain('Requested'))
 			.then(prof.closeSetToDropDown.call(prof))
 			.then(expect(prof.getRequestedData.call(prof)).to.eventually.not
-				.contain(config.credentials.app.fullname));
+				.contain(config.credentials.app.admin.fullname));
 	});
-    
+
 	it('- set to not interested and check data', function() {
 		expect(browser.getCurrentUrl()).to.eventually.contain('professor')
 			.then(prof.openSetToDropDown.call(prof))
@@ -295,16 +296,16 @@ describe('Professor Test', function() {
 					connection.connect(callback);
 				},
 				function(callback) {
-					application.updateRequestedStatus(1, 3, newUser.fullname, 0, 
+					application.updateRequestedStatus(1, 3, newUser.fullname, 0,
 						callback);
 				},
 				function(callback) {
-					application.updateContactedStatus(1, 3, newUser.fullname, 0, 
+					application.updateContactedStatus(1, 3, newUser.fullname, 0,
 						callback);
 				}
 			], done);
 		});
-		
+
 		after(function overallCleanUp(done) {
 			connection.end(done);
 		});
@@ -318,7 +319,7 @@ describe('Professor Test', function() {
 			expect(prof.getRequestedData.call(prof)).to.eventually
 				.contain(newUser.fullname);
 		});
-		
+
 		it('- get refresh table text', function() {
 			expect(prof.getRefreshTableText.call(prof)).to.eventually
 				.contain('Refresh Current Table');
@@ -365,7 +366,7 @@ describe('Professor Test', function() {
 					.then(prof.orderColumn.call(prof, 0, -1))
 					.then(expect(prof.getSortType.call(prof, 0)).to.eventually.equal('descending'));
 			});
-			
+
 			it('- order column in descending order and then ascending order', function() {
 				expect(prof.getSortType.call(prof, 0)).to.eventually.equal('none')
 					.then(prof.orderColumn.call(prof, 0, -1))
@@ -399,7 +400,7 @@ describe('Professor Test', function() {
 					.then(prof.orderColumn.call(prof, 1, -1))
 					.then(expect(prof.getSortType.call(prof, 1)).to.eventually.equal('descending'));
 			});
-			
+
 			it('- order column in descending order and then ascending order', function() {
 				expect(prof.getSortType.call(prof, 1)).to.eventually.equal('none')
 					.then(prof.orderColumn.call(prof, 1, -1))
@@ -433,7 +434,7 @@ describe('Professor Test', function() {
 					.then(prof.orderColumn.call(prof, 4, -1))
 					.then(expect(prof.getSortType.call(prof, 4)).to.eventually.equal('descending'));
 			});
-			
+
 			it('- order name column in descending order and then ascending order', function() {
 				expect(prof.getSortType.call(prof, 4)).to.eventually.equal('none')
 					.then(prof.orderColumn.call(prof, 4, -1))
@@ -467,7 +468,7 @@ describe('Professor Test', function() {
 					.then(prof.orderColumn.call(prof, 5, -1))
 					.then(expect(prof.getSortType.call(prof, 5)).to.eventually.equal('descending'));
 			});
-			
+
 			it('- order column in descending order and then ascending order', function() {
 				expect(prof.getSortType.call(prof, 5)).to.eventually.equal('none')
 					.then(prof.orderColumn.call(prof, 5, -1))
@@ -501,7 +502,7 @@ describe('Professor Test', function() {
 					.then(prof.orderColumn.call(prof, 6, -1))
 					.then(expect(prof.getSortType.call(prof, 6)).to.eventually.equal('descending'));
 			});
-			
+
 			it('- order column in descending order and then ascending order', function() {
 				expect(prof.getSortType.call(prof, 6)).to.eventually.equal('none')
 					.then(prof.orderColumn.call(prof, 6, -1))
@@ -535,7 +536,7 @@ describe('Professor Test', function() {
 					.then(prof.orderColumn.call(prof, 7, -1))
 					.then(expect(prof.getSortType.call(prof, 7)).to.eventually.equal('descending'));
 			});
-			
+
 			it('- order column in descending order and then ascending order', function() {
 				expect(prof.getSortType.call(prof, 7)).to.eventually.equal('none')
 					.then(prof.orderColumn.call(prof, 7, -1))
@@ -569,7 +570,7 @@ describe('Professor Test', function() {
 					.then(prof.orderColumn.call(prof, 8, -1))
 					.then(expect(prof.getSortType.call(prof, 8)).to.eventually.equal('descending'));
 			});
-			
+
 			it('- order column in descending order and then ascending order', function() {
 				expect(prof.getSortType.call(prof, 8)).to.eventually.equal('none')
 					.then(prof.orderColumn.call(prof, 8, -1))
@@ -603,7 +604,7 @@ describe('Professor Test', function() {
 					.then(prof.orderColumn.call(prof, 11, -1))
 					.then(expect(prof.getSortType.call(prof, 11)).to.eventually.equal('descending'));
 			});
-			
+
 			it('- order column in descending order and then ascending order', function() {
 				expect(prof.getSortType.call(prof, 11)).to.eventually.equal('none')
 					.then(prof.orderColumn.call(prof, 11, -1))
@@ -618,96 +619,84 @@ describe('Professor Test', function() {
 		describe('- check for all fields', function() {
 			it('- get applicant name field', function() {
 				filter.openFilterModal().then(filter.waitForModalOpen.call(filter))
-					.then(expect(filter.getField.call(filter, filter.filter.
-						fields.applicant)).to
+					.then(expect(filter.getField.call(filter, filter.filter.fields.applicant)).to
 						.eventually.be.true)
 					.then(filter.closeFilterModal.call(filter));
 			});
-	
+
 			it('- get field of interest field', function() {
 				filter.openFilterModal().then(filter.waitForModalOpen.call(filter))
-					.then(expect(filter.getField.call(filter, filter.filter.
-						fields.foi)).to
+					.then(expect(filter.getField.call(filter, filter.filter.fields.foi)).to
 						.eventually.be.true)
 					.then(filter.closeFilterModal.call(filter));
 			});
-	
+
 			it('- get professor name field', function() {
 				filter.openFilterModal().then(filter.waitForModalOpen.call(filter))
-					.then(expect(filter.getField.call(filter, filter.filter.
-						fields.professor)).to
+					.then(expect(filter.getField.call(filter, filter.filter.fields.professor)).to
 						.eventually.be.true)
 					.then(filter.closeFilterModal.call(filter));
 			});
-	
+
 			it('- get gender field', function() {
 				filter.openFilterModal().then(filter.waitForModalOpen.call(filter))
-					.then(expect(filter.getField.call(filter, filter.filter.
-						fields.gender)).to
+					.then(expect(filter.getField.call(filter, filter.filter.fields.gender)).to
 						.eventually.be.true)
 					.then(filter.closeFilterModal.call(filter));
 			});
 
 			it('- get committee rank field', function() {
 				filter.openFilterModal().then(filter.waitForModalOpen.call(filter))
-					.then(expect(filter.getField.call(filter, filter.filter.
-						fields.crank)).to
+					.then(expect(filter.getField.call(filter, filter.filter.fields.crank)).to
 						.eventually.be.true)
 					.then(filter.closeFilterModal.call(filter));
 			});
 
 			it('- get gpa field', function() {
 				filter.openFilterModal().then(filter.waitForModalOpen.call(filter))
-					.then(expect(filter.getField.call(filter, filter.filter.
-						fields.gpa)).to
+					.then(expect(filter.getField.call(filter, filter.filter.fields.gpa)).to
 						.eventually.be.true)
 					.then(filter.closeFilterModal.call(filter));
 			});
 
 			it('- get degree applied for field', function() {
 				filter.openFilterModal().then(filter.waitForModalOpen.call(filter))
-					.then(expect(filter.getField.call(filter, filter.filter.
-						fields.degree)).to
+					.then(expect(filter.getField.call(filter, filter.filter.fields.degree)).to
 						.eventually.be.true)
 					.then(filter.closeFilterModal.call(filter));
 			});
 
 			it('- get visa status field', function() {
 				filter.openFilterModal().then(filter.waitForModalOpen.call(filter))
-					.then(expect(filter.getField.call(filter, filter.filter.
-						fields.vstatus)).to
+					.then(expect(filter.getField.call(filter, filter.filter.fields.vstatus)).to
 						.eventually.be.true)
 					.then(filter.closeFilterModal.call(filter));
 			});
 
 			it('- get program decision field', function() {
 				filter.openFilterModal().then(filter.waitForModalOpen.call(filter))
-					.then(expect(filter.getField.call(filter, filter.filter.
-						fields.pdecision)).to
+					.then(expect(filter.getField.call(filter, filter.filter.fields.pdecision)).to
 						.eventually.be.true)
 					.then(filter.closeFilterModal.call(filter));
 			});
 
 			it('- get contacted by field', function() {
 				filter.openFilterModal().then(filter.waitForModalOpen.call(filter))
-					.then(expect(filter.getField.call(filter, filter.filter.
-						fields.contacted)).to
+					.then(expect(filter.getField.call(filter, filter.filter.fields.contacted)).to
 						.eventually.be.true)
 					.then(filter.closeFilterModal.call(filter));
 			});
 
 			it('- get requested by field', function() {
 				filter.openFilterModal().then(filter.waitForModalOpen.call(filter))
-					.then(expect(filter.getField.call(filter, filter.filter.
-						fields.requested)).to
+					.then(expect(filter.getField.call(filter, filter.filter.fields.requested)).to
 						.eventually.be.true)
 					.then(filter.closeFilterModal.call(filter));
 			});
 
 			it('- get interested by field', function() {
 				filter.openFilterModal().then(filter.waitForModalOpen.call(filter))
-					.then(expect(filter.getField.call(filter, filter.filter.
-						fields.interested)).to
+					.then(expect(filter.getField.call(filter, filter.filter.fields.interested)).to
 						.eventually.be.true)
 					.then(filter.closeFilterModal.call(filter));
 			});
@@ -747,7 +736,7 @@ describe('Professor Test', function() {
 						.contain('Gender = M'))
 					.then(filter.closeFilterModal.call(filter));
 			});
-	
+
 			it('- open field of interest drop down and select an element', function() {
 				filter.openFilterModal().then(filter.waitForModalOpen.call(filter))
 					.then(filter.openFieldDD.call(filter, filter.filter.fields
@@ -762,7 +751,7 @@ describe('Professor Test', function() {
 						.contain('Field of Interest = Bioinformatics'))
 					.then(filter.closeFilterModal.call(filter));
 			});
-	
+
 			it('- open professor name drop down and select an element', function() {
 				filter.openFilterModal().then(filter.waitForModalOpen.call(filter))
 					.then(filter.openFieldDD.call(filter, filter.filter.fields
@@ -822,7 +811,7 @@ describe('Professor Test', function() {
 						.contain('Degree Applied For = MASc'))
 					.then(filter.closeFilterModal.call(filter));
 			});
-	
+
 			it('- open visa status drop down and select an element', function() {
 				filter.openFilterModal().then(filter.waitForModalOpen.call(filter))
 					.then(filter.openFieldDD.call(filter, filter.filter.fields
@@ -837,7 +826,7 @@ describe('Professor Test', function() {
 						.contain('Visa Status = Domestic'))
 					.then(filter.closeFilterModal.call(filter));
 			});
-	
+
 			it('- open program decision drop down and select an element', function() {
 				filter.openFilterModal().then(filter.waitForModalOpen.call(filter))
 					.then(filter.openFieldDD.call(filter, filter.filter.fields
@@ -935,7 +924,7 @@ describe('Professor Test', function() {
 						.contain('Gender = M'))
 					.then(filter.closeFilterModal.call(filter));
 			});
-	
+
 			it('- open field of interest drop down, type and select an element', function() {
 				filter.openFilterModal().then(filter.waitForModalOpen.call(filter))
 					.then(filter.openFieldDD.call(filter, filter.filter.fields
@@ -951,7 +940,7 @@ describe('Professor Test', function() {
 						.contain('Field of Interest = Bioinformatics'))
 					.then(filter.closeFilterModal.call(filter));
 			});
-	
+
 			it('- open professor name drop down, type and select an element', function() {
 				filter.openFilterModal().then(filter.waitForModalOpen.call(filter))
 					.then(filter.openFieldDD.call(filter, filter.filter.fields
@@ -1015,7 +1004,7 @@ describe('Professor Test', function() {
 						.contain('Degree Applied For = MASc'))
 					.then(filter.closeFilterModal.call(filter));
 			});
-	
+
 			it('- open visa status drop down, type and select an element', function() {
 				filter.openFilterModal().then(filter.waitForModalOpen.call(filter))
 					.then(filter.openFieldDD.call(filter, filter.filter.fields
@@ -1031,7 +1020,7 @@ describe('Professor Test', function() {
 						.contain('Visa Status = Domestic'))
 					.then(filter.closeFilterModal.call(filter));
 			});
-	
+
 			it('- open program decision drop down, type and select an element', function() {
 				filter.openFilterModal().then(filter.waitForModalOpen.call(filter))
 					.then(filter.openFieldDD.call(filter, filter.filter.fields
@@ -1277,10 +1266,6 @@ describe('Professor Test', function() {
 			});
 		});
 
-		describe.skip('- filter presets', function() {
-			// stub for filter preset tests
-		});
-
 		describe('- filter highlights', function() {
 			after(function cleanUp() {
 				filter.resetFilteredTable();
@@ -1319,7 +1304,7 @@ describe('Professor Test', function() {
 					.then(expect(prof.isHighlighted.call(prof, 1, 10)).to.eventually.equal('John Doe'));
 			});
 		});
-		
+
 		describe('- filtering', function() {
 			afterEach(function cleanUpEach() {
 				filter.resetFilteredTable();
@@ -1515,6 +1500,195 @@ describe('Professor Test', function() {
 					.then(expect(prof.getColumnName.call(prof, 5)).to.eventually.equal('Contacted By'))
 					.then(expect(prof.getColumnName.call(prof, 6)).to.eventually.equal('Requested By'))
 					.then(expect(prof.getColumnName.call(prof, 7)).to.eventually.equal('Actions'));
+			});
+		});
+
+		describe('- filter presets', function() {
+			it('- add a new preset', function() {
+				filter.openFilterModal().then(filter.waitForModalOpen.call(filter))
+					.then(filter.toggleColumn.call(filter, filter.filter.cols.applicant))
+					.then(filter.toggleColumn.call(filter, filter.filter.cols.crank))
+					.then(filter.toggleColumn.call(filter, filter.filter.cols.gpa))
+					.then(filter.toggleColumn.call(filter, filter.filter.cols.foi))
+					.then(expect(filter.getColumnIndex.call(filter, filter.filter.cols.applicant.index)).to
+						.eventually.contain('1'))
+					.then(expect(filter.getColumnIndex.call(filter, filter.filter.cols.crank.index)).to
+						.eventually.contain('2'))
+					.then(expect(filter.getColumnIndex.call(filter, filter.filter.cols.gpa.index)).to
+						.eventually.contain('3'))
+					.then(expect(filter.getColumnIndex.call(filter, filter.filter.cols.foi.index)).to
+						.eventually.contain('4'))
+					.then(expect(filter.columnIsSelected.call(filter, 'Name'))
+						.to.eventually.be.true)
+					.then(expect(filter.columnIsSelected.call(filter, 'Committee Ranking'))
+						.to.eventually.be.true)
+					.then(expect(filter.columnIsSelected.call(filter, 'GPA'))
+						.to.eventually.be.true)
+					.then(expect(filter.columnIsSelected.call(filter, 'Fields of Interest'))
+						.to.eventually.be.true)
+					.then(filter.openFieldDD.call(filter, filter.filter.fields
+						.gpa.openDD))
+					.then(expect(filter.isFieldDDOpen.call(filter, filter.filter
+						.fields.gpa.openDD)).to.eventually.be.true)
+					.then(filter.searchText.call(filter, 'B'))
+					.then(filter.selectIthElement.call(filter, 5))
+					.then(expect(filter.getSelectedElement.call(filter)).to
+						.eventually.contain('> B'))
+					.then(expect(filter.getSelectedFilter.call(filter)).to.eventually
+						.contain('GPA > B'))
+					.then(filter.openFieldDD.call(filter, filter.filter.fields
+						.foi.openDD))
+					.then(expect(filter.isFieldDDOpen.call(filter, filter.filter
+						.fields.foi.openDD)).to
+						.eventually.be.true)
+					.then(filter.searchText.call(filter, 'in'))
+					.then(filter.selectIthElement.call(filter, 1))
+					.then(expect(filter.getSelectedElement.call(filter)).to
+						.eventually.contain('Artificial Intelligence'))
+					.then(expect(filter.getSelectedFilter.call(filter)).to.eventually
+						.contain('Field of Interest = Artificial Intelligence'))
+					.then(filter.saveFilter.call(filter, 'To be updated later....'))
+					.then(expect(browser.getCurrentUrl()).to.eventually.contain('savePreset'))
+					.then(expect(prof.applicationTableIsDisplayed.call(prof)).to.eventually.be.true)
+					.then(expect(prof.tableHeaderExists.call(prof)).to.eventually.be.true)
+					.then(expect(prof.tableBodyExists.call(prof)).to.eventually.be.true)
+					.then(expect(prof.getTableColumns.call(prof)).to.eventually.equal(5))
+					.then(expect(prof.getColumnName.call(prof, 0)).to.eventually.equal('Applicant Name'))
+					.then(expect(prof.getColumnName.call(prof, 1)).to.eventually.equal('Committee Rank'))
+					.then(expect(prof.getColumnName.call(prof, 2)).to.eventually.equal('GPA'))
+					.then(expect(prof.getColumnName.call(prof, 3)).to.eventually.equal('Fields of Interest'))
+					.then(expect(prof.getColumnName.call(prof, 4)).to.eventually.equal('Actions'))
+					.then(filter.openFilterModal().then(filter.waitForModalOpen.call(filter))
+						.then(filter.openFieldDD.call(filter, filter.filter.preset.openDD))
+						.then(expect(filter.isFieldDDOpen.call(filter, filter.filter.preset.openDD)).to.eventually.be.true)
+						.then(filter.searchText.call(filter, 'To be updated later....'))
+						.then(filter.selectIthElement.call(filter, 1))
+						.then(expect(filter.getSelectedElement.call(filter)).to
+							.eventually.contain('To be updated later....'))
+						.then(expect(filter.getColumnIndex.call(filter, filter.filter.cols.applicant.index)).to
+							.eventually.contain('1'))
+						.then(expect(filter.getColumnIndex.call(filter, filter.filter.cols.crank.index)).to
+							.eventually.contain('2'))
+						.then(expect(filter.getColumnIndex.call(filter, filter.filter.cols.gpa.index)).to
+							.eventually.contain('3'))
+						.then(expect(filter.getColumnIndex.call(filter, filter.filter.cols.foi.index)).to
+							.eventually.contain('4'))
+						.then(expect(filter.columnIsSelected.call(filter, 'Name'))
+							.to.eventually.be.true)
+						.then(expect(filter.columnIsSelected.call(filter, 'Committee Ranking'))
+							.to.eventually.be.true)
+						.then(expect(filter.columnIsSelected.call(filter, 'GPA'))
+							.to.eventually.be.true)
+						.then(expect(filter.columnIsSelected.call(filter, 'Fields of Interest'))
+							.to.eventually.be.true)
+						.then(expect(filter.getSelectedFilter.call(filter)).to.eventually
+							.contain('Field of Interest = Artificial Intelligence'))
+						.then(expect(filter.getSelectedFilter.call(filter)).to.eventually
+							.contain('GPA > B'))
+						.then(filter.closeFilterModal.call(filter)));
+			});
+
+			it('- update an existing preset', function() {
+				//first verify the contents of the existing filter (that was set up in the test before)
+				filter.openFilterModal().then(filter.waitForModalOpen.call(filter))
+					.then(filter.openFieldDD.call(filter, filter.filter.preset.openDD))
+					.then(expect(filter.isFieldDDOpen.call(filter, filter.filter.preset.openDD)).to.eventually.be.true)
+					.then(filter.searchText.call(filter, 'To be updated later....'))
+					.then(filter.selectIthElement.call(filter, 1))
+					.then(expect(filter.getSelectedElement.call(filter)).to
+						.eventually.contain('To be updated later....'))
+					.then(expect(filter.getColumnIndex.call(filter, filter.filter.cols.applicant.index)).to
+						.eventually.contain('1'))
+					.then(expect(filter.getColumnIndex.call(filter, filter.filter.cols.crank.index)).to
+						.eventually.contain('2'))
+					.then(expect(filter.getColumnIndex.call(filter, filter.filter.cols.gpa.index)).to
+						.eventually.contain('3'))
+					.then(expect(filter.getColumnIndex.call(filter, filter.filter.cols.foi.index)).to
+						.eventually.contain('4'))
+					.then(expect(filter.columnIsSelected.call(filter, 'Name'))
+						.to.eventually.be.true)
+					.then(expect(filter.columnIsSelected.call(filter, 'Committee Ranking'))
+						.to.eventually.be.true)
+					.then(expect(filter.columnIsSelected.call(filter, 'GPA'))
+						.to.eventually.be.true)
+					.then(expect(filter.columnIsSelected.call(filter, 'Fields of Interest'))
+						.to.eventually.be.true)
+					.then(expect(filter.getSelectedFilter.call(filter)).to.eventually
+						.contain('Field of Interest = Artificial Intelligence'))
+					.then(filter.toggleColumn.call(filter, filter.filter.cols.applicant))
+					.then(filter.toggleColumn.call(filter, filter.filter.cols.applicant))
+					.then(filter.openFieldDD.call(filter, filter.filter.fields
+						.gpa.openDD))
+					.then(expect(filter.isFieldDDOpen.call(filter, filter.filter
+						.fields.gpa.openDD)).to.eventually.be.true)
+					.then(filter.searchText.call(filter, 'B'))
+					.then(filter.selectIthElement.call(filter, 3))
+					.then(expect(filter.getSelectedElement.call(filter)).to
+						.eventually.contain('> B+'))
+					.then(expect(filter.getSelectedFilter.call(filter)).to.eventually
+						.contain('GPA > B+'))
+					.then(filter.openFieldDD.call(filter, filter.filter.fields
+						.foi.openDD))
+					.then(expect(filter.isFieldDDOpen.call(filter, filter.filter
+						.fields.foi.openDD)).to
+						.eventually.be.true)
+					.then(filter.searchText.call(filter, 'data'))
+					.then(filter.selectIthElement.call(filter, 9))
+					.then(expect(filter.getSelectedElement.call(filter)).to
+						.eventually.contain('Data Mining'))
+					.then(expect(filter.getColumnIndex.call(filter, filter.filter.cols.applicant.index)).to
+						.eventually.contain('4'))
+					.then(expect(filter.getColumnIndex.call(filter, filter.filter.cols.crank.index)).to
+						.eventually.contain('1'))
+					.then(expect(filter.getColumnIndex.call(filter, filter.filter.cols.gpa.index)).to
+						.eventually.contain('2'))
+					.then(expect(filter.getColumnIndex.call(filter, filter.filter.cols.foi.index)).to
+						.eventually.contain('3'))
+					.then(expect(filter.getSelectedFilter.call(filter)).to.eventually
+						.contain('Field of Interest = Data Mining'))
+					.then(expect(filter.getSelectedFilter.call(filter)).to.eventually
+						.contain('GPA > B+'))
+					.then(filter.saveFilter.call(filter, 'To be updated later....'))
+					.then(expect(browser.getCurrentUrl()).to.eventually.contain('savePreset'))
+					.then(expect(prof.applicationTableIsDisplayed.call(prof)).to.eventually.be.true)
+					.then(expect(prof.tableHeaderExists.call(prof)).to.eventually.be.true)
+					.then(expect(prof.tableBodyExists.call(prof)).to.eventually.be.true)
+					.then(expect(prof.getTableColumns.call(prof)).to.eventually.equal(5))
+					.then(expect(prof.getColumnName.call(prof, 3)).to.eventually.equal('Applicant Name'))
+					.then(expect(prof.getColumnName.call(prof, 0)).to.eventually.equal('Committee Rank'))
+					.then(expect(prof.getColumnName.call(prof, 1)).to.eventually.equal('GPA'))
+					.then(expect(prof.getColumnName.call(prof, 2)).to.eventually.equal('Fields of Interest'))
+					.then(expect(prof.getColumnName.call(prof, 4)).to.eventually.equal('Actions'))
+
+				//confirm the changes
+					.then(filter.openFilterModal().then(filter.waitForModalOpen.call(filter))
+						.then(filter.openFieldDD.call(filter, filter.filter.preset.openDD))
+						.then(expect(filter.isFieldDDOpen.call(filter, filter.filter.preset.openDD)).to.eventually.be.true)
+						.then(filter.searchText.call(filter, 'To be updated later....'))
+						.then(filter.selectIthElement.call(filter, 1)))
+					.then(expect(filter.getSelectedElement.call(filter)).to
+						.eventually.contain('To be updated later....'))
+					.then(expect(filter.getColumnIndex.call(filter, filter.filter.cols.applicant.index)).to
+						.eventually.contain('4'))
+					.then(expect(filter.getColumnIndex.call(filter, filter.filter.cols.crank.index)).to
+						.eventually.contain('1'))
+					.then(expect(filter.getColumnIndex.call(filter, filter.filter.cols.gpa.index)).to
+						.eventually.contain('2'))
+					.then(expect(filter.getColumnIndex.call(filter, filter.filter.cols.foi.index)).to
+						.eventually.contain('3'))
+					.then(expect(filter.columnIsSelected.call(filter, 'Name'))
+						.to.eventually.be.true)
+					.then(expect(filter.columnIsSelected.call(filter, 'Committee Ranking'))
+						.to.eventually.be.true)
+					.then(expect(filter.columnIsSelected.call(filter, 'GPA'))
+						.to.eventually.be.true)
+					.then(expect(filter.columnIsSelected.call(filter, 'Fields of Interest'))
+						.to.eventually.be.true)
+					.then(expect(filter.getSelectedFilter.call(filter)).to.eventually
+						.contain('Field of Interest = Data Mining'))
+					.then(expect(filter.getSelectedFilter.call(filter)).to.eventually
+						.contain('GPA > B+'))
+					.then(filter.closeFilterModal.call(filter));
 			});
 		});
 	});

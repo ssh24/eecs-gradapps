@@ -23,18 +23,18 @@ module.exports = function(app, passport) {
 
 	// roles page route
 	require('./roles.js')(app, [isLoggedIn]);
-    
+
 	// admin page route
 	require('./admin.js')(app, [isLoggedIn, hasRole]);
 	// committee page route
 	require('./committee.js')(app, utils, application, fm, [isLoggedIn, hasRole]);	
 	// professor page route
-	require('./professor.js')(app, utils, application, [isLoggedIn, hasRole]);
+	require('./professor.js')(app, utils, application, fm, [isLoggedIn, hasRole]);
 };
 
 // route middleware to make sure a user is logged in
 function isLoggedIn(req, res, next) {
-	// if user is authenticated in the session, carry on 
+	// if user is authenticated in the session, carry on
 	if (req.isAuthenticated())
 		return next();
 	// if they aren't redirect them to the home page

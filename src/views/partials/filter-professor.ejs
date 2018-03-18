@@ -1,5 +1,5 @@
 <!-- Modal Filter Section-->
-<div class="modal fade" id="filterModal">
+<div class="modal" id="filterModal">
   <div class="modal-dialog modal-lg">
     <!-- Modal content-->
     <div class="modal-content">
@@ -7,25 +7,30 @@
         <button id="close-btn" type="button" class="close" data-dismiss="modal">—</button>
         <h2>Filter <span class="glyphicon glyphicon-pencil"></span></h2>
       </div>
-      <form id="filterForm" action="/roles/professor/filter" method="post">
+      <form id="filterForm" method="post">
         <div class="modal-body">
-          <div id="div_col" class="form-group row">
-            <h4>Choose Your Columns</h4>
-            <select id="preset" name="preset" style="display: inline-block;">
-                            <option>Loaded from database...</option>
-                            <option>Preset 2</option>
-                            <option>Preset 3</option>
-                            <option>Preset 4</option>
+          <div id="div_preset" class="row">
+            <h4>Load a Preset</h4>
+            <select id="preset" name="preset" style="display: inline-block;" class="selectpicker" data-live-search="true" title="Nothing Selected">
+                            <% if (presets) {%>
+                              <% for(var key in presets) { %>
+                                <option><%= key %></option>
+                              <% } %>
+
+                            <% } %>
             </select>
             <hr>
+          </div>
+          <div id="div_col" class="form-group row">
+            <h4>Choose Your Columns</h4>
             <div class="row">
               <div class="form-group btn-group btn-group-justified" role="group" aria-label="...">
                 <div class="btn-group" role="group">
                   <button id="btn_col_name" name="btn_col_name" type="button" class="btn btn-default">Name</button>
                 </div>
                 <div class="btn-group" role="group">
-                    <button id="btn_col_gender" name="btn_col_gender" type="button" class="btn btn-default">Gender</button>
-                  </div>
+                  <button id="btn_col_gender" name="btn_col_gender" type="button" class="btn btn-default">Gender</button>
+                </div>
                 <div class="btn-group" role="group">
                   <button id="btn_col_foi" name="btn_col_foi" type="button" class="btn btn-default">Fields of Interest</button>
                 </div>
@@ -46,26 +51,26 @@
                   <button id="btn_col_degree" name="btn_col_degree" type="button" class="btn btn-default">Degree Applied For</button>
                 </div>
                 <div class="btn-group" role="group">
-                    <button id="btn_col_visa" name="btn_col_visa" type="button" class="btn btn-default">Visa Status</button>
+                  <button id="btn_col_visa" name="btn_col_visa" type="button" class="btn btn-default">Visa Status</button>
                 </div>
               </div>
             </div>
             <div class="row">
               <div class="form-group btn-group btn-group-justified" role="group" aria-label="...">
                 <div class="btn-group" role="group">
-                      <button id="btn_col_program_decision" name="btn_col_program_decision" type="button" class="btn btn-default">Program Decision</button>
+                  <button id="btn_col_program_decision" name="btn_col_program_decision" type="button" class="btn btn-default">Program Decision</button>
                 </div>
                 <div class="btn-group" role="group">
                   <button id="btn_col_contacted_status" name="btn_col_contacted_status" type="button" class="btn btn-default">Contacted By</button>
                 </div>
                 <div class="btn-group" role="group">
-                    <button id="btn_col_requested_status" name="btn_col_requested_status" type="button" class="btn btn-default">Requested By</button>
-                  </div>
+                  <button id="btn_col_requested_status" name="btn_col_requested_status" type="button" class="btn btn-default">Requested By</button>
+                </div>
                 <div class="btn-group" role="group">
                   <button id="btn_col_interest" name="btn_col_interest" type="button" class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="This field is private and can only be seen by you.">My Interest Status</button>
                 </div>
                 <div class="btn-group" role="group">
-                    <button id="btn_col_actions" name="btn_col_actions" type="button" class="btn btn-default" data-toggle="tooltip" data-placement="bottom">Actions</button>
+                  <button id="btn_col_actions" name="btn_col_actions" type="button" class="btn btn-default" data-toggle="tooltip" data-placement="bottom">Actions</button>
                 </div>
               </div>
             </div>
@@ -86,15 +91,15 @@
                 </div>
               </div>
               <div class="col-xs-4">
-                  <div class="form-group">
-                    <label for="btn_filter_gender">Gender</label>
-                    <select id="btn_filter_gender" name="btn_filter_gender" class="form-control selectpicker" data-live-search="true">
+                <div class="form-group">
+                  <label for="btn_filter_gender">Gender</label>
+                  <select id="btn_filter_gender" name="btn_filter_gender" class="form-control selectpicker" data-live-search="true">
                           <option selected="selected">Any</option>
                           <option>M</option>
                           <option>F</option>
                       </select>
-                  </div>
                 </div>
+              </div>
               <div class="col-xs-4">
                 <div class="form-group">
                   <label for="btn_filter_foi">Fields of Interest</label>
@@ -108,17 +113,17 @@
               </div>
             </div>
             <div class="row">
-                <div class="col-xs-4">
-                    <div class="form-group">
-                      <label for="btn_filter_prof">Preferred Professor</label>
-                      <select id="btn_filter_prof" name="btn_filter_prof" class="form-control selectpicker" data-live-search="true">
+              <div class="col-xs-4">
+                <div class="form-group">
+                  <label for="btn_filter_prof">Preferred Professor</label>
+                  <select id="btn_filter_prof" name="btn_filter_prof" class="form-control selectpicker" data-live-search="true">
                           <option selected="selected">Any</option>
                           <% for(var i = 0; i < profs.length; i++){ %>
                               <option><%= profs[i]%></option>
                           <%}%>
                       </select>
-                    </div>
-                  </div>
+                </div>
+              </div>
               <div class="col-xs-4">
                 <div class="form-group">
                   <label for="btn_filter_ranking">Committee Ranking</label>
@@ -148,25 +153,25 @@
             </div>
             <div class="row">
               <div class="col-xs-4">
-                    <div class="form-group">
-                      <label for="btn_filter_degree">Degree Applied For</label>
-                      <select id="btn_filter_degree" name="btn_filter_degree" class="form-control selectpicker" data-live-search="true">
+                <div class="form-group">
+                  <label for="btn_filter_degree">Degree Applied For</label>
+                  <select id="btn_filter_degree" name="btn_filter_degree" class="form-control selectpicker" data-live-search="true">
                           <option selected="selected">Any</option>
                           <option>PhD</option>
                           <option>MSc</option>
                           <option>MASc</option>
                       </select>
-                    </div>
+                </div>
               </div>
               <div class="col-xs-4">
-                      <div class="form-group">
-                        <label for="btn_filter_visa">Visa Status</label>
-                        <select id="btn_filter_visa" name="btn_filter_visa" class="form-control selectpicker" data-live-search="true">
+                <div class="form-group">
+                  <label for="btn_filter_visa">Visa Status</label>
+                  <select id="btn_filter_visa" name="btn_filter_visa" class="form-control selectpicker" data-live-search="true">
                             <option selected="selected">Any</option>
                             <option>Domestic</option>
                             <option>Visa</option>
                         </select>
-                      </div>
+                </div>
               </div>
               <div class="col-xs-4">
                 <div class="form-group">
@@ -181,39 +186,39 @@
               </div>
             </div>
             <div class="row">
-                <div class="col-xs-4">
-                    <div class="form-group">
-                      <label for="btn_filter_contacted_by">Contacted By</label>
-                      <select id="btn_filter_contacted_by" name="btn_filter_contacted_by" class="form-control selectpicker" data-live-search="true">
+              <div class="col-xs-4">
+                <div class="form-group">
+                  <label for="btn_filter_contacted_by">Contacted By</label>
+                  <select id="btn_filter_contacted_by" name="btn_filter_contacted_by" class="form-control selectpicker" data-live-search="true">
                         <option selected="selected">Any</option>
                         <% for(var i = 0; i < profs.length; i++){ %>
                           <option><%= profs[i]%></option>
                         <%}%>
                       </select>
-                    </div>
                 </div>
-                <div class="col-xs-4">
-                    <div class="form-group">
-                      <label for="btn_filter_requested_by">Requested By</label>
-                      <select id="btn_filter_requested_by" name="btn_filter_requested_by" class="form-control selectpicker" data-live-search="true">
+              </div>
+              <div class="col-xs-4">
+                <div class="form-group">
+                  <label for="btn_filter_requested_by">Requested By</label>
+                  <select id="btn_filter_requested_by" name="btn_filter_requested_by" class="form-control selectpicker" data-live-search="true">
                         <option selected="selected">Any</option>
                         <% for(var i = 0; i < profs.length; i++){ %>
                           <option><%= profs[i]%></option>
                         <%}%>
                       </select>
-                    </div>
-                  </div>
-                <div class="col-xs-4">
-                  <div class="form-group">
-                    <label for="btn_filter_interest">My Interest Status</label>
-                    <select id="btn_filter_interest" name="btn_filter_interest" class="form-control selectpicker" data-live-search="true">
+                </div>
+              </div>
+              <div class="col-xs-4">
+                <div class="form-group">
+                  <label for="btn_filter_interest">My Interest Status</label>
+                  <select id="btn_filter_interest" name="btn_filter_interest" class="form-control selectpicker" data-live-search="true">
                           <option selected="selected">Any</option>
                           <option>-</option>
                           <option>Interested</option>
                           <option>Not Interested</option>
                     </select>
-                  </div>
                 </div>
+              </div>
             </div>
           </div>
           <div class="form-group row">
@@ -224,12 +229,12 @@
         </div>
         <div class="modal-footer">
           <div class="form-group row">
-            <button id="filter-close" class="btn btn-danger btn-default pull-left" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
-            <button id="filter-submit" type="submit" class="btn btn-success btn-default pull-left"><span class="glyphicon glyphicon-check"></span> Submit</button>
+            <button id="filter_close" class="btn btn-danger btn-default pull-left" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+            <button id="filter_submit" type="submit" class="btn btn-success btn-default pull-left"><span class="glyphicon glyphicon-check"></span> Submit</button>
             <div class="input-group">
-              <input type="text" class="form-control" placeholder="Preset Name">
+              <input id="preset_name" name="preset_name" type="text" class="form-control" placeholder="Preset Name">
               <span class="input-group-btn">
-                    <button id="save-preset" name="save-preset" class="btn btn-primary form-control" type="submit">Save Preset</button>
+                    <button id="save_preset" name="save_preset" class="btn btn-primary form-control" type="submit">Save Preset</button>
               </span>
             </div>
           </div>

@@ -31,7 +31,7 @@ module.exports = function(app, utils, application, faculty_member, fns) {
 	// committee page route
 	app.get('/roles/' + route, basicCommittee, function(req, res) {
 		var userInfo = req.user;
-		res.render('committee', {
+		res.render(route, {
 			title: 'Review Applications',
 			message: req.flash('tableMessage'),
 			user: userInfo.id,
@@ -44,7 +44,6 @@ module.exports = function(app, utils, application, faculty_member, fns) {
 			applicants: req.apps.applicants || [],
 			filter: req.apps.filter || false,
 			showfilter: true,
-			review: false,
 			highlightText: {},
 			highlightFunc: highlight,
 			presets: req.presets
@@ -53,7 +52,7 @@ module.exports = function(app, utils, application, faculty_member, fns) {
 
 	app.post('/roles/' + route, saveReviews, function(req, res) {
 		var userInfo = req.user;
-		res.render('committee', {
+		res.render(route, {
 			title: 'Review Applications',
 			message: req.flash('tableMessage'),
 			user: userInfo.id,
@@ -66,7 +65,6 @@ module.exports = function(app, utils, application, faculty_member, fns) {
 			applicants: req.apps.applicants || [],
 			filter: req.apps.filter || false,
 			showfilter: true,
-			review: false,
 			highlightText: {},
 			highlightFunc: highlight,
 			presets: req.presets
@@ -75,7 +73,7 @@ module.exports = function(app, utils, application, faculty_member, fns) {
 
 	app.get('/roles/' + route + '/filter', filterCommittee, function(req, res) {
 		var userInfo = req.user;
-		res.render('committee', {
+		res.render(route, {
 			title: 'Filtered Applications',
 			message: req.flash('tableMessage'),
 			user: userInfo.id,
@@ -88,7 +86,6 @@ module.exports = function(app, utils, application, faculty_member, fns) {
 			applicants: req.apps.applicants || [],
 			filter: req.apps.filter || false,
 			showfilter: true,
-			review: false,
 			highlightText: req.apps.highlightText,
 			highlightFunc: highlight,
 			presets: req.presets
@@ -97,7 +94,7 @@ module.exports = function(app, utils, application, faculty_member, fns) {
 
 	app.post('/roles/' + route + '/filter', filterPost, function(req, res) {
 		var userInfo = req.user;
-		res.render('committee', {
+		res.render(route, {
 			title: 'Filtered Applications',
 			message: req.flash('tableMessage'),
 			user: userInfo.id,
@@ -110,7 +107,6 @@ module.exports = function(app, utils, application, faculty_member, fns) {
 			applicants: req.apps.applicants || [],
 			filter: req.apps.filter || false,
 			showfilter: true,
-			review: false, 
 			highlightText: req.apps.highlightText,
 			highlightFunc: highlight,
 			presets: req.presets
@@ -119,7 +115,6 @@ module.exports = function(app, utils, application, faculty_member, fns) {
 
 	app.get('/roles/' + route + '/review', getReview, function(req, res) {
 		var userInfo = req.user;
-		var role = 'Committee Member';
 		res.render('review', {
 			title: 'Application Review',
 			message: req.flash('reviewError'),
@@ -151,15 +146,13 @@ module.exports = function(app, utils, application, faculty_member, fns) {
 			loaded_rank: req.review.load.loaded_rank || '',
 			loaded_uni: req.review.load.loaded_uni || '',
 			loaded_assessment: req.review.load.loaded_assessment || '',
-			showfilter: false,
-			review: true
+			showfilter: false
 		});
 	});
 
 	app.get('/roles/' + route + '/savePreset', presetCommittee, function(req, res) {
 		var userInfo = req.user;
-		var role = 'Committee Member';
-		res.render('committee', {
+		res.render(route, {
 			title: 'Filtered Applications',
 			message: req.flash('tableMessage'),
 			user: userInfo.id,
@@ -172,7 +165,6 @@ module.exports = function(app, utils, application, faculty_member, fns) {
 			applicants: req.apps.applicants || [],
 			filter: req.apps.filter || false,
 			showfilter: true,
-			review: false,
 			highlightText: req.apps.highlightText || [],
 			highlightFunc: highlight,
 			presets: req.presets
@@ -181,7 +173,7 @@ module.exports = function(app, utils, application, faculty_member, fns) {
 
 	app.post('/roles/' + route + '/savePreset', presetPost, function(req, res) {
 		var userInfo = req.user;
-		res.render('committee', {
+		res.render(route, {
 			title: 'Filtered Applications',
 			message: req.flash('tableMessage'),
 			user: userInfo.id,
@@ -194,7 +186,6 @@ module.exports = function(app, utils, application, faculty_member, fns) {
 			applicants: req.apps.applicants || [],
 			filter: req.apps.filter || false,
 			showfilter: true,
-			review: false,
 			highlightText: req.apps.highlightText || [],
 			highlightFunc: highlight,
 			presets: req.presets
