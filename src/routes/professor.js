@@ -214,8 +214,8 @@ module.exports = function(app, utils, application, faculty_member, fns) {
 		sqlCol += 'app_Id, CONCAT_WS(\' \', `FName`, `LName`) AS `Applicant Name`, ' +
 		'Gender, FOI as `Fields of Interest`, prefProfs as `Preferred Professors`, ' +
 		'Rank as `Committee Rank`, GPA, Degree as `Degree Applied For`,' +
-		' VStatus as `Visa Status`, programDecision as `Program Decision`, ' + 
-		'profContacted as `Contacted By`, profRequested as `Requested By`, ' + 
+		' VStatus as `Visa Status`, programDecision as `Program Decision`, ' +
+		'profContacted as `Contacted By`, profRequested as `Requested By`, ' +
 		'seen as `My Interest Status` ';
 
 		/* build columns */
@@ -225,54 +225,54 @@ module.exports = function(app, utils, application, faculty_member, fns) {
 				if (cols[i] === 'btn_col_name') {
 					sqlCol += 'CONCAT_WS(\' \', `FName`, `LName`) AS `Applicant Name`';
 					if (i < cols.length - 1)
-						sqlCol += ', '; 
+						sqlCol += ', ';
 				} else if (cols[i] === 'btn_col_gender') {
 					sqlCol += 'Gender';
 					if (i < cols.length - 1)
-						sqlCol += ', '; 
+						sqlCol += ', ';
 				} else if (cols[i] === 'btn_col_foi') {
 					sqlCol += 'FOI as `Fields of Interest`';
 					if (i < cols.length - 1)
-						sqlCol += ', '; 
+						sqlCol += ', ';
 				} else if (cols[i] === 'btn_col_prof') {
 					sqlCol += 'prefProfs as `Preferred Professors`';
 					if (i < cols.length - 1)
-						sqlCol += ', '; 
+						sqlCol += ', ';
 				} else if (cols[i] === 'btn_col_ranking') {
 					sqlCol += 'Rank as `Committee Rank`';
 					if (i < cols.length - 1)
-						sqlCol += ', '; 
+						sqlCol += ', ';
 				} else if (cols[i] === 'btn_col_gpa') {
 					sqlCol += 'GPA';
 					if (i < cols.length - 1)
-						sqlCol += ', '; 
+						sqlCol += ', ';
 				} else if (cols[i] === 'btn_col_degree') {
 					sqlCol += 'Degree as `Degree Applied For`';
 					if (i < cols.length - 1)
-						sqlCol += ', '; 
+						sqlCol += ', ';
 				} else if (cols[i] === 'btn_col_visa') {
 					sqlCol += 'VStatus as `Visa Status`';
 					if (i < cols.length - 1)
-						sqlCol += ', '; 
+						sqlCol += ', ';
 				} else if (cols[i] === 'btn_col_program_decision') {
 					sqlCol += 'programDecision as `Program Decision`';
 					if (i < cols.length - 1)
-						sqlCol += ', '; 
+						sqlCol += ', ';
 				} else if (cols[i] === 'btn_col_contacted_status') {
 					contactedField = true;
 					sqlCol += 'profContacted as `Contacted By`';
 					if (i < cols.length - 1)
-						sqlCol += ', '; 
+						sqlCol += ', ';
 				} else if (cols[i] === 'btn_col_requested_status') {
 					requestedField = true;
 					sqlCol += 'profRequested as `Requested By`';
 					if (i < cols.length - 1)
-						sqlCol += ', '; 
+						sqlCol += ', ';
 				} else if (cols[i] === 'btn_col_interest') {
 					interestField = true;
 					sqlCol += 'seen as `My Interest Status`';
 					if (i < cols.length - 1)
-						sqlCol += ', '; 
+						sqlCol += ', ';
 				} else if (cols[i] === 'btn_col_actions') {
 					actionFieldNum = i + 1; // offset of the appId
 				}
@@ -385,7 +385,7 @@ module.exports = function(app, utils, application, faculty_member, fns) {
 		}
 
 		function proceed() {
-			sql += sqlCol + ' FROM APPLICATION' + joinSql + 
+			sql += sqlCol + ' FROM APPLICATION' + joinSql +
 			' WHERE committeeReviewed=1 and Rank is not null' + sqlFilt;
 
 			var options = {
