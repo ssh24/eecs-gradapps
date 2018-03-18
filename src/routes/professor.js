@@ -2,12 +2,12 @@
 
 var _ = require('lodash');
 
-module.exports = function(app, utils, application, fns) {
+module.exports = function(app, utils, application, faculty_member, fns) {
 	var basicProfessor = fns.concat([applyApplicationActions, getApps]);
 	var filterProfessor = fns.concat([applyApplicationActions, filterApps]);
 	var filterPost = fns.concat([filterApps]);
 	var builtSql, builtOptions, builtHighlight;
-	
+
 	// professor page route
 	app.get('/roles/professor', basicProfessor, function(req, res) {
 		var userInfo = req.user;
@@ -68,7 +68,7 @@ module.exports = function(app, utils, application, fns) {
 		});
 	});
 
-	app.post('/roles/professor/filter', filterPost, 
+	app.post('/roles/professor/filter', filterPost,
 		function(req, res) {
 			var userInfo = req.user;
 			var role = 'Professor';
@@ -95,22 +95,22 @@ module.exports = function(app, utils, application, fns) {
 	function getApplications(sql, options, req, res, next) {
 		application.getApplications(sql, req.user.id, function(err, results) {
 			if (err) {
-				req.flash('tableMessage', 
+				req.flash('tableMessage',
 					'Error loading table. Fatal reason: ' + err.message);
 			} else {
 				var fields = [];
 				var hidden = ['app_Id'];
 				var obj = results[0];
-			
+
 				for (var key in obj)
 					fields.push(key);
-			
+
 				if (options) {
-					if (options.actionFieldNum) 
+					if (options.actionFieldNum)
 						fields.splice(options.actionFieldNum, 0, 'Actions');
-					else 
+					else
 						fields.push('Actions');
-						
+
 					if (!options.interestField)
 						hidden.push('My Interest Status');
 					if (!options.contactedField)
@@ -118,14 +118,14 @@ module.exports = function(app, utils, application, fns) {
 					if (!options.requestedField)
 						hidden.push('Requested By');
 				}
-			
+
 				req.apps.appls = results;
-			
+
 				req.apps.flds = {};
 				req.apps.flds.fields = fields;
 				req.apps.flds.hidden = hidden;
 			}
-					
+
 			setLiveSearchData(req, res, next);
 		});
 	}
@@ -293,7 +293,7 @@ module.exports = function(app, utils, application, fns) {
 
 		var joinSql = gpaFilt ? gpaSql + interestStatusSql : interestStatusSql;
 		if (rankFilt && rankFilt === true) {
-			utils.buildCommitteeRankFilter(req.body.btn_filter_ranking.split(' ')[0], 
+			utils.buildCommitteeRankFilter(req.body.btn_filter_ranking.split(' ')[0],
 				req.body.btn_filter_ranking.split(' ')[1], function(err, result) {
 					if (err) next(err);
 					if (result) {
@@ -339,22 +339,22 @@ module.exports = function(app, utils, application, fns) {
 		} else if(query.interest === 'true') {
 			application.updateInterestedStatus(query.appId, req.user.id, 1, next);
 		}  else if (query.contacted === 'false') {
-			application.updateContactedStatus(query.appId, req.user.id, 
+			application.updateContactedStatus(query.appId, req.user.id,
 				req.user.fullname, 0, next);
 		} else if (query.contacted === 'true') {
-			application.updateContactedStatus(query.appId, req.user.id, 
+			application.updateContactedStatus(query.appId, req.user.id,
 				req.user.fullname, 1, next);
 		} else if (query.requested === 'false') {
-			application.updateRequestedStatus(query.appId, req.user.id, 
+			application.updateRequestedStatus(query.appId, req.user.id,
 				req.user.fullname, 0, next);
 		} else if (query.requested === 'true') {
-			application.updateRequestedStatus(query.appId, req.user.id, 
+			application.updateRequestedStatus(query.appId, req.user.id,
 				req.user.fullname, 1, next);
 		} else {
 			next();
 		}
 	}
-	
+
 	function setLiveSearchData(req, res, next) {
 		utils.getApplicantNames(function(err, result) {
 			if (err) next(err);
@@ -380,7 +380,7 @@ module.exports = function(app, utils, application, fns) {
 	function highlight(app, field, highlightText) {
 		var patternHighlight = null;
 		var returnString = app[field];
-	
+
 		//patterns for committee rank and gpa ranking matching
 		var patt_Aplus = /\w*(A\+)\w*/gi;
 		var patt_A = /\w*(A\+|A)\w*/gi;
@@ -392,20 +392,20 @@ module.exports = function(app, utils, application, fns) {
 		var patt_D = /\w*(A\+|A|B\+|B|C\+|C|D\+|D)\w*/gi;
 		var patt_E = /\w*(A\+|A|B\+|B|C\+|C|D\+|D|E)\w*/gi;
 		var patt_F = /\w*(A\+|A|B\+|B|C\+|C|D\+|D|E|F)\w*/gi;
-	
-		if (field === 'Applicant Name' && highlightText.name && 
+
+		if (field === 'Applicant Name' && highlightText.name &&
 		highlightText.name !== '') {
 			patternHighlight = new RegExp('('+highlightText.name+')', 'gi');
-		} else if (field === 'Gender' && highlightText.gender && 
+		} else if (field === 'Gender' && highlightText.gender &&
 		highlightText.gender !== '') {
 			patternHighlight = new RegExp('('+highlightText.gender+')', 'gi');
-		} else if (field === 'Fields of Interest' && highlightText.foi && 
+		} else if (field === 'Fields of Interest' && highlightText.foi &&
 		highlightText.foi !== '') {
 			patternHighlight = new RegExp('('+highlightText.foi+')', 'gi');
-		} else if (field === 'Preferred Professors' && highlightText.prof && 
+		} else if (field === 'Preferred Professors' && highlightText.prof &&
 		highlightText.prof !== '') {
 			patternHighlight = new RegExp('('+highlightText.prof+')', 'gi');
-		} else if (field === 'Committee Rank' && highlightText.ranking && 
+		} else if (field === 'Committee Rank' && highlightText.ranking &&
 		highlightText.ranking !== '') {
 			if (patt_Aplus.test(highlightText.ranking)) {
 				patternHighlight = patt_Aplus;
@@ -454,21 +454,21 @@ module.exports = function(app, utils, application, fns) {
 			} else {
 				patternHighlight = null;
 			}
-		} else if (field === 'Degree Applied For' && highlightText.degree && 
+		} else if (field === 'Degree Applied For' && highlightText.degree &&
 		highlightText.degree !== '') {
 			patternHighlight = new RegExp('('+highlightText.degree+')', 'gi');
 		} else if (field === 'Visa Status' && highlightText.visa && highlightText.visa !== '') {
 			patternHighlight = new RegExp('('+highlightText.visa+')', 'gi');
-		} else if (field === 'Program Decision' && highlightText.program_decision 
+		} else if (field === 'Program Decision' && highlightText.program_decision
 		&& highlightText.program_decision !== '') {
 			patternHighlight = new RegExp('('+highlightText.program_decision+')', 'gi');
-		} else if (field === 'Contacted By' && highlightText.contacted_by && 
+		} else if (field === 'Contacted By' && highlightText.contacted_by &&
 		highlightText.contacted_by !== '') {
 			patternHighlight = new RegExp('('+highlightText.contacted_by+')', 'gi');
-		} else if (field === 'Requested By' && highlightText.requested_by && 
+		} else if (field === 'Requested By' && highlightText.requested_by &&
 		highlightText.requested_by !== '') {
 			patternHighlight = new RegExp('('+highlightText.requested_by+')', 'gi');
-		} else if (field === 'My Interest Status' && highlightText.interest && 
+		} else if (field === 'My Interest Status' && highlightText.interest &&
 		highlightText.interest !== '') {
 			patternHighlight = new RegExp('('+highlightText.interest+')', 'gi');
 		} else {
@@ -477,7 +477,7 @@ module.exports = function(app, utils, application, fns) {
 		if (patternHighlight != null) {
 			if (app[field]) {
 				var word = app[field].toString();
-				returnString = word.replace(patternHighlight, 
+				returnString = word.replace(patternHighlight,
 					'<span style="color:red">$1</span>');
 			}
 		}
