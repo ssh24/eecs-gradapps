@@ -157,6 +157,9 @@ table .dropdown-menu {
     margin-left: 5px;
     margin-bottom: 0px;
 }
+select#preset{
+  max-width: 100%;
+}
 /*adds border radius for buttons after a textbox*/
 
 .input-group-btn:last-child > .btn {
