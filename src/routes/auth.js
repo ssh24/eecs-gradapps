@@ -6,7 +6,7 @@ module.exports = function(app, passport, fns) {
 		res.render('login', { message: req.flash('loginMessage'), title: 'Login', 
 			user: null, 
 			role: null,
-			showfilter: true,
+			showfilter: false,
 			review: false
 		});
 	});

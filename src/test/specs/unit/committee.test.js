@@ -10,6 +10,7 @@ var ms = require('ms');
 var Filter = require('../../views/filter-view');
 var Login = require('../../views/login-view');
 var Committee = require('../../views/committee-view');
+var Review = require('../../views/review-view');
 var Role = require('../../views/role-view');
 var Utils = require('../../lib/utils/shared-utils');
 var Welcome = require('../../views/welcome-view');
@@ -23,6 +24,7 @@ describe('Committee Test', function() {
 	var filter = new Filter(timeout);
 	var login = new Login(timeout);
 	var committee = new Committee(timeout);
+	var review = new Review(timeout);
 	var role = new Role(timeout);
 	var utils = new Utils(timeout);
 	var welcome = new Welcome(timeout);
@@ -553,6 +555,72 @@ describe('Committee Test', function() {
 					.then(expect(committee.tableBodyExists.call(committee)).to.eventually.be.false)
 					.then(expect(committee.getTableError.call(committee)).to.eventually.contain('Error loading table.'));
 			});
+		});
+	});
+
+	describe('- review applications', function() {
+		describe('- check for fields', function() {
+			before(function setUp() {
+				review.startReview(17);
+			});
+
+			after(function cleanUp() {
+				review.closeReview();
+			});
+
+			it('- check for name fields', function() {
+				expect(review.isLNameDisplayed.call(review)).to.eventually.be.true
+					.then(expect(review.isFNameDisplayed.call(review)).to.eventually.be.true);
+			});
+
+			it('- check for degree field', function() {
+				expect(review.isDegreeDisplayed.call(review)).to.eventually.be.true;
+			});
+
+			it('- check for gpa and gre fields', function() {
+				expect(review.isGPADisplayed.call(review)).to.eventually.be.true
+					.then(expect(review.isGREDisplayed.call(review)).to.eventually.be.true);
+			});
+
+			it('- check for uni fields', function() {
+				expect(review.isPrevUniDisplayed.call(review)).to.eventually.be.true
+					.then(expect(review.isNewUniCheckDisplayed.call(review)).to.eventually.be.true)
+					.then(expect(review.isNewUniNameDisplayed.call(review)).to.eventually.be.true)
+					.then(expect(review.isNewUniBtnDisplayed.call(review)).to.eventually.be.true);
+			});
+
+			it('- check for assessment fields', function() {
+				expect(review.isUniAssessmentDisplayed.call(review)).to.eventually.be.true
+					.then(expect(review.isAddAssessmentCheckDisplayed.call(review)).to.eventually.be.true)
+					.then(expect(review.isAddAssessmentFormDisplayed.call(review)).to.eventually.be.true)
+					.then(expect(review.isAddAssessmentBtnDisplayed.call(review)).to.eventually.be.true)
+					.then(expect(review.isChosenAssessmentDisplayed.call(review)).to.eventually.be.true);
+			});
+
+			it('- check for background, research and comments field', function() {
+				expect(review.isBackgroundDisplayed.call(review)).to.eventually.be.true
+					.then(expect(review.isResearchDisplayed.call(review)).to.eventually.be.true)
+					.then(expect(review.isCommentsDisplayed.call(review)).to.eventually.be.true);
+			});
+
+			it('- check for rank field', function() {
+				expect(review.isRankDisplayed.call(review)).to.eventually.be.true;
+			});
+
+			it('- check for cancel, draft and submit buttons', function() {
+				expect(review.isCancelBtnDisplayed.call(review)).to.eventually.be.true
+					.then(expect(review.isDraftBtnDisplayed.call(review)).to.eventually.be.true)
+					.then(expect(review.isSubmitBtnDisplayed.call(review)).to.eventually.be.true);
+			});
+		});
+
+		it('- start a new application and exit out w/o changes', function() {
+			expect(review.getStatus.call(review)).to.eventually.equal('New')
+				.then(review.startReview.call(review, 17))
+				.then(expect(browser.getCurrentUrl()).to.eventually.contain('review'))
+				.then(review.closeReview.call(review))
+				.then(expect(browser.getCurrentUrl()).to.eventually.not.contain('review'))
+				.then(expect(review.getStatus.call(review)).to.eventually.equal('New'));
 		});
 	});
 });

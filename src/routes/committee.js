@@ -150,45 +150,58 @@ module.exports = function(app, utils, application, fns) {
 	}
 
 	function setUpReview(req, res, next) {
-		req.review = {};
-		prevAppId = req.review.appId = parseInt(req.query.appId, 10);
-		review.getReviewStatus(req.review.appId, req.user.id, function(err, status) {
-			if (err) next(err);
-			prevStatus = req.review.status = status;
-			review.loadReview(req.review.appId, req.user.id, function(err, results) {
+		if (_.isEmpty(req.query)) {
+			res.redirect('/roles/committee');
+		} else {
+			req.review = {};
+			prevAppId = req.review.appId = parseInt(req.query.appId, 10);
+			review.getReviewStatus(req.review.appId, req.user.id, function(err, status) {
 				if (err) {
-					req.flash('reviewError', 
-						'Could not load review. Fatal reason: ' + err.message);
+					res.redirect('/roles/committee');
+					return next(err);
 				}
-				req.review.load = {};
-				req.review.load.loaded_lname = results[0]['LName'];
-				req.review.load.loaded_fname = results[0]['FName'];
-				req.review.load.loaded_degree = results[0]['Degree'];
-				req.review.load.loaded_gpa = results[0]['GPA'];
-				req.review.load.loaded_gre = results[0]['GRE'];
-				req.review.load.loaded_background = results[0]['Background'];
-				req.review.load.loaded_research = results[0]['researchExp'];
-				req.review.load.loaded_comments = results[0]['Comments'];
-				req.review.load.loaded_rank = results[0]['c_Rank'];
-				req.review.load.loaded_uni = results[0]['PreviousInst'];
-				req.review.load.loaded_assessment = results[0]['UniAssessment'];
-				next();
+				prevStatus = req.review.status = status;
+				review.loadReview(req.review.appId, req.user.id, function(err, results) {
+					if (err) {
+						res.redirect('/roles/committee');
+						return next(err);
+					}
+					req.review.load = {};
+					req.review.load.loaded_lname = results[0]['LName'];
+					req.review.load.loaded_fname = results[0]['FName'];
+					req.review.load.loaded_degree = results[0]['Degree'];
+					req.review.load.loaded_gpa = results[0]['GPA'];
+					req.review.load.loaded_gre = results[0]['GRE'];
+					req.review.load.loaded_background = results[0]['Background'];
+					req.review.load.loaded_research = results[0]['researchExp'];
+					req.review.load.loaded_comments = results[0]['Comments'];
+					req.review.load.loaded_rank = results[0]['c_Rank'];
+					req.review.load.loaded_uni = results[0]['PreviousInst'];
+					req.review.load.loaded_assessment = results[0]['UniAssessment'];
+					next();
+				});
 			});
-		});
+		}
 	}
 
 	function getReviews(req, res, next) {
-		review.autoFillReviewInfo(req.query.appId, function(err, info) {
+		review.autoFillReviewInfo(req.review.appId, function(err, info) {
 			if (err) {
-				req.flash('reviewError', 
-					'Could not load review. Fatal reason: ' + err.message);
+				res.redirect('/roles/committee');
+				return next(err);
 			}
 			req.review.auto = info && info.length === 1 ? info[0]: {};
 			utils.getUniversities(function(err, unis) {
-				if (err) next(err);
+				if (err) {
+					res.redirect('/roles/committee');
+					return next(err);
+				}
 				req.review.unis = unis;
 				utils.getUniversityDescriptions(function(err, desc) {
-					if (err) next (err);
+					if (err) {
+						res.redirect('/roles/committee');
+						return next(err);
+					}
 					req.review.unis.descriptions = desc;
 					next();
 				});

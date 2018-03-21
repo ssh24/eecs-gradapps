@@ -253,6 +253,52 @@ describe('Review Triggers', function() {
 			});
 	});
 
+	describe('load a review', function() {
+		before(function setUp(done) {
+			review.assignReview(12, 20, 1, done);
+		});
+
+		after(function cleanUp(done) {
+			review.unassignReview(12, 20, 1, done);
+		});
+		
+		it('load a valid review by a valid member', 
+			function(done) {
+				review.loadReview(12, 20, function(err, result) {
+					if (err) done(err);
+					assert(result, 'Result should exist');
+					done();
+				});
+			});
+
+		it('load a valid review by an invalid member', 
+			function(done) {
+				review.loadReview(12, 3, function(err, result) {
+					assert(err, 'Error should exist');
+					assert(!result, 'Result should not exist');
+					done();
+				});
+			});
+
+		it('load a invalid review by a valid member', 
+			function(done) {
+				review.loadReview(0, 1, function(err, result) {
+					assert(err, 'Error should exist');
+					assert(!result, 'Result should not exist');
+					done();
+				});
+			});
+
+		it('load a invalid review by an invalid member', 
+			function(done) {
+				review.loadReview(0, 3, function(err, result) {
+					assert(err, 'Error should exist');
+					assert(!result, 'Result should not exist');
+					done();
+				});
+			});
+	});
+
 	describe('save a review', function() {
 		before(function setUp(done) {
 			async.series([
@@ -265,10 +311,54 @@ describe('Review Triggers', function() {
 		after(function cleanUp(done) {
 			async.series([
 				function(callback) {
+					review.saveReview(12, 20, {}, callback);
+				},
+				function(callback) {
 					review.unassignReview(12, 20, 1, callback);
+				},
+				function(callback) {
+					review.removeUniversity('York University', callback);
 				}
 			], done);
 		});
+
+		it('save a review with null data', function(done) {
+			review.saveReview(12, 20, null, function(err, result) {
+				if (err) done(err);
+				assert(result, 'Result should exist');
+				done();
+			});
+		});
+
+		it('save a review with no data', function(done) {
+			review.saveReview(12, 20, function(err, result) {
+				if (err) done(err);
+				assert(result, 'Result should exist');
+				done();
+			});
+		});
+
+		it('save a review with data', 
+			function(done) {
+				var data = {
+					LName: 'Bar',
+					FName: 'Foo',
+					GPA: 'B+',
+					GRE: '150',
+					Degree: 'MSc',
+					PreviousInst: 'York University',
+					UniAssessment: ['Well known in Ontario'],
+					Background: 'Strong programmer',
+					researchExp: 'None',
+					Comments: 'None',
+					c_Rank: 'B+'
+				};
+				review.saveReview(12, 20, data, function(err, result) {
+					if (err) done(err);
+					assert(result, 'Result should exist');
+					done();
+				});
+			});
 
 		it('save a submitted review as a committee member', 
 			function(done) {
@@ -278,16 +368,6 @@ describe('Review Triggers', function() {
 					done();
 				});
 			});
-
-		it('save a valid review as a valid committee member', 
-			function(done) {
-				review.saveReview(12, 20, function(err, result) {
-					if (err) done(err);
-					assert(result, 'Result should exist');
-					done();
-				});
-			});
-
             
 		it('save a valid review as an invalid committee member', 
 			function(done) {
@@ -388,15 +468,135 @@ describe('Review Triggers', function() {
 	});
 
 	describe('helper functions', function() {
+		describe('isSubmitted', function() {
+			it('check if a valid app is submitted', function(done) {
+				review.isSubmitted(12, function(err, result) {
+					if (err) return done(err);
+					assert(result, 'Result should exist');
+					done();
+				});
+			});
+
+			it('check if an valid app is submitted', function(done) {
+				review.isSubmitted(0, function(err, result) {
+					if (err) return done(err);
+					assert(!result, 'Result should not exist');
+					done();
+				});
+			});
+		});
+
+		describe('setReviewStatus', function() {
+			it('set reviewed status to "New"', function(done) {
+				review.setReviewStatus(12, 20, 'New', function(err, result) {
+					if (err) done (err);
+					assert(result, 'Result should exist');
+					done();
+				});
+			});
+
+			it('set reviewed status to "Draft"', function(done) {
+				review.setReviewStatus(12, 20, 'New', function(err, result) {
+					if (err) done (err);
+					assert(result, 'Result should exist');
+					done();
+				});
+			});
+
+			it('set reviewed status to "Submitted"', function(done) {
+				review.setReviewStatus(12, 20, 'Submitted', function(err, result) {
+					if (err) done (err);
+					assert(result, 'Result should exist');
+					done();
+				});
+			});
+
+			it('set reviewed status to a not accepted value', function(done) {
+				review.setReviewStatus(12, 20, 'abcd', function(err, result) {
+					assert(err, 'Error should exist');
+					assert(!result, 'Result should not exist');
+					done();
+				});
+			});
+
+			it('set reviewed status of an unassigned app', function(done) {
+				review.setReviewStatus(0, 20, 'abcd', function(err, result) {
+					assert(err, 'Error should exist');
+					assert(!result, 'Result should not exist');
+					done();
+				});
+			});
+		});
+
 		describe('getCommitteeRank', function() {
 			it('get a committee rank of an application not assigned to a member', 
 				function(done) {
 					review.getCommitteeRank(16, 12, function(err, result) {
 						assert(err, 'Error should exist');
-						assert(!result, 'Result should exist');
+						assert(!result, 'Result should not exist');
 						done();
 					});
 				});
+
+			it('get a committee rank of an application assigned to a member', 
+				function(done) {
+					review.getCommitteeRank(12, 20, function(err, result) {
+						if (err) done(err);
+						assert(result, 'Result should exist');
+						done();
+					});
+				});
+		});
+
+		describe('addUniAssessment', function() {
+			after(function(done) {
+				review.removeUniversity('York University', done);
+			});
+
+			it('add an new university assessment without stringifying', function(done) {
+				review.addUniAssessment('York University', ['Well Known'], 
+					function(err, result) {
+						assert(err, 'Error should exist');
+						assert(!result, 'Result should not exist');
+						done();
+					});
+			});
+
+			it('add an new university assessment', function(done) {
+				review.addUniAssessment(JSON.stringify('York University'), 
+					['Well Known'], function(err, result) {
+						if (err) return done(err);
+						assert(result, 'Result should exist');
+						done();
+					});
+			});
+
+			it('add an assessment to existing university', function(done) {
+				review.addUniAssessment(JSON.stringify('York University'), 
+					['Well Known2'], function(err, result) {
+						if (err) return done(err);
+						assert(result, 'Result should exist');
+						done();
+					});
+			});
+		});
+
+		describe('autoFillReviewInfo', function() {
+			it('auto fill review info of valid app', function(done) {
+				review.autoFillReviewInfo(12, function(err, result) {
+					if (err) return done(err);
+					assert(result, 'Result should exist');
+					done();
+				});
+			});
+
+			it('auto fill review info of invalid app', function(done) {
+				review.autoFillReviewInfo(0, function(err, result) {
+					assert(err, 'Error should exist');
+					assert(!result, 'Result should not exist');
+					done();
+				});
+			});
 		});
 	});
 });

@@ -5,7 +5,7 @@ module.exports = function(app) {
 	app.get('/', function(req, res) {
 		res.render('index', { title: 'Welcome to Grad Apps', user: null, 
 			role: null,
-			showfilter: true,
+			showfilter: false,
 			review: false
 		});
 	});

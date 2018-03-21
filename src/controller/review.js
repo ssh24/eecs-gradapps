@@ -148,7 +148,7 @@ Review.prototype.remindReview = function(appId, committeeId, adminId, cb) {
 };
 
 /**
- * Open a review.
+ * Load review details.
  * @param {Number} appId 
  * @param {Number} committeeId
  * @param {Function} cb
@@ -172,10 +172,6 @@ Review.prototype.loadReview = function(appId, committeeId, cb) {
 					if (err) return cb(err);
 					if (results && results.length === 1) {
 						return cb(err, results);
-					} else {
-						err = new Error('No application review found for app ' 
-							+ appId + ' by committee member ' + committeeId);
-						return cb(err);
 					}
 				});
 			});
@@ -255,10 +251,6 @@ Review.prototype.saveReview = function(appId, committeeId, data, cb) {
 								self.addUniAssessment(dt.PreviousInst, assesmentArray, cb);
 							else return cb(err, result.affectedRows === 1);
 						}
-						else {
-							err = new Error('Could not save review for app ' + appId);
-							return cb(err);
-						}
 					});
 				} else {
 					err = new Error('Application ' + appId + ' is in ' + status + 
@@ -268,60 +260,6 @@ Review.prototype.saveReview = function(appId, committeeId, data, cb) {
 			});
 		} else {
 			err = new Error('Member ' + committeeId + ' cannot save a review'); 
-			return cb(err);
-		}
-	});
-};
-
-Review.prototype.addUniAssessment = function(uni, assessment, cb) {
-	assert(typeof uni === 'string');
-	assert(Array.isArray(assessment));
-	assert(typeof cb === 'function');
-
-	var self = this;
-	var updateStatement, insertStmt;
-
-	this.conn.query('select * from university where u_Name=' + uni, function(err, result) {
-		if (err) return cb(err);
-		var assmt = [];
-		if (result.length === 1) {
-			for (var i = 0; i < assessment.length; i++) {
-				if (typeof assessment[i] !== 'undefined')
-					assmt.push(assessment[i]);
-			}
-			var prevAssessment = _.uniq(result[0]['u_Assessments'].concat(assmt));
-			updateStatement = self.utils.createUpdateStatement('university', 
-				['u_Name', 'u_Assessments'], [uni, JSON.stringify(JSON.stringify(prevAssessment))], ['u_Name'], 
-				[uni]);
-			self.conn.query(updateStatement, function(err, result) {
-				if (err) return cb(err);
-				if (result && result.affectedRows === 1)
-					return cb(err, result.affectedRows === 1);
-				else {
-					err = new Error('Could not update record for university: ' + JSON.stringify(uni));
-					return cb(err);
-				}
-			});
-		} else if (result.length === 0) {
-			for (var j = 0; j < assessment.length; j++) {
-				if (typeof assessment[j] !== 'undefined')
-					assmt.push(assessment[j]);
-			}
-			insertStmt = self.utils.createInsertStatement('university', 
-				['u_Name', 'u_Assessments'], [uni, JSON.stringify(JSON.stringify(assmt))]);
-			self.conn.query(insertStmt, function(err, result) {
-				if (err) return cb(err);
-				if (result && result.affectedRows === 1)
-					return cb(err, true);
-				else {
-					err = new Error('Could not create a new record for university: ' 
-					+ JSON.stringify(uni));
-					return cb(err);
-				}
-			});
-		} 	else {
-			err = new Error('Multiple records found for university: ' + 
-			JSON.stringify(uni));
 			return cb(err);
 		}
 	});
@@ -542,11 +480,14 @@ Review.prototype.getCommitteeRanks = function(appId, cb) {
 };
 
 /**
- * Get review information given app id
+ * Get review information given app id.
  * @param {Number} appId
  * @param {Function} cb 
  */
 Review.prototype.autoFillReviewInfo = function(appId, cb) {
+	assert(typeof appId === 'number');
+	assert(typeof cb === 'function');
+
 	var sql = 'select lname, fname, degree, gpa, gre from application where app_Id=?';
 	this.conn.query(sql, [appId], function(err, result) {
 		if (err) return cb(err);
@@ -557,6 +498,84 @@ Review.prototype.autoFillReviewInfo = function(appId, cb) {
 			return cb(err);
 		}
 	});
+};
+
+/**
+ * Add an assessment for university.
+ * @param {String} uni 
+ * @param {Array} assessment 
+ * @param {Function} cb 
+ */
+Review.prototype.addUniAssessment = function(uni, assessment, cb) {
+	assert(typeof uni === 'string');
+	assert(Array.isArray(assessment));
+	assert(typeof cb === 'function');
+
+	var self = this;
+	var updateStatement, insertStmt;
+
+	this.conn.query('select * from university where u_Name=' + uni, 
+		function(err, result) {
+			if (err) return cb(err);
+			var assmt = [];
+			if (result.length === 1) {
+				for (var i = 0; i < assessment.length; i++) {
+					if (typeof assessment[i] !== 'undefined')
+						assmt.push(assessment[i]);
+				}
+				var prevAssessment = _.uniq(result[0]['u_Assessments'].concat(assmt));
+				updateStatement = self.utils.createUpdateStatement('university', 
+					['u_Name', 'u_Assessments'], [uni, JSON.stringify(JSON
+						.stringify(prevAssessment))], ['u_Name'], 
+					[uni]);
+				self.conn.query(updateStatement, function(err, result) {
+					if (err) return cb(err);
+					if (result && result.affectedRows === 1)
+						return cb(err, result.affectedRows === 1);
+					else {
+						err = new Error('Could not update record for university: ' 
+					+ JSON.stringify(uni));
+						return cb(err);
+					}
+				});
+			} else if (result.length === 0) {
+				for (var j = 0; j < assessment.length; j++) {
+					if (typeof assessment[j] !== 'undefined')
+						assmt.push(assessment[j]);
+				}
+				insertStmt = self.utils.createInsertStatement('university', 
+					['u_Name', 'u_Assessments'], [uni, JSON.stringify(JSON
+						.stringify(assmt))]);
+				self.conn.query(insertStmt, function(err, result) {
+					if (err) return cb(err);
+					if (result && result.affectedRows === 1)
+						return cb(err, true);
+					else {
+						err = new Error('Could not create a new record for university: ' 
+					+ JSON.stringify(uni));
+						return cb(err);
+					}
+				});
+			} 	else {
+				err = new Error('Multiple records found for university: ' + 
+			JSON.stringify(uni));
+				return cb(err);
+			}
+		});
+};
+
+/** Remove an university assessment
+ * @param {String} uni 
+ * @param {Function} cb 
+ */
+Review.prototype.removeUniversity = function(uni, cb) {
+	assert(typeof uni === 'string');
+	assert(typeof cb === 'function');
+
+	var deleteStmt = this.utils.createDeleteStatement('university', ['u_Name'], 
+		[JSON.stringify(uni)]);
+
+	this.conn.query(deleteStmt, cb);
 };
 
 module.exports = Review;

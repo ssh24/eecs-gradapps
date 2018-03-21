@@ -2,12 +2,6 @@
     <% include partials/navbar %>
     <div class="container-fluid">
         <h3 class="text-center">Review Form</h3>
-        <% if (message.length > 0) { %>
-            <a id="reset-table" href="/roles/committee" class="btn btn-primary"><span class="glyphicon glyphicon-arrow-left"></span> Load Default Table</span></a>
-            <div id="error-message" class="alert alert-danger text-center">
-                <%= message %>
-            </div>
-        <% } else { %>
             <div class="text-center"><button class="btn btn-primary">View Application PDF &raquo;</button></div>
             <hr>
             <form id="review-form" action="/roles/committee/" method="POST">
@@ -171,7 +165,6 @@
                         <a id="review-close" href="/roles/committee" class="btn btn-danger btn-default"><span class="glyphicon glyphicon-arrow-left"></span> Exit</a>
                     <%}%>
                 </form>
-                <%}%>
     </div>
 
 <% include partials/footer %>

@@ -11,7 +11,7 @@ module.exports = function(app, fns) {
 			roles: userInfo.roles, 
 			fname: userInfo.fname,
 			role: null,
-			showfilter: true,
+			showfilter: false,
 			review: false
 		});
 	});
