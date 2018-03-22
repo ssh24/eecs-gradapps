@@ -346,8 +346,8 @@ describe('Review Triggers', function() {
 					GPA: 'B+',
 					GRE: '150',
 					Degree: 'MSc',
-					PreviousInst: 'York University',
-					UniAssessment: ['Well known in Ontario'],
+					PreviousInst: ['York University'],
+					UniAssessment: [{'u_Name': 'York University', 'u_Assessments': 'Well known in Ontario'}],
 					Background: 'Strong programmer',
 					researchExp: 'None',
 					Comments: 'None',
@@ -553,31 +553,22 @@ describe('Review Triggers', function() {
 				review.removeUniversity('York University', done);
 			});
 
-			it('add an new university assessment without stringifying', function(done) {
-				review.addUniAssessment('York University', ['Well Known'], 
-					function(err, result) {
-						assert(err, 'Error should exist');
-						assert(!result, 'Result should not exist');
-						done();
-					});
-			});
-
 			it('add an new university assessment', function(done) {
-				review.addUniAssessment(JSON.stringify('York University'), 
-					['Well Known'], function(err, result) {
-						if (err) return done(err);
-						assert(result, 'Result should exist');
-						done();
-					});
+				review.addUniAssessment([{'u_Name': 'York University', 
+					'u_Assessments': 'Well Known'}], function(err, result) {
+					if (err) return done(err);
+					assert(result, 'Result should exist');
+					done();
+				});
 			});
 
 			it('add an assessment to existing university', function(done) {
-				review.addUniAssessment(JSON.stringify('York University'), 
-					['Well Known2'], function(err, result) {
-						if (err) return done(err);
-						assert(result, 'Result should exist');
-						done();
-					});
+				review.addUniAssessment([{'u_Name': 'York University', 
+					'u_Assessments': 'Well Known2'}], function(err, result) {
+					if (err) return done(err);
+					assert(result, 'Result should exist');
+					done();
+				});
 			});
 		});
 

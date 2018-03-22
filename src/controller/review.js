@@ -208,10 +208,10 @@ Review.prototype.saveReview = function(appId, committeeId, data, cb) {
 		GPA: data['GPA'] ? JSON.stringify(data['GPA']) : null,
 		GRE: data['GRE'] ? JSON.stringify(data['GRE']) : null,
 		Degree: data['Degree'] ? JSON.stringify(data['Degree']) : null,
-		PreviousInst: data['PreviousInst'] ? 
-			JSON.stringify(data['PreviousInst']) : null,
-		UniAssessment: data['UniAssessment'] ? JSON.stringify(JSON
-			.stringify(data['UniAssessment'])) : null,
+		PreviousInst: data['PreviousInst'] ? JSON.stringify(JSON.stringify(
+			data['PreviousInst'])) : null,
+		UniAssessment: data['UniAssessment'] ? JSON.stringify(JSON.stringify(
+			data['UniAssessment'])) : null,
 		Background: data['Background'] ? JSON.stringify(data['Background']) 
 			: null,
 		researchExp: data['researchExp'] ? JSON.stringify(data['researchExp']) 
@@ -247,8 +247,8 @@ Review.prototype.saveReview = function(appId, committeeId, data, cb) {
 					self.conn.query(updateStatement, function(err, result) {
 						if (err) return cb(err);
 						if (result && result.affectedRows === 1) {
-							if (dt.PreviousInst && assesmentArray)
-								self.addUniAssessment(dt.PreviousInst, assesmentArray, cb);
+							if (assesmentArray)
+								self.addUniAssessment(assesmentArray, cb);
 							else return cb(err, result.affectedRows === 1);
 						}
 					});
@@ -506,62 +506,52 @@ Review.prototype.autoFillReviewInfo = function(appId, cb) {
  * @param {Array} assessment 
  * @param {Function} cb 
  */
-Review.prototype.addUniAssessment = function(uni, assessment, cb) {
-	assert(typeof uni === 'string');
+Review.prototype.addUniAssessment = function(assessment, cb) {
 	assert(Array.isArray(assessment));
 	assert(typeof cb === 'function');
 
 	var self = this;
-	var updateStatement, insertStmt;
+	var query = '';
 
-	this.conn.query('select * from university where u_Name=' + uni, 
-		function(err, result) {
-			if (err) return cb(err);
-			var assmt = [];
-			if (result.length === 1) {
-				for (var i = 0; i < assessment.length; i++) {
-					if (typeof assessment[i] !== 'undefined')
-						assmt.push(assessment[i]);
-				}
-				var prevAssessment = _.uniq(result[0]['u_Assessments'].concat(assmt));
-				updateStatement = self.utils.createUpdateStatement('university', 
-					['u_Name', 'u_Assessments'], [uni, JSON.stringify(JSON
-						.stringify(prevAssessment))], ['u_Name'], 
-					[uni]);
-				self.conn.query(updateStatement, function(err, result) {
-					if (err) return cb(err);
-					if (result && result.affectedRows === 1)
-						return cb(err, result.affectedRows === 1);
-					else {
-						err = new Error('Could not update record for university: ' 
-					+ JSON.stringify(uni));
-						return cb(err);
-					}
+	this.conn.query('select u_Name, u_Assessments from university', function(err, result) {
+		if (err) return cb(err);
+		if (result) {
+			_.forEach(assessment, function(res1) {
+				var uni = res1['u_Name'];
+				var assmt = res1['u_Assessments'];
+
+				var inst = _.find(result, function(res) {
+					return res['u_Name'] === uni;
 				});
-			} else if (result.length === 0) {
-				for (var j = 0; j < assessment.length; j++) {
-					if (typeof assessment[j] !== 'undefined')
-						assmt.push(assessment[j]);
-				}
-				insertStmt = self.utils.createInsertStatement('university', 
-					['u_Name', 'u_Assessments'], [uni, JSON.stringify(JSON
-						.stringify(assmt))]);
-				self.conn.query(insertStmt, function(err, result) {
-					if (err) return cb(err);
-					if (result && result.affectedRows === 1)
-						return cb(err, true);
-					else {
-						err = new Error('Could not create a new record for university: ' 
-					+ JSON.stringify(uni));
-						return cb(err);
+
+				// did not find instance, so it is a new university
+				if(_.isEmpty(inst)) {
+					var insert = self.utils.createInsertStatement('university', 
+						['u_Name', 'u_Assessments'], [JSON.stringify(uni), 
+							JSON.stringify(JSON.stringify(assmt))]) + ';';
+					query += insert;
+				} else { // update an instance
+					var foundDiff = false;
+					_.forEach(assmt, function(ast) {
+						if (!inst['u_Assessments'].includes(ast)) foundDiff = true;
+					});
+	
+					if (foundDiff) {
+						var prevAssessment = _.uniq(inst['u_Assessments'].concat(assmt));
+						var updt = self.utils.createUpdateStatement('university', 
+							['u_Assessments'], [JSON.stringify(JSON.stringify(prevAssessment))],
+							['u_Name'], [JSON.stringify(uni)]) + ';';
+						query += updt;
 					}
-				});
-			} 	else {
-				err = new Error('Multiple records found for university: ' + 
-			JSON.stringify(uni));
-				return cb(err);
-			}
-		});
+				}
+			});
+			if (query != '') return self.conn.query(query, cb);
+			else return cb(err, result);
+		} else {
+			err = new Error('No record of universities found');
+			return cb(err);
+		}
+	});
 };
 
 /** Remove an university assessment

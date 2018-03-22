@@ -5,6 +5,7 @@
             <div class="text-center"><button class="btn btn-primary">View Application PDF &raquo;</button></div>
             <hr>
             <form id="review-form" action="/roles/committee/" method="POST">
+                    <fieldset><legend style="color:blue;font-weight:bold;">General Information</legend>
                     <div class="row" >
                                     <div class="col-sm-3">
                                         <div class="form-group">
@@ -38,27 +39,27 @@
                                     </div>
                     </div>
 
+                    <fieldset><legend style="color:blue;font-weight:bold;">Previous Institutions</legend>
+
                     <div class="row">
-                            <div class="col-sm-4">
+                            <div class="col-sm-6">
                                     <div class="form-group">
-                                    <label for="prev_uni">Previous Institution</label>
-                                    <select id="prev_uni" name="prev_uni" class="form-control selectpicker" data-live-search="true" <% if(status === 'Submitted') {%> disabled="true" <% } %>>
+                                    <label for="prev_uni">Institution Name(s)</label>
+                                    <select id="prev_uni" name="prev_uni" class="form-control selectpicker show-menu-arrow" data-live-search="true" multiple <% if(status === 'Submitted') {%> disabled="true" <% } %>>
                                             <% if (!loaded_uni) { %>
-                                                <option selected>-</option>
                                                 <% for(var i = 0; i < unis.length; i++){ %>
                                                     <option><%= unis[i]%></option>
                                                 <%}%>
                                             <%} else { %>
-                                                <option>-</option>
                                                 <% for(var i = 0; i < unis.length; i++){ %>
-                                                    <% if (unis[i] === loaded_uni) { %>
-                                                        <option selected><%= loaded_uni%></option>
+                                                    <% if (loaded_uni.includes(unis[i])) { %>
+                                                        <option selected><%= unis[i]%></option>
                                                     <%} else { %>
                                                         <option><%= unis[i]%></option>
                                                     <%} %>
                                                 <%}%> 
                                             <%}%>
-                                        </select>
+                                        </select>                
                                     </div>
                             </div>
 
@@ -74,27 +75,26 @@
                     </div>
 
                     <div class="row">
-                            <div class="col-sm-4">
+                            <div class="col-sm-6">
                                     <div class="form-group">
-                                    <label for="uni_desc">Institution Assessment</label>
+                                    <label for="uni_desc">Institution Assessment(s)</label>
                                     <label id="all_desc" hidden><%= JSON.stringify(uni_desc)%></label>
-                                    <select id="uni_desc" name="uni_desc" class="form-control selectpicker" data-live-search="true" multiple <% if(status === 'Submitted') {%> disabled="true" <% } %>>
-                                            <% if (!loaded_uni && !loaded_assessment) { %>
-                                                <option selected>-</option>
-                                            <%} else { %>
-                                                <% for(var i = 0; i < uni_desc.length; i++){ %>
-                                                    <% if (uni_desc[i]['u_Name'] === loaded_uni) { %>
-                                                        <% var assmnts = uni_desc[i]['u_Assessments']; %>
-                                                        <% for(var j = 0; j < assmnts.length; j++) { %>
-                                                            <% if (JSON.parse(loaded_assessment).includes(assmnts[j])) { %>
-                                                                <option selected><%= assmnts[j]%></option>
-                                                            <%} else { %> 
-                                                                <option><%= assmnts[j]%></option>
-                                                            <%} %>
-                                                        <%} %>
-                                                    <%} %>  
-                                                <%}%>
-                                            <%}%>
+                                    <select id="uni_desc" name="uni_desc" class="form-control selectpicker show-menu-arrow" data-live-search="true" multiple disabled>
+                                            <% for (var i = 0; i < loaded_assessment.length; i++) { %>
+                                                <optgroup label= "<%= loaded_assessment[i]['u_Name'] %>">
+                                                    <% for (var j = 0; j < uni_desc.length; j++) { %>
+                                                        <% if (loaded_assessment[i]['u_Name'] === uni_desc[j]['u_Name']) { %> 
+                                                            <% for (var k = 0; k < uni_desc[j]['u_Assessments'].length; k++) { %>
+                                                                <% if (loaded_assessment[i]['u_Assessments'].includes(uni_desc[j]['u_Assessments'][k])) { %> 
+                                                                    <option selected><%= uni_desc[j]['u_Assessments'][k] %></option>
+                                                                <% } else { %> 
+                                                                    <option><%= uni_desc[j]['u_Assessments'][k] %></option>
+                                                                <% } %>
+                                                            <% } %>
+                                                        <% } %>
+                                                    <% } %>
+                                                </optgroup>
+                                            <% } %>
                                         </select>
                                     </div>
                             </div>
@@ -103,19 +103,15 @@
                                     <div class="form-check">
                                         <input type="checkbox" name="asstradio" id="add_assessment" disabled>
                                         <label class="form-check-label" for="add_assessment">Add Assessment</label>
+                                        <select class="form-control selectpicker show-menu-arrow" data-live-search="true" id="select_add_assessment" disabled></select>
                                         <textarea class="form-control" id="assessment" name="assessment" rows="2" placeholder="New Assessment" style="margin-bottom:5px" disabled></textarea>
                                         <input class="btn btn-primary" type="button" id="assessment_btn" name="assessment_btn" value="Add" style="margin-bottom:5px" disabled>
                                         <p id="assmt_exists" class="text-danger" hidden></p>
                                     </div>
                             </div>
-
-                            <div class="col-sm-4">
-                                    <div class="form-check">
-                                        <label for="assessment_txt">Chosen Assessment</label>
-                                        <textarea class="form-control" id="assessment_txt" name="assessment_txt" rows="2" style="margin-bottom:5px" disabled><%= loaded_assessment ? (JSON.parse(loaded_assessment).toString().replace(new RegExp(',', 'g'), '\n')) : '' %></textarea>
-                                    </div>
-                            </div>
                     </div>
+
+                    <fieldset><legend style="color:blue;font-weight:bold;">Background and Research Information</legend>
 
                     <div class="row">
                                 <div class="col-sm-6">
@@ -133,6 +129,7 @@
                                 </div>
                     </div>
 
+                    <fieldset><legend style="color:blue;font-weight:bold;">Additional Comments and Final Rank</legend>
                     <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
@@ -144,7 +141,7 @@
                             <div class="col-sm-4">
                                     <div class="form-group">
                                     <label for="rank">Applicant Rank</label>
-                                    <select id="rank" name="rank" class="form-control selectpicker" data-live-search="true" required <% if(status === 'Submitted') {%> disabled="true" <% } %>>
+                                    <select id="rank" name="rank" class="form-control selectpicker show-menu-arrow" data-live-search="true" required <% if(status === 'Submitted') {%> disabled="true" <% } %>>
                                             <option <%= !loaded_rank ? "selected" : "" %>>-</option>
                                             <option <%= loaded_rank && loaded_rank === 'A+' ? "selected" : "" %>>A+</option>
                                             <option <%= loaded_rank && loaded_rank === 'A' ? "selected" : "" %>>A</option>

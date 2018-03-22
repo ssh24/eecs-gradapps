@@ -150,7 +150,7 @@ module.exports = function(app, utils, application, fns) {
 	}
 
 	function setUpReview(req, res, next) {
-		if (_.isEmpty(req.query)) {
+		if (!req.query.appId) {
 			res.redirect('/roles/committee');
 		} else {
 			req.review = {};
@@ -211,22 +211,17 @@ module.exports = function(app, utils, application, fns) {
 
 	function saveReview(req, res, next) {
 		var body = req.body;
-		var uni_assessment;
-		if (body.uni_desc === '-') {
-			uni_assessment = null;
-		} else if (Array.isArray(body.uni_desc)) {
-			uni_assessment = body.uni_desc;
-		} else {
-			uni_assessment = [];
-			uni_assessment.push(body.uni_desc);
-		}
+		var uni_assessment = body.draft && body.draft != '' ? JSON.parse(body.draft) 
+			: (body.upload && body.upload != '' ? JSON.parse(body.upload) : '');
+		var previous_uni = Array.isArray(body.prev_uni) ? body.prev_uni : 
+			(body.prev_uni ? [body.prev_uni] : null);
 		var data = {
 			LName: body.lname,
 			FName: body.fname,
 			Degree: body.degree,
 			GPA: body.gpa,
 			GRE:  body.gre,
-			PreviousInst: body.prev_uni === '-' ? null : body.prev_uni,
+			PreviousInst: previous_uni,
 			UniAssessment: uni_assessment,
 			Background: body.background,
 			researchExp: body.research,
@@ -249,7 +244,7 @@ module.exports = function(app, utils, application, fns) {
 							'Could not load table. Fatal reason: Invalid Review Status');
 					}
 				});
-		} else if (body.hasOwnProperty('draft')){
+		} else if (body.hasOwnProperty('draft')) {
 			review.saveReview(prevAppId, req.user.id, data, function(err, isSaved) {
 				prevAppId = prevStatus = null;
 				if (err) {

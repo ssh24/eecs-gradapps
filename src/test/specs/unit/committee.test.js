@@ -559,7 +559,62 @@ describe('Committee Test', function() {
 	});
 
 	describe('- review applications', function() {
-		describe('- check for fields', function() {
+		it('- start a new application and exit out w/o changes', function() {
+			expect(review.getStatus.call(review)).to.eventually.equal('New')
+				.then(review.startReview.call(review, 17))
+				.then(expect(browser.getCurrentUrl()).to.eventually.contain('review'))
+				.then(review.closeReview.call(review))
+				.then(expect(browser.getCurrentUrl()).to.eventually.not.contain('review'))
+				.then(expect(review.getStatus.call(review)).to.eventually.equal('New'));
+		});
+
+		it('- start a new application, add a university that exists', function() {
+			expect(review.getStatus.call(review)).to.eventually.equal('New')
+				.then(review.startReview.call(review, 17))
+				.then(review.addNewUniversity.call(review, 'Assam Agricultural University'))
+				.then(expect(review.getAddUniversityError.call(review)).to
+					.eventually.equal('Institution Assam Agricultural University exists. Please select from the menu.'))
+				.then(review.closeReview.call(review))
+				.then(expect(browser.getCurrentUrl()).to.eventually.not.contain('review'))
+				.then(expect(review.getStatus.call(review)).to.eventually.equal('New'));
+		});
+
+		it('- start a new application, add an invalid university name', function() {
+			expect(review.getStatus.call(review)).to.eventually.equal('New')
+				.then(review.startReview.call(review, 17))
+				.then(review.addNewUniversity.call(review, ''))
+				.then(expect(review.getAddUniversityError.call(review)).to
+					.eventually.equal('Invalid name. Please try again.'))
+				.then(review.closeReview.call(review))
+				.then(expect(browser.getCurrentUrl()).to.eventually.not.contain('review'))
+				.then(expect(review.getStatus.call(review)).to.eventually.equal('New'));
+		});
+
+		it('- start a new application, select a university and an existing assessment for the university', function() {
+			expect(review.getStatus.call(review)).to.eventually.equal('New')
+				.then(review.startReview.call(review, 17))
+				.then(review.selectUniversity.call(review, 0))
+				.then(review.addUniversityAssessment.call(review, 0, 'Not so well known'))
+				.then(expect(review.getAddAssessmentError.call(review)).to
+					.eventually.equal('Exact match of assessment found. Please select from the menu.'))
+				.then(review.closeReview.call(review))
+				.then(expect(browser.getCurrentUrl()).to.eventually.not.contain('review'))
+				.then(expect(review.getStatus.call(review)).to.eventually.equal('New'));
+		});
+
+		it('- start a new application, select a university and an invalid assessment for the university', function() {
+			expect(review.getStatus.call(review)).to.eventually.equal('New')
+				.then(review.startReview.call(review, 17))
+				.then(review.selectUniversity.call(review, 0))
+				.then(review.addUniversityAssessment.call(review, 0, ''))
+				.then(expect(review.getAddAssessmentError.call(review)).to
+					.eventually.equal('Invalid assessment. Please try again.'))
+				.then(review.closeReview.call(review))
+				.then(expect(browser.getCurrentUrl()).to.eventually.not.contain('review'))
+				.then(expect(review.getStatus.call(review)).to.eventually.equal('New'));
+		});
+
+		describe('- check for fields in a new application', function() {
 			before(function setUp() {
 				review.startReview(17);
 			});
@@ -592,9 +647,9 @@ describe('Committee Test', function() {
 			it('- check for assessment fields', function() {
 				expect(review.isUniAssessmentDisplayed.call(review)).to.eventually.be.true
 					.then(expect(review.isAddAssessmentCheckDisplayed.call(review)).to.eventually.be.true)
+					.then(expect(review.isUniAssessmentDDDisplayed.call(review)).to.eventually.be.true)
 					.then(expect(review.isAddAssessmentFormDisplayed.call(review)).to.eventually.be.true)
-					.then(expect(review.isAddAssessmentBtnDisplayed.call(review)).to.eventually.be.true)
-					.then(expect(review.isChosenAssessmentDisplayed.call(review)).to.eventually.be.true);
+					.then(expect(review.isAddAssessmentBtnDisplayed.call(review)).to.eventually.be.true);
 			});
 
 			it('- check for background, research and comments field', function() {
@@ -614,13 +669,310 @@ describe('Committee Test', function() {
 			});
 		});
 
-		it('- start a new application and exit out w/o changes', function() {
-			expect(review.getStatus.call(review)).to.eventually.equal('New')
-				.then(review.startReview.call(review, 17))
-				.then(expect(browser.getCurrentUrl()).to.eventually.contain('review'))
-				.then(review.closeReview.call(review))
-				.then(expect(browser.getCurrentUrl()).to.eventually.not.contain('review'))
-				.then(expect(review.getStatus.call(review)).to.eventually.equal('New'));
+		describe('- check for fields in a submitted application', function() {
+			before(function setUp() {
+				review.viewReview(18);
+			});
+
+			after(function cleanUp() {
+				review.closeReview();
+			});
+
+			describe('- check for name fields', function() {
+				it('- check for name fields displayed', function() {
+					expect(review.isLNameDisplayed.call(review)).to.eventually.be.true
+						.then(expect(review.isFNameDisplayed.call(review)).to.eventually.be.true);
+				});
+
+				it('- check for name fields enabled', function() {
+					expect(review.isFNameEnabled.call(review)).to.eventually.be.false
+						.then(expect(review.isLNameEnabled.call(review)).to.eventually.be.false);
+				});
+			});
+
+			describe('- check for degree fields', function() {
+				it('- check for degree field displayed', function() {
+					expect(review.isDegreeDisplayed.call(review)).to.eventually.be.true;
+				});
+
+				it('- check for degree field enabled', function() {
+					expect(review.isDegreeEnabled.call(review)).to.eventually.be.false;
+				});
+			});
+
+			describe('- check for gpa and gre fields', function() {
+				it('- check for gpa and gre fields displayed', function() {
+					expect(review.isGPADisplayed.call(review)).to.eventually.be.true
+						.then(expect(review.isGREDisplayed.call(review)).to.eventually.be.true);
+				});
+
+				it('- check for gpa and gre fields enabled', function() {
+					expect(review.isGPAEnabled.call(review)).to.eventually.be.false
+						.then(expect(review.isGREEnabled.call(review)).to.eventually.be.false);
+				});
+			});
+
+			describe('- check for uni fields', function() {
+				it('- check for uni fields displayed', function() {
+					expect(review.isPrevUniDisplayed.call(review)).to.eventually.be.true
+						.then(expect(review.isNewUniCheckDisplayed.call(review)).to.eventually.be.true)
+						.then(expect(review.isNewUniNameDisplayed.call(review)).to.eventually.be.true)
+						.then(expect(review.isNewUniBtnDisplayed.call(review)).to.eventually.be.true);
+				});
+
+				it('- check for uni fields enabled', function() {
+					expect(review.isPrevUniEnabled.call(review)).to.eventually.be.false
+						.then(expect(review.isNewUniCheckEnabled.call(review)).to.eventually.be.false)
+						.then(expect(review.isNewUniNameEnabled.call(review)).to.eventually.be.false)
+						.then(expect(review.isNewUniBtnEnabled.call(review)).to.eventually.be.false);
+				});
+			});
+
+			describe('- check for assessment fields', function() {
+				it('- check for assessment fields displayed', function() {
+					expect(review.isUniAssessmentDisplayed.call(review)).to.eventually.be.true
+						.then(expect(review.isAddAssessmentCheckDisplayed.call(review)).to.eventually.be.true)
+						.then(expect(review.isUniAssessmentDDDisplayed.call(review)).to.eventually.be.true)
+						.then(expect(review.isAddAssessmentFormDisplayed.call(review)).to.eventually.be.true)
+						.then(expect(review.isAddAssessmentBtnDisplayed.call(review)).to.eventually.be.true);
+				});
+
+				it('- check for assessment fields enabled', function() {
+					expect(review.isUniAssessmentEnabled.call(review)).to.eventually.be.false
+						.then(expect(review.isAddAssessmentCheckEnabled.call(review)).to.eventually.be.false)
+						.then(expect(review.isUniAssessmentDDEnabled.call(review)).to.eventually.be.false)
+						.then(expect(review.isAddAssessmentFormEnabled.call(review)).to.eventually.be.false)
+						.then(expect(review.isAddAssessmentBtnEnabled.call(review)).to.eventually.be.false);
+				});
+			});
+
+			describe('- check for background, research and comments field', function() {
+				it('- check for background, research and comments field displayed', function() {
+					expect(review.isBackgroundDisplayed.call(review)).to.eventually.be.true
+						.then(expect(review.isResearchDisplayed.call(review)).to.eventually.be.true)
+						.then(expect(review.isCommentsDisplayed.call(review)).to.eventually.be.true);
+				});
+
+				it('- check for background, research and comments field enabled', function() {
+					expect(review.isBackgroundEnabled.call(review)).to.eventually.be.false
+						.then(expect(review.isResearchEnabled.call(review)).to.eventually.be.false)
+						.then(expect(review.isCommentsEnabled.call(review)).to.eventually.be.false);
+				});
+			});
+
+			describe('- check for rank field', function() {
+				it('- check for rank field displayed', function() {
+					expect(review.isRankDisplayed.call(review)).to.eventually.be.true;
+				});
+
+				it('- check for for rank enabled', function() {
+					expect(review.isRankEnabled.call(review)).to.eventually.be.false;
+				});
+			});
+
+			it('- check for exit button', function() {
+				expect(review.isCancelBtnDisplayed.call(review)).to.eventually.be.true;
+			});
+		});
+
+		describe('- fill out an application', function() {
+			describe('- draft the application', function() {
+				var data = {
+					gre: '150',
+					university: ['Assam Agricultural University', 'Ferris State University', 'York University'],
+					assessment: ['Not so well known', 'Ranked 340th in the world', 'Ranked 17th in Canada'],
+					background: 'Has good programming experience. Not good in math',
+					research: 'No research experience whatsoever.',
+					comments: 'Not a good match to our program. Would not recommend the student.',
+					rank: 'B',
+				};
+				before(function setUp() {
+					review.startReview(17);
+				});
+	
+				after(function cleanUp() {
+					review.saveReview()
+						.then(expect(review.getStatus.call(review)).to.eventually.equal('Draft'))
+						.then(review.continueReview.call(review, 17))
+						.then(expect(review.getGre.call(review)).to.eventually.equal(data.gre))
+						.then(expect(review.getSelectedUniversity.call(review)).to.eventually.contain(data.university[0]))
+						.then(expect(review.getSelectedUniversity.call(review)).to.eventually.contain(data.university[1]))
+						.then(expect(review.getSelectedUniversity.call(review)).to.eventually.contain(data.university[2]))
+						.then(expect(review.getSelectedAssessment.call(review)).to.eventually.contain(data.assessment[0]))
+						.then(expect(review.getSelectedAssessment.call(review)).to.eventually.contain(data.assessment[1]))
+						.then(expect(review.getSelectedAssessment.call(review)).to.eventually.contain(data.assessment[2]))
+						.then(expect(review.getBackground.call(review)).to.eventually.contain(data.background))
+						.then(expect(review.getResearch.call(review)).to.eventually.contain(data.research))
+						.then(expect(review.getComments.call(review)).to.eventually.contain(data.comments))
+						.then(expect(review.getSelectedRank.call(review)).to.eventually.contain(data.rank))
+						.then(review.closeReview.call(review));
+				});
+	
+				it('- edit GRE field and save', function() {
+					review.setGre(data.gre)
+						.then(expect(review.getGre.call(review)).to.eventually.equal(data.gre));
+				});
+	
+				it('- select two existing universities', function() {
+					review.selectUniversity(0)
+						.then(review.selectUniversity.call(review, 2))
+						.then(expect(review.getSelectedUniversity.call(review)).to.eventually.contain(data.university[0]))
+						.then(expect(review.getSelectedUniversity.call(review)).to.eventually.contain(data.university[1]));
+				});
+	
+				it('- select assessment for each university', function() {
+					review.selectAssessment(0)
+						.then(review.selectAssessment.call(review, 2))
+						.then(expect(review.getSelectedAssessment.call(review)).to.eventually.contain(data.assessment[0]))
+						.then(expect(review.getSelectedAssessment.call(review)).to.eventually.contain(data.assessment[1]));
+				});
+	
+				it('- add a new university w/ assessment', function() {
+					review.addNewUniversity(data.university[2])
+						.then(expect(review.getSelectedUniversity.call(review)).to.eventually.contain(data.university[2]))
+						.then(review.addUniversityAssessment.call(review, 2, data.assessment[2]))
+						.then(expect(review.getSelectedAssessment.call(review)).to.eventually.contain(data.assessment[2]));
+				});
+	
+				it('- add background info', function() {
+					review.setBackground(data.background)
+						.then(expect(review.getBackground.call(review)).to.eventually.contain(data.background));
+				});
+	
+				it('- add research info', function() {
+					review.setResearch(data.research)
+						.then(expect(review.getResearch.call(review)).to.eventually.contain(data.research));
+				});
+	
+				it('- add comments', function() {
+					review.setComments(data.comments)
+						.then(expect(review.getComments.call(review)).to.eventually.contain(data.comments));
+				});
+	
+				it('- select committee rank', function() {
+					review.selectRank(4)
+						.then(expect(review.getSelectedRank.call(review)).to.eventually.contain(data.rank));
+				});
+			});
+
+			describe('- submit the application', function() {
+				before(function setUp() {
+					review.continueReview(17);
+				});
+	
+				it('- submit the application', function() {
+					review.submitReview()
+						.then(expect(browser.getCurrentUrl()).to.eventually.not.contain('review'))
+						.then(expect(review.getStatus.call(review)).to.eventually.equal('Submitted'))
+						.then(function() {browser.pause();});
+				});
+	
+				describe('- check for fields after submission', function() {
+					before(function setUp() {
+						review.viewReview(17);
+					});
+		
+					after(function cleanUp() {
+						review.closeReview();
+					});
+		
+					describe('- check for name fields', function() {
+						it('- check for name fields displayed', function() {
+							expect(review.isLNameDisplayed.call(review)).to.eventually.be.true
+								.then(expect(review.isFNameDisplayed.call(review)).to.eventually.be.true);
+						});
+		
+						it('- check for name fields enabled', function() {
+							expect(review.isFNameEnabled.call(review)).to.eventually.be.false
+								.then(expect(review.isLNameEnabled.call(review)).to.eventually.be.false);
+						});
+					});
+		
+					describe('- check for degree fields', function() {
+						it('- check for degree field displayed', function() {
+							expect(review.isDegreeDisplayed.call(review)).to.eventually.be.true;
+						});
+		
+						it('- check for degree field enabled', function() {
+							expect(review.isDegreeEnabled.call(review)).to.eventually.be.false;
+						});
+					});
+		
+					describe('- check for gpa and gre fields', function() {
+						it('- check for gpa and gre fields displayed', function() {
+							expect(review.isGPADisplayed.call(review)).to.eventually.be.true
+								.then(expect(review.isGREDisplayed.call(review)).to.eventually.be.true);
+						});
+		
+						it('- check for gpa and gre fields enabled', function() {
+							expect(review.isGPAEnabled.call(review)).to.eventually.be.false
+								.then(expect(review.isGREEnabled.call(review)).to.eventually.be.false);
+						});
+					});
+		
+					describe('- check for uni fields', function() {
+						it('- check for uni fields displayed', function() {
+							expect(review.isPrevUniDisplayed.call(review)).to.eventually.be.true
+								.then(expect(review.isNewUniCheckDisplayed.call(review)).to.eventually.be.true)
+								.then(expect(review.isNewUniNameDisplayed.call(review)).to.eventually.be.true)
+								.then(expect(review.isNewUniBtnDisplayed.call(review)).to.eventually.be.true);
+						});
+		
+						it('- check for uni fields enabled', function() {
+							expect(review.isPrevUniEnabled.call(review)).to.eventually.be.false
+								.then(expect(review.isNewUniCheckEnabled.call(review)).to.eventually.be.false)
+								.then(expect(review.isNewUniNameEnabled.call(review)).to.eventually.be.false)
+								.then(expect(review.isNewUniBtnEnabled.call(review)).to.eventually.be.false);
+						});
+					});
+		
+					describe('- check for assessment fields', function() {
+						it('- check for assessment fields displayed', function() {
+							expect(review.isUniAssessmentDisplayed.call(review)).to.eventually.be.true
+								.then(expect(review.isAddAssessmentCheckDisplayed.call(review)).to.eventually.be.true)
+								.then(expect(review.isUniAssessmentDDDisplayed.call(review)).to.eventually.be.true)
+								.then(expect(review.isAddAssessmentFormDisplayed.call(review)).to.eventually.be.true)
+								.then(expect(review.isAddAssessmentBtnDisplayed.call(review)).to.eventually.be.true);
+						});
+		
+						it('- check for assessment fields enabled', function() {
+							expect(review.isUniAssessmentEnabled.call(review)).to.eventually.be.false
+								.then(expect(review.isAddAssessmentCheckEnabled.call(review)).to.eventually.be.false)
+								.then(expect(review.isUniAssessmentDDEnabled.call(review)).to.eventually.be.false)
+								.then(expect(review.isAddAssessmentFormEnabled.call(review)).to.eventually.be.false)
+								.then(expect(review.isAddAssessmentBtnEnabled.call(review)).to.eventually.be.false);
+						});
+					});
+		
+					describe('- check for background, research and comments field', function() {
+						it('- check for background, research and comments field displayed', function() {
+							expect(review.isBackgroundDisplayed.call(review)).to.eventually.be.true
+								.then(expect(review.isResearchDisplayed.call(review)).to.eventually.be.true)
+								.then(expect(review.isCommentsDisplayed.call(review)).to.eventually.be.true);
+						});
+		
+						it('- check for background, research and comments field enabled', function() {
+							expect(review.isBackgroundEnabled.call(review)).to.eventually.be.false
+								.then(expect(review.isResearchEnabled.call(review)).to.eventually.be.false)
+								.then(expect(review.isCommentsEnabled.call(review)).to.eventually.be.false);
+						});
+					});
+		
+					describe('- check for rank field', function() {
+						it('- check for rank field displayed', function() {
+							expect(review.isRankDisplayed.call(review)).to.eventually.be.true;
+						});
+		
+						it('- check for for rank enabled', function() {
+							expect(review.isRankEnabled.call(review)).to.eventually.be.false;
+						});
+					});
+		
+					it('- check for exit button', function() {
+						expect(review.isCancelBtnDisplayed.call(review)).to.eventually.be.true;
+					});
+				});
+			});
 		});
 	});
 });
