@@ -1442,6 +1442,80 @@ describe('Professor Test', function() {
 					.then(expect(prof.tableBodyExists.call(prof)).to.eventually.be.false)
 					.then(expect(prof.getTableError.call(prof)).to.eventually.contain('Error loading table.'));
 			});
+
+			it('- order status columns', function() {
+				filter.openFilterModal().then(filter.waitForModalOpen.call(filter))
+					.then(filter.toggleColumn.call(filter, filter.filter.cols.applicant))
+					.then(filter.toggleColumn.call(filter, filter.filter.cols.crank))
+					.then(filter.toggleColumn.call(filter, filter.filter.cols.gpa))
+					.then(filter.toggleColumn.call(filter, filter.filter.cols.foi))
+					.then(filter.toggleColumn.call(filter, filter.filter.cols.interested))
+					.then(filter.toggleColumn.call(filter, filter.filter.cols.contacted))
+					.then(filter.toggleColumn.call(filter, filter.filter.cols.requested))
+					.then(expect(filter.getColumnIndex.call(filter, filter.filter.cols.applicant.index)).to
+						.eventually.contain('1'))
+					.then(expect(filter.getColumnIndex.call(filter, filter.filter.cols.crank.index)).to
+						.eventually.contain('2'))
+					.then(expect(filter.getColumnIndex.call(filter, filter.filter.cols.gpa.index)).to
+						.eventually.contain('3'))
+					.then(expect(filter.getColumnIndex.call(filter, filter.filter.cols.foi.index)).to
+						.eventually.contain('4'))
+					.then(expect(filter.getColumnIndex.call(filter, filter.filter.cols.interested.index)).to
+						.eventually.contain('5'))
+					.then(expect(filter.getColumnIndex.call(filter, filter.filter.cols.contacted.index)).to
+						.eventually.contain('6'))
+					.then(expect(filter.getColumnIndex.call(filter, filter.filter.cols.requested.index)).to
+						.eventually.contain('7'))
+					.then(expect(filter.columnIsSelected.call(filter, 'Name'))
+						.to.eventually.be.true)
+					.then(expect(filter.columnIsSelected.call(filter, 'Committee Ranking'))
+						.to.eventually.be.true)
+					.then(expect(filter.columnIsSelected.call(filter, 'GPA'))
+						.to.eventually.be.true)
+					.then(expect(filter.columnIsSelected.call(filter, 'Fields of Interest'))
+						.to.eventually.be.true)
+					.then(expect(filter.columnIsSelected.call(filter, 'My Interest Status'))
+						.to.eventually.be.true)
+					.then(expect(filter.columnIsSelected.call(filter, 'Contacted By'))
+						.to.eventually.be.true)
+					.then(expect(filter.columnIsSelected.call(filter, 'Requested By'))
+						.to.eventually.be.true)
+					.then(filter.openFieldDD.call(filter, filter.filter.fields
+						.gpa.openDD))
+					.then(expect(filter.isFieldDDOpen.call(filter, filter.filter
+						.fields.gpa.openDD)).to.eventually.be.true)
+					.then(filter.searchText.call(filter, 'B'))
+					.then(filter.selectIthElement.call(filter, 5))
+					.then(expect(filter.getSelectedElement.call(filter)).to
+						.eventually.contain('> B'))
+					.then(expect(filter.getSelectedFilter.call(filter)).to.eventually
+						.contain('GPA > B'))
+					.then(filter.openFieldDD.call(filter, filter.filter.fields
+						.foi.openDD))
+					.then(expect(filter.isFieldDDOpen.call(filter, filter.filter
+						.fields.foi.openDD)).to
+						.eventually.be.true)
+					.then(filter.searchText.call(filter, 'in'))
+					.then(filter.selectIthElement.call(filter, 1))
+					.then(expect(filter.getSelectedElement.call(filter)).to
+						.eventually.contain('Artificial Intelligence'))
+					.then(expect(filter.getSelectedFilter.call(filter)).to.eventually
+						.contain('Field of Interest = Artificial Intelligence'))
+					.then(filter.submitFilter.call(filter))
+					.then(expect(browser.getCurrentUrl()).to.eventually.contain('filter'))
+					.then(expect(prof.applicationTableIsDisplayed.call(prof)).to.eventually.be.true)
+					.then(expect(prof.tableHeaderExists.call(prof)).to.eventually.be.true)
+					.then(expect(prof.tableBodyExists.call(prof)).to.eventually.be.true)
+					.then(expect(prof.getTableColumns.call(prof)).to.eventually.equal(8))
+					.then(expect(prof.getColumnName.call(prof, 0)).to.eventually.equal('Applicant Name'))
+					.then(expect(prof.getColumnName.call(prof, 1)).to.eventually.equal('Committee Rank'))
+					.then(expect(prof.getColumnName.call(prof, 2)).to.eventually.equal('GPA'))
+					.then(expect(prof.getColumnName.call(prof, 3)).to.eventually.equal('Fields of Interest'))
+					.then(expect(prof.getColumnName.call(prof, 4)).to.eventually.equal('My Interest Status'))
+					.then(expect(prof.getColumnName.call(prof, 5)).to.eventually.equal('Contacted By'))
+					.then(expect(prof.getColumnName.call(prof, 6)).to.eventually.equal('Requested By'))
+					.then(expect(prof.getColumnName.call(prof, 7)).to.eventually.equal('Actions'));
+			});
 		});
 	});
 });
