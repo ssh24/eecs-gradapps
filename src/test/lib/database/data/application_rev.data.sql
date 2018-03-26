@@ -23,14 +23,14 @@ INSERT INTO `APPLICATION_REVIEW` (`committeeId`, `appId`, `c_Rank`, `Status`)
 INSERT INTO `APPLICATION_REVIEW` (`committeeId`, `appId`, `c_Rank`, `Status`) 
     VALUES (11, 16, 'B+', 'Submitted');
 
-INSERT INTO `APPLICATION_REVIEW` (`committeeId`, `appId`, `Status`) 
-    VALUES (16, 17, 'New');
+INSERT INTO `APPLICATION_REVIEW` (`assignDate`, `committeeId`, `appId`, `Status`) 
+    VALUES ('2018-02-23', 16, 17, 'New');
 
 INSERT INTO `APPLICATION_REVIEW` (`committeeId`, `appId`, `c_Rank`, `Status`) 
     VALUES (16, 18, 'C', 'Submitted');
 
-INSERT INTO `APPLICATION_REVIEW` (`committeeId`, `appId`, `Status`) 
-    VALUES (16, 19, 'Draft');
+INSERT INTO `APPLICATION_REVIEW` (`assignDate`, `committeeId`, `appId`, `Status`) 
+    VALUES ('2018-03-01', 16, 19, 'Draft');
 INSERT INTO `APPLICATION_REVIEW` (`committeeId`, `appId`, `c_Rank`, `Status`) 
     VALUES (17, 19, 'C', 'Submitted');
 INSERT INTO `APPLICATION_REVIEW` (`committeeId`, `appId`, `c_Rank`, `Status`) 

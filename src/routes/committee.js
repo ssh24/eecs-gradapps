@@ -119,11 +119,15 @@ module.exports = function(app, utils, application, fns) {
 			fullname: userInfo.fullname,
 			roles: userInfo.roles,
 			role: role,
+			sid: req.review.auto.student_Id || '',
 			lname: req.review.auto.lname || '',
 			fname: req.review.auto.fname || '',
 			degree: req.review.auto.degree || '',
 			gpa: req.review.auto.gpa || '',
 			gre: req.review.auto.gre || '',
+			toefl: req.review.auto.toefl || '',
+			ielts: req.review.auto.ielts || '',
+			yelt: req.review.auto.yelt || '',
 			unis: req.review.unis || [],
 			uni_desc: req.review.unis.descriptions || [],
 			status: req.review.status,
@@ -134,6 +138,7 @@ module.exports = function(app, utils, application, fns) {
 			loaded_gre: req.review.load.loaded_gre || '',
 			loaded_background: req.review.load.loaded_background || '',
 			loaded_research: req.review.load.loaded_research || '',
+			loaded_letter: req.review.load.loaded_letter || '',
 			loaded_comments: req.review.load.loaded_comments || '',
 			loaded_rank: req.review.load.loaded_rank || '',
 			loaded_uni: req.review.load.loaded_uni || '',
@@ -167,13 +172,9 @@ module.exports = function(app, utils, application, fns) {
 						return next(err);
 					}
 					req.review.load = {};
-					req.review.load.loaded_lname = results[0]['LName'];
-					req.review.load.loaded_fname = results[0]['FName'];
-					req.review.load.loaded_degree = results[0]['Degree'];
-					req.review.load.loaded_gpa = results[0]['GPA'];
-					req.review.load.loaded_gre = results[0]['GRE'];
 					req.review.load.loaded_background = results[0]['Background'];
 					req.review.load.loaded_research = results[0]['researchExp'];
+					req.review.load.loaded_letter = results[0]['Letter'];
 					req.review.load.loaded_comments = results[0]['Comments'];
 					req.review.load.loaded_rank = results[0]['c_Rank'];
 					req.review.load.loaded_uni = results[0]['PreviousInst'];
@@ -216,14 +217,10 @@ module.exports = function(app, utils, application, fns) {
 		var previous_uni = Array.isArray(body.prev_uni) ? body.prev_uni : 
 			(body.prev_uni ? [body.prev_uni] : null);
 		var data = {
-			LName: body.lname,
-			FName: body.fname,
-			Degree: body.degree,
-			GPA: body.gpa,
-			GRE:  body.gre,
 			PreviousInst: previous_uni,
 			UniAssessment: uni_assessment,
 			Background: body.background,
+			Letter: body.letter,
 			researchExp: body.research,
 			Comments: body.comments,
 			c_Rank: body.rank === '-' ? null : body.rank,
@@ -338,7 +335,7 @@ module.exports = function(app, utils, application, fns) {
 		var highlightText = {};
 		
 		// default sql
-		var defaultSql = 'select application.app_Id, DATE_FORMAT(application.app_Date, "%d/%m/%Y") as `Date Uploaded`, ' + 
+		var defaultSql = 'select application.app_Id, DATE_FORMAT(application_review.assignDate, "%m/%d/%Y") as `Date Assigned`, ' + 
 		'CONCAT_WS(\' \', application.FName, application.LName) AS `Applicant Name`, application.Degree as `Degree Applied For`, ' + 
 		'application_review.Status as `My Review Status`';
 		
@@ -349,7 +346,7 @@ module.exports = function(app, utils, application, fns) {
 				if (i === 0) sqlCol += 'application.app_Id';
 		
 				if (cols[i] === 'btn_col_date') {
-					sqlCol += ',DATE_FORMAT(application.app_Date, "%d/%m/%Y") as `Date Uploaded`';
+					sqlCol += ',DATE_FORMAT(application_review.assignDate, "%m/%d/%Y") as `Date Assigned`';
 				} else if (cols[i] === 'btn_col_name') {
 					sqlCol += ',CONCAT_WS(\' \', application.FName, application.LName) AS `Applicant Name`';
 				} else if (cols[i] === 'btn_col_degree') {
@@ -372,8 +369,9 @@ module.exports = function(app, utils, application, fns) {
 		/* build where statements */
 		if (req.body.btn_filter_name && req.body.btn_filter_name !== 'Any' && 
 				req.body.btn_filter_name !== '') {
-			sqlFilt += ' and CONCAT_WS(\'\', application.FName, application.LName)=' + 
-				req.body.btn_filter_name;
+			//need to put space in the first parameter of concat or it won't work. Please don't remove the space.
+			sqlFilt += ' and CONCAT_WS(\' \', `FName`, `LName`)="' +
+				req.body.btn_filter_name + '"';
 			highlightText.name = req.body.btn_filter_name;
 		}
 		if (req.body.btn_filter_degree && req.body.btn_filter_degree !== 'Any' && 
@@ -405,12 +403,11 @@ module.exports = function(app, utils, application, fns) {
 		} else {
 			req.apps.highlightText = builtHighlight;
 		}
-
 		getApplications(builtSql, (builtOptions || options), req, res, next);
 	}
 
 	function setLiveSearchData(req, res, next) {
-		utils.getApplicantNames(function(err, result) {
+		utils.getApplicantNames(true, function(err, result) {
 			if (err) next(err);
 			req.apps['applicants'] = result;
 			next();

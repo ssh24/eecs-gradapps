@@ -1,51 +1,93 @@
 <% include partials/header %>
-    <% include partials/navbar %>
-    <div class="container-fluid">
+<% include partials/navbar %>
+    <div class="container">
         <h3 class="text-center">Review Form</h3>
             <div class="text-center"><button class="btn btn-primary">View Application PDF &raquo;</button></div>
             <hr>
             <form id="review-form" action="/roles/committee/" method="POST">
                     <fieldset><legend style="color:blue;font-weight:bold;">General Information</legend>
-                    <div class="row" >
-                                    <div class="col-sm-3">
+                    <div class="row text-center" >
+                            <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <h5>Student Number:</h5>
+                                        <p id="sid"><%= sid %></p>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-3">
                                         <div class="form-group">
-                                            <label for="lname">Last Name</label>
-                                            <input type="text" class="form-control" id="lname" name="lname" placeholder="Last Name" value="<%= loaded_lname || lname %>" disabled>
+                                            <h5>Last Name:</h5>
+                                            <p id="lname"><%= lname %></p>
                                         </div>
                                     </div>
+
                                     <div class="col-sm-3">
                                         <div class="form-group">
-                                            <label for="fname">First Name</label>
-                                            <input type="text" class="form-control" id="fname" name="fname" placeholder="First Name" value="<%= loaded_fname || fname %>" disabled>
+                                            <h5>First Name:</h5>
+                                            <p id="fname"><%= fname %></p>
                                         </div>
                                     </div>
+
                                     <div class="col-sm-3">
                                         <div class="form-group">
-                                            <label for="degree">Degree Applied For</label>
-                                            <input type="text" class="form-control" id="degree" name="degree" placeholder="Degree Applied For" value="<%= loaded_degree || degree %>" disabled>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-1">
-                                            <div class="form-group">
-                                                <label for="gpa">GPA</label>
-                                                <input type="text" class="form-control" id="gpa" name="gpa" placeholder="GPA" value="<%= loaded_gpa || gpa %>" disabled>
-                                            </div>
-                                    </div>
-                                    <div class="col-sm-1">
-                                        <div class="form-group">
-                                            <label for="gre">GRE</label>
-                                            <input type="text" class="form-control" id="gre" name="gre" placeholder="GRE" value="<%= loaded_gre || gre %>" <% if(status === 'Submitted') {%> disabled="true" <% } %>>
+                                            <h5>Degree Applied For:</h5>
+                                            <p id="degree"><%= degree %></p>
                                         </div>
                                     </div>
                     </div>
 
-                    <fieldset><legend style="color:blue;font-weight:bold;">Previous Institutions</legend>
+                    <fieldset><legend style="color:blue; font-weight:bold;">Previous Grades</legend></fieldset>
 
-                    <div class="row">
+                    <div class="row text-center">
+                            <div class="col-sm-1"></div>
+                            <div class="col-sm-2">
+                                    <div class="form-group">
+                                        <h5>GPA</h5>
+                                        <p id="gpa"><%= gpa %></p>
+                                    </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="form-group">
+                                        <div class="form-group">
+                                            <h5>GRE</h5>
+                                            <p id="gre"><%= gre || 'N/A' %></p>
+                                        </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                    <div class="form-group">
+                                            <div class="form-group">
+                                                <h5>TOEFL</h5>
+                                                <p id="toefl"><%= toefl || 'N/A' %></p>
+                                            </div>
+                                    </div>
+                            </div>
+                            <div class="col-sm-2">
+                                    <div class="form-group">
+                                            <div class="form-group">
+                                                <h5>IELTS</h5>
+                                                <p id="ielts"><%= ielts || 'N/A' %></p>
+                                            </div>
+                                    </div>
+                            </div>
+                            <div class="col-sm-2">
+                                    <div class="form-group">
+                                            <div class="form-group">
+                                                <h5>YELT</h5>
+                                                <p id="yelt"><%= yelt || 'N/A' %></p>
+                                            </div>
+                                    </div>
+                            </div>
+                            <div class="col-sm-1"></div>
+                    </div>
+
+                    <fieldset><legend style="color:blue;font-weight:bold;" <% if(status === 'Submitted') {%> hidden="true" <% }%>>Previous Institutions</legend>
+
+                    <div class="row text-center" <% if(status === 'Submitted') {%> hidden="true" <% } %>>
                             <div class="col-sm-6">
                                     <div class="form-group">
                                     <label for="prev_uni">Institution Name(s)</label>
-                                    <select id="prev_uni" name="prev_uni" class="form-control selectpicker show-menu-arrow" data-live-search="true" multiple <% if(status === 'Submitted') {%> disabled="true" <% } %>>
+                                    <select id="prev_uni" name="prev_uni" class="form-control selectpicker show-menu-arrow" data-live-search="true" multiple>
                                             <% if (!loaded_uni) { %>
                                                 <% for(var i = 0; i < unis.length; i++){ %>
                                                     <option><%= unis[i]%></option>
@@ -63,9 +105,9 @@
                                     </div>
                             </div>
 
-                            <div class="col-sm-3">
+                            <div class="col-sm-6">
                                     <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" name="new_uni" id="new_uni" <% if(status === 'Submitted') {%> disabled="true" <% } %>>
+                                            <input class="form-check-input" type="checkbox" name="new_uni" id="new_uni">
                                             <label class="form-check-label" for="new_uni">Add Institution</label>
                                             <input type="text" class="form-control" id="new_uni_name" name="new_uni_name" placeholder="Institution Name" style="margin-bottom:5px" disabled>
                                             <input class="btn btn-primary" type="button" id="new_uni_btn" name="new_uni_btn" value="Add" style="margin-bottom:5px" disabled>
@@ -74,7 +116,7 @@
                             </div>
                     </div>
 
-                    <div class="row">
+                    <div class="row text-center" <% if(status === 'Submitted') {%> hidden="true" <% } %>>
                             <div class="col-sm-6">
                                     <div class="form-group">
                                     <label for="uni_desc">Institution Assessment(s)</label>
@@ -99,7 +141,7 @@
                                     </div>
                             </div>
 
-                            <div class="col-sm-4">
+                            <div class="col-sm-6">
                                     <div class="form-check">
                                         <input type="checkbox" name="asstradio" id="add_assessment" disabled>
                                         <label class="form-check-label" for="add_assessment">Add Assessment</label>
@@ -111,47 +153,79 @@
                             </div>
                     </div>
 
+                    <div id="all-assmts" class="row"></div>
+
                     <fieldset><legend style="color:blue;font-weight:bold;">Background and Research Information</legend>
 
-                    <div class="row">
+                    <div class="row text-center">
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label for="background">Background Information</label>
-                                        <textarea class="form-control" id="background" name="background" rows="4" placeholder="Background Information" <% if(status === 'Submitted') {%> disabled="true" <% } %>><%= loaded_background%></textarea>
+                                        <% if(status === 'Submitted') { %> 
+                                            <p id="background"><%= loaded_background || 'N/A' %></p>
+                                        <% } else { %> 
+                                            <textarea class="form-control" id="background" name="background" rows="4" placeholder="Background Information"><%= loaded_background %></textarea>
+                                        <%} %>
                                     </div>
                                 </div>
 
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label for="research">Research Experience</label>
-                                        <textarea class="form-control" id="research" name="research" rows="4" placeholder="Research Experience" <% if(status === 'Submitted') {%> disabled="true" <% } %>><%= loaded_research%></textarea>
+                                        <% if(status === 'Submitted') { %> 
+                                            <p id="research"><%= loaded_research || 'N/A' %></p>
+                                        <% } else { %> 
+                                            <textarea class="form-control" id="research" name="research" rows="4" placeholder="Research Experience"><%= loaded_research %></textarea>
+                                        <%} %>
                                     </div>
                                 </div>
                     </div>
 
-                    <fieldset><legend style="color:blue;font-weight:bold;">Additional Comments and Final Rank</legend>
-                    <div class="row">
+                    <fieldset><legend style="color:blue;font-weight:bold;">Letter Analysis and Additional Comments</legend>
+                    <div class="row text-center">
+                            <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="letter">Letter of Intent Analysis</label>
+                                        <% if(status === 'Submitted') { %> 
+                                            <p id="letter"><%= loaded_letter || 'N/A' %></p>
+                                        <% } else { %> 
+                                            <textarea class="form-control" id="letter" name="letter" rows="4" placeholder="Letter Analysis"><%= loaded_letter %></textarea>
+                                        <%} %>
+                                    </div>
+                                </div>
+
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label for="comments">Additional Comments</label>
-                                    <textarea class="form-control" id="comments" name="comments" rows="4" placeholder="Additional Comments" <% if(status === 'Submitted') {%> disabled="true" <% } %>><%= loaded_comments%></textarea>
+                                    <% if(status === 'Submitted') { %> 
+                                        <p id="comments"><%= loaded_letter || 'N/A' %></p>
+                                    <% } else { %> 
+                                        <textarea class="form-control" id="comments" name="comments" rows="4" placeholder="Additional Comments"><%= loaded_comments %></textarea>
+                                    <%} %>
                                 </div>
                             </div>
+                </div>
 
-                            <div class="col-sm-4">
-                                    <div class="form-group">
-                                    <label for="rank">Applicant Rank</label>
+                <fieldset><legend style="color:blue;font-weight:bold;">Final Rank</legend>
+                <div class="row">
+                        <div class="col-sm-4">
+                                <div class="form-group">
+                                <label for="rank">Applicant Rank</label>
+                                <% if(status === 'Submitted') { %> 
+                                    <p id="rank"><%= loaded_rank || 'N/A' %></p>
+                                <% } else { %> 
                                     <select id="rank" name="rank" class="form-control selectpicker show-menu-arrow" data-live-search="true" required <% if(status === 'Submitted') {%> disabled="true" <% } %>>
-                                            <option <%= !loaded_rank ? "selected" : "" %>>-</option>
-                                            <option <%= loaded_rank && loaded_rank === 'A+' ? "selected" : "" %>>A+</option>
-                                            <option <%= loaded_rank && loaded_rank === 'A' ? "selected" : "" %>>A</option>
-                                            <option <%= loaded_rank && loaded_rank === 'B+' ? "selected" : "" %>>B+</option>
-                                            <option <%= loaded_rank && loaded_rank === 'B' ? "selected" : "" %>>B</option>
-                                            <option <%= loaded_rank && loaded_rank === 'C' ? "selected" : "" %>>C</option>
+                                        <option <%= !loaded_rank ? "selected" : "" %>>-</option>
+                                        <option <%= loaded_rank && loaded_rank === 'A+' ? "selected" : "" %>>A+</option>
+                                        <option <%= loaded_rank && loaded_rank === 'A' ? "selected" : "" %>>A</option>
+                                        <option <%= loaded_rank && loaded_rank === 'B+' ? "selected" : "" %>>B+</option>
+                                        <option <%= loaded_rank && loaded_rank === 'B' ? "selected" : "" %>>B</option>
+                                        <option <%= loaded_rank && loaded_rank === 'C' ? "selected" : "" %>>C</option>
                                     </select>
                                     <p id="rank_exists" class="text-danger" hidden></p>
-                                    </div>
-                            </div>
+                                <%} %>
+                                </div>
+                        </div>
                 </div>
 
                     <% if (status === 'New' || status === 'Draft') { %>
@@ -163,5 +237,12 @@
                     <%}%>
                 </form>
     </div>
-
-<% include partials/footer %>
+    <script src="/js/jquery-3.2.0.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/jquery.metadata.js"></script>
+    <script src="/js/jquery.tablesorter.min.js"></script>
+    <script src="https://web.archive.org/web/20161124120603js_/http://www.papercut.com/products/free-software/are-you-sure/jquery.are-you-sure.js"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
+    <script src="/js/committee-review.js"></script>
+</body>

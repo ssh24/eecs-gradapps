@@ -58,11 +58,11 @@ Application.prototype.markApplicationSeen = function(appId, memberId, cb) {
  * @param {Function} cb
  */
 Application.prototype.getReviewApplications = function(sql, memberId, cb) {
-	sql = sql || 'select application.app_Id, DATE_FORMAT(application.app_Date, "%d/%m/%Y") as `Date Uploaded`, ' + 
+	sql = sql || 'select application.app_Id, DATE_FORMAT(application_review.assignDate, "%m/%d/%Y") as `Date Assigned`, ' + 
 	'CONCAT_WS(\' \', application.FName, application.LName) AS `Applicant Name`,  application.Degree as `Degree Applied For`, ' + 
 	'application_review.Status as `My Review Status` from application inner join application_review ' + 
 	'where application.app_Id = application_review.appId and application_review.committeeId=' + memberId 
-	+ ' order by application.app_Date;';
+	+ ' order by application_review.assignDate;';
 
 	assert(typeof sql === 'string');
 	assert(typeof memberId === 'number');

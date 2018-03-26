@@ -386,9 +386,20 @@ Utils.prototype.getMemberFullName = function(memberId, cb) {
  * Get all applicant names
  * @param {Function} cb 
  */
-Utils.prototype.getApplicantNames = function(cb) {
-	var sql = 'SELECT CONCAT_WS(\' \', `FName`, `LName`) AS `Applicant Name`' + 
+Utils.prototype.getApplicantNames = function(all, cb) {
+	if (typeof all === 'function') {
+		cb = all;
+		all = null;
+	}
+
+	var sql;
+	if (all) {
+		sql = 'SELECT CONCAT_WS(\' \', `FName`, `LName`) AS `Applicant Name`' + 
+		' FROM APPLICATION;';
+	} else {
+		sql = 'SELECT CONCAT_WS(\' \', `FName`, `LName`) AS `Applicant Name`' + 
 	' FROM APPLICATION where committeeReviewed=1 and Rank is not null';
+	}
 	var applicants;
 	this.conn.query(sql, function(err, result) {
 		if (err) return cb(err);

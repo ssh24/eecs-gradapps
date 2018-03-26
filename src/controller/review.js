@@ -203,11 +203,6 @@ Review.prototype.saveReview = function(appId, committeeId, data, cb) {
 	var updateStatement;
 
 	var dt = {
-		LName: data['LName'] ? JSON.stringify(data['LName']) : null,
-		FName:  data['FName'] ? JSON.stringify(data['FName']) : null,
-		GPA: data['GPA'] ? JSON.stringify(data['GPA']) : null,
-		GRE: data['GRE'] ? JSON.stringify(data['GRE']) : null,
-		Degree: data['Degree'] ? JSON.stringify(data['Degree']) : null,
 		PreviousInst: data['PreviousInst'] ? JSON.stringify(JSON.stringify(
 			data['PreviousInst'])) : null,
 		UniAssessment: data['UniAssessment'] ? JSON.stringify(JSON.stringify(
@@ -216,6 +211,7 @@ Review.prototype.saveReview = function(appId, committeeId, data, cb) {
 			: null,
 		researchExp: data['researchExp'] ? JSON.stringify(data['researchExp']) 
 			: null,
+		Letter: data['Letter'] ? JSON.stringify(data['Letter']) : null,
 		Comments: data['Comments'] ? JSON.stringify(data['Comments']) : null,
 		c_Rank: data['c_Rank'] ? JSON.stringify(data['c_Rank']) : null
 	};
@@ -232,16 +228,11 @@ Review.prototype.saveReview = function(appId, committeeId, data, cb) {
 				if (err) return cb(err);
 				if(status === 'New' || status === 'Draft') {
 					updateStatement = self.utils.createUpdateStatement(
-						'application_review', ['Status', 'LName', 'FName', 'GPA', 'GRE', 
-							'Degree', 'PreviousInst', 'UniAssessment', 'Background', 
-							'researchExp', 'Comments', 'c_Rank'], ['"Draft"', 
-							dt.LName, dt.FName, 
-							dt.GPA, dt.GRE, 
-							dt.Degree, 
-							dt.PreviousInst, 
-							dt.UniAssessment, 
-							dt.Background, 
-							dt.researchExp, 
+						'application_review', ['Status', 'PreviousInst', 
+							'UniAssessment', 'Background', 
+							'researchExp', 'Letter', 'Comments', 'c_Rank'], 
+						['"Draft"', dt.PreviousInst, dt.UniAssessment, 
+							dt.Background, dt.researchExp, dt.Letter,
 							dt.Comments, dt.c_Rank], 
 						['committeeId', 'appId'], [committeeId, appId]);
 					self.conn.query(updateStatement, function(err, result) {
@@ -488,7 +479,7 @@ Review.prototype.autoFillReviewInfo = function(appId, cb) {
 	assert(typeof appId === 'number');
 	assert(typeof cb === 'function');
 
-	var sql = 'select lname, fname, degree, gpa, gre from application where app_Id=?';
+	var sql = 'select student_Id, lname, fname, degree, gpa, gre, toefl, ielts, yelt from application where app_Id=?';
 	this.conn.query(sql, [appId], function(err, result) {
 		if (err) return cb(err);
 		if(result.length === 1) {

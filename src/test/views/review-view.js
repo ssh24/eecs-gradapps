@@ -15,11 +15,16 @@ function Review(timeout) {
     
 	this.review.form = by.id('review-form');
 
+	this.review.form.sid = by.id('sid');
 	this.review.form.lname = by.id('lname');
 	this.review.form.fname = by.id('fname');
 	this.review.form.degree = by.id('degree');
+
 	this.review.form.gpa = by.id('gpa');
 	this.review.form.gre = by.id('gre');
+	this.review.form.toefl = by.id('toefl');
+	this.review.form.ielts = by.id('ielts');
+	this.review.form.yelt = by.id('yelt');
 
 	this.review.form.prev_uni_id = by.id('prev_uni');
 	this.review.form.prev_uni = by.css('button[data-id="prev_uni"]');
@@ -39,6 +44,7 @@ function Review(timeout) {
 
 	this.review.form.background = by.id('background');
 	this.review.form.research = by.id('research');
+	this.review.form.letter = by.id('letter');
 	this.review.form.comments = by.id('comments');
 
 	this.review.form.rank_id = by.id('rank');
@@ -50,6 +56,9 @@ function Review(timeout) {
 
 	this.review.form.select = {};
 	this.review.form.select.active = by.css('.btn-group.bootstrap-select.show-tick.form-control.show-menu-arrow > button');
+
+	this.review.form.selected_list = by.id('selected_list');
+	this.review.form.selected_list.p = by.id('selected_list_p');
 }
 
 Review.prototype.startReview = function(appId) {
@@ -89,14 +98,6 @@ Review.prototype.getStatus = function() {
 	return element(this.review.status).getText();
 };
 
-Review.prototype.setGre = function(value) {
-	return this.utils.clearThenSendKeys(element(this.review.form.gre), value);
-};
-
-Review.prototype.getGre = function() {
-	return element(this.review.form.gre).getAttribute('value');
-};
-
 Review.prototype.setBackground = function(value) {
 	return this.utils.clearThenSendKeys(element(this.review.form.background), value);
 };
@@ -119,6 +120,14 @@ Review.prototype.setComments = function(value) {
 
 Review.prototype.getComments = function() {
 	return element(this.review.form.comments).getAttribute('value');
+};
+
+Review.prototype.setLetterAnalysis = function(value) {
+	return this.utils.clearThenSendKeys(element(this.review.form.letter), value);
+};
+
+Review.prototype.getLetterAnalysis = function() {
+	return element(this.review.form.letter).getAttribute('value');
 };
 
 Review.prototype.selectUniversity = function(index) {
@@ -208,148 +217,110 @@ Review.prototype.getAddAssessmentError = function() {
 	return element(this.review.form.assmt_error).getText();
 };
 
-Review.prototype.isLNameDisplayed = function() {
-	return element(this.review.form.lname).isDisplayed();
+Review.prototype.isSIDDisplayed = function() {
+	return element(this.review.form.sid).isDisplayed();
 };
 
-Review.prototype.isLNameEnabled = function() {
-	return element(this.review.form.lname).isEnabled();
+Review.prototype.isLNameDisplayed = function() {
+	return element(this.review.form.lname).isDisplayed();
 };
 
 Review.prototype.isFNameDisplayed = function() {
 	return element(this.review.form.fname).isDisplayed();
 };
 
-Review.prototype.isFNameEnabled = function() {
-	return element(this.review.form.fname).isEnabled();
-};
-
 Review.prototype.isDegreeDisplayed = function() {
 	return element(this.review.form.degree).isDisplayed();
-};
-
-Review.prototype.isDegreeEnabled = function() {
-	return element(this.review.form.degree).isEnabled();
 };
 
 Review.prototype.isGPADisplayed = function() {
 	return element(this.review.form.gpa).isDisplayed();
 };
 
-Review.prototype.isGPAEnabled = function() {
-	return element(this.review.form.gpa).isEnabled();
-};
-
 Review.prototype.isGREDisplayed = function() {
 	return element(this.review.form.gre).isDisplayed();
 };
 
-Review.prototype.isGREEnabled = function() {
-	return element(this.review.form.gre).isEnabled();
+Review.prototype.isTOEFLDisplayed = function() {
+	return element(this.review.form.toefl).isDisplayed();
+};
+
+Review.prototype.isIELTSDisplayed = function() {
+	return element(this.review.form.ielts).isDisplayed();
+};
+
+Review.prototype.isYELTDisplayed = function() {
+	return element(this.review.form.yelt).isDisplayed();
+};
+
+Review.prototype.isGREDisplayed = function() {
+	return element(this.review.form.yelt).isDisplayed();
 };
 
 Review.prototype.isPrevUniDisplayed = function() {
 	return element(this.review.form.prev_uni).isDisplayed();
 };
 
-Review.prototype.isPrevUniEnabled = function() {
-	return element(this.review.form.prev_uni_id).isEnabled();
-};
-
 Review.prototype.isNewUniCheckDisplayed = function() {
 	return element(this.review.form.new_uni).isDisplayed();
-};
-
-Review.prototype.isNewUniCheckEnabled = function() {
-	return element(this.review.form.new_uni).isEnabled();
 };
 
 Review.prototype.isNewUniNameDisplayed = function() {
 	return element(this.review.form.new_uni_name).isDisplayed();
 };
 
-Review.prototype.isNewUniNameEnabled = function() {
-	return element(this.review.form.new_uni_name).isEnabled();
-};
-
 Review.prototype.isNewUniBtnDisplayed = function() {
 	return element(this.review.form.new_uni_btn).isDisplayed();
-};
-
-Review.prototype.isNewUniBtnEnabled = function() {
-	return element(this.review.form.new_uni_btn).isEnabled();
 };
 
 Review.prototype.isUniAssessmentDisplayed = function() {
 	return element(this.review.form.uni_desc).isDisplayed();
 };
 
-Review.prototype.isUniAssessmentEnabled = function() {
-	return element(this.review.form.uni_desc_id).isEnabled();
-};
-
 Review.prototype.isAddAssessmentCheckDisplayed = function() {
 	return element(this.review.form.add_assessment).isDisplayed();
-};
-
-Review.prototype.isAddAssessmentCheckEnabled = function() {
-	return element(this.review.form.add_assessment).isEnabled();
 };
 
 Review.prototype.isAddAssessmentFormDisplayed = function() {
 	return element(this.review.form.assessment).isDisplayed();
 };
 
-Review.prototype.isAddAssessmentFormEnabled = function() {
-	return element(this.review.form.assessment).isEnabled();
-};
 
 Review.prototype.isUniAssessmentDDDisplayed = function() {
 	return element(this.review.form.select_add_assessment).isDisplayed();
 };
 
-Review.prototype.isUniAssessmentDDEnabled = function() {
-	return element(this.review.form.select_add_assessment_id).isEnabled();
-};
 
 Review.prototype.isAddAssessmentBtnDisplayed = function() {
 	return element(this.review.form.assessment_btn).isDisplayed();
 };
 
-Review.prototype.isAddAssessmentBtnEnabled = function() {
-	return element(this.review.form.assessment_btn).isEnabled();
-};
 
 Review.prototype.isBackgroundDisplayed = function() {
 	return element(this.review.form.background).isDisplayed();
 };
 
-Review.prototype.isBackgroundEnabled = function() {
-	return element(this.review.form.background).isEnabled();
-};
 
 Review.prototype.isResearchDisplayed = function() {
 	return element(this.review.form.research).isDisplayed();
 };
 
-Review.prototype.isResearchEnabled = function() {
-	return element(this.review.form.research).isEnabled();
-};
 
 Review.prototype.isCommentsDisplayed = function() {
 	return element(this.review.form.comments).isDisplayed();
 };
 
-Review.prototype.isCommentsEnabled = function() {
-	return element(this.review.form.comments).isEnabled();
+
+Review.prototype.isLettersDisplayed = function() {
+	return element(this.review.form.letter).isDisplayed();
 };
 
 Review.prototype.isRankDisplayed = function() {
 	return element(this.review.form.rank).isDisplayed();
 };
 
-Review.prototype.isRankEnabled = function() {
-	return element(this.review.form.rank_id).isEnabled();
+Review.prototype.isRankPDisplayed = function() {
+	return element(this.review.form.rank_id).isDisplayed();
 };
 
 Review.prototype.isCancelBtnDisplayed = function() {
@@ -374,6 +345,18 @@ Review.prototype.isSubmitBtnDisplayed = function() {
 		.then(function() {
 			return element(self.review.form.submit).isDisplayed();
 		});
+};
+
+Review.prototype.isSelectedListHeaderDisplayed = function() {
+	return element(this.review.form.selected_list.p).isDisplayed();
+};
+
+Review.prototype.isSelectedListDisplayed = function() {
+	return element(this.review.form.selected_list).isDisplayed();
+};
+
+Review.prototype.getSelectedListText = function() {
+	return element(this.review.form.selected_list).getText();
 };
 
 module.exports = Review;
