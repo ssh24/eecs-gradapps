@@ -139,6 +139,17 @@ module.exports = function(app, utils, application, faculty_member, fns) {
 		});
 	});
 
+	app.get('/roles/professor/viewapp', [viewApp], function(req, res) {
+		res.render('viewapp', {
+			title: 'View Application',
+			message: req.flash('viewMessage'),
+			role: role,
+			app: req.application || [],
+			reviews: req.reviews || []
+		});
+	});
+
+
 	function getApplications(sql, options, req, res, next) {
 		application.getApplications(sql, req.user.id, function(err, results) {
 			if (err) {
@@ -404,6 +415,50 @@ module.exports = function(app, utils, application, faculty_member, fns) {
 		} else {
 			next();
 		}
+	}
+
+	function viewApp(req, res, next) {
+		var query = req.query;
+
+		//get application data
+		var sql = 'SELECT app_Id, CONCAT_WS(\' \', `FName`, `LName`) AS `Applicant Name`, ' +
+      ' Gender, Email, app_session as `Session`, FOI as `Fields of Interest`, ' +
+      ' prefProfs as `Preferred Professors`, ' +
+      'Rank as `Committee Rank`, GPA, Degree, ' +
+      ' VStatus as `Visa Status`, programDecision as `Program Decision`, ' +
+      'profContacted as `Contacted By`,' +
+      ' profRequested as `Requested By`' +
+      ' from application' +
+      ' where committeeReviewed=1 and Rank is not null' +
+      ' and app_Id=' + application.conn.escape(query.appId);
+		console.log(sql);
+		// return application
+		application.getApplications(sql, req.user.id, function(err, results) {
+			if (err) {
+				req.flash('viewMessage',
+					'Error loading Application. Fatal reason: ' + err.message);
+				next();
+			} else {
+				req.application = results;
+				viewAppReviews(req, res, next);
+			}
+		});
+
+	}
+
+	function viewAppReviews(req, res, next) {
+		var query = req.query;
+		//get the reviews
+		application.getApplicationReview(query.appId, req.user.id, function(err, results) {
+			if (err) {
+				req.flash('viewMessage',
+					'Error loading Reviews. Fatal reason: ' + err.message);
+			} else {
+				req.reviews = results;
+			}
+			next();
+		});
+
 	}
 
 	function setLiveSearchData(req, res, next) {
