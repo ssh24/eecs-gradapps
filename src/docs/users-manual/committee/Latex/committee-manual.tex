@@ -1,0 +1,206 @@
+% !TEX encoding = UTF-8
+%Koma article
+\documentclass[fontsize=12pt,paper=letter,twoside]{scrartcl}
+\usepackage{float}
+\usepackage{listings}
+
+%Standard Pre-amble
+\input{sty/defns.tex}
+%Useful definitions
+%\newcommand{\mv}[1]{\textit{m\_#1}}
+%\newcommand{\cv}[1]{\textit{c\_#1}}
+%\newcommand{\degree}[1]{^{\circ}\mathrm{#1}}
+%\newcommand{\comment}[1]{{\footnotesize \quad\texttt{--}\textrm{#1}}}
+
+% Set the header
+\ihead[]{\small EECS4090 Project}
+
+
+%%%%%%%%%%%%Enter your names here%%%%%%%%
+\author{\textbf{Edward Vaisman}
+\and \textbf{Sadman Sakib Hasan}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\date{\today} % Display a given date or no date
+
+\begin{document}
+\title{Grad Apps 2.0 \\ Committee Member User Manual}
+\maketitle
+
+\newpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\tableofcontents
+\listoffigures
+\listoftables
+\newpage
+
+
+%%%%Rest of your document goes here%%%%%%%%%%%%%%%%%%%
+
+\clearpage
+\section{User Overview}
+
+The \emph{committee member} in our system under description is a subset of EECS graduate program members who are in charge of reviewing new applications. In addition to reviewing an application, a graduate committee member can view past reviewed applications and apply filter on them. A breakdown of a \emph{committee member's} permissible actions are listed below.
+
+\smallskip
+\noindent A \emph{committee member}:
+
+\begin{mylist}
+\item Shall be able to view current and past reviewed application(s).
+\item Shall be able to apply filter on current and past reviewed application(s).
+\item Shall be able to review an assigned application(s).
+\item Shall be able to save a review as a draft for later completion.
+\item Shall be able to add new university assessments in the system to be used in a review. Such new assessment will be added globally to the system and can be seen and used by other committee member when filling out a review.
+\end{mylist}
+
+\section{Authentication}
+
+In order for an user to sign in to the application as a committee member, they need to be assigned to the \emph{Committee Member} role by the system administrator. Once the user has been granted access to the role, they can sign in to the system and select the \emph{Committee Member} role.
+
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.9\textwidth]{images/auth.png}
+\end{center}
+\caption{Select Committee Member Role}
+\label{fig:role_selection}
+\end{figure}
+
+\bigskip
+\noindent \textbf{Note:} Once the user has been authenticated, the system automatically signs the user out after maximum of 15 minutes of inactivity within the application. This is to ensure the security of the overall system to protect both student confidential data and logged in user data.
+
+
+\section{Committee Member Portal}
+
+After the user has signed in to the system and selected the \emph{Committee Member} role, they shall be redirected to the committee member portal. The portal by default shows all past and current reviewed applications assigned to the logged in user for the current study year ordered by the date assigned in ascending order.
+
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.9\textwidth]{images/default_table.png}
+\end{center}
+\caption{Committee Member Portal - With Review Applications}
+\label{fig:cm_portal}
+\end{figure}
+
+\newpage
+\noindent If there are no reviews assigned to the user, it displays a message to the user.
+
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.9\textwidth]{images/err_default.png}
+\end{center}
+\caption{Committee Member Portal - With No Review Application}
+\label{fig:cm_portal_err}
+\end{figure}
+ 
+\section{Filtering Review Applications}
+
+One of the most powerful tool that Grad Apps 2.0 offers is filtering applications. It is a core functionality that allows our end user to find the best match applicant out of hundreds that are received every year.
+
+\bigskip
+
+\noindent As a committee member, one can filter past and current assigned review applications. The following image depicts the fields a committee member can apply filtering on as well as the columns they want to see on the resulted table. To open the filter modal, simply click on the \emph{pencil} symbol on the top right corner.
+
+\clearpage
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.9\textwidth]{images/default_filter_view.png}
+\end{center}
+\caption{Filter Selection Modal}
+\label{fig:def_filter_modal}
+\end{figure}
+
+\subsection{Selecting Columns}
+
+After opening the filter modal, one can select one or more columns. Selecting a column numbers them in order they will be displayed after the filter is applied. The following image depicts selecting four columns in order: \emph{Date Assigned, Degree Applied For, My Review Status and Actions}.
+
+\bigskip
+\noindent \textbf{Note}: When submitting a filter with no selected columns, all default columns will be used, i.e \emph{Date Assigned, Applicant Name, Degree Applied For, My Review Status and Actions}.
+
+\clearpage
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.9\textwidth]{images/selected_col.png}
+\end{center}
+\caption{Selected Columns for Filter}
+\label{fig:fm_selected_col}
+\end{figure}
+
+\subsection{Selecting Filter}
+
+After opening the filter modal, one can select one or more filters. Selecting a filter can be done only \emph{Applicant Name, Degree Applied For and My Review Status}. Filtering can be done by selecting values using search text dropdown. The following image depicts selecting a filter for \emph{Degree Applied For} where the Degree is equal to \emph{MSc}.
+
+\bigskip
+\noindent \textbf{Note}: When submitting a filter with no selected filters, the default table will be loaded.
+
+\clearpage
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.9\textwidth]{images/selected_filter.png}
+\end{center}
+\caption{Selected Filter}
+\label{fig:fm_selected_filter}
+\end{figure}
+
+\bigskip
+\noindent Once the user selects a filter, the selected filter text shows the filter chosen. Grad Apps 2.0 only supports \textbf{AND} operand filtering. The image below depicts the selected filter text after selecting a filter for \emph{Degree Applied For} where the Degree is equal to \emph{MSc} and \emph{My Review Status} where review status is equal to \emph{Draft}.
+
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.9\textwidth]{images/selected_filter_text.png}
+\end{center}
+\caption{Selected Filter Text}
+\label{fig:fm_selected_filter_txt}
+\end{figure}
+
+\subsection{Saving Filter Preset}
+
+TBD
+
+\subsection{Submitting Filter}
+
+Once the user has selected columns and selected filters, they can submit the filter to get a resulted table back.
+
+\bigskip
+\noindent \textbf{Note}: When submitting a filter with no selected columns, all default columns will be used, i.e \emph{Date Assigned, Applicant Name, Degree Applied For, My Review Status and Actions}.
+
+\bigskip
+\noindent \textbf{Note}: When submitting a filter with no selected filters, the default table will be loaded.
+
+\bigskip
+\noindent The image below depicts a returned table back after apply a filter
+
+\bigskip
+\noindent \textbf{The columns selected for the filter}:
+\begin{enumerate}
+\item Date Assigned
+\item Degree Applied For
+\item My Review Status
+\end{enumerate}
+
+\noindent \textbf{The filter selected for}:
+\begin{enumerate}
+\item Degree Applied For: MSc
+\end{enumerate}
+
+\bigskip
+\noindent The images below depicts the filter modal before applying the filter and the resulted filtered table. The fields used for filtering are also highlighted for emphasizing the filtered fields on the resulted table.
+
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.9\textwidth]{images/example_filter.png}
+\end{center}
+\caption{Selected Filter Example}
+\label{fig:example_filter}
+\end{figure}
+
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.9\textwidth]{images/example_filter_table.png}
+\end{center}
+\caption{Resulted Table After Applying Filter}
+\label{fig:resulted_table}
+\end{figure}
+
+\end{document}
