@@ -107,7 +107,6 @@ Faculty_Member.prototype.updatePreset = function(memberId, role, preset_name, co
 		var preset_json = 'JSON_OBJECT(\'cols\'' + commaDelimeter + col + commaDelimeter + '\'filt\'' + commaDelimeter + filt + ')';
 		var presetRoleVal = 'IF(' + presetRole + ' is NULL, JSON_OBJECT(\'' + preset_name + '\'' + commaDelimeter + preset_json + ')' + commaDelimeter + 'JSON_SET(' + presetRole + commaDelimeter + '\'$."' + preset_name + '"\'' + commaDelimeter + preset_json + '))';
 		var updateStatement = self.utils.createUpdateStatement(tableName, [presetRole], [presetRoleVal], [whereField], [memberId]);
-		console.log(updateStatement);
 		self.conn.query(updateStatement, cb);
 	});
 
