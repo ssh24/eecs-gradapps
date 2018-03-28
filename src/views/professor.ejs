@@ -46,7 +46,7 @@
                                             <% } else { %>
                                                 <td class="text-center">
                                                         <div class="btn-group-vertical">
-                                                            <button class="btn btn-primary">View Application</button>
+                                                            <a id="view-application-<%=i%>" class="btn btn-primary" target="_blank" href="/roles/professor/viewapp?appId=<%= apps[i][fields[0]]%>">View Application</a>
                                                             <button id="set-to-<%=i%>" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">Set to <span class="caret"></span></button>
                                                             <ul class="dropdown-menu" role="menu">
                                                                 <% if (apps[i]['Contacted By'] && apps[i]['Contacted By'].indexOf(fullname) > -1) { %>
