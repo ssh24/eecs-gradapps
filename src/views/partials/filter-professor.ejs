@@ -1,5 +1,5 @@
 <!-- Modal Filter Section-->
-<div class="modal fade" id="filterModal">
+<div class="modal" id="filterModal">
   <div class="modal-dialog modal-lg">
     <!-- Modal content-->
     <div class="modal-content">
@@ -9,9 +9,9 @@
       </div>
       <form id="filterForm" method="post">
         <div class="modal-body">
-          <div id="div_col" class="form-group row">
+          <div id="div_preset" class="form-group row">
             <h4>Choose Your Columns</h4>
-            <select id="preset" name="preset" style="display: inline-block;">
+            <select id="preset" name="preset" style="display: inline-block;" class="selectpicker" data-live-search="true">
                             <option value="" selected>Select a Preset</option>
                             <% if (presets) {%>
                               <% for(var key in presets) { %>
@@ -20,6 +20,8 @@
                             <% } %>
             </select>
             <hr>
+          </div>
+          <div id="div_col" class="form-group row">
             <div class="row">
               <div class="form-group btn-group btn-group-justified" role="group" aria-label="...">
                 <div class="btn-group" role="group">

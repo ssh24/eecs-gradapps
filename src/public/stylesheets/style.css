@@ -1,6 +1,5 @@
 body {
     padding-top: 65px;
-    padding-bottom: 125px;
 }
 
 /* Button Stylings*/
@@ -88,9 +87,12 @@ table.tablesorter {
 /*End Tablesorter*/
 
 .table-responsive {
-    max-height: 500px;
+    max-height: 650px;
 }
 
+html, body, table {
+  max-height: 100%;
+}
 .table-striped > tbody > tr:nth-child(odd) > td,
 .table-striped > tbody > tr:nth-child(odd) > th {}
 
@@ -172,7 +174,7 @@ select#preset{
 footer {
     background-color: #222;
     color: #fff;
-    padding: 16px;
+    padding: 7px;
     width: 100%;
 }
 

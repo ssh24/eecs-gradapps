@@ -10,7 +10,9 @@ var Filter = function(timeout) {
 	this.filter.modal = by.css('.modal-content');
 	this.filter.open = by.id('filter-btn');
 	this.filter.close = by.id('close-btn');
-	this.filter.submit = by.id('filter-submit');
+	this.filter.submit = by.id('filter_submit');
+	this.filter.savePreset = by.id('save_preset');
+	this.filter.savePresetName = by.id('preset_name');
 	this.filter.dismiss = by.id('filter-close');
 
 	this.filter.refresh = by.id('refresh-table');
@@ -61,14 +63,17 @@ var Filter = function(timeout) {
 	this.filter.fields = {};
 	this.filter.fields.hideDD = by.css('.dropdown-backdrop');
 
-	this.filter.fields.searchBox = by.css('.btn-group.bootstrap-select.form-control.open > .dropdown-menu.open > .bs-searchbox > input');
+	this.filter.fields.searchBox = by.css('.btn-group.bootstrap-select.open > .dropdown-menu.open > .bs-searchbox > input');
 
 	this.filter.fields.selected = by.id('selectedFilter');
-	this.filter.fields.selected.active = by.css('.btn-group.bootstrap-select.form-control > button');
+	this.filter.fields.selected.active = by.css('.btn-group.bootstrap-select > button');
+
+	this.filter.preset = by.id('preset');
+	this.filter.preset.openDD = by.css('button[data-id="preset"]');
 
 	this.filter.fields.applicant = by.id('btn_filter_name');
 	this.filter.fields.applicant.openDD = by.css('button[data-id="btn_filter_name"]');
-	
+
 	this.filter.fields.foi = by.id('btn_filter_foi');
 	this.filter.fields.foi.openDD = by.css('button[data-id="btn_filter_foi"]');
 
@@ -155,7 +160,7 @@ Filter.prototype.isFieldDDOpen = function(elem) {
 };
 
 Filter.prototype.closeDD = function() {
-	return this.utils.waitForElementClickable(this.filter.fields.hideDD, 
+	return this.utils.waitForElementClickable(this.filter.fields.hideDD,
 		this.timeout)
 		.then(element(this.filter.fields.hideDD).click());
 };
@@ -169,21 +174,26 @@ Filter.prototype.getSelectedElement = function() {
 };
 
 Filter.prototype.selectIthElement = function(index) {
-	var elem = by.css('.btn-group.bootstrap-select.form-control.open > .dropdown-menu.open > .dropdown-menu.inner > li[data-original-index="'+index+'"] > a');
+	var elem = by.css('.btn-group.bootstrap-select.open > .dropdown-menu.open > .dropdown-menu.inner > li[data-original-index="'+index+'"] > a');
 	return this.utils.waitForElementClickable(elem, this.timeout)
 		.then(element(elem).click());
 };
 
 Filter.prototype.searchText = function(text) {
-	return this.utils.waitForElement(element(this.filter.fields.searchBox), 
+	return this.utils.waitForElement(element(this.filter.fields.searchBox),
 		this.timeout)
-		.then(this.utils.clearThenSendKeys(element(this.filter.fields.searchBox), 
+		.then(this.utils.clearThenSendKeys(element(this.filter.fields.searchBox),
 			text));
 };
 
 Filter.prototype.submitFilter = function() {
 	return this.utils.waitForElementClickable(this.filter.submit, this.timeout)
 		.then(element(this.filter.submit).click());
+};
+
+Filter.prototype.saveFilter = function(name){
+	this.utils.waitForElementClickable(this.filter.savePresetName, this.timeout).then(this.utils.clearThenSendKeys(element(this.filter.savePresetName), name));
+	return this.utils.waitForElementClickable(this.filter.savePreset, this.timeout).then(element(this.filter.savePreset).click());
 };
 
 Filter.prototype.resetFilteredTable = function() {

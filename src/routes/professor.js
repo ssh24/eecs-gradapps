@@ -542,7 +542,6 @@ module.exports = function(app, utils, application, faculty_member, fns) {
 				next(err);
 			} else {
 				req.presets = results[0]['presetProf'];
-				console.log(req.presets);
 				next();
 			}
 		});
@@ -562,7 +561,7 @@ module.exports = function(app, utils, application, faculty_member, fns) {
 		var colValues = [];
 		var filterValues = [];
 		for (var i = 0; i < cols.length; i++) {
-			colValues.push(i+1);
+			colValues.push(i + 1);
 		}
 
 		//add the nonactive ones to the end. with empty values
