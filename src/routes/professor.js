@@ -8,6 +8,7 @@ module.exports = function(app, utils, application, faculty_member, fns) {
 	var presetProfessor = fns.concat([applyApplicationActions, filterApps, getPresets]);
 	var filterPost = fns.concat([filterApps, getPresets]);
 	var presetPost = fns.concat([filterApps, setPreset, getPresets]);
+	var viewAppProf = fns.concat([viewApp]);
 	var builtSql, builtOptions, builtHighlight;
 	var role = 'Professor';
 	// professor page route
@@ -139,7 +140,7 @@ module.exports = function(app, utils, application, faculty_member, fns) {
 		});
 	});
 
-	app.get('/roles/professor/viewapp', [viewApp], function(req, res) {
+	app.get('/roles/professor/viewapp', viewAppProf, function(req, res) {
 		res.render('viewapp', {
 			title: 'View Application',
 			message: req.flash('viewMessage'),
