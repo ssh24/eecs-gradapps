@@ -34,6 +34,7 @@
 \tableofcontents
 \listoffigures
 \listoftables
+
 \newpage
 
 
@@ -82,6 +83,9 @@ After the user has signed in to the system and selected the \emph{Committee Memb
 \caption{Committee Member Portal - With Review Applications}
 \label{fig:cm_portal}
 \end{figure}
+
+\bigskip
+\noindent In the actions column, the \emph{View Application} link opens the student application in PDF version uploaded by the system administrator whereas the other review options opens different views of the review form depending on the stage of the review. Refer to Section \ref{sec:reviews} for more information.
 
 \newpage
 \noindent If there are no reviews assigned to the user, it displays a message to the user.
@@ -201,6 +205,191 @@ Once the user has selected columns and selected filters, they can submit the fil
 \end{center}
 \caption{Resulted Table After Applying Filter}
 \label{fig:resulted_table}
+\end{figure}
+
+\clearpage
+\newpage
+\section{Ordering Review Applications}
+As a user one can order the fields, either in ascending or descending order, of the table that lists all current and past review applications. The fields that support ordering on review application table are: \emph{Date Assigned}, \emph{Applicant Name}, \emph{Degree Applied For} and \emph{My Review Status}. One can also apply multiple ordering by holding the SHIFT key on the keyboard and toggling the order.
+
+\bigskip
+\noindent \textbf{Note}: Ordering fields can be done on both filtered and unfiltered review application list.
+
+\bigskip
+\noindent The following images depicts on how to order review applications using the \emph{Date Assigned} field in ascending an descending order.
+
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.9\textwidth]{images/order_ascending.png}
+\end{center}
+\caption{Ascending order of Date Assigned field}
+\label{fig:order_ascending}
+\end{figure}
+
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.9\textwidth]{images/order_descending.png}
+\end{center}
+\caption{Descending order of Date Assigned field}
+\label{fig:order_descending}
+\end{figure}
+
+\newpage
+\section{Reviews} \label{sec:reviews}
+As a user one has access to complete application reviews assigned to them by the system administrator. The review process has \textbf{three} different statuses to the user on the default portal:
+\begin{itemize}
+\item \textbf{New}: A new application has been assigned to the committee member and no changes have been made on the review yet.
+\item \textbf{Draft}: A new or a previously saved draft review. A review is considered as a draft when there has been at least one or more changes committed and the user has decided to save the changes.
+\item \textbf{Submitted}: A completed review which has been submitted and uploaded to the server. Once a review is submitted, it cannot be undone.
+\end{itemize}
+
+\bigskip
+\noindent The following list denotes the fields in a not submitted review that and their requirement status:
+\begin{table}[h]
+\centering
+\begin{tabular}{|c | c |}
+	\cline{1-2}
+	\textbf{Field Name} & \textbf{Required}\\ \hline
+	Institution Name(s) & No \\ \hline
+	Institution Assessment(s) & No \\ \hline
+	Background Information & No \\ \hline
+	Research Experience & No \\ \hline
+	Letter of Intent Analysis & No \\ \hline
+	Additional Comments & No \\ \hline
+	Applicant Rank & Yes \\ \hline
+\end{tabular}
+\caption {Review Fields}
+\label{tbl:review_fields}
+\end{table}
+
+\newpage
+\bigskip
+\noindent The following image depicts the full view of the review form. The \emph{View Application PDF} link opens the student application in PDF version uploaded by the system administrator. 
+
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.9\textwidth]{images/review_form.png}
+\end{center}
+\caption{Full view of the Review Form}
+\label{fig:review_form}
+\end{figure}
+
+\clearpage
+\newpage
+\subsection{Opening a new Review}
+As a user when a new review is received it will show on the portal. After that the user has the option of opening the review and start completing the form. The action for opening a new review will say \textbf{Start Review}.
+
+\bigskip
+\noindent The following image depicts an user opening a brand new review.
+
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.9\textwidth]{images/opening_new_review.png}
+\end{center}
+\caption{Opening a brand new review}
+\label{fig:opening_new_review}
+\end{figure}
+
+\bigskip
+\noindent The following image depicts an user making no changes to the opened review and exiting out of the review form.
+
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.9\textwidth]{images/new_review_exit_wo_changes.png}
+\end{center}
+\caption{Exiting out of a brand new review application without changes}
+\label{fig:new_review_exit_w/o_changes}
+\end{figure}
+
+\subsection{Filling out a Review}
+As an end user one has the opportunity to analyse the application assigned for review. Table \ref{tbl:review_fields} outlines the fields in a review application and their required status. The following table specializes table \ref{tbl:review_fields} and displays the type of input each field takes.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|c | c |}
+	\cline{1-2}
+	\textbf{Field Name} & \textbf{Input Type}\\ \hline
+	Institution Name(s) & Multiple Drop-Down \\ \hline
+	Institution Assessment(s) & Multiple Drop-Down \\ \hline
+	Background Information & Text \\ \hline
+	Research Experience & Text \\ \hline
+	Letter of Intent Analysis & Text \\ \hline
+	Additional Comments & Text \\ \hline
+	Applicant Rank & Single Drop-Down \\ \hline
+\end{tabular}
+\caption {Review Fields Input Type}
+\label{tbl:review_fields_input}
+\end{table}
+
+\subsubsection{Institution Assessment}
+An end user can select one or more institutions the applicant has attended in the past. If the institution does not exist, the user can also add a new institution. Once an institution has been selected, the user can select one or more of the existing institution's assessment and also add a new assessment of their own.
+
+\bigskip
+\noindent The following image depicts an user selecting two institutions the applicant has attended and selecting an assessment from each of the institutions.
+
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.7\textwidth]{images/uni_assessment.png}
+\end{center}
+\caption{Institution Assessment View}
+\label{fig:uni_assessment}
+\end{figure}
+
+\clearpage
+\newpage
+\subsection{Saving a review as Draft}
+As an end user one has the opportunity to save an on-going review as draft for future completion. The use of drafting review is to save changes to an on-going reviews so that the user can pick it up and continue some time later.
+
+\bigskip
+\noindent The following images depicts an user making changes to an application review and then saving it as a draft. Consequently, the status of the review is changed to \textbf{Draft}. And if the user wants to continue working on the draft sometime late, the action for opening a drafted review will say \textbf{Continue Review}.
+
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.9\textwidth]{images/save_as_draft_review.png}
+\end{center}
+\caption{Save a review as draft}
+\label{fig:save_as_draft_review}
+\end{figure}
+
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.9\textwidth]{images/drafted_review.png}
+\end{center}
+\caption{Drafted Review View}
+\label{fig:drafted_review}
+\end{figure}
+
+\subsection{Submitting a Review}
+Once a review is completed, the user can submit the review. Once the correct number of reviews for an application has been submitted, the application will be automatically available for selection to the EECS Graduate Professors. The only required field needed for submitting a review is the final application rank that is to be decided by the committee member user upon completing the review.
+
+\bigskip
+\noindent The following image depicts an end user submitting a review. 
+
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.9\textwidth]{images/submit_review.png}
+\end{center}
+\caption{Submit a Review}
+\label{fig:submit_review}
+\end{figure}
+
+\bigskip
+\noindent Once the review is submitted, it will show up on the users dashboard with status as \textbf{Submitted}. The user action to view a submitted review will say \textbf{View Review}. Submitted reviews is only viewable as a plain text application form. The following images depicts viewing a submitted review.
+
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.9\textwidth]{images/submitted_review.png}
+\end{center}
+\caption{Submitted Review View}
+\label{fig:submitted_review}
+\end{figure}
+
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.7\textwidth]{images/submit_review_view.png}
+\end{center}
+\caption{Submitted Review View}
+\label{fig:submit_review_view}
 \end{figure}
 
 \end{document}
