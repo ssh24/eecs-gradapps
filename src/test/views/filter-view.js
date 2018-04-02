@@ -10,8 +10,11 @@ var Filter = function(timeout) {
 	this.filter.modal = by.css('.modal-content');
 	this.filter.open = by.id('filter-btn');
 	this.filter.close = by.id('close-btn');
-	this.filter.submit = by.id('filter-submit');
+	this.filter.submit = by.id('filter_submit');
 	this.filter.dismiss = by.id('filter-close');
+
+	this.filter.savePreset = by.id('save_preset');
+	this.filter.savePresetName = by.id('preset_name');
 
 	this.filter.refresh = by.id('refresh-table');
 	this.filter.reset = by.id('reset-table');
@@ -69,10 +72,10 @@ var Filter = function(timeout) {
 	this.filter.fields = {};
 	this.filter.fields.hideDD = by.css('.dropdown-backdrop');
 
-	this.filter.fields.searchBox = by.css('.btn-group.bootstrap-select.form-control.open > .dropdown-menu.open > .bs-searchbox > input');
+	this.filter.fields.searchBox = by.css('.btn-group.bootstrap-select.open > .dropdown-menu.open > .bs-searchbox > input');
 
 	this.filter.fields.selected = by.id('selectedFilter');
-	this.filter.fields.selected.active = by.css('.btn-group.bootstrap-select.form-control > button');
+	this.filter.fields.selected.active = by.css('.btn-group.bootstrap-select > button');
 
 	this.filter.fields.applicant = by.id('btn_filter_name');
 	this.filter.fields.applicant.openDD = by.css('button[data-id="btn_filter_name"]');
@@ -112,6 +115,9 @@ var Filter = function(timeout) {
 
 	this.filter.fields.rstatus = by.id('btn_filter_review');
 	this.filter.fields.rstatus.openDD = by.css('button[data-id="btn_filter_review"]');
+
+	this.filter.preset = by.id('preset');
+	this.filter.preset.openDD = by.css('button[data-id="preset"]');
 };
 
 Filter.prototype.waitForModalOpen = function() {
@@ -180,9 +186,18 @@ Filter.prototype.getSelectedElement = function() {
 };
 
 Filter.prototype.selectIthElement = function(index) {
-	var elem = by.css('.btn-group.bootstrap-select.form-control.open > .dropdown-menu.open > .dropdown-menu.inner > li[data-original-index="'+index+'"] > a');
+	var elem = by.css('.btn-group.bootstrap-select.open > .dropdown-menu.open > .dropdown-menu.inner > li[data-original-index="'+index+'"] > a');
 	return this.utils.waitForElementClickable(elem, this.timeout)
 		.then(element(elem).click());
+};
+
+Filter.prototype.saveFilter = function(name){
+	return this.utils.waitForElementClickable(this.filter.savePresetName, 
+		this.timeout)
+		.then(this.utils.clearThenSendKeys(element(this.filter.savePresetName), 
+			name))
+		.then(this.utils.waitForElementClickable(this.filter.savePreset, 
+			this.timeout).then(element(this.filter.savePreset).click()));
 };
 
 Filter.prototype.searchText = function(text) {

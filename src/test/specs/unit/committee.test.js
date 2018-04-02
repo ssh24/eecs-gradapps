@@ -423,8 +423,144 @@ describe('Committee Test', function() {
 			});
 		});
 
-		describe.skip('- filter presets', function() {
-			// stub for filter preset tests
+		describe('- filter presets', function() {
+			afterEach(function cleanUp() {
+				filter.resetFilteredTable();
+			});
+
+			it('- add a new preset', function() {
+				filter.openFilterModal().then(filter.waitForModalOpen.call(filter))
+					.then(filter.toggleColumn.call(filter, filter.filter.cols.applicant))
+					.then(filter.toggleColumn.call(filter, filter.filter.cols.degree))
+					.then(filter.toggleColumn.call(filter, filter.filter.cols.rstatus))
+					.then(expect(filter.getColumnIndex.call(filter, filter.filter.cols.applicant.index)).to
+						.eventually.contain('1'))
+					.then(expect(filter.getColumnIndex.call(filter, filter.filter.cols.degree.index)).to
+						.eventually.contain('2'))
+					.then(expect(filter.getColumnIndex.call(filter, filter.filter.cols.rstatus.index)).to
+						.eventually.contain('3'))
+					.then(expect(filter.columnIsSelected.call(filter, 'Applicant Name'))
+						.to.eventually.be.true)
+					.then(expect(filter.columnIsSelected.call(filter, 'Degree Applied For'))
+						.to.eventually.be.true)
+					.then(expect(filter.columnIsSelected.call(filter, 'My Review Status'))
+						.to.eventually.be.true)
+					.then(filter.openFieldDD.call(filter, filter.filter.fields
+						.degree.openDD))
+					.then(expect(filter.isFieldDDOpen.call(filter, filter.filter
+						.fields.degree.openDD)).to.eventually.be.true)
+					.then(filter.searchText.call(filter, 'm'))
+					.then(filter.selectIthElement.call(filter, 3))
+					.then(expect(filter.getSelectedElement.call(filter)).to
+						.eventually.contain('MASc'))
+					.then(expect(filter.getSelectedFilter.call(filter)).to.eventually
+						.contain('Degree Applied For = MASc'))
+					.then(filter.saveFilter.call(filter, 'To be updated later....'))
+					.then(expect(browser.getCurrentUrl()).to.eventually.contain('savePreset'))
+					.then(expect(committee.applicationTableIsDisplayed.call(committee)).to.eventually.be.true)
+					.then(expect(committee.tableHeaderExists.call(committee)).to.eventually.be.true)
+					.then(expect(committee.tableBodyExists.call(committee)).to.eventually.be.true)
+					.then(expect(committee.getTableColumns.call(committee)).to.eventually.equal(4))
+					.then(expect(committee.getColumnName.call(committee, 0)).to.eventually.equal('Applicant Name'))
+					.then(expect(committee.getColumnName.call(committee, 1)).to.eventually.equal('Degree Applied For'))
+					.then(expect(committee.getColumnName.call(committee, 2)).to.eventually.equal('My Review Status'))
+					.then(expect(committee.getColumnName.call(committee, 3)).to.eventually.equal('Actions'))
+					.then(filter.openFilterModal())
+					.then(filter.waitForModalOpen.call(filter))
+					.then(filter.openFieldDD.call(filter, filter.filter.preset.openDD))
+					.then(expect(filter.isFieldDDOpen.call(filter, filter.filter.preset.openDD)).to.eventually.be.true)
+					.then(filter.searchText.call(filter, 'To be updated later....'))
+					.then(filter.selectIthElement.call(filter, 1))
+					.then(expect(filter.getSelectedElement.call(filter)).to.eventually.contain('To be updated later....'))
+					.then(expect(filter.getColumnIndex.call(filter, filter.filter.cols.applicant.index)).to
+						.eventually.contain('1'))
+					.then(expect(filter.getColumnIndex.call(filter, filter.filter.cols.degree.index)).to
+						.eventually.contain('2'))
+					.then(expect(filter.getColumnIndex.call(filter, filter.filter.cols.rstatus.index)).to
+						.eventually.contain('3'))
+					.then(expect(filter.columnIsSelected.call(filter, 'Applicant Name'))
+						.to.eventually.be.true)
+					.then(expect(filter.columnIsSelected.call(filter, 'Degree Applied For'))
+						.to.eventually.be.true)
+					.then(expect(filter.columnIsSelected.call(filter, 'My Review Status'))
+						.to.eventually.be.true)
+					.then(expect(filter.getSelectedFilter.call(filter)).to.eventually
+						.contain('Degree Applied For = MASc'))
+					.then(filter.closeFilterModal.call(filter));
+			});
+
+			it('- update an existing preset', function() {
+				//first verify the contents of the existing filter (that was set up in the test before)
+				filter.openFilterModal().then(filter.waitForModalOpen.call(filter))
+					.then(filter.openFieldDD.call(filter, filter.filter.preset.openDD))
+					.then(expect(filter.isFieldDDOpen.call(filter, filter.filter.preset.openDD)).to.eventually.be.true)
+					.then(filter.searchText.call(filter, 'To be updated later....'))
+					.then(filter.selectIthElement.call(filter, 1))
+					.then(expect(filter.getSelectedElement.call(filter)).to
+						.eventually.contain('To be updated later....'))
+					.then(expect(filter.getColumnIndex.call(filter, filter.filter.cols.applicant.index)).to
+						.eventually.contain('1'))
+					.then(expect(filter.getColumnIndex.call(filter, filter.filter.cols.degree.index)).to
+						.eventually.contain('2'))
+					.then(expect(filter.getColumnIndex.call(filter, filter.filter.cols.rstatus.index)).to
+						.eventually.contain('3'))
+					.then(expect(filter.columnIsSelected.call(filter, 'Applicant Name'))
+						.to.eventually.be.true)
+					.then(expect(filter.columnIsSelected.call(filter, 'Degree Applied For'))
+						.to.eventually.be.true)
+					.then(expect(filter.columnIsSelected.call(filter, 'My Review Status'))
+						.to.eventually.be.true)
+					.then(expect(filter.getSelectedFilter.call(filter)).to.eventually
+						.contain('Degree Applied For = MASc'))
+					.then(filter.toggleColumn.call(filter, filter.filter.cols.applicant))
+					.then(filter.toggleColumn.call(filter, filter.filter.cols.applicant))
+					.then(expect(filter.getColumnIndex.call(filter, filter.filter.cols.degree.index)).to
+						.eventually.contain('1'))
+					.then(expect(filter.getColumnIndex.call(filter, filter.filter.cols.rstatus.index)).to
+						.eventually.contain('2'))
+					.then(expect(filter.getColumnIndex.call(filter, filter.filter.cols.applicant.index)).to
+						.eventually.contain('3'))
+					.then(expect(filter.columnIsSelected.call(filter, 'Applicant Name'))
+						.to.eventually.be.true)
+					.then(expect(filter.columnIsSelected.call(filter, 'Degree Applied For'))
+						.to.eventually.be.true)
+					.then(expect(filter.columnIsSelected.call(filter, 'My Review Status'))
+						.to.eventually.be.true)
+					.then(expect(filter.getSelectedFilter.call(filter)).to.eventually
+						.contain('Degree Applied For = MASc'))
+					.then(filter.saveFilter.call(filter, 'To be updated later....'))
+					.then(expect(browser.getCurrentUrl()).to.eventually.contain('savePreset'))
+					.then(expect(committee.applicationTableIsDisplayed.call(committee)).to.eventually.be.true)
+					.then(expect(committee.tableHeaderExists.call(committee)).to.eventually.be.true)
+					.then(expect(committee.tableBodyExists.call(committee)).to.eventually.be.true)
+					.then(expect(committee.getTableColumns.call(committee)).to.eventually.equal(4))
+					.then(expect(committee.getColumnName.call(committee, 0)).to.eventually.equal('Degree Applied For'))
+					.then(expect(committee.getColumnName.call(committee, 1)).to.eventually.equal('My Review Status'))
+					.then(expect(committee.getColumnName.call(committee, 2)).to.eventually.equal('Applicant Name'))
+					.then(expect(committee.getColumnName.call(committee, 3)).to.eventually.equal('Actions'))
+					.then(filter.openFilterModal().then(filter.waitForModalOpen.call(filter))
+						.then(filter.openFieldDD.call(filter, filter.filter.preset.openDD))
+						.then(expect(filter.isFieldDDOpen.call(filter, filter.filter.preset.openDD)).to.eventually.be.true)
+						.then(filter.searchText.call(filter, 'To be updated later....'))
+						.then(filter.selectIthElement.call(filter, 1)))
+					.then(expect(filter.getSelectedElement.call(filter)).to
+						.eventually.contain('To be updated later....'))
+					.then(expect(filter.getColumnIndex.call(filter, filter.filter.cols.degree.index)).to
+						.eventually.contain('1'))
+					.then(expect(filter.getColumnIndex.call(filter, filter.filter.cols.rstatus.index)).to
+						.eventually.contain('2'))
+					.then(expect(filter.getColumnIndex.call(filter, filter.filter.cols.applicant.index)).to
+						.eventually.contain('3'))
+					.then(expect(filter.columnIsSelected.call(filter, 'Applicant Name'))
+						.to.eventually.be.true)
+					.then(expect(filter.columnIsSelected.call(filter, 'Degree Applied For'))
+						.to.eventually.be.true)
+					.then(expect(filter.columnIsSelected.call(filter, 'My Review Status'))
+						.to.eventually.be.true)
+					.then(expect(filter.getSelectedFilter.call(filter)).to.eventually
+						.contain('Degree Applied For = MASc'))
+					.then(filter.closeFilterModal.call(filter));
+			});
 		});
 
 		describe('- filter highlights', function() {

@@ -10,20 +10,27 @@ connection.connect();
 var Review = require('../controller/review');
 var review = new Review(connection);
 
-module.exports = function(app, utils, application, fns) {
-	var basicCommittee = fns.concat([getApps]);
-	var filterCommittee = fns.concat([filterApps]);
-	var filterPost = fns.concat([filterApps]);
+module.exports = function(app, utils, application, faculty_member, fns) {
+	var basicCommittee = fns.concat([getApps, getPresets]);
+
+	var filterCommittee = fns.concat([filterApps, getPresets]);
+	var filterPost = fns.concat([filterApps, getPresets]);
+
+	var presetCommittee = fns.concat([filterApps, getPresets]);
+	var presetPost = fns.concat([filterApps, setPreset, getPresets]);
+
 	var getReview = fns.concat([setUpReview, getReviews]);
 	var saveReviews = fns.concat([saveReview, getApps]);
 
 	var builtSql, builtOptions, builtHighlight;
 	var prevAppId, prevStatus;
 
+	var role = 'Committee Member';
+	var route = 'committee';
+
 	// committee page route
-	app.get('/roles/committee', basicCommittee, function(req, res) {
+	app.get('/roles/' + route, basicCommittee, function(req, res) {
 		var userInfo = req.user;
-		var role = 'Committee Member';
 		res.render('committee', {
 			title: 'Review Applications',
 			message: req.flash('tableMessage'),
@@ -39,13 +46,13 @@ module.exports = function(app, utils, application, fns) {
 			showfilter: true,
 			review: false,
 			highlightText: {},
-			highlightFunc: highlight
+			highlightFunc: highlight,
+			presets: req.presets
 		});
 	});
 
-	app.post('/roles/committee/', saveReviews, function(req, res) {
+	app.post('/roles/' + route, saveReviews, function(req, res) {
 		var userInfo = req.user;
-		var role = 'Committee Member';
 		res.render('committee', {
 			title: 'Review Applications',
 			message: req.flash('tableMessage'),
@@ -61,13 +68,13 @@ module.exports = function(app, utils, application, fns) {
 			showfilter: true,
 			review: false,
 			highlightText: {},
-			highlightFunc: highlight
+			highlightFunc: highlight,
+			presets: req.presets
 		});
 	});
 
-	app.get('/roles/committee/filter', filterCommittee, function(req, res) {
+	app.get('/roles/' + route + '/filter', filterCommittee, function(req, res) {
 		var userInfo = req.user;
-		var role = 'Committee Member';
 		res.render('committee', {
 			title: 'Filtered Applications',
 			message: req.flash('tableMessage'),
@@ -83,13 +90,13 @@ module.exports = function(app, utils, application, fns) {
 			showfilter: true,
 			review: false,
 			highlightText: req.apps.highlightText,
-			highlightFunc: highlight
+			highlightFunc: highlight,
+			presets: req.presets
 		});
 	});
 
-	app.post('/roles/committee/filter', filterPost, function(req, res) {
+	app.post('/roles/' + route + '/filter', filterPost, function(req, res) {
 		var userInfo = req.user;
-		var role = 'Committee Member';
 		res.render('committee', {
 			title: 'Filtered Applications',
 			message: req.flash('tableMessage'),
@@ -105,11 +112,12 @@ module.exports = function(app, utils, application, fns) {
 			showfilter: true,
 			review: false, 
 			highlightText: req.apps.highlightText,
-			highlightFunc: highlight
+			highlightFunc: highlight,
+			presets: req.presets
 		});
 	});
 
-	app.get('/roles/committee/review', getReview, function(req, res) {
+	app.get('/roles/' + route + '/review', getReview, function(req, res) {
 		var userInfo = req.user;
 		var role = 'Committee Member';
 		res.render('review', {
@@ -147,6 +155,134 @@ module.exports = function(app, utils, application, fns) {
 			review: true
 		});
 	});
+
+	app.get('/roles/' + route + '/savePreset', presetCommittee, function(req, res) {
+		var userInfo = req.user;
+		var role = 'Committee Member';
+		res.render('committee', {
+			title: 'Filtered Applications',
+			message: req.flash('tableMessage'),
+			user: userInfo.id,
+			fullname: userInfo.fullname,
+			roles: userInfo.roles,
+			role: role,
+			apps: req.apps.appls || [],
+			fields: req.apps.flds ? (req.apps.flds.fields || []) : [],
+			hidden: req.apps.flds ? (req.apps.flds.hidden || []) : [],
+			applicants: req.apps.applicants || [],
+			filter: req.apps.filter || false,
+			showfilter: true,
+			review: false,
+			highlightText: req.apps.highlightText || [],
+			highlightFunc: highlight,
+			presets: req.presets
+		});
+	});
+
+	app.post('/roles/' + route + '/savePreset', presetPost, function(req, res) {
+		var userInfo = req.user;
+		res.render('committee', {
+			title: 'Filtered Applications',
+			message: req.flash('tableMessage'),
+			user: userInfo.id,
+			fullname: userInfo.fullname,
+			roles: userInfo.roles,
+			role: role,
+			apps: req.apps.appls || [],
+			fields: req.apps.flds ? (req.apps.flds.fields || []) : [],
+			hidden: req.apps.flds ? (req.apps.flds.hidden || []) : [],
+			applicants: req.apps.applicants || [],
+			filter: req.apps.filter || false,
+			showfilter: true,
+			review: false,
+			highlightText: req.apps.highlightText || [],
+			highlightFunc: highlight,
+			presets: req.presets
+		});
+	});
+
+	//middleware that will help load a users preset to the filter form.
+	function getPresets(req, res, next) {
+		faculty_member.getPresets(req.user.id, role, function(err, results) {
+			if (err) {
+				next(err);
+			} else {
+				req.presets = results[0]['presetCommittee'];
+				next();
+			}
+		});
+	}
+
+	//middleware that will help update/set a users preset from the filter form
+	function setPreset(req, res, next) {
+		var activeCols = req.body.selectedCol;
+		var presetName = req.body.preset_name;
+		var cols;
+		if (activeCols) {
+			cols = activeCols.slice(); //  copy the active cols.
+		} else {
+			cols = [];
+		}
+		var filters = [];
+		var colValues = [];
+		var filterValues = [];
+		for (var i = 0; i < cols.length; i++) {
+			colValues.push(i + 1);
+		}
+	
+		//add the nonactive ones to the end. with empty values
+		if (!cols.includes('btn_col_date')) {
+			cols.push('btn_col_date');
+			colValues.push('');
+		}
+		if (!cols.includes('btn_col_name')) {
+			cols.push('btn_col_name');
+			colValues.push('');
+		}
+		if (!cols.includes('btn_col_degree')) {
+			cols.push('btn_col_degree');
+			colValues.push('');
+		}
+		if (!cols.includes('btn_col_review')) {
+			cols.push('btn_col_review');
+			colValues.push('');
+		}
+		if (!cols.includes('btn_col_actions')) {
+			cols.push('btn_col_actions');
+			colValues.push('');
+		}
+
+		//add filters to array and their values
+		filters.push('btn_filter_name');
+		if (req.body.btn_filter_name && req.body.btn_filter_name !== 'Any' &&
+			req.body.btn_filter_name !== '') {
+			filterValues.push(req.body.btn_filter_name);
+		} else {
+			filterValues.push('');
+		}
+		filters.push('btn_filter_degree');
+		if (req.body.btn_filter_degree && req.body.btn_filter_degree !== 'Any' &&
+			req.body.btn_filter_degree !== '') {
+			filterValues.push(req.body.btn_filter_degree);
+		} else {
+			filterValues.push('');
+		}
+		filters.push('btn_filter_review');
+		if (req.body.btn_filter_review && req.body.btn_filter_review !== 'Any' &&
+			req.body.btn_filter_review !== '') {
+			filterValues.push(req.body.btn_filter_review);
+		} else {
+			filterValues.push('');
+		}
+
+		var options = {
+			column_name: cols,
+			column_val: colValues,
+			filter_name: filters,
+			filter_val: filterValues
+		};
+		faculty_member.updatePreset(req.user.id, role, presetName, options, next);
+	}
 
 	function getApps(req, res, next) {
 		req.apps = {};
@@ -302,7 +438,7 @@ module.exports = function(app, utils, application, fns) {
 					fields.push(key);
 			
 				if (options) {
-					if (options.actionFieldNum) 
+					if (options.actionFieldNum)
 						fields.splice(options.actionFieldNum, 0, 'Actions');
 					else 
 						fields.push('Actions');
@@ -352,6 +488,7 @@ module.exports = function(app, utils, application, fns) {
 				} else if (cols[i] === 'btn_col_degree') {
 					sqlCol += ',application.Degree as `Degree Applied For`';
 				} else if (cols[i] === 'btn_col_review') {
+					sqlCol += ',application_review.Status as `My Review Status`';
 					reviewField = true;
 				} else if (cols[i] === 'btn_col_actions') {
 					actionFieldNum = i + 1; // offset of the appId
@@ -360,8 +497,6 @@ module.exports = function(app, utils, application, fns) {
 		} else {
 			reviewField = true;
 		}
-
-		sqlCol = sqlCol ? sqlCol + ',application_review.Status as `My Review Status`': null;
 
 		var fromClause = ' from application inner join application_review';
 		sql = (sqlCol ? sqlCol : defaultSql) + fromClause;
