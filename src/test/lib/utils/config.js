@@ -3,9 +3,16 @@
 module.exports = {
 	'credentials' :{
 		'app' : {
-			'username': 'admin',
-			'password': 'admin',
-			'fullname': 'John Doe'
+			'admin': {
+				'username': 'admin',
+				'password': 'admin',
+				'fullname': 'John Doe'
+			},
+			'committee': {
+				'username': 'von',
+				'password': 'committee',
+				'fullname': 'Von Brakespear'
+			}
 		},
 		'database' : {
 			'host': process.env.MYSQL_HOST,
@@ -39,15 +46,15 @@ module.exports = {
 			'faculty_member': ['fm_Id', 'fm_Username', 'fm_Lname', 'fm_Fname', 
 				'fm_Email', 'fm_Roles', 'presetProf', 'presetCommittee', 
 				'presetAdmin'],
-			'application': ['app_Id', 'app_Date', 'app_Session', 'LName', 
+			'application': ['app_Id', 'student_Id', 'app_Date', 'app_Session', 'LName', 
 				'FName', 'Email', 'Gender', 'GPA', 'GPA_FINAL', 'GRE', 'Rank',
 				'Degree', 'VStatus', 'committeeReviewed', 'FOI', 'prefProfs', 
 				'profContacted', 'profRequested', 'letterDate', 
 				'programDecision', 'studentDecision', 'declineReason', 
-				'ygsAwarded', 'app_Comments'],
+				'ygsAwarded', 'TOEFL', 'IELTS', 'YELT'],
 			'application_review': ['committeeId', 'appId', 'assignDate', 
-				'Background', 'researchExp', 'Comments', 'c_Rank', 'Status', 
-				'lastReminded'],
+				'Background', 'researchExp', 'Letter', 'Comments', 'c_Rank', 'Status', 
+				'lastReminded', 'PreviousInst', 'UniAssessment'],
 			'application_seen': ['fmId', 'appId', 'seen'],
 			'university': ['u_Id', 'u_Name', 'u_Assessments'],
 			'foi': ['field_Id', 'field_Name'],

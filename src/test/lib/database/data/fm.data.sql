@@ -53,8 +53,8 @@ INSERT INTO `FACULTY_MEMBER` (`fm_Lname`, `fm_Fname`, `fm_Email`, `fm_Roles`)
 
 ---- ADMIN & COMMITTEE MEMBER ROLE ----
 
-INSERT INTO `FACULTY_MEMBER` (`fm_Lname`, `fm_Fname`, `fm_Email`, `fm_Roles`) 
-    VALUES ('Brakespear', 'Von', 'vbrakespearf@e-recht24.de', '["Admin", "Committee Member"]');
+INSERT INTO `FACULTY_MEMBER` (`fm_Username`, `fm_Lname`, `fm_Fname`, `fm_Email`, `fm_Roles`) 
+    VALUES ('von', 'Brakespear', 'Von', 'vbrakespearf@e-recht24.de', '["Admin", "Committee Member"]');
 INSERT INTO `FACULTY_MEMBER` (`fm_Lname`, `fm_Fname`, `fm_Email`, `fm_Roles`) 
     VALUES ('Dahlen', 'Davine', 'ddahleng@odnoklassniki.ru', '["Admin", "Committee Member"]');
 

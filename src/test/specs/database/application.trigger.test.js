@@ -89,4 +89,39 @@ describe('Application Triggers', function() {
 					});
 			});
 	});
+
+	describe('get review applications', function() {
+		it('get default review applications for valid member', function(done) {
+			application.getReviewApplications(null, 16, function(err, result) {
+				if(err) return done(err);
+				assert(result, 'Result should exist');
+				done();
+			});
+		});
+
+		it('get default review applications for invalid member', function(done) {
+			application.getReviewApplications(null, 0, function(err, result) {
+				assert(err, 'Error should exist');
+				assert(!result, 'Result should not exist');
+				done();
+			});
+		});
+
+		it('get default review applications for valid member with no assigned reviews', 
+			function(done) {
+				application.getReviewApplications(null, 20, function(err, result) {
+					assert(err, 'Error should exist');
+					assert(!result, 'Result should not exist');
+					done();
+				});
+			});
+
+		it('get default review applications for not committee member', function(done) {
+			application.getReviewApplications(null, 3, function(err, result) {
+				assert(err, 'Error should exist');
+				assert(!result, 'Result should not exist');
+				done();
+			});
+		});
+	});
 });
