@@ -25,15 +25,13 @@
 \date{\today} % Display a given date or no date
 
 \begin{document}
-\title{Grad Apps 2.0 \\ Committee Member User Manual}
+\title{Grad Apps 2.0 \\ Admission Committee Member User Manual}
 \maketitle
 
 \newpage
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \tableofcontents
-\listoffigures
-\listoftables
 
 \newpage
 
@@ -43,22 +41,22 @@
 \clearpage
 \section{User Overview}
 
-The \emph{committee member} in our system under description is a subset of EECS graduate program members who are in charge of reviewing new applications. In addition to reviewing an application, a graduate committee member can view past reviewed applications and apply filter on them. A breakdown of a \emph{committee member's} permissible actions are listed below.
+The \emph{admission committee member} in our system under description is a subset of EECS graduate program members who are in charge of reviewing new applications. In addition to reviewing an application, an admission committee member can view past reviewed applications and apply filters on them. A breakdown of a \emph{committee member's} permissible actions is listed below.
 
 \smallskip
 \noindent A \emph{committee member}:
 
 \begin{mylist}
 \item Shall be able to view current and past reviewed application(s).
-\item Shall be able to apply filter on current and past reviewed application(s).
+\item Shall be able to apply filters on current and past reviewed application(s).
 \item Shall be able to review an assigned application(s).
 \item Shall be able to save a review as a draft for later completion.
-\item Shall be able to add new university assessments in the system to be used in a review. Such new assessment will be added globally to the system and can be seen and used by other committee member when filling out a review.
+\item Shall be able to add new university assessments in the system to be used in a review. Such a new assessment will be added globally to the system and can be seen and used by other committee members when filling out a review.
 \end{mylist}
 
 \section{Authentication}
 
-In order for an user to sign in to the application as a committee member, they need to be assigned to the \emph{Committee Member} role by the system administrator. Once the user has been granted access to the role, they can sign in to the system and select the \emph{Committee Member} role.
+In order for a user to sign in to the application as a committee member, they need to be assigned to the \emph{Committee Member} role by the system administrator. Once the user has been granted access to the role, they can sign in to the system and select the \emph{Committee Member} role.
 
 \begin{figure}[!htb]
 \begin{center}
@@ -69,7 +67,7 @@ In order for an user to sign in to the application as a committee member, they n
 \end{figure}
 
 \bigskip
-\noindent \textbf{Note:} Once the user has been authenticated, the system automatically signs the user out after maximum of 15 minutes of inactivity within the application. This is to ensure the security of the overall system to protect both student confidential data and logged in user data.
+\noindent \textbf{Note:} Once the user has been authenticated, the system automatically signs the user out after 15 minutes of inactivity within the application. This is to ensure the security of the overall system to protect both student confidential data and logged in user data.
 
 
 \section{Committee Member Portal}
@@ -78,21 +76,21 @@ After the user has signed in to the system and selected the \emph{Committee Memb
 
 \begin{figure}[!htb]
 \begin{center}
-\includegraphics[width=.9\textwidth]{images/default_table.png}
+\includegraphics[width=.8\textwidth]{images/default_table.png}
 \end{center}
 \caption{Committee Member Portal - With Review Applications}
 \label{fig:cm_portal}
 \end{figure}
 
 \bigskip
-\noindent In the actions column, the \emph{View Application} link opens the student application in PDF format uploaded by the system administrator whereas the other review options opens different views of the review form depending on the stage of the review. Refer to Section \ref{sec:reviews} for more information on reviewing an application.
+\noindent In the actions column, the \emph{View Application PDF} link opens the student application in PDF format uploaded by the system administrator whereas the other Review options open different views of the review form depending on the stage of the review. Refer to Section \ref{sec:reviews} for more information on reviewing an application.
 
-\newpage
+\bigskip
 \noindent If there are no reviews assigned to the user, it displays a message to the user.
 
 \begin{figure}[!htb]
 \begin{center}
-\includegraphics[width=.9\textwidth]{images/err_default.png}
+\includegraphics[width=.8\textwidth]{images/err_default.png}
 \end{center}
 \caption{Committee Member Portal - With No Review Application}
 \label{fig:cm_portal_err}
@@ -101,11 +99,10 @@ After the user has signed in to the system and selected the \emph{Committee Memb
 \newpage
 \section{Filtering Review Applications}
 
-One of the most powerful tool that Grad Apps 2.0 offers is filtering applications. It is a core functionality that allows our end user to find the best match applicant out of hundreds that are received every year.
+One of the most powerful tools that Grad Apps 2.0 offers is filtering applications. As a committee member, one can filter past and current assigned review applications. 
 
 \bigskip
-
-\noindent As a committee member, one can filter past and current assigned review applications. The following image depicts the fields a committee member can apply filtering on as well as the columns they want to see on the resulted table. To open the filter modal, simply click on the \emph{pencil} symbol on the top right corner of the portal page.
+\noindent The following image depicts the fields a committee member can apply filtering on as well as the columns they want to see on the resulting table. To open the filter view, simply click on the \emph{pencil} symbol on the top right corner of the portal page.
 
 \begin{figure}[!htb]
 \begin{center}
@@ -118,7 +115,7 @@ One of the most powerful tool that Grad Apps 2.0 offers is filtering application
 \newpage
 \subsection{Selecting Columns}
 
-After opening the filter modal, one can select one or more columns. Selecting a column numbers them in order they will be displayed after the filter is applied. The following image depicts selecting four columns in order: \emph{Date Assigned, Degree Applied For, My Review Status and Actions}.
+After opening the filter view, one can select one or more columns. Selecting a column numbers them in the order they will be displayed after the filter is applied. The following image depicts selecting four columns in order: \emph{Date Assigned, Degree Applied For, My Review Status and Actions}.
 
 \bigskip
 \noindent \textbf{Note}: When submitting a filter with no selected columns, all default columns will be used, i.e \emph{Date Assigned, Applicant Name, Degree Applied For, My Review Status and Actions}.
@@ -133,7 +130,7 @@ After opening the filter modal, one can select one or more columns. Selecting a 
 
 \subsection{Selecting Filter}
 
-After opening the filter modal, one can select one or more filters. Selecting a filter can be done only on \emph{Applicant Name}, \emph{Degree Applied For} and \emph{My Review Status} fields. Filtering can be done by selecting values using search text dropdown. The following image depicts selecting a filter for \emph{Degree Applied For} where the Degree is equal to \emph{MSc}.
+After opening the filter view, one can select one or more filters. Selecting a filter can be done only on \emph{Applicant Name}, \emph{Degree Applied For} and \emph{My Review Status} fields. Filtering can be done by selecting values using the selection dropdown which allows live-text searching. The following image depicts selecting a filter for \emph{Degree Applied For} where the Degree is equal to \emph{MSc}.
 
 \bigskip
 \noindent \textbf{Note}: When submitting a filter with no selected filters, the default table will be loaded.
@@ -159,7 +156,7 @@ After opening the filter modal, one can select one or more filters. Selecting a 
 \end{figure}
 
 \subsection{Filter Presets}
-As an end user one can opt to save frequently used filter as presets that will be automatically loaded for the user's login session in that specified role. Saving a filter requires a preset name, the selected rows user wants to see and the selected filter. 
+As an end user one can opt to save frequently used filters as presets that will be automatically loaded for the user's login session in that specified role. Saving a filter requires a preset name, the selected rows the user wants to see and the selected filter. 
 
 \bigskip
 \noindent The following image depicts on how to save a filter preset:
@@ -197,7 +194,7 @@ Once the user has selected columns and selected filters, they can submit the fil
 \noindent \textbf{Note}: When submitting a filter with no selected filters, the default table will be loaded.
 
 \bigskip
-\noindent The following example filter is used to demonstrate applying filter and getting the resulted table back:
+\noindent The following example filter is used to demonstrate applying a filter and getting the resulted table back:
 
 \bigskip
 \noindent \textbf{The columns selected for the filter}:
@@ -213,7 +210,7 @@ Once the user has selected columns and selected filters, they can submit the fil
 \end{enumerate}
 
 \bigskip
-\noindent The images below depicts the filter modal before applying the filter and the resulted filtered table. The fields used for filtering are also highlighted for emphasizing the filtered fields on the resulted table.
+\noindent The images below depicts the filter view before applying the filter and the resulting filtered table. The fields used for filtering are also highlighted for emphasizing the filtered fields in the resulting table.
 
 \begin{figure}[!htb]
 \begin{center}
@@ -231,16 +228,16 @@ Once the user has selected columns and selected filters, they can submit the fil
 \label{fig:resulted_table}
 \end{figure}
 
-
+\clearpage
 \newpage
 \section{Ordering Review Applications}
-As a user one can order the fields, either in ascending or descending order, of the table that lists all current and past review applications. The fields that support ordering on review application table are: \emph{Date Assigned}, \emph{Applicant Name}, \emph{Degree Applied For} and \emph{My Review Status}. One can also apply multiple ordering by holding the SHIFT key on the keyboard and toggling the order.
+As a user one can order the fields, either in ascending or descending order, of the table that lists all current and past review applications. The fields that support ordering on review application table are: \emph{Date Assigned}, \emph{Applicant Name}, \emph{Degree Applied For} and \emph{My Review Status}.
 
 \bigskip
-\noindent \textbf{Note}: Ordering fields can be done on both filtered and unfiltered review application list.
+\noindent \textbf{Note}: Ordering fields can be done on both filtered and unfiltered review application lists.
 
 \bigskip
-\noindent The following images depicts on how to order review applications using the \emph{Date Assigned} field in ascending an descending order.
+\noindent The following images depicts on how to order review applications using the \emph{Date Assigned} field in ascending and descending order.
 
 \begin{figure}[!htb]
 \begin{center}
@@ -259,6 +256,19 @@ As a user one can order the fields, either in ascending or descending order, of 
 \end{figure}
 
 \newpage
+\bigskip
+\noindent \textbf{Note}: One can also apply multiple ordering by holding the SHIFT key on the keyboard and toggling the order. The following images depicts ordering applications with the \emph{Date Assigned} field in ascending order and \emph{Applicant Name} in descending order.
+
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.9\textwidth]{images/multiple_order.png}
+\end{center}
+\caption{Ordering using multiple fields}
+\label{fig:multiple_order}
+\end{figure}
+
+\clearpage
+\newpage
 \section{Reviews} \label{sec:reviews}
 As a user one has access to complete application reviews assigned to them by the system administrator. The review process can have \textbf{three} different statuses shown to the user on the default portal:
 \begin{itemize}
@@ -268,7 +278,7 @@ As a user one has access to complete application reviews assigned to them by the
 \end{itemize}
 
 \bigskip
-\noindent The following list denotes the fields in a \textbf{not} submitted review that and their requirement status:
+\noindent The following list denotes the fields in a review form that is \textbf{not} submitted yet and their requirement status:
 \begin{table}[h]
 \centering
 \begin{tabular}{|c | c |}
@@ -304,7 +314,7 @@ As a user one has access to complete application reviews assigned to them by the
 As a user when a new review is received it will show on the portal. After that the user has the option of opening the review and start completing the form. The action for opening a new review will say \textbf{Start Review}.
 
 \bigskip
-\noindent The following image depicts an user opening a brand new review.
+\noindent The following image depicts user opening a brand new review.
 
 \begin{figure}[!htb]
 \begin{center}
@@ -315,7 +325,7 @@ As a user when a new review is received it will show on the portal. After that t
 \end{figure}
 
 \bigskip
-\noindent The following image depicts an user making no changes to the opened review and exiting out of the review form.
+\noindent The following image depicts user making no changes to the opened review and exiting out of the review form.
 
 \begin{figure}[!htb]
 \begin{center}
@@ -326,7 +336,7 @@ As a user when a new review is received it will show on the portal. After that t
 \end{figure}
 
 \subsection{Filling out a Review}
-As an end user one has the opportunity to analyse the application assigned for review. Table \ref{tbl:review_fields} outlines the fields in a review application and their required status. The following table specializes table \ref{tbl:review_fields} and displays the type of input each field takes.
+As an end user one has the opportunity to analyse the application assigned for review. Table \ref{tbl:review_fields} outlines the fields in a review application and their required status. The following table specializes Table \ref{tbl:review_fields} and displays the type of input each field takes.
 
 \begin{table}[h]
 \centering
@@ -362,10 +372,10 @@ An end user can select one or more institutions the applicant has attended in th
 \clearpage
 \newpage
 \subsection{Saving a review as Draft}
-As an end user one has the opportunity to save an on-going review as draft for future completion. The use of drafting review is to save changes to an on-going reviews so that the user can pick it up and continue some time later.
+As an end user one has the opportunity to save an on-going review as draft for future completion. The use of drafting a review is to save changes to an on-going review so that the user can pick it up and continue some time later.
 
 \bigskip
-\noindent The following images depicts an user making changes to an application review and then saving it as a draft. Consequently, the status of the review is changed to \textbf{Draft}. And if the user wants to continue working on the draft sometime later, the action for opening a drafted review will say \textbf{Continue Review}.
+\noindent The following images depicts a user making changes to an application review and then saving it as a draft. Consequently, the status of the review is changed to \textbf{Draft}. And if the user wants to continue working on the draft sometime later, the action for opening a drafted review will say \textbf{Continue Review}.
 
 \begin{figure}[!htb]
 \begin{center}
@@ -384,7 +394,7 @@ As an end user one has the opportunity to save an on-going review as draft for f
 \end{figure}
 
 \subsection{Submitting a Review}
-Once a review is completed, the user can submit the review. If the correct number of reviews for an application has been submitted depending on the applicant's visa status, the application will be automatically available for selection to the EECS Graduate Professors. The only required field needed for submitting a review is the final application rank that is to be decided by the committee member user upon analysing the application.
+Once a review is completed, the user can submit the review. If the correct number of reviews for an application has been submitted, the application will be automatically available for selection to the members of EECS Graduate Program. The only required field needed for submitting a review is the final application rank that is to be decided by the admission committee member upon analysing the application.
 
 \bigskip
 \noindent The following image depicts an end user submitting a review. 
@@ -398,7 +408,7 @@ Once a review is completed, the user can submit the review. If the correct numbe
 \end{figure}
 
 \bigskip
-\noindent Once the review is submitted, it will show up on the users dashboard with status as \textbf{Submitted}. The user action to view a submitted review will say \textbf{View Review}. Submitted reviews is only viewable as a plain text application form. The following images depicts viewing a submitted review.
+\noindent Once the review is submitted, it will show up on the user dashboard with status as \textbf{Submitted}. The user action to view a submitted review will say \textbf{View Review}. Submitted reviews are only viewable as a plain text application form. The following images depicts viewing a submitted review.
 
 \begin{figure}[!htb]
 \begin{center}
