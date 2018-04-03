@@ -1,6 +1,6 @@
 'use strict';
 
-/* login views file */
+/* role views file */
 
 var Utils = require('../lib/utils/shared-utils');
 
