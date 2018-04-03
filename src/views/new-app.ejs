@@ -1,0 +1,166 @@
+<% include partials/header %>
+    <div class="container">
+        <h3 class="text-center">New Application Form</h3>
+        <form id="new-app-form" action="/roles/admin/applications/new" method="POST" encType="multipart/form-data">
+
+            <div class="row" style="margin-bottom:10px">
+                <fieldset><legend style="color:blue;font-weight:bold;">Upload Application</legend>
+                
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <h5 for="app_file">Select Application File*</h5>
+                        <span class="btn btn-default btn-file"><input type="file" class="form-control-file" id="app_file" name="app_file" accept=".pdf" required></span>
+                        <p id="error-file" class="text-danger" hidden></p>            
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row" style="margin-bottom:20px">
+                <fieldset><legend style="color:blue;font-weight:bold;">General Information</legend>
+                
+                <div class="col-sm-2">
+                    <h5 for="app_Session">Session*</h5>
+                    <select id="app_Session" name="app_Session" class="form-control selectpicker show-menu-arrow" data-live-search="true" title="Select Session" required>
+                        <option>Fall</option>
+                        <option>Winter</option>
+                        <option>Summer</option>
+                    </select>
+                </div>
+
+                <div class="col-sm-2">
+                    <h5 for="student_Id">Student Number*</h5>
+                    <input type="text" class="form-control" placeholder="Student Number" id="student_Id" name="student_Id" pattern="\d{9}" required title = "Student number must be 9 digits">
+                </div>
+
+                <div class="col-sm-2">
+                    <h5 for="LName">Last Name*</h5>
+                    <input type="text" class="form-control" placeholder="Last Name" id="LName" name="LName" required>
+                </div>
+
+                <div class="col-sm-2">
+                    <h5 for="FName">First Name*</h5>
+                    <input type="text" class="form-control" placeholder="First Name" id="FName" name="FName" required>
+                </div>
+
+                <div class="col-sm-2">
+                    <h5 for="Email">Email*</h5>
+                    <input type="email" class="form-control" placeholder="Email" id="Email" name="Email" required>
+                </div>
+    
+                <div class="col-sm-2">
+                    <h5 for="Gender">Gender*</h5>
+                    <select id="Gender" name="Gender" class="form-control selectpicker show-menu-arrow" data-live-search="true" title="Select Gender" required>
+                        <option>Male</option>
+                        <option>Female</option>
+                        <option>Not Specified</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row" style="margin-bottom:20px">
+                <fieldset><legend style="color:blue;font-weight:bold;">Previous Grades</legend>
+
+                <div class="col-sm-2">
+                    <h5 for="GPA">GPA*</h5>
+                    <select id="GPA" name="GPA" class="form-control selectpicker" data-live-search="true" title="Select GPA" required>
+                        <% for(var i = 0; i < gpa.length; i++){ %>
+                            <option><%= gpa[i]%></option>
+                        <%}%>
+                    </select>
+                </div>
+
+                <div class="col-sm-2">
+                    <h5 for="GPA_FINAL">GPA Status</h5>
+                    <label class="radio-inline"><input type="radio" id="final" name="GPA_FINAL" value="final">Final</label>
+                    <label class="radio-inline"><input type="radio" id="interim" name="GPA_FINAL" value="interim">Interim</label>
+                </div>
+
+                <div class="col-sm-2">
+                    <h5 for="GRE">GRE</h5>
+                    <input type="text" class="form-control" placeholder="GRE" id="GRE" name="GRE" pattern="\d{3}/\d{1}\.[0|5]/\d{3}" title = "GRE scores must be in the form: int/decimal/int">
+                </div>
+
+                <div class="col-sm-2">
+                    <h5 for="TOEFL">TOEFL</h5>
+                    <input type="number" class="form-control" placeholder="TOEFL" id="TOEFL" name="TOEFL">
+                </div>
+
+                <div class="col-sm-2">
+                    <h5 for="IELTS">IELTS</h5>
+                    <input type="number" class="form-control" placeholder="IELTS" id="IELTS" name="IELTS" step=".5">
+                </div>
+
+                <div class="col-sm-2">
+                    <h5 for="YELT">YELT</h5>
+                    <input type="number" class="form-control" placeholder="YELT" id="YELT" name="YELT">
+                </div>
+
+            </div>
+
+            <div class="row" style="margin-bottom:10px">
+                <fieldset><legend style="color:blue;font-weight:bold;">Application Information</legend>
+
+                <div class="col-sm-2">
+                    <h5 for="VStatus">Visa Status*</h5>
+                    <select id="VStatus" name="VStatus" class="form-control selectpicker" data-live-search="true" title="Select Visa Status" required>
+                        <option>Domestic</option>
+                        <option>Visa</option>
+                    </select>
+                </div>
+
+                <div class="col-sm-2">
+                    <h5 for="Degree">Degree*</h5>
+                    <select id="Degree" name="Degree" class="form-control selectpicker" data-live-search="true" title="Select Degree" required>
+                        <option>MASc</option>
+                        <option>MSc</option>
+                        <option>PhD</option>
+                    </select>
+                </div>
+
+                <div class="col-sm-3">
+                    <h5 for="FOI">Field(s) of Interest*</h5>
+                    <select id="FOI" name="FOI" class="form-control selectpicker" data-live-search="true" title="Select Field(s) of Interest" multiple required>
+                        <% for(var i = 0; i < foi.length; i++){ %>
+                            <option><%= foi[i]%></option>
+                        <%}%>
+                    </select>
+                </div>
+
+                <div class="col-sm-3">
+                    <h5 for="prefProfs">Preferred Professor(s)*</h5>
+                    <select id="prefProfs" name="prefProfs" class="form-control selectpicker" data-live-search="true" title="Select Preferred Professor(s)" multiple required>
+                        <% for(var i = 0; i < profs.length; i++){ %>
+                            <option><%= profs[i]%></option>
+                        <%}%>
+                    </select>
+                </div>
+
+                <div class="col-sm-2">
+                    <h5 for="ygsAwarded">YGS Awarded</h5>
+                    <label class="radio-inline"><input type="radio" id="yes-ygs" name="ygsAwarded" value="yes">Yes</label>
+                    <label class="radio-inline"><input type="radio" id="no-ygs" name="ygsAwarded" value="no">No</label>
+                </div>
+    
+            </div>
+
+            <div class="row">
+                <hr>
+                <p>All fields with * are required</p>
+                <a id="new-close" href="/roles/admin/applications/" class="btn btn-danger btn-default"><span class="glyphicon glyphicon-remove"></span> Cancel Application</a>
+                <button id="new-submit" type="submit" name="create" class="btn btn-success btn-default pull-center"><span class="glyphicon glyphicon-cloud-upload"></span> Create Application</button>
+            </div>
+        </form>
+    </div>
+    <script src="/js/jquery-3.2.0.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/jquery.metadata.js"></script>
+
+    <script src="https://web.archive.org/web/20161124120603js_/http://www.papercut.com/products/free-software/are-you-sure/jquery.are-you-sure.js"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
+
+    <script src="/js/new-app.js"></script>
+</body>

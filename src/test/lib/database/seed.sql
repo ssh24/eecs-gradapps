@@ -79,6 +79,7 @@ CREATE TABLE `application` (
     `studentDecision` VARCHAR(50) DEFAULT NULL,
     `declineReason` LONGTEXT DEFAULT NULL,
     `ygsAwarded` TINYINT(1) NOT NULL DEFAULT 0,
+    `app_file` LONGBLOB,
     PRIMARY KEY(`app_Id`, `student_Id`)
 ) ENGINE=INNODB;
 
@@ -158,6 +159,16 @@ CREATE TABLE `foi` (
     PRIMARY KEY(`field_Id`)
 ) ENGINE=INNODB;
 
+-- GPA table
+-- @letter_grade: letter grade corressponding to the York University scale
+-- @grade_point: grade point corresponding to the York University scale
+
+CREATE TABLE `GPA` (
+    `letter_grade` ENUM('A+', 'A', 'B+', 'B', 'C+', 'C', 'D+', 'D', 'E', 'F') NOT NULL,
+    `grade_point` INT NOT NULL,
+    PRIMARY KEY(`letter_grade`)
+) ENGINE=INNODB;
+
 -- SESSIONS table
 -- @session_id: unique session id
 -- @expires: time milliseconds of the session expiry
@@ -182,5 +193,6 @@ SET autocommit=0; source test/lib/database/data/test.fm.data.sql; COMMIT;
 SET autocommit=0; source test/lib/database/data/actual.fm.data.sql; COMMIT;
 SET autocommit=0; source test/lib/database/data/application.data.sql; COMMIT;
 SET autocommit=0; source test/lib/database/data/university.data.sql; COMMIT;
+SET autocommit=0; source test/lib/database/data/gpa.data.sql; COMMIT;
 SET autocommit=0; source test/lib/database/data/application_rev.data.sql; COMMIT;
 SET autocommit=0; source test/lib/database/data/application_seen.data.sql; COMMIT;

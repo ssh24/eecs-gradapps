@@ -449,4 +449,65 @@ Utils.prototype.getUniversityDescriptions = function(cb) {
 	});
 };
 
+/**
+ * Get all professor names
+ * @param {Function} cb 
+ */
+Utils.prototype.getAllProfessors = function(cb) {
+	var sql = 'SELECT CONCAT_WS(\' \', `fm_Fname`, `fm_Lname`) AS `Professor Name`' 
+	+ ', fm_Roles from faculty_member where fm_Roles is not null';
+	var professors = [];
+	this.conn.query(sql, function(err, result) {
+		if (err) return cb(err);
+		if(result.length > 0) {
+			_.forEach(result, function(res) {
+				if(res['fm_Roles'].includes('Professor'))
+					professors.push(res['Professor Name']);
+			});
+			return cb(err, professors.sort());
+		} else {
+			err = new Error('No professors found');
+			return cb(err);
+		}
+	});
+};
+
+/**
+ * Get list of all field of interests
+ * @param {Function} cb 
+ */
+Utils.prototype.getFieldOfInterests = function(cb) {
+	var sql = 'SELECT field_Name from foi';
+	var foi;
+	this.conn.query(sql, function(err, result) {
+		if (err) return cb(err);
+		if(result.length > 0) {
+			foi = _.map(result, 'field_Name');
+			return cb(err, foi.sort());
+		} else {
+			err = new Error('No field of interest found');
+			return cb(err);
+		}
+	});
+};
+
+/**
+ * Get all gpa
+ * @param {Function} cb 
+ */
+Utils.prototype.getGPA = function(cb) {
+	var sql = 'SELECT letter_grade as `GPA` from gpa';
+	var gpas;
+	this.conn.query(sql, function(err, result) {
+		if (err) return cb(err);
+		if(result.length > 0) {
+			gpas = _.map(result, 'GPA');
+			return cb(err, gpas);
+		} else {
+			err = new Error('No gpa found');
+			return cb(err);
+		}
+	});
+};
+
 module.exports = Utils;
