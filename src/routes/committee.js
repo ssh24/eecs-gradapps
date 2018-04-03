@@ -428,7 +428,7 @@ module.exports = function(app, utils, application, faculty_member, fns) {
 		application.getReviewApplications(sql, req.user.id, function(err, results) {
 			if (err) {
 				req.flash('tableMessage', 
-					'Error loading table. Fatal reason: ' + err.message);
+					'Error loading table. Fatal reason: No applications assigned for review');
 			} else {
 				var fields = [];
 				var hidden = ['app_Id'];
