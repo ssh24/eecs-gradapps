@@ -1,8 +1,13 @@
+html, body, table {
+  max-height: 100%;
+  height: 100%;
+}
 body {
     padding-top: 65px;
-    padding-bottom: 125px;
 }
-
+.jumbotron{
+  margin-bottom: 0px;
+}
 /* Button Stylings*/
 
 .btn-primary {
@@ -13,7 +18,9 @@ body {
     font-size: 14px;
 }
 
-
+.fullpage{
+  height: 100%;
+}
 /*Nav Tab stylings */
 
 .nav-tabs > li.active > a,
@@ -88,7 +95,7 @@ table.tablesorter {
 /*End Tablesorter*/
 
 .table-responsive {
-    max-height: 500px;
+    max-height: 650px;
 }
 
 .table-striped > tbody > tr:nth-child(odd) > td,
@@ -157,6 +164,9 @@ table .dropdown-menu {
     margin-left: 5px;
     margin-bottom: 0px;
 }
+select#preset{
+  max-width: 100%;
+}
 /*adds border radius for buttons after a textbox*/
 
 .input-group-btn:last-child > .btn {
@@ -169,7 +179,7 @@ table .dropdown-menu {
 footer {
     background-color: #222;
     color: #fff;
-    padding: 16px;
+    padding: 7px;
     width: 100%;
 }
 

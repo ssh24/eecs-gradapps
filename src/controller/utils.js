@@ -46,6 +46,7 @@ Utils.prototype.createInsertStatement = function(tableName, fieldNames, values) 
 
 /**
  * Create an update statement given the table name, field names and their corresponding values.
+ * Returns the built query
  * @param {String} tableName
  * @param {Array} fieldNames
  * @param {Array} values
