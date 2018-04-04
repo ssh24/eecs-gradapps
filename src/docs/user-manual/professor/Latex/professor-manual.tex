@@ -67,10 +67,10 @@ You will then be redirected to the login page. Input your username, password and
 \clearpage
 
 \section{Selecting a Role}
-To access the professor portal you must be signed in and select the professor role. The subsections below describe the methods for selecting the professor role.
+The subsections below describe the methods for selecting the a role.
 
 \subsection{Role Selection Page}
-From the role selection page click on the 'Continue as Professor" button to be redirected to the professor portal.
+From the role selection page click on the ``Continue as Professor" button to be redirected to the professor portal.
 
 \begin{figure}[!htb]
 \begin{center}
@@ -92,7 +92,7 @@ If you have selected another role and wish to switch roles you will be presented
 \label{fig:role_selection2}
 \end{figure}
 
-\noindent \textbf{Note:} To access the admin/committee/professor portal you must be granted the respective permissions from an admin.
+\noindent \textbf{Note:} To access the administrator/committee/professor portal you must be granted access from an administrator.
 
 \clearpage
 
@@ -102,25 +102,33 @@ Once you have selected the professor role you will should see a page similar to 
 \begin{center}
 \includegraphics[width=.99\textwidth]{images/professor.png}
 \end{center}
-\caption{Professor Page}
+\caption{Professor Portal}
 \label{fig:professor}
 \end{figure}
 
 \clearpage
 \section{Professor Portal}
+After logging in and selecting the professor role you will the have access to the professor portal. In this portal you will be presented with a table containing all the students who have applied to be a graduate student. Here you can perform the following:
+\begin{itemize}
+\item Filter the table to only display applications based on a criteria of your choosing
+\item Sort the table on certain columns
+\item View the applicants application and their respective committee review
+\item Set application attributes such as notifying others if you have contacted/requested an applicant or indicate to yourself if you find an applicant interesting or not.
+\end{itemize} 
 \subsection{Filtering the Table}
-Once you have been given access to the professor portal you will be granted the ability to see all the students who have applied. To help find applications that are relevant to you, simply filter the table using the steps below.
+This section describes how you would use/build/save/load a filter on the table.
 
-\subsubsection{Opening The Modal}
-First open the modal. To do so click on the 'Filter" button on the navigation bar.
 
 \begin{figure}[!htb]
+\subsubsection{Opening the Modal}
+To begin with filtering you must open the modal. To do so click on the ``Filter" button on the navigation bar.
 \begin{center}
 \includegraphics[width=.99\textwidth]{images/open_modal.png}
 \end{center}
-\caption{Open Modal}
+\caption{Opening the  Modal}
 \label{fig:open_modal}
 \end{figure}
+\clearpage
 
 \begin{figure}[!htb]
 \begin{center}
@@ -133,30 +141,31 @@ First open the modal. To do so click on the 'Filter" button on the navigation ba
 \clearpage
 \begin{figure}[!htb]
 \subsubsection{Choose Your Columns}
-The first step to filtering is to choose the columns you which to be displayed on the table. To do so just click on the button indicating which column you wish to see. Once clicked the button will display the order the columns will be displayed in as well.
-\begin{center}
+Once the modal is opened you can then choose the columns you wish to be displayed on the table. To do so, click on the button indicating which column you wish to see. Once clicked the button will display the order that column will appear in the table.\begin{center}
 \includegraphics[width=.99\textwidth]{images/choose_columns.png}
 \end{center}
 \caption{Choose Your Columns}
 \label{fig:choose_columns}
+\textbf{Note:} Not selecting any column will use the same columns and order of the default table. If the \emph{Actions} column is not selected it will automatically be placed to the right most column. \emph{My Interest Status} is account specific and can only be seen by you.
 \end{figure}
 
 \clearpage
 
 \begin{figure}[!htb]
 \subsubsection{Choose Your Filters}
-The second step to filtering is to choose how you would like to filter the table. Begin by clicking on the drop down of the attribute you which to filter by and select an option from a list of generated options. You can use the search bar to help look for certain options.
+After selecting your columns, you can then choose the attributes you wish to filter your table by. Begin by clicking on the drop down of the attribute you which to filter and select an option from a list of generated options.
 \begin{center}
 \includegraphics[width=.99\textwidth]{images/choose_filters.png}
 \end{center}
 \caption{Choose Your Filters}
+\textbf{Note:} You can use the search bar to help search for what you are looking for. Begin by typing in the text box displayed. You can only select an option that appears in the dropdown.
 \label{fig:choose_filters}
 \end{figure}
 
 \clearpage 
 \begin{figure}[!htb]
 \subsubsection{Submitting a Filter}
-Once you have chosen your columns and filter attributes all that is left is to confirm your filter. Do so by checking the selected filter section for the filter attributes you have selected. Once that is done click submit
+Once you have chosen your columns and filter attributes confirm your filter by reading the text under ``Selected Filter'' and click ``Submit". The text under the ``Selected Filter'' will change based on your filter attributes.
 \begin{center}
 \includegraphics[width=.99\textwidth]{images/submit_filter.png}
 \end{center}
@@ -165,19 +174,38 @@ Once you have chosen your columns and filter attributes all that is left is to c
 \end{figure}
 
 \clearpage
-Once you have submitted a filter you will be provided with a new table based on the filter provided. Attributes that satisfy your filter will be highlighted.
+Once you have submitted a filter you will be provided with a new table to match your filter.
 \begin{figure}[!htb]
 \begin{center}
 \includegraphics[width=.99\textwidth]{images/filtered_table.png}
 \end{center}
 \caption{Filtered Table}
+\textbf{Pro-tip:} Attributes that satisfy your filter will be highlighted. Make sure to include the right column to see that highlights!
 \label{fig:filtered_table}
 \end{figure}
 
 \clearpage 
+
+\begin{figure}[!htb]
 \subsubsection{Saving a Filter}
-To save a filter give a name for the preset and click on 'Save Preset"
+Once you have chosen your columns and filter attributes confirm your filter by reading the text under ``Selected Filter'' and give the preset a name by typing in the text box between the ``Submit'' and the ``Save Preset'' button. Once that is done click ``Save Preset''
+\begin{center}
+\includegraphics[width=.99\textwidth]{images/save_filter.png}
+\end{center}
+\caption{Save a Filter}
+\label{fig:save_filter}
+\end{figure}
+Once you have saved a filter you will be provided with a new table to match your filter and it will appear in the dropdown to be used for loading a filter.
+\begin{figure}[!htb]
 \subsubsection{Loading a Filter}
+
+\begin{center}
+\includegraphics[width=.99\textwidth]{images/load_filter.png}
+\end{center}
+\caption{Loading a Filter}
+\textbf{Pro-tip:} Create a preset called \emph{Default} with no columns or filters selected. You can then use this to load the default table help clear any data you put in the modal.
+\label{fig:save_filter}
+\end{figure}
 \subsection{Sorting the Table}
 \subsubsection{Name}
 \subsubsection{Gender}
