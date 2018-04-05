@@ -13,7 +13,7 @@
 
 CREATE TABLE `faculty_member` (
     `fm_Id` INT NOT NULL AUTO_INCREMENT,
-    `fm_Username` VARCHAR(50) UNIQUE DEFAULT NULL,
+    `fm_Username` VARCHAR(50) UNIQUE NOT NULL,
     `fm_Lname` VARCHAR(50) NOT NULL,
     `fm_Fname` VARCHAR(50) NOT NULL,
     `fm_Email` VARCHAR(255) DEFAULT NULL,
