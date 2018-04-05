@@ -29,12 +29,38 @@
                 <p><%= app[0]['Gender'] %></p>
               </div>
               <div class="col-md-4">
-                <h4>GPA - Final/Interim</h4>
+                <h4>GPA - <% if(app[0]['GPA_FINAL'] === 1) {%>
+                  Final
+                <% } else { %>
+                  Interim
+                <% } %>
+                </h4>
                 <p><%= app[0]['GPA'] %></p>
               </div>
               <div class="col-md-4">
-                <h4>GRE</h4>
-                <p><%= app[0]['GRE'] %></p>
+                <h4>GRE | TOEFL | IELTS | YELT</h4>
+                <p>
+                <% if (app[0]['GRE'] === null ||  app[0]['GRE'] === '') { %>
+                    -
+                <% } else { %>
+                  <%= app[0]['GRE'] %>
+                <% } %> |
+                <% if (app[0]['TOEFL'] === null ||  app[0]['TOEFL'] === '') { %>
+                    -
+                <% } else { %>
+                  <%= app[0]['TOEFL'] %>
+                <% } %> |
+                <% if (app[0]['IELTS'] === null ||  app[0]['IELTS'] === '') { %>
+                    -
+                <% } else { %>
+                  <%= app[0]['IELTS'] %>
+                <% } %> |
+                <% if (app[0]['YELT'] === null ||  app[0]['YELT'] === '') { %>
+                    -
+                <% } else { %>
+                  <%= app[0]['YELT'] %>
+                <% } %>
+                </p>
               </div>
             </div>
             <div class="row">
