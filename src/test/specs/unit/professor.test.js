@@ -1278,12 +1278,12 @@ describe('Professor Test', function() {
 					.then(expect(filter.isFieldDDOpen.call(filter, filter.filter
 						.fields.contacted.openDD)).to
 						.eventually.be.true)
-					.then(filter.searchText.call(filter, 'do'))
-					.then(filter.selectIthElement.call(filter, 29))
+					.then(filter.searchText.call(filter, 'she'))
+					.then(filter.selectIthElement.call(filter, 53))
 					.then(expect(filter.getSelectedElement.call(filter)).to
-						.eventually.contain('John Doe'))
+						.eventually.contain('Sheff Boneham'))
 					.then(expect(filter.getSelectedFilter.call(filter)).to.eventually
-						.contain('Contacted By = John Doe'))
+						.contain('Contacted By = Sheff Boneham'))
 					.then(filter.openFieldDD.call(filter, filter.filter.fields
 						.foi.openDD))
 					.then(expect(filter.isFieldDDOpen.call(filter, filter.filter
@@ -1301,7 +1301,7 @@ describe('Professor Test', function() {
 					.then(expect(prof.tableHeaderExists.call(prof)).to.eventually.be.true)
 					.then(expect(prof.tableBodyExists.call(prof)).to.eventually.be.true)
 					.then(expect(prof.isHighlighted.call(prof, 0, 3)).to.eventually.equal('Artificial Intelligence'))
-					.then(expect(prof.isHighlighted.call(prof, 1, 10)).to.eventually.equal('John Doe'));
+					.then(expect(prof.isHighlighted.call(prof, 0, 10)).to.eventually.equal('Sheff Boneham'));
 			});
 		});
 
@@ -1503,7 +1503,7 @@ describe('Professor Test', function() {
 			});
 		});
 
-		describe.only('- filter presets', function() {
+		describe('- filter presets', function() {
 			it('- add a new preset', function() {
 				filter.openFilterModal().then(filter.waitForModalOpen.call(filter))
 					.then(filter.toggleColumn.call(filter, filter.filter.cols.applicant))

@@ -58,6 +58,7 @@ FM.prototype.updatePreset = function(memberId, role, preset_name, options, cb) {
 	assert(typeof role === 'string', 'role should  be a string');
 	assert(typeof preset_name === 'string', 'preset_name should be a string');
 	assert(typeof options === 'object', 'options should be an object');
+	assert(preset_name, 'preset_name should exist. This could be a result of attempting to create a preset with no name');
 	assert(options.column_name, 'options.column_name should exist');
 	assert(options.column_val, 'options.column_val should exist');
 	assert(options.filter_name, 'options.column_name should exist');
@@ -93,22 +94,22 @@ FM.prototype.updatePreset = function(memberId, role, preset_name, options, cb) {
 		var col = 'JSON_OBJECT(';
 		for (var i = 0; i < options.column_name.length; i++) {
 			if (i < options.column_name.length - 1) {
-				col = col + '\'' + options.column_name[i] + '\'' + commaDelimeter + '\'' + options.column_val[i] + '\'' + commaDelimeter;
+				col = col + self.conn.escape(options.column_name[i]) + commaDelimeter + self.conn.escape(options.column_val[i]) + commaDelimeter;
 			} else {
-				col = col + '\'' + options.column_name[i] + '\'' + commaDelimeter + '\'' + options.column_val[i] + '\'' + ')';
+				col = col + self.conn.escape(options.column_name[i]) + commaDelimeter + self.conn.escape(options.column_val[i]) + ')';
 			}
 		}
 		var filt = 'JSON_OBJECT(';
 		for (i = 0; i < options.filter_name.length; i++) {
 			if (i < options.filter_name.length - 1) {
-				filt = filt + '\'' + options.filter_name[i] + '\'' + commaDelimeter + '\'' + options.filter_val[i] + '\'' + commaDelimeter;
+				filt = filt + self.conn.escape(options.filter_name[i]) + commaDelimeter + self.conn.escape(options.filter_val[i]) + commaDelimeter;
 			} else {
-				filt = filt + '\'' + options.filter_name[i] + '\'' + commaDelimeter + '\'' + options.filter_val[i] + '\'' + ')';
+				filt = filt + self.conn.escape(options.filter_name[i]) + commaDelimeter + self.conn.escape(options.filter_val[i]) + ')';
 			}
 		}
 
 		var preset_json = 'JSON_OBJECT(\'cols\'' + commaDelimeter + col + commaDelimeter + '\'filt\'' + commaDelimeter + filt + ')';
-		var presetRoleVal = 'IF(' + presetRole + ' is NULL, JSON_OBJECT(\'' + preset_name + '\'' + commaDelimeter + preset_json + ')' + commaDelimeter + 'JSON_SET(' + presetRole + commaDelimeter + '\'$."' + preset_name + '"\'' + commaDelimeter + preset_json + '))';
+		var presetRoleVal = 'IF(' + presetRole + ' is NULL, JSON_OBJECT(' + self.conn.escape(preset_name) + commaDelimeter + preset_json + ')' + commaDelimeter + 'JSON_SET(' + presetRole + commaDelimeter + 'concat(\'$.\', json_quote(' + self.conn.escape(preset_name) + '))' + commaDelimeter + preset_json + '))';
 		var updateStatement = self.utils.createUpdateStatement(tableName, [presetRole], [presetRoleVal], [whereField], [memberId]);
 		self.conn.query(updateStatement, cb);
 	});
