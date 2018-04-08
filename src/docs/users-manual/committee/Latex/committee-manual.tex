@@ -13,7 +13,7 @@
 %\newcommand{\comment}[1]{{\footnotesize \quad\texttt{--}\textrm{#1}}}
 
 % Set the header
-\ihead[]{\small EECS4090 Project}
+\ihead[]{\small Gradapps}
 
 
 %%%%%%%%%%%%Enter your names here%%%%%%%%
@@ -39,77 +39,103 @@
 %%%%Rest of your document goes here%%%%%%%%%%%%%%%%%%%
 
 \clearpage
-\section{User Overview}
+\section{Logging In}
 
-The \emph{admission committee member} in our system under description is a subset of EECS graduate program members who are in charge of reviewing new applications. In addition to reviewing an application, an admission committee member can view past reviewed applications and apply filters on them. A breakdown of a \emph{committee member's} permissible actions is listed below.
-
-\smallskip
-\noindent A \emph{committee member}:
-
-\begin{mylist}
-\item Shall be able to view current and past reviewed application(s).
-\item Shall be able to apply filters on current and past reviewed application(s).
-\item Shall be able to review an assigned application(s).
-\item Shall be able to save a review as a draft for later completion.
-\item Shall be able to add new university assessments in the system to be used in a review. Such a new assessment will be added globally to the system and can be seen and used by other committee members when filling out a review.
-\end{mylist}
-
-\section{Authentication}
-
-In order for a user to sign in to the application as a committee member, they need to be assigned to the \emph{Committee Member} role by the system administrator. Once the user has been granted access to the role, they can sign in to the system and select the \emph{Committee Member} role.
+To access the gradapps portal you'll first need to be authenticated into the system. To begin simply click on the ``Sign In" button on the welcome page.
 
 \begin{figure}[!htb]
 \begin{center}
-\includegraphics[width=.9\textwidth]{images/auth.png}
+\includegraphics[width=.99\textwidth]{images/welcome.png}
 \end{center}
-\caption{Select Committee Member Role}
-\label{fig:role_selection}
+\caption{Welcome Page}
+\label{fig:welcome}
 \end{figure}
 
 \bigskip
-\noindent \textbf{Note:} Once the user has been authenticated, the system automatically signs the user out after 15 minutes of inactivity within the application. This is to ensure the security of the overall system to protect both student confidential data and logged in user data.
 
+You will then be redirected to the login page. Input your username, password and click on the ``Login" button. If you are successfully authenticated you will be redirected to the role selection page.
+
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.99\textwidth]{images/login.png}
+\end{center}
+\caption{Login Page}
+\label{fig:login}
+\end{figure}
+\noindent \textbf{Note:} If the credentials you have provided are invalid you will be greeted with an error message.
+
+\clearpage
+
+\section{Selecting a Role}
+The subsections below describe the methods for selecting the a role.
+
+\subsection{Role Selection Page}
+From the role selection page click on the ``Continue as Committee Member" button to be redirected to the professor portal.
+
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.99\textwidth]{images/auth.png}
+\end{center}
+\caption{Role Selection Page}
+\label{fig:role_selection1}
+\end{figure}
+
+\noindent \textbf{Note:} To access the administrator/committee/professor portal you must be granted access from an administrator.
+
+\subsection{Navigation Bar}
+If you have selected another role and wish to switch roles you will be presented with an option on the navigation bar. Click on the dropdown menu that displays your current role and click on your desired role.
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.99\textwidth]{images/role-selection2.png}
+\end{center}
+\caption{Switch Roles}
+\label{fig:role_selection2}
+\end{figure}
+
+\noindent \textbf{Note:} To access the administrator/committee/professor portal you must be granted access from an administrator.
+
+\clearpage
 
 \section{Committee Member Portal}
 
-After the user has signed in to the system and selected the \emph{Committee Member} role, they shall be redirected to the committee member portal. The portal by default shows all past and current reviewed applications assigned to the logged in user for the current study year ordered by the date assigned in ascending order.
+After logging in and selecting the \emph{Committee Member} role you will have access to the committee member portal. In this portal you will be presented with a table containing all the students who have applied to be a graduate student. Here you can perform the following:
+\begin{itemize}
+\item View current and past reviewed application(s)
+\item Apply filters on current and past reviewed application(s)
+\item Review an assigned application(s)
+\item Save a review as a draft for later completion.
+\item Add new university assessments in the system to be used in a review. Such a new assessment will be added globally to the system and can be seen and used by other committee members when filling out a review.
+\end{itemize} 
 
 \begin{figure}[!htb]
 \begin{center}
 \includegraphics[width=.8\textwidth]{images/default_table.png}
 \end{center}
-\caption{Committee Member Portal - With Review Applications}
+\caption{Committee Member Portal}
 \label{fig:cm_portal}
+\textbf{Note:} If there are no reviews assigned, it will display a message instead. 
 \end{figure}
 
-\bigskip
-\noindent In the actions column, the \emph{View Application PDF} link opens the student application in PDF format uploaded by the system administrator whereas the other Review options open different views of the review form depending on the stage of the review. Refer to Section \ref{sec:reviews} for more information on reviewing an application.
-
-\bigskip
-\noindent If there are no reviews assigned to the user, it displays a message to the user.
-
-\begin{figure}[!htb]
-\begin{center}
-\includegraphics[width=.8\textwidth]{images/err_default.png}
-\end{center}
-\caption{Committee Member Portal - With No Review Application}
-\label{fig:cm_portal_err}
-\end{figure}
- 
 \newpage
-\section{Filtering Review Applications}
-
-One of the most powerful tools that Grad Apps 2.0 offers is filtering applications. As a committee member, one can filter past and current assigned review applications. 
-
-\bigskip
-\noindent The following image depicts the fields a committee member can apply filtering on as well as the columns they want to see on the resulting table. To open the filter view, simply click on the \emph{pencil} symbol on the top right corner of the portal page.
+\subsection{Filtering the Table}
+This section describes how you would use/build/save/load a filter on the table.
+\begin{figure}[!htb]
+\subsubsection{Opening the Modal}
+To begin with filtering you must open the modal. To do so click on the ``Filter" button on the navigation bar.
+\begin{center}
+\includegraphics[width=.99\textwidth]{images/open_modal.png}
+\end{center}
+\caption{Opening the  Modal}
+\label{fig:open_modal}
+\end{figure}
+\clearpage
 
 \begin{figure}[!htb]
 \begin{center}
-\includegraphics[width=.9\textwidth]{images/default_filter_view.png}
+\includegraphics[width=.99\textwidth]{images/default_filter_view.png}
 \end{center}
-\caption{Filter Selection Modal}
-\label{fig:def_filter_modal}
+\caption{Filter View}
+\label{fig:filter_view}
 \end{figure}
 
 \newpage
