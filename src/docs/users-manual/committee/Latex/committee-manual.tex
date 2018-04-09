@@ -70,7 +70,7 @@ You will then be redirected to the login page. Input your username, password and
 The subsections below describe the methods for selecting the a role.
 
 \subsection{Role Selection Page}
-From the role selection page click on the ``Continue as Committee Member" button to be redirected to the professor portal.
+From the role selection page click on the ``Continue as Committee Member" button to be redirected to the committee member portal.
 
 \begin{figure}[!htb]
 \begin{center}
@@ -128,7 +128,6 @@ To begin with filtering you must open the modal. To do so click on the ``Filter"
 \caption{Opening the  Modal}
 \label{fig:open_modal}
 \end{figure}
-\clearpage
 
 \begin{figure}[!htb]
 \begin{center}
@@ -138,126 +137,88 @@ To begin with filtering you must open the modal. To do so click on the ``Filter"
 \label{fig:filter_view}
 \end{figure}
 
+\clearpage
 \newpage
-\subsection{Selecting Columns}
-
-After opening the filter view, one can select one or more columns. Selecting a column numbers them in the order they will be displayed after the filter is applied. The following image depicts selecting four columns in order: \emph{Date Assigned, Degree Applied For, My Review Status and Actions}.
-
-\bigskip
-\noindent \textbf{Note}: When submitting a filter with no selected columns, all default columns will be used, i.e \emph{Date Assigned, Applicant Name, Degree Applied For, My Review Status and Actions}.
 
 \begin{figure}[!htb]
-\begin{center}
-\includegraphics[width=.9\textwidth]{images/selected_col.png}
+\subsubsection{Choose Your Columns}
+Once the modal is opened you can then choose the columns you wish to be displayed on the table. To do so, click on the button indicating which column you wish to see. Once clicked the button will display the order that column will appear in the table.\begin{center}
+\includegraphics[width=.99\textwidth]{images/selected_col.png}
 \end{center}
-\caption{Selected Columns for Filter}
-\label{fig:fm_selected_col}
+\caption{Choose Your Columns}
+\label{fig:choose_columns}
+\textbf{Note:} Not selecting any column will use the same columns and order as the default table. If the \emph{Actions} column is not selected it will automatically be placed as the right most column. 
 \end{figure}
-
-\subsection{Selecting Filter}
-
-After opening the filter view, one can select one or more filters. Selecting a filter can be done only on \emph{Applicant Name}, \emph{Degree Applied For} and \emph{My Review Status} fields. Filtering can be done by selecting values using the selection dropdown which allows live-text searching. The following image depicts selecting a filter for \emph{Degree Applied For} where the Degree is equal to \emph{MSc}.
-
-\bigskip
-\noindent \textbf{Note}: When submitting a filter with no selected filters, the default table will be loaded.
 
 \clearpage
 \begin{figure}[!htb]
+\subsubsection{Choose Your Filters}
+After selecting your columns, you can then choose the attributes by which you wish to filter your table. Begin by clicking on the drop down of the attribute you wish to filter and select an option from a list of generated options.
 \begin{center}
-\includegraphics[width=.9\textwidth]{images/selected_filter.png}
+\includegraphics[width=.99\textwidth]{images/selected_filter.png}
 \end{center}
-\caption{Selected Filter}
-\label{fig:fm_selected_filter}
-\end{figure}
+\caption{Choose Your Filters}
+\textbf{Note:} You can use the search bar to help locate values. Begin by typing in the text box displayed. You can only select an option that appears in the dropdown.
+\label{fig:choose_filters}
+\end{figure} 
 
-\bigskip
-\noindent Once the user selects a filter, the selected filter text shows the filter chosen. Grad Apps 2.0 only supports \textbf{AND} operand filtering. The image below depicts the selected filter text after selecting a filter for \emph{Degree Applied For} where the Degree is equal to \emph{MSc} and \emph{My Review Status} where review status is equal to \emph{Draft}.
-
+\clearpage 
 \begin{figure}[!htb]
+\subsubsection{Submitting a Filter}
+Once you have chosen your columns and filter attributes confirm your filter by reading the text under ``Selected Filter'' and click ``Submit". The text under the ``Selected Filter'' will change based on your filter attributes.
 \begin{center}
-\includegraphics[width=.9\textwidth]{images/selected_filter_text.png}
+\includegraphics[width=.99\textwidth]{images/submit_filter.png}
 \end{center}
-\caption{Selected Filter Text}
-\label{fig:fm_selected_filter_txt}
-\end{figure}
-
-\subsection{Filter Presets}
-As an end user one can opt to save frequently used filters as presets that will be automatically loaded for the user's login session in that specified role. Saving a filter requires a preset name, the selected rows the user wants to see and the selected filter. 
-
-\bigskip
-\noindent The following image depicts on how to save a filter preset:
-\begin{figure}[!htb]
-\begin{center}
-\includegraphics[width=.9\textwidth]{images/saving_preset.png}
-\end{center}
-\caption{Save a filter preset}
-\label{fig:saving_preset}
-\end{figure}
-
-\newpage
-\bigskip
-\noindent Once the user has one or more saved presets, they can opt to load one by simply selecting the preset name from the dropdown. Loading a saved preset will automatically fill the selected columns and the selected filters. The following image depicts on how to load a saved filter preset:
-
-\bigskip
-\begin{figure}[!htb]
-\begin{center}
-\includegraphics[width=.9\textwidth]{images/load_preset.png}
-\end{center}
-\caption{Load a saved filter preset}
-\label{fig:load_preset}
-\end{figure}
-
-\clearpage
-\newpage
-\subsection{Submitting Filter}
-
-Once the user has selected columns and selected filters, they can submit the filter to get a resulted table back.
-
-\bigskip
-\noindent \textbf{Note}: When submitting a filter with no selected columns, all default columns will be used, i.e \emph{Date Assigned, Applicant Name, Degree Applied For, My Review Status and Actions}.
-
-\bigskip
-\noindent \textbf{Note}: When submitting a filter with no selected filters, the default table will be loaded.
-
-\bigskip
-\noindent The following example filter is used to demonstrate applying a filter and getting the resulted table back:
-
-\bigskip
-\noindent \textbf{The columns selected for the filter}:
-\begin{enumerate}
-\item Date Assigned
-\item Degree Applied For
-\item My Review Status
-\end{enumerate}
-
-\noindent \textbf{The filter selected for}:
-\begin{enumerate}
-\item Degree Applied For: MSc
-\end{enumerate}
-
-\bigskip
-\noindent The images below depicts the filter view before applying the filter and the resulting filtered table. The fields used for filtering are also highlighted for emphasizing the filtered fields in the resulting table.
-
-\begin{figure}[!htb]
-\begin{center}
-\includegraphics[width=.9\textwidth]{images/example_filter.png}
-\end{center}
-\caption{Selected Filter Example}
-\label{fig:example_filter}
+\caption{Submit Filter}
+\textbf{Note}: When submitting a filter with no selected filters, the default table will be loaded.
+\label{fig:submit_filter}
 \end{figure}
 
 \begin{figure}[!htb]
 \begin{center}
-\includegraphics[width=.9\textwidth]{images/example_filter_table.png}
+\includegraphics[width=.99\textwidth]{images/example_filter_table.png}
 \end{center}
 \caption{Resulted Table After Applying Filter}
 \label{fig:resulted_table}
 \end{figure}
 
 \clearpage
+
+\begin{figure}[!htb]
+\subsubsection{Saving a Filter}
+Once you have chosen your columns and filter attributes confirm your filter by reading the text under ``Selected Filter'' and give the preset a name by typing in the text box between the ``Submit'' and the ``Save Preset'' button. Once that is done click ``Save Preset''.
+\begin{center}
+\includegraphics[width=.99\textwidth]{images/saving_preset.png}
+\end{center}
+\caption{Save a Filter}
+Once you have saved a filter you will be provided with a new table to match your filter and it will appear in the dropdown to be used for loading a filter.\\
+\textbf{Pro-tip:} You can update a filter by typing in the same name as an existing filter.
+\label{fig:save_filter}
+\end{figure}
+
+\clearpage
+\begin{figure}[!htb]
+\subsubsection{Loading a Filter}
+To load a saved filter click the dropdown under ``Load a Preset'' and select the preset you wish to use. Once selected the modal will auto-populate.
+\begin{center}
+\includegraphics[width=.99\textwidth]{images/load_preset.png}
+\end{center}
+\caption{Loading a Filter}
+\textbf{Pro-tip:} Create a preset called \emph{Default} with no columns or filters selected. You can then use this to load the default table or help clear any data you put in the modal.
+\label{fig:save_filter}
+\end{figure}
+\clearpage
 \newpage
-\section{Ordering Review Applications}
-As a user one can order the fields, either in ascending or descending order, of the table that lists all current and past review applications. The fields that support ordering on review application table are: \emph{Date Assigned}, \emph{Applicant Name}, \emph{Degree Applied For} and \emph{My Review Status}.
+\subsection{Sorting the Table}
+If you wish to sort the table displayed simply click on the columns that display arrows next to the name. The table can be sorted in Ascending/Descending order described below.
+\begin{itemize}
+\item \textbf{Name:} Descending Order = Z to A, Ascending order = A to Z
+\item \textbf{Date Assigned:} Descending Order = Newest - Oldest, Ascending order = Oldest - Newest
+\item \textbf{Degree Applied For:} Descending Order = Z to A, Ascending order = A to Z
+\item \textbf{Review Status:} Descending Order = Z to A, Ascending order = A to Z
+\end{itemize}
+\textbf{Pro-tip:} To sort by multiple columns hold the shift key while clicking on the columns.
+
 
 \bigskip
 \noindent \textbf{Note}: Ordering fields can be done on both filtered and unfiltered review application lists.
@@ -267,7 +228,7 @@ As a user one can order the fields, either in ascending or descending order, of 
 
 \begin{figure}[!htb]
 \begin{center}
-\includegraphics[width=.9\textwidth]{images/order_ascending.png}
+\includegraphics[width=.99\textwidth]{images/order_ascending.png}
 \end{center}
 \caption{Ascending order of Date Assigned field}
 \label{fig:order_ascending}
@@ -275,19 +236,17 @@ As a user one can order the fields, either in ascending or descending order, of 
 
 \begin{figure}[!htb]
 \begin{center}
-\includegraphics[width=.9\textwidth]{images/order_descending.png}
+\includegraphics[width=.99\textwidth]{images/order_descending.png}
 \end{center}
 \caption{Descending order of Date Assigned field}
 \label{fig:order_descending}
 \end{figure}
 
 \newpage
-\bigskip
-\noindent \textbf{Note}: One can also apply multiple ordering by holding the SHIFT key on the keyboard and toggling the order. The following images depicts ordering applications with the \emph{Date Assigned} field in ascending order and \emph{Applicant Name} in descending order.
 
 \begin{figure}[!htb]
 \begin{center}
-\includegraphics[width=.9\textwidth]{images/multiple_order.png}
+\includegraphics[width=.99\textwidth]{images/multiple_order.png}
 \end{center}
 \caption{Ordering using multiple fields}
 \label{fig:multiple_order}
@@ -295,8 +254,8 @@ As a user one can order the fields, either in ascending or descending order, of 
 
 \clearpage
 \newpage
-\section{Reviews} \label{sec:reviews}
-As a user one has access to complete application reviews assigned to them by the system administrator. The review process can have \textbf{three} different statuses shown to the user on the default portal:
+\section{Reviewing Applications} \label{sec:reviews}
+The review process can have \textbf{three} different statuses shown
 \begin{itemize}
 \item \textbf{New}: A new application has been assigned to the committee member and no changes have been made on the review yet.
 \item \textbf{Draft}: A previously saved draft review. A review is considered as a draft when there has been at least one or more changes committed and the user has decided to save the changes.
@@ -328,7 +287,7 @@ As a user one has access to complete application reviews assigned to them by the
 
 \begin{figure}[!htb]
 \begin{center}
-\includegraphics[width=.9\textwidth]{images/review_form.png}
+\includegraphics[width=.99\textwidth]{images/review_form.png}
 \end{center}
 \caption{Full view of the Review Form}
 \label{fig:review_form}
@@ -337,14 +296,14 @@ As a user one has access to complete application reviews assigned to them by the
 \clearpage
 \newpage
 \subsection{Opening a new Review}
-As a user when a new review is received it will show on the portal. After that the user has the option of opening the review and start completing the form. The action for opening a new review will say \textbf{Start Review}.
+When a new review is received it will show on the portal. After that you will have the option of opening the review and start completing the form. The action for opening a new review will say \textbf{Start Review}.
 
 \bigskip
 \noindent The following image depicts user opening a brand new review.
 
 \begin{figure}[!htb]
 \begin{center}
-\includegraphics[width=.9\textwidth]{images/opening_new_review.png}
+\includegraphics[width=.99\textwidth]{images/opening_new_review.png}
 \end{center}
 \caption{Opening a brand new review}
 \label{fig:opening_new_review}
@@ -355,14 +314,14 @@ As a user when a new review is received it will show on the portal. After that t
 
 \begin{figure}[!htb]
 \begin{center}
-\includegraphics[width=.9\textwidth]{images/new_review_exit_wo_changes.png}
+\includegraphics[width=.99\textwidth]{images/new_review_exit_wo_changes.png}
 \end{center}
 \caption{Exiting out of a brand new review application without changes}
 \label{fig:new_review_exit_w/o_changes}
 \end{figure}
 
 \subsection{Filling out a Review}
-As an end user one has the opportunity to analyse the application assigned for review. Table \ref{tbl:review_fields} outlines the fields in a review application and their required status. The following table specializes Table \ref{tbl:review_fields} and displays the type of input each field takes.
+Table \ref{tbl:review_fields} outlines the fields in a review application and their required status. The following table specializes Table \ref{tbl:review_fields} and displays the type of input each field takes.
 
 \begin{table}[h]
 \centering
@@ -382,7 +341,7 @@ As an end user one has the opportunity to analyse the application assigned for r
 \end{table}
 
 \subsubsection{Institution Assessment}
-An end user can select one or more institutions the applicant has attended in the past. If the institution does not exist, the user can also add a new institution. Once an institution has been selected, the user can select one or more of the existing institution's assessment and also add a new assessment of their own.
+When performing a institution assessment you can select from one or more institutions and a description in the database. If the institution does not exist or their description is inadequate you can also create a new institution/assessment.
 
 \bigskip
 \noindent The following image depicts an user selecting two institutions the applicant has attended and selecting an assessment from each of the institutions.
@@ -397,15 +356,15 @@ An end user can select one or more institutions the applicant has attended in th
 
 \clearpage
 \newpage
-\subsection{Saving a review as Draft}
-As an end user one has the opportunity to save an on-going review as draft for future completion. The use of drafting a review is to save changes to an on-going review so that the user can pick it up and continue some time later.
+\subsection{Saving a Review as Draft}
+While filling out a review you will have the opportunity to save an on-going review as a draft for future completion.
 
 \bigskip
 \noindent The following images depicts a user making changes to an application review and then saving it as a draft. Consequently, the status of the review is changed to \textbf{Draft}. And if the user wants to continue working on the draft sometime later, the action for opening a drafted review will say \textbf{Continue Review}.
 
 \begin{figure}[!htb]
 \begin{center}
-\includegraphics[width=.9\textwidth]{images/save_as_draft_review.png}
+\includegraphics[width=.99\textwidth]{images/save_as_draft_review.png}
 \end{center}
 \caption{Save a review as draft}
 \label{fig:save_as_draft_review}
@@ -413,32 +372,32 @@ As an end user one has the opportunity to save an on-going review as draft for f
 
 \begin{figure}[!htb]
 \begin{center}
-\includegraphics[width=.9\textwidth]{images/drafted_review.png}
+\includegraphics[width=.99\textwidth]{images/drafted_review.png}
 \end{center}
 \caption{Drafted Review View}
 \label{fig:drafted_review}
 \end{figure}
 
 \subsection{Submitting a Review}
-Once a review is completed, the user can submit the review. If the correct number of reviews for an application has been submitted, the application will be automatically available for selection to the members of EECS Graduate Program. The only required field needed for submitting a review is the final application rank that is to be decided by the admission committee member upon analysing the application.
+Once you are satisfied with your review simply  click the \textbf{Submit Review} button to complete your review. If the correct number of reviews for an application has been submitted (depending on visa status), the application will be automatically available for selection to those on the \textbf{Professor Portal}. The only required field needed for submitting a review is the final application rank that is to be decided by the admission committee member upon analysing the application.
 
 \bigskip
 \noindent The following image depicts an end user submitting a review. 
 
 \begin{figure}[!htb]
 \begin{center}
-\includegraphics[width=.9\textwidth]{images/submit_review.png}
+\includegraphics[width=.99\textwidth]{images/submit_review.png}
 \end{center}
 \caption{Submit a Review}
 \label{fig:submit_review}
 \end{figure}
-
+\clearpage
 \bigskip
-\noindent Once the review is submitted, it will show up on the user dashboard with status as \textbf{Submitted}. The user action to view a submitted review will say \textbf{View Review}. Submitted reviews are only viewable as a plain text application form. The following images depicts viewing a submitted review.
+\noindent Once the review is submitted, it will show up on the user dashboard with status as \textbf{Submitted} and The user action to view a submitted review will say \textbf{View Review}. Submitted reviews are only viewable as a plain text application form. The following images depicts viewing a submitted review.
 
 \begin{figure}[!htb]
 \begin{center}
-\includegraphics[width=.9\textwidth]{images/submitted_review.png}
+\includegraphics[width=.99\textwidth]{images/submitted_review.png}
 \end{center}
 \caption{Submitted Review View}
 \label{fig:submitted_review}
@@ -446,7 +405,7 @@ Once a review is completed, the user can submit the review. If the correct numbe
 
 \begin{figure}[!htb]
 \begin{center}
-\includegraphics[width=.7\textwidth]{images/submit_review_view.png}
+\includegraphics[width=.99\textwidth]{images/submit_review_view.png}
 \end{center}
 \caption{Submitted Review View}
 \label{fig:submit_review_view}
