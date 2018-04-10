@@ -1,0 +1,150 @@
+<% include partials/header %>
+
+  <body>
+    <div class="container">
+      <% if (message.length > 0) { %>
+        <div id="error-message" class="alert alert-danger text-center">
+          <%= message %>
+        </div>
+        <% } else { %>
+          <div class="page-header">
+            <h1 class="text-center">Application Summary</h1>
+            <div class="row">
+              <div class="col-md-4">
+                <h4>Applicant Name</h4>
+                <p><%= app[0]['Applicant Name'] %></p>
+              </div>
+              <div class="col-md-4">
+                <h4>Session</h4>
+                <p><%= app[0]['Session'] %></p>
+              </div>
+              <div class="col-md-4">
+                <h4>Email</h4>
+                <p><%= app[0]['Email'] %></p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4">
+                <h4>Gender</h4>
+                <p><%= app[0]['Gender'] %></p>
+              </div>
+              <div class="col-md-4">
+                <h4>GPA - Final/Interim</h4>
+                <p><%= app[0]['GPA'] %></p>
+              </div>
+              <div class="col-md-4">
+                <h4>GRE</h4>
+                <p><%= app[0]['GRE'] %></p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4">
+                <h4>Degree</h4>
+                <p><%= app[0]['Degree'] %></p>
+              </div>
+              <div class="col-md-4">
+                <h4>Visa Status</h4>
+                <p><%= app[0]['Visa Status'] %></p>
+              </div>
+              <div class="col-md-4">
+                <h4>Fields of Interest</h4>
+                <p><%= app[0]['Fields of Interest'] %></p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-3">
+                <h4>Preferred Professor(s)</h4>
+                <p><%= app[0]['Preferred Professors'] %></p>
+              </div>
+              <div class="col-md-3">
+                <h4>Program Decision</h4>
+                <p><%= app[0]['Program Decision'] %></p>
+              </div>
+              <div class="col-md-3">
+                <h4>Contacted By</h4>
+                <p><%= app[0]['Contacted By'] %></p>
+              </div>
+              <div class="col-md-3">
+                <h4>Requested By</h4>
+                <p><%= app[0]['Requested By'] %></p>
+              </div>
+            </div>
+          </div>
+          <h2 class="text-center">Committee Review #1</h2>
+          <h3>Background</h3>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque at suscipit dolor. Ut mi orci, ultrices vitae vehicula elementum, luctus et mauris. Curabitur facilisis ipsum eget enim ornare convallis. Vestibulum pretium nunc id sapien
+            pretium pulvinar quis sit amet velit. Nullam volutpat, nunc vel pellentesque viverra, mi dui luctus lorem, vel mollis purus magna vel libero. Phasellus eget diam tellus. Integer faucibus sem non tempus condimentum. Nam iaculis venenatis sapien,
+            in sagittis urna sollicitudin vitae. Sed lacinia elit augue, nec vulputate felis semper ut. Sed non accumsan mi, quis ultricies sem. Phasellus justo lectus, ullamcorper ac laoreet ac, blandit at metus. Nulla ornare, mauris eget hendrerit convallis,
+            neque risus sollicitudin arcu, vitae fermentum ligula mi a diam. Vestibulum nisi lacus, aliquam quis ipsum in, varius mollis diam. Quisque semper eget orci sit amet fringilla. Suspendisse egestas tincidunt ullamcorper. Aenean malesuada justo
+            ut hendrerit accumsan.
+          </p>
+          <h3>Research Experience</h3>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque at suscipit dolor. Ut mi orci, ultrices vitae vehicula elementum, luctus et mauris. Curabitur facilisis ipsum eget enim ornare convallis. Vestibulum pretium nunc id sapien
+            pretium pulvinar quis sit amet velit. Nullam volutpat, nunc vel pellentesque viverra, mi dui luctus lorem, vel mollis purus magna vel libero. Phasellus eget diam tellus. Integer faucibus sem non tempus condimentum. Nam iaculis venenatis sapien,
+            in sagittis urna sollicitudin vitae. Sed lacinia elit augue, nec vulputate felis semper ut. Sed non accumsan mi, quis ultricies sem. Phasellus justo lectus, ullamcorper ac laoreet ac, blandit at metus. Nulla ornare, mauris eget hendrerit convallis,
+            neque risus sollicitudin arcu, vitae fermentum ligula mi a diam. Vestibulum nisi lacus, aliquam quis ipsum in, varius mollis diam. Quisque semper eget orci sit amet fringilla. Suspendisse egestas tincidunt ullamcorper. Aenean malesuada justo
+            ut hendrerit accumsan.
+          </p>
+
+          <h3>University Quality</h3>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque at suscipit dolor. Ut mi orci, ultrices vitae vehicula elementum, luctus et mauris. Curabitur facilisis ipsum eget enim ornare convallis. Vestibulum pretium nunc id sapien
+            pretium pulvinar quis sit amet velit. Nullam volutpat, nunc vel pellentesque viverra, mi dui luctus lorem, vel mollis purus magna vel libero. Phasellus eget diam tellus. Integer faucibus sem non tempus condimentum. Nam iaculis venenatis sapien,
+            in sagittis urna sollicitudin vitae. Sed lacinia elit augue, nec vulputate felis semper ut. Sed non accumsan mi, quis ultricies sem. Phasellus justo lectus, ullamcorper ac laoreet ac, blandit at metus. Nulla ornare, mauris eget hendrerit convallis,
+            neque risus sollicitudin arcu, vitae fermentum ligula mi a diam. Vestibulum nisi lacus, aliquam quis ipsum in, varius mollis diam. Quisque semper eget orci sit amet fringilla. Suspendisse egestas tincidunt ullamcorper. Aenean malesuada justo
+            ut hendrerit accumsan.
+          </p>
+          <h3>Comments</h3>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque at suscipit dolor. Ut mi orci, ultrices vitae vehicula elementum, luctus et mauris. Curabitur facilisis ipsum eget enim ornare convallis. Vestibulum pretium nunc id sapien
+            pretium pulvinar quis sit amet velit. Nullam volutpat, nunc vel pellentesque viverra, mi dui luctus lorem, vel mollis purus magna vel libero. Phasellus eget diam tellus. Integer faucibus sem non tempus condimentum. Nam iaculis venenatis sapien,
+            in sagittis urna sollicitudin vitae. Sed lacinia elit augue, nec vulputate felis semper ut. Sed non accumsan mi, quis ultricies sem. Phasellus justo lectus, ullamcorper ac laoreet ac, blandit at metus. Nulla ornare, mauris eget hendrerit convallis,
+            neque risus sollicitudin arcu, vitae fermentum ligula mi a diam. Vestibulum nisi lacus, aliquam quis ipsum in, varius mollis diam. Quisque semper eget orci sit amet fringilla. Suspendisse egestas tincidunt ullamcorper. Aenean malesuada justo
+            ut hendrerit accumsan.
+          </p>
+          <h3>Committee Rank</h3>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque at suscipit dolor. Ut mi orci, ultrices vitae vehicula elementum, luctus et mauris. Curabitur facilisis ipsum eget enim ornare convallis. Vestibulum pretium nunc id sapien
+            pretium pulvinar quis sit amet velit. Nullam volutpat, nunc vel pellentesque viverra, mi dui luctus lorem, vel mollis purus magna vel libero. Phasellus eget diam tellus. Integer faucibus sem non tempus condimentum. Nam iaculis venenatis sapien,
+            in sagittis urna sollicitudin vitae. Sed lacinia elit augue, nec vulputate felis semper ut. Sed non accumsan mi, quis ultricies sem. Phasellus justo lectus, ullamcorper ac laoreet ac, blandit at metus. Nulla ornare, mauris eget hendrerit convallis,
+            neque risus sollicitudin arcu, vitae fermentum ligula mi a diam. Vestibulum nisi lacus, aliquam quis ipsum in, varius mollis diam. Quisque semper eget orci sit amet fringilla. Suspendisse egestas tincidunt ullamcorper. Aenean malesuada justo
+            ut hendrerit accumsan.
+          </p>
+          <hr>
+          <h2 class="text-center">Committee Review #2</h2>
+          <h3>Background</h3>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque at suscipit dolor. Ut mi orci, ultrices vitae vehicula elementum, luctus et mauris. Curabitur facilisis ipsum eget enim ornare convallis. Vestibulum pretium nunc id sapien
+            pretium pulvinar quis sit amet velit. Nullam volutpat, nunc vel pellentesque viverra, mi dui luctus lorem, vel mollis purus magna vel libero. Phasellus eget diam tellus. Integer faucibus sem non tempus condimentum. Nam iaculis venenatis sapien,
+            in sagittis urna sollicitudin vitae. Sed lacinia elit augue, nec vulputate felis semper ut. Sed non accumsan mi, quis ultricies sem. Phasellus justo lectus, ullamcorper ac laoreet ac, blandit at metus. Nulla ornare, mauris eget hendrerit convallis,
+            neque risus sollicitudin arcu, vitae fermentum ligula mi a diam. Vestibulum nisi lacus, aliquam quis ipsum in, varius mollis diam. Quisque semper eget orci sit amet fringilla. Suspendisse egestas tincidunt ullamcorper. Aenean malesuada justo
+            ut hendrerit accumsan.
+          </p>
+          <h3>Research Experience</h3>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque at suscipit dolor. Ut mi orci, ultrices vitae vehicula elementum, luctus et mauris. Curabitur facilisis ipsum eget enim ornare convallis. Vestibulum pretium nunc id sapien
+            pretium pulvinar quis sit amet velit. Nullam volutpat, nunc vel pellentesque viverra, mi dui luctus lorem, vel mollis purus magna vel libero. Phasellus eget diam tellus. Integer faucibus sem non tempus condimentum. Nam iaculis venenatis sapien,
+            in sagittis urna sollicitudin vitae. Sed lacinia elit augue, nec vulputate felis semper ut. Sed non accumsan mi, quis ultricies sem. Phasellus justo lectus, ullamcorper ac laoreet ac, blandit at metus. Nulla ornare, mauris eget hendrerit convallis,
+            neque risus sollicitudin arcu, vitae fermentum ligula mi a diam. Vestibulum nisi lacus, aliquam quis ipsum in, varius mollis diam. Quisque semper eget orci sit amet fringilla. Suspendisse egestas tincidunt ullamcorper. Aenean malesuada justo
+            ut hendrerit accumsan.
+          </p>
+
+          <h3>University Quality</h3>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque at suscipit dolor. Ut mi orci, ultrices vitae vehicula elementum, luctus et mauris. Curabitur facilisis ipsum eget enim ornare convallis. Vestibulum pretium nunc id sapien
+            pretium pulvinar quis sit amet velit. Nullam volutpat, nunc vel pellentesque viverra, mi dui luctus lorem, vel mollis purus magna vel libero. Phasellus eget diam tellus. Integer faucibus sem non tempus condimentum. Nam iaculis venenatis sapien,
+            in sagittis urna sollicitudin vitae. Sed lacinia elit augue, nec vulputate felis semper ut. Sed non accumsan mi, quis ultricies sem. Phasellus justo lectus, ullamcorper ac laoreet ac, blandit at metus. Nulla ornare, mauris eget hendrerit convallis,
+            neque risus sollicitudin arcu, vitae fermentum ligula mi a diam. Vestibulum nisi lacus, aliquam quis ipsum in, varius mollis diam. Quisque semper eget orci sit amet fringilla. Suspendisse egestas tincidunt ullamcorper. Aenean malesuada justo
+            ut hendrerit accumsan.
+          </p>
+          <h3>Comments</h3>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque at suscipit dolor. Ut mi orci, ultrices vitae vehicula elementum, luctus et mauris. Curabitur facilisis ipsum eget enim ornare convallis. Vestibulum pretium nunc id sapien
+            pretium pulvinar quis sit amet velit. Nullam volutpat, nunc vel pellentesque viverra, mi dui luctus lorem, vel mollis purus magna vel libero. Phasellus eget diam tellus. Integer faucibus sem non tempus condimentum. Nam iaculis venenatis sapien,
+            in sagittis urna sollicitudin vitae. Sed lacinia elit augue, nec vulputate felis semper ut. Sed non accumsan mi, quis ultricies sem. Phasellus justo lectus, ullamcorper ac laoreet ac, blandit at metus. Nulla ornare, mauris eget hendrerit convallis,
+            neque risus sollicitudin arcu, vitae fermentum ligula mi a diam. Vestibulum nisi lacus, aliquam quis ipsum in, varius mollis diam. Quisque semper eget orci sit amet fringilla. Suspendisse egestas tincidunt ullamcorper. Aenean malesuada justo
+            ut hendrerit accumsan.
+          </p>
+          <h3>Committee Rank</h3>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque at suscipit dolor. Ut mi orci, ultrices vitae vehicula elementum, luctus et mauris. Curabitur facilisis ipsum eget enim ornare convallis. Vestibulum pretium nunc id sapien
+            pretium pulvinar quis sit amet velit. Nullam volutpat, nunc vel pellentesque viverra, mi dui luctus lorem, vel mollis purus magna vel libero. Phasellus eget diam tellus. Integer faucibus sem non tempus condimentum. Nam iaculis venenatis sapien,
+            in sagittis urna sollicitudin vitae. Sed lacinia elit augue, nec vulputate felis semper ut. Sed non accumsan mi, quis ultricies sem. Phasellus justo lectus, ullamcorper ac laoreet ac, blandit at metus. Nulla ornare, mauris eget hendrerit convallis,
+            neque risus sollicitudin arcu, vitae fermentum ligula mi a diam. Vestibulum nisi lacus, aliquam quis ipsum in, varius mollis diam. Quisque semper eget orci sit amet fringilla. Suspendisse egestas tincidunt ullamcorper. Aenean malesuada justo
+            ut hendrerit accumsan.
+          </p>
+          <% } %>
+    </div>
+  </body>

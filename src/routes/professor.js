@@ -8,6 +8,7 @@ module.exports = function(app, utils, application, faculty_member, fns) {
 	var presetProfessor = fns.concat([applyApplicationActions, filterApps, getPresets]);
 	var filterPost = fns.concat([filterApps, getPresets]);
 	var presetPost = fns.concat([filterApps, setPreset, getPresets]);
+	var viewAppProf = fns.concat([viewApp]);
 	var builtSql, builtOptions, builtHighlight;
 	var role = 'Professor';
 	// professor page route
@@ -139,6 +140,17 @@ module.exports = function(app, utils, application, faculty_member, fns) {
 		});
 	});
 
+	app.get('/roles/professor/viewapp', viewAppProf, function(req, res) {
+		res.render('viewapp', {
+			title: 'View Application',
+			message: req.flash('viewMessage'),
+			role: role,
+			app: req.application || [],
+			reviews: req.reviews || []
+		});
+	});
+
+
 	function getApplications(sql, options, req, res, next) {
 		application.getApplications(sql, req.user.id, function(err, results) {
 			if (err) {
@@ -214,8 +226,8 @@ module.exports = function(app, utils, application, faculty_member, fns) {
 		sqlCol += 'app_Id, CONCAT_WS(\' \', `FName`, `LName`) AS `Applicant Name`, ' +
 		'Gender, FOI as `Fields of Interest`, prefProfs as `Preferred Professors`, ' +
 		'Rank as `Committee Rank`, GPA, Degree as `Degree Applied For`,' +
-		' VStatus as `Visa Status`, programDecision as `Program Decision`, ' + 
-		'profContacted as `Contacted By`, profRequested as `Requested By`, ' + 
+		' VStatus as `Visa Status`, programDecision as `Program Decision`, ' +
+		'profContacted as `Contacted By`, profRequested as `Requested By`, ' +
 		'seen as `My Interest Status` ';
 
 		/* build columns */
@@ -225,54 +237,54 @@ module.exports = function(app, utils, application, faculty_member, fns) {
 				if (cols[i] === 'btn_col_name') {
 					sqlCol += 'CONCAT_WS(\' \', `FName`, `LName`) AS `Applicant Name`';
 					if (i < cols.length - 1)
-						sqlCol += ', '; 
+						sqlCol += ', ';
 				} else if (cols[i] === 'btn_col_gender') {
 					sqlCol += 'Gender';
 					if (i < cols.length - 1)
-						sqlCol += ', '; 
+						sqlCol += ', ';
 				} else if (cols[i] === 'btn_col_foi') {
 					sqlCol += 'FOI as `Fields of Interest`';
 					if (i < cols.length - 1)
-						sqlCol += ', '; 
+						sqlCol += ', ';
 				} else if (cols[i] === 'btn_col_prof') {
 					sqlCol += 'prefProfs as `Preferred Professors`';
 					if (i < cols.length - 1)
-						sqlCol += ', '; 
+						sqlCol += ', ';
 				} else if (cols[i] === 'btn_col_ranking') {
 					sqlCol += 'Rank as `Committee Rank`';
 					if (i < cols.length - 1)
-						sqlCol += ', '; 
+						sqlCol += ', ';
 				} else if (cols[i] === 'btn_col_gpa') {
 					sqlCol += 'GPA';
 					if (i < cols.length - 1)
-						sqlCol += ', '; 
+						sqlCol += ', ';
 				} else if (cols[i] === 'btn_col_degree') {
 					sqlCol += 'Degree as `Degree Applied For`';
 					if (i < cols.length - 1)
-						sqlCol += ', '; 
+						sqlCol += ', ';
 				} else if (cols[i] === 'btn_col_visa') {
 					sqlCol += 'VStatus as `Visa Status`';
 					if (i < cols.length - 1)
-						sqlCol += ', '; 
+						sqlCol += ', ';
 				} else if (cols[i] === 'btn_col_program_decision') {
 					sqlCol += 'programDecision as `Program Decision`';
 					if (i < cols.length - 1)
-						sqlCol += ', '; 
+						sqlCol += ', ';
 				} else if (cols[i] === 'btn_col_contacted_status') {
 					contactedField = true;
 					sqlCol += 'profContacted as `Contacted By`';
 					if (i < cols.length - 1)
-						sqlCol += ', '; 
+						sqlCol += ', ';
 				} else if (cols[i] === 'btn_col_requested_status') {
 					requestedField = true;
 					sqlCol += 'profRequested as `Requested By`';
 					if (i < cols.length - 1)
-						sqlCol += ', '; 
+						sqlCol += ', ';
 				} else if (cols[i] === 'btn_col_interest') {
 					interestField = true;
 					sqlCol += 'seen as `My Interest Status`';
 					if (i < cols.length - 1)
-						sqlCol += ', '; 
+						sqlCol += ', ';
 				} else if (cols[i] === 'btn_col_actions') {
 					actionFieldNum = i + 1; // offset of the appId
 				}
@@ -385,7 +397,7 @@ module.exports = function(app, utils, application, faculty_member, fns) {
 		}
 
 		function proceed() {
-			sql += sqlCol + ' FROM APPLICATION' + joinSql + 
+			sql += sqlCol + ' FROM APPLICATION' + joinSql +
 			' WHERE committeeReviewed=1 and Rank is not null' + sqlFilt;
 
 			var options = {
@@ -429,6 +441,50 @@ module.exports = function(app, utils, application, faculty_member, fns) {
 		} else {
 			next();
 		}
+	}
+
+	function viewApp(req, res, next) {
+		var query = req.query;
+
+		//get application data
+		var sql = 'SELECT app_Id, CONCAT_WS(\' \', `FName`, `LName`) AS `Applicant Name`, ' +
+      ' Gender, Email, app_session as `Session`, FOI as `Fields of Interest`, ' +
+      ' prefProfs as `Preferred Professors`, ' +
+      'Rank as `Committee Rank`, GPA, Degree, ' +
+      ' VStatus as `Visa Status`, programDecision as `Program Decision`, ' +
+      'profContacted as `Contacted By`,' +
+      ' profRequested as `Requested By`' +
+      ' from application' +
+      ' where committeeReviewed=1 and Rank is not null' +
+      ' and app_Id=' + application.conn.escape(query.appId);
+		console.log(sql);
+		// return application
+		application.getApplications(sql, req.user.id, function(err, results) {
+			if (err) {
+				req.flash('viewMessage',
+					'Error loading Application. Fatal reason: ' + err.message);
+				next();
+			} else {
+				req.application = results;
+				viewAppReviews(req, res, next);
+			}
+		});
+
+	}
+
+	function viewAppReviews(req, res, next) {
+		var query = req.query;
+		//get the reviews
+		application.getApplicationReview(query.appId, req.user.id, function(err, results) {
+			if (err) {
+				req.flash('viewMessage',
+					'Error loading Reviews. Fatal reason: ' + err.message);
+			} else {
+				req.reviews = results;
+			}
+			next();
+		});
+
 	}
 
 	function setLiveSearchData(req, res, next) {

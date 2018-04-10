@@ -1,3 +1,10 @@
-<h1><%= message %></h1>
-<h2><%= error.status %></h2>
-<pre><%= error.stack %></pre>
+<% include partials/header %>
+  <% include partials/navbar %>
+    <div class="jumbotron">
+      <div class="container">
+        <h1>Error <%= error.status %></h1>
+        <h2><%= message %></h2>
+        <pre><%= error.stack %></pre>
+      </div>
+    </div>
+    <% include partials/footer %>
