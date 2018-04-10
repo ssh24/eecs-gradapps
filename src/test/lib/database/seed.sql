@@ -87,7 +87,7 @@ CREATE TABLE `application` (
 ) ENGINE=INNODB;
 
 
--- APPLICATION_REVIEW table
+-- application_review table
 -- @committeeId: committee member id
 -- @appId: application id
 -- @Background: background of the student applicant
@@ -120,7 +120,7 @@ CREATE TABLE `application_review` (
 ) ENGINE=INNODB;
 
 
--- APPLICATION_SEEN table
+-- application_seen table
 -- @fmId: professor id
 -- @appId: application id
 -- @seen: application is seen by the professor
@@ -139,7 +139,7 @@ CREATE TABLE `application_seen` (
 ) ENGINE=INNODB;
 
 
--- UNIVERSITY table
+-- university table
 -- @u_Id: unique auto incremental primary key for each university
 -- @u_Name: full accredited name of the university
 -- @u_Assessments: list of assessments for the university
@@ -152,7 +152,7 @@ CREATE TABLE `university` (
 ) ENGINE=INNODB;
 
 
--- FOI table
+-- foi table
 -- @field_Id: unique auto incremental primary key for each field of interest
 -- @field_Name: full name of the field
 
@@ -162,11 +162,11 @@ CREATE TABLE `foi` (
     PRIMARY KEY(`field_Id`, `field_Name`)
 ) ENGINE=INNODB;
 
--- GPA table
+-- gpa table
 -- @letter_grade: letter grade corressponding to the York University scale
 -- @grade_point: grade point corresponding to the York University scale
 
-CREATE TABLE `GPA` (
+CREATE TABLE `gpa` (
     `letter_grade` ENUM('A+', 'A', 'B+', 'B', 'C+', 'C', 'D+', 'D', 'E', 'F') NOT NULL,
     `grade_point` INT NOT NULL,
     PRIMARY KEY(`letter_grade`)

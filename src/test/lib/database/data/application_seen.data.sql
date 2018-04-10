@@ -24,11 +24,11 @@ INSERT INTO `application_seen` (`fmId`, `appId`, `seen`)
     VALUES (7, 15, 0);
 INSERT INTO `application_seen` (`fmId`, `appId`, `seen`) 
     VALUES (7, 20, 0);
-INSERT INTO `APPLICATION_SEEN` (`fmId`, `appId`, `seen`) 
+INSERT INTO `application_seen` (`fmId`, `appId`, `seen`) 
     VALUES (20, 15, 1);
-INSERT INTO `APPLICATION_SEEN` (`fmId`, `appId`, `seen`) 
+INSERT INTO `application_seen` (`fmId`, `appId`, `seen`) 
     VALUES (20, 9, 1);
-INSERT INTO `APPLICATION_SEEN` (`fmId`, `appId`, `seen`) 
+INSERT INTO `application_seen` (`fmId`, `appId`, `seen`) 
     VALUES (20, 8, 1);
-INSERT INTO `APPLICATION_SEEN` (`fmId`, `appId`, `seen`) 
+INSERT INTO `application_seen` (`fmId`, `appId`, `seen`) 
     VALUES (20, 3, 1);

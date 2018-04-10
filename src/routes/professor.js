@@ -215,9 +215,9 @@ module.exports = function(app, utils, application, faculty_member, fns) {
 		var rankFilt;
 		var highlightText = {};
 
-		var interestStatusSql = ' LEFT JOIN APPLICATION_SEEN ON APPLICATION.app_Id ' +
-      '= APPLICATION_SEEN.appId and APPLICATION_SEEN.fmId=' + req.user.id;
-		var gpaSql = ' INNER JOIN GPA on APPLICATION.GPA = GPA.letter_grade';
+		var interestStatusSql = ' LEFT JOIN application_seen ON application.app_Id ' +
+      '= application_seen.appId and application_seen.fmId=' + req.user.id;
+		var gpaSql = ' INNER JOIN GPA on application.GPA = GPA.letter_grade';
 
 		// default sql
 		sqlCol += 'app_Id, CONCAT_WS(\' \', `FName`, `LName`) AS `Applicant Name`, ' +
@@ -394,7 +394,7 @@ module.exports = function(app, utils, application, faculty_member, fns) {
 		}
 
 		function proceed() {
-			sql += sqlCol + ' FROM APPLICATION' + joinSql + 
+			sql += sqlCol + ' FROM application' + joinSql + 
 			' WHERE committeeReviewed=1 and Rank is not null' + sqlFilt;
 
 			var options = {

@@ -232,61 +232,61 @@ INSERT INTO `application` (`student_Id`, `app_Session`, `LName`, `FName`, `Email
 
 
 ---- Committee Reviewed Applications but no decision made (10) ----
-insert into APPLICATION (`student_Id`, `app_Session`, `LName`, `FName`, `Email`, `Gender`, 
+insert into `application` (`student_Id`, `app_Session`, `LName`, `FName`, `Email`, `Gender`, 
     `GPA`, `GPA_FINAL`, `Degree`, `VStatus`, `Rank`, `committeeReviewed`, `FOI`, 
     `prefProfs`) values 
     (987654321, 'Fall', 'Lapwood', 'Stormie', 'slapwood0@foxnews.com', 'F', 'E', 0, 'PhD', 
     'Domestic', '["C", "B"]', 1, '["Biomedical Engineering", "Software Engineering", "Graph Mining"]', 
     '["Sheff Boneham", "Jenna Kubera", "Reamonn Cleef"]');
-insert into APPLICATION (`student_Id`, `app_Session`, `LName`, `FName`, `Email`, `Gender`, 
+insert into `application` (`student_Id`, `app_Session`, `LName`, `FName`, `Email`, `Gender`, 
     `GPA`, `GPA_FINAL`, `Degree`, `VStatus`, `Rank`, `committeeReviewed`, `FOI`, 
     `prefProfs`) 
     values (977654321, 'Summer', 'Silvers', 'Darsey', 'dsilvers1@nifty.com', 'F', 'B+', 0, 
     'MSc', 'Visa', '["A+", "B+"]', 1, '["Machine Learning", "Data Mining"]', 
     '["Jenna Kubera", "Buiron Truran", "Reamonn Cleef"]');
-insert into APPLICATION (`student_Id`, `app_Session`, `LName`, `FName`, `Email`, `Gender`, 
+insert into `application` (`student_Id`, `app_Session`, `LName`, `FName`, `Email`, `Gender`, 
     `GPA`, `GPA_FINAL`, `Degree`, `VStatus`, `Rank`, `committeeReviewed`, `FOI`, 
     `prefProfs`) values 
     (967654321, 'Summer', 'Merrill', 'Loydie', 'lmerrill2@mysql.com', 'M', 'C', 1, 'MASc', 
     'Visa', '["C", "B"]', 1, '["Artificial Intelligence", "Graph Mining"]',
     '["John Doe", "Winny Dalyell", "Buiron Truran"]');
-insert into APPLICATION (`student_Id`, `app_Session`, `LName`, `FName`, `Email`, `Gender`, 
+insert into `application` (`student_Id`, `app_Session`, `LName`, `FName`, `Email`, `Gender`, 
     `GPA`, `GPA_FINAL`, `Degree`, `VStatus`, `Rank`, `committeeReviewed`, `FOI`, 
     `prefProfs`) values 
     (957654321, 'Winter', 'Quilty', 'Berke', 'bquilty3@usda.gov', 'M', 'B', 0, 'PhD', 
     'Domestic', '["A+", "A"]', 1, '["Artificial Intelligence", "Graph Mining"]',
     '["John Doe", "Winny Dalyell", "Buiron Truran"]');
-insert into APPLICATION (`student_Id`, `app_Session`, `LName`, `FName`, `Email`, `Gender`, 
+insert into `application` (`student_Id`, `app_Session`, `LName`, `FName`, `Email`, `Gender`, 
     `GPA`, `GPA_FINAL`, `Degree`, `VStatus`, `Rank`, `committeeReviewed`, `FOI`, 
     `prefProfs`) values 
     (947654321, 'Winter', 'Gorke', 'Kenneth', 'kgorke4@cafepress.com', 'M', 'C', 1, 'PhD', 
     'Domestic', '["C", "B"]', 1, '["Biomedical Engineering", "Software Engineering", "Graph Mining"]', 
     '["Sheff Boneham", "Jenna Kubera", "Reamonn Cleef"]');
-insert into APPLICATION (`student_Id`, `app_Session`, `LName`, `FName`, `Email`, `Gender`, 
+insert into `application` (`student_Id`, `app_Session`, `LName`, `FName`, `Email`, `Gender`, 
     `GPA`, `GPA_FINAL`, `Degree`, `VStatus`, `Rank`, `committeeReviewed`, `FOI`, 
     `prefProfs`) values 
     (937654321, 'Fall', 'Abelwhite', 'Anatola', 'aabelwhite5@php.net', 'F', 'A', 0, 'PhD', 
     'Visa', '["B", "B"]', 1, '["Machine Learning", "Data Mining"]', 
     '["Jenna Kubera", "Buiron Truran", "Reamonn Cleef"]');
-insert into APPLICATION (`student_Id`, `app_Session`, `LName`, `FName`, `Email`, `Gender`, 
+insert into `application` (`student_Id`, `app_Session`, `LName`, `FName`, `Email`, `Gender`, 
     `GPA`, `GPA_FINAL`, `Degree`, `VStatus`, `Rank`, `committeeReviewed`, `FOI`, 
     `prefProfs`) values 
     (927654321, 'Winter', 'Jiricka', 'Sharyl', 'sjiricka6@theatlantic.com', 'F', 'E', 0, 
     'MASc', 'Visa', '["A", "B+"]', 1, '["Artificial Intelligence", "Graph Mining"]',
     '["John Doe", "Winny Dalyell", "Buiron Truran"]');
-insert into APPLICATION (`student_Id`, `app_Session`, `LName`, `FName`, `Email`, `Gender`, 
+insert into `application` (`student_Id`, `app_Session`, `LName`, `FName`, `Email`, `Gender`, 
     `GPA`, `GPA_FINAL`, `Degree`, `VStatus`, `Rank`, `committeeReviewed`, `FOI`, 
     `prefProfs`) values 
     (917654321, 'Summer', 'Pottage', 'Sheree', 'spottage7@dion.ne.jp', 'F', 'F', 1, 'MSc', 
     'Domestic', '["C", "B"]', 1, '["Biomedical Engineering", "Software Engineering", "Graph Mining"]', 
     '["Sheff Boneham", "Jenna Kubera", "Reamonn Cleef"]');
-insert into APPLICATION (`student_Id`, `app_Session`, `LName`, `FName`, `Email`, `Gender`, 
+insert into `application` (`student_Id`, `app_Session`, `LName`, `FName`, `Email`, `Gender`, 
     `GPA`, `GPA_FINAL`, `Degree`, `VStatus`, `Rank`, `committeeReviewed`, `FOI`, 
     `prefProfs`) values 
     (907654321, 'Fall', 'Longman', 'Willem', 'wlongman8@dell.com', 'M', 'C+', 0, 'MSc', 
     'Visa', '["C", "B+"]', 1, '["Machine Learning", "Data Mining"]', 
     '["Jenna Kubera", "Buiron Truran", "Reamonn Cleef"]');
-insert into APPLICATION (`student_Id`, `app_Session`, `LName`, `FName`, `Email`, `Gender`, 
+insert into `application` (`student_Id`, `app_Session`, `LName`, `FName`, `Email`, `Gender`, 
     `GPA`, `GPA_FINAL`, `Degree`, `VStatus`, `Rank`, `committeeReviewed`, `FOI`, 
     `prefProfs`) values 
     (989654321, 'Summer', 'Warburton', 'Florance', 'fwarburton9@toplist.cz', 'F', 'B', 1, 

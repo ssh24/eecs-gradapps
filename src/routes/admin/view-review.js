@@ -104,7 +104,7 @@ module.exports = function(config, fns) {
 		var sql = 'SELECT app_Id, VStatus as `Visa Status`, FOI as `Field(s) of ' + 
 		'Interest`, prefProfs as `Preferred Professor(s)`,' + case_assigned + 
 		' as `Reviews Assigned`,' + case_pending + ' as `Reviews Pending` ' + 
-		'FROM APPLICATION where committeeReviewed = 0;';
+		'FROM application where committeeReviewed = 0;';
 		getApplications(sql, {}, req, res, next);
 	}
 

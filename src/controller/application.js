@@ -103,8 +103,8 @@ Application.prototype.getApplications = function(sql, memberId, cb) {
     ' VStatus as `Visa Status`, programDecision as `Program Decision`, ' +
     'profContacted as `Contacted By`,' +
     ' profRequested as `Requested By`, ' +
-    'seen as `My Interest Status` FROM APPLICATION LEFT JOIN APPLICATION_SEEN ' +
-    'ON APPLICATION.app_Id = APPLICATION_SEEN.appId and APPLICATION_SEEN.fmId=' + memberId +
+    'seen as `My Interest Status` FROM application LEFT JOIN application_seen ' +
+    'ON application.app_Id = application_seen.appId and application_seen.fmId=' + memberId +
     ' where committeeReviewed=1 and Rank is not null';
 
 	assert(typeof sql === 'string');
@@ -214,7 +214,7 @@ Application.prototype.deleteApplication = function(appId, memberId, cb) {
 	this.utils.getRoles(memberId, function(err, roles) {
 		if (err) return cb(err);
 		if (roles.includes('Admin')) {
-			self.conn.query('DELETE FROM APPLICATION WHERE app_Id=?', appId, 
+			self.conn.query('DELETE FROM application WHERE app_Id=?', appId, 
 				function(err, result) {
 					if (err) return cb(err);
 					return cb(err, result);
