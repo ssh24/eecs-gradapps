@@ -457,7 +457,6 @@ module.exports = function(app, utils, application, faculty_member, fns) {
       ' from application' +
       ' where committeeReviewed=1 and Rank is not null' +
       ' and app_Id=' + application.conn.escape(query.appId);
-		console.log(sql);
 		// return application
 		application.getApplications(sql, req.user.id, function(err, results) {
 			if (err) {
