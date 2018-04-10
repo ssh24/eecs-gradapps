@@ -1,0 +1,339 @@
+<% include partials/header %>
+    <div class="container">
+        <h3 class="text-center">Edit Application Form</h3>
+        <form id="edit-app-form" action="/roles/admin/applications/edit" method="POST" encType="multipart/form-data">
+
+            <div class="row" style="margin-bottom:10px">
+                <fieldset><legend style="color:blue;font-weight:bold;">Upload Application</legend>
+                
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <h5 for="app_file">Select Application File*</h5>
+                        <% if (app_file) { %>
+                            <p class="text-justify">An existing application file exists. Click <a id="view-app-<%=i%>" href="/roles/admin/applications/view?appId=<%= appId%>" target="_blank">here</a> to view</p>
+                        <% } %> 
+                        <span class="btn btn-default btn-file"><input type="file" class="form-control-file" id="app_file" name="app_file" accept=".pdf" <% if(!app_file) {%> required="true" <% } %>></span>
+                        <p id="error-file" class="text-danger" hidden></p>         
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row" style="margin-bottom:20px">
+                <fieldset><legend style="color:blue;font-weight:bold;">General Information</legend>
+                
+                <div class="col-sm-2">
+                    <h5 for="app_Session">Session*</h5>
+                    <select id="app_Session" name="app_Session" class="form-control selectpicker show-menu-arrow" data-live-search="true" title="Select Session" required>
+                        <% if (session) { %>
+                            <% if (session === 'Fall') { %>
+                                <option selected>Fall</option>
+                                <option>Winter</option>
+                                <option>Summer</option>
+                            <% } else if (session === 'Winter') { %>
+                                <option>Fall</option>
+                                <option selected>Winter</option>
+                                <option>Summer</option>
+                            <% } else { %>
+                                <option>Fall</option>
+                                <option>Winter</option>
+                                <option selected>Summer</option>
+                            <% } %>
+                        <% } else { %>
+                            <option>Fall</option>
+                            <option>Winter</option>
+                            <option>Summer</option>
+                        <% } %>
+                    </select>
+                </div>
+
+                <div class="col-sm-2">
+                    <h5 for="student_Id">Student Number*</h5>
+                    <input type="text" class="form-control" placeholder="Student Number" id="student_Id" name="student_Id" pattern="\d{9}" required title = "Student number must be 9 digits" value="<%- sid %>">
+                </div>
+
+                <div class="col-sm-2">
+                    <h5 for="LName">Last Name*</h5>
+                    <input type="text" class="form-control" placeholder="Last Name" id="LName" name="LName" value="<%- lname %>" required>
+                </div>
+
+                <div class="col-sm-2">
+                    <h5 for="FName">First Name*</h5>
+                    <input type="text" class="form-control" placeholder="First Name" id="FName" name="FName" value="<%- fname %>" required>
+                </div>
+
+                <div class="col-sm-2">
+                    <h5 for="Email">Email*</h5>
+                    <input type="email" class="form-control" placeholder="Email" id="Email" name="Email" value="<%- email %>" required>
+                </div>
+    
+                <div class="col-sm-2">
+                    <h5 for="Gender">Gender*</h5>
+                    <select id="Gender" name="Gender" class="form-control selectpicker show-menu-arrow" data-live-search="true" title="Select Gender" required>
+                        <% if (gender) { %>
+                            <% if (gender === 'M') { %>
+                                <option selected>Male</option>
+                                <option>Female</option>
+                                <option>Not Specified</option>
+                            <% } else if (gender === 'F') { %>
+                                <option>Male</option>
+                                <option selected>Female</option>
+                                <option>Not Specified</option>
+                            <% } else { %>
+                                <option>Male</option>
+                                <option>Female</option>
+                                <option selected>Not Specified</option>
+                            <% } %>
+                        <% } else { %>
+                            <option>Male</option>
+                            <option>Female</option>
+                            <option>Not Specified</option>
+                        <% } %>
+                    </select>
+                </div>
+            </div>
+
+             
+            <div class="row" style="margin-bottom:20px">
+                <fieldset><legend style="color:blue;font-weight:bold;">Previous Grades</legend>
+
+                <div class="col-sm-2">
+                    <h5 for="GPA">GPA*</h5>
+                    <select id="GPA" name="GPA" class="form-control selectpicker" data-live-search="true" title="Select GPA" required>
+                        <% for(var i = 0; i < gpa.length; i++){ %>
+                            <% if (selected_gpa && selected_gpa === gpa[i]) { %>
+                                <option selected><%= gpa[i]%></option>
+                            <% } else { %>
+                                <option><%= gpa[i]%></option>
+                            <% } %>
+                        <%}%>
+                    </select>
+                </div>
+
+                <div class="col-sm-2">
+                    <h5 for="GPA_FINAL">GPA Status</h5>
+                    <label class="radio-inline"><input type="radio" id="final" name="GPA_FINAL" value="1" <% if(gpa_final === 1) {%> checked="true" <% } %>>Final</label>
+                    <label class="radio-inline"><input type="radio" id="interim" name="GPA_FINAL" value="0" <% if(gpa_final === 0) {%> checked="true" <% } %>>Interim</label>
+                </div>
+
+                <div class="col-sm-2">
+                    <h5 for="GRE">GRE</h5>
+                    <input type="text" class="form-control" placeholder="GRE" id="GRE" name="GRE" pattern="\d{3}/\d{1}\.[0|5]/\d{3}" title="GRE scores must be in the form: int/decimal/int" value="<%- gre %>">
+                </div>
+
+                <div class="col-sm-2">
+                    <h5 for="TOEFL">TOEFL</h5>
+                    <input type="number" class="form-control" placeholder="TOEFL" id="TOEFL" name="TOEFL" value="<%- toefl %>">
+                </div>
+
+                <div class="col-sm-2">
+                    <h5 for="IELTS">IELTS</h5>
+                    <input type="number" class="form-control" placeholder="IELTS" id="IELTS" name="IELTS" step=".5" value="<%- ielts %>">
+                </div>
+
+                <div class="col-sm-2">
+                    <h5 for="YELT">YELT</h5>
+                    <input type="number" class="form-control" placeholder="YELT" id="YELT" name="YELT" value="<%- yelt %>">
+                </div>
+
+            </div>
+
+            <div class="row" style="margin-bottom:10px">
+                <fieldset><legend style="color:blue;font-weight:bold;">Application Information</legend>
+
+                <div class="row" style="margin-bottom:20px">
+                        <div class="col-sm-2">
+                                <h5 for="VStatus">Visa Status*</h5>
+                                <select id="VStatus" name="VStatus" class="form-control selectpicker" data-live-search="true" title="Select Visa Status" required>
+                                    <% if (vstatus) { %>
+                                        <% if (vstatus === 'Domestic') { %>
+                                            <option selected>Domestic</option>
+                                            <option>Visa</option>
+                                        <% } else { %>
+                                            <option>Domestic</option>
+                                            <option selected>Visa</option>
+                                        <% } %>
+                                    <% } else { %>
+                                        <option>Domestic</option>
+                                        <option>Visa</option>
+                                    <% } %>
+                                </select>
+                            </div>
+            
+                            <div class="col-sm-2">
+                                <h5 for="Degree">Degree*</h5>
+                                <select id="Degree" name="Degree" class="form-control selectpicker" data-live-search="true" title="Select Degree" required>
+                                    <% if (degree) { %>
+                                        <% if (degree === 'MASc') { %>
+                                            <option selected>MASc</option>
+                                            <option>MSc</option>
+                                            <option>PhD</option>
+                                        <% } else if (degree === 'MSc') { %> 
+                                            <option>MASc</option>
+                                            <option selected>MSc</option>
+                                            <option>PhD</option>
+                                        <% } else { %>
+                                            <option>MASc</option>
+                                            <option>MSc</option>
+                                            <option selected>PhD</option>
+                                        <% } %>
+                                    <% } else { %>
+                                        <option>MASc</option>
+                                        <option>MSc</option>
+                                        <option>PhD</option>
+                                    <% } %>
+                                </select>
+                            </div>
+            
+                            <div class="col-sm-2">
+                                <h5 for="FOI">Field(s) of Interest*</h5>
+                                <select id="FOI" name="FOI" class="form-control selectpicker" data-live-search="true" title="Select Field(s) of Interest" multiple required>
+                                    <% for(var i = 0; i < foi.length; i++){ %>
+                                        <% if (selected_foi && selected_foi.includes(foi[i])) { %>
+                                            <option selected><%= foi[i]%></option>
+                                        <% } else { %>
+                                            <option><%= foi[i]%></option>
+                                        <% } %>
+                                    <%}%>
+                                </select>
+                            </div>
+            
+                            <div class="col-sm-2">
+                                <h5 for="prefProfs">Listed Professor(s)*</h5>
+                                <select id="prefProfs" name="prefProfs" class="form-control selectpicker" data-live-search="true" title="Select Preferred Professor(s)" multiple required>
+                                    <% for(var i = 0; i < profs.length; i++){ %>
+                                        <% if (selected_profs && selected_profs.includes(profs[i])) { %>
+                                            <option selected><%= profs[i]%></option>
+                                        <% } else { %>
+                                            <option><%= profs[i]%></option>
+                                        <% } %>
+                                    <%}%>
+                                </select>
+                            </div>
+            
+                            <div class="col-sm-2">
+                                <h5 for="profContacted">Contacted By</h5>
+                                <select id="profContacted" name="profContacted" class="form-control selectpicker" data-live-search="true" title="Select Professor(s) Contacted" multiple required>
+                                    <% for(var i = 0; i < profs.length; i++){ %>
+                                        <% if (profContacted && profContacted.includes(profs[i])) { %>
+                                            <option selected><%= profs[i]%></option>
+                                        <% } else { %>
+                                            <option><%= profs[i]%></option>
+                                        <% } %>
+                                    <%}%>
+                                </select>
+                            </div>
+            
+                            <div class="col-sm-2">
+                                <h5 for="profRequested">Requested By</h5>
+                                <select id="profRequested" name="profRequested" class="form-control selectpicker" data-live-search="true" title="Select Professor(s) Requested" multiple required>
+                                    <% for(var i = 0; i < profs.length; i++){ %>
+                                        <% if (profRequested && profRequested.includes(profs[i])) { %>
+                                            <option selected><%= profs[i]%></option>
+                                        <% } else { %>
+                                            <option><%= profs[i]%></option>
+                                        <% } %>
+                                    <%}%>
+                                </select>
+                            </div>
+                </div>
+
+                <div class ="row">
+                            <div class="col-sm-2">
+                                <h5 for="Rank">Committee Rank</h5>
+                                <select id="Rank" name="Rank" class="form-control selectpicker" data-live-search="true" title="Select Committee Rank" multiple>
+                                    <% for(var i = 0; i < gpa.length; i++){ %>
+                                        <% if (gpa[i] === 'A+' || gpa[i] === 'A' || gpa[i] === 'B+' || gpa[i] === 'B' || gpa === 'C') { %>
+                                            <% if (rank && rank.includes(gpa[i])) { %>
+                                                <option selected><%= gpa[i]%></option>
+                                            <% } else { %>
+                                                <option><%= gpa[i]%></option>
+                                            <% } %>
+                                        <%}%>
+                                    <%}%>
+                                </select>
+                            </div>
+
+                            <div class="col-sm-2">
+                                <h5 for="committeeReviewed">Application Reviewed</h5>
+                                <label class="radio-inline"><input type="radio" id="yes-reviewed" name="committeeReviewed" value="1" <% if(reviewed === 1) {%> checked="true" <% } %>>Yes</label>
+                                <label class="radio-inline"><input type="radio" id="no-reviewed" name="committeeReviewed" value="0" <% if(reviewed === 0) {%> checked="true" <% } %>>No</label>
+                            </div>
+
+                            <div class="col-sm-2">
+                                <h5 for="ygsAwarded">YGS Awarded</h5>
+                                <label class="radio-inline"><input type="radio" id="yes-ygs" name="ygsAwarded" value="1" <% if(ygsAwarded === 1) {%> checked="true" <% } %>>Yes</label>
+                                <label class="radio-inline"><input type="radio" id="no-ygs" name="ygsAwarded" value="0" <% if(ygsAwarded === 0) {%> checked="true" <% } %>>No</label>
+                            </div>
+
+                            <div class="col-sm-2">
+                                <h5 for="programDecision">Program Decision</h5>
+                                <select id="programDecision" name="programDecision" class="form-control selectpicker show-menu-arrow" title="Select Program Decision" data-live-search="true">
+                                    <% if (programDecision) { %>
+                                        <% if (programDecision === 'Accepted') { %>
+                                            <option selected>Accepted</option>
+                                            <option>Declined</option>
+                                            <option>Under Review</option>
+                                        <% } else if (programDecision === 'Declined') { %>
+                                            <option>Accepted</option>
+                                            <option selected>Declined</option>
+                                            <option>Under Review</option>
+                                        <% } else { %>
+                                            <option>Accepted</option>
+                                            <option>Declined</option>
+                                            <option selected>Under Review</option>
+                                        <% } %>
+                                    <% } else { %>
+                                        <option>Accepted</option>
+                                        <option>Declined</option>
+                                        <option>Under Review</option>
+                                    <% } %>
+                                </select>
+                            </div>
+
+                            <div class="col-sm-2">
+                                    <h5 for="studentDecision">Student Decision</h5>
+                                    <select id="studentDecision" name="studentDecision" class="form-control selectpicker show-menu-arrow" title="Select Student Decision" data-live-search="true">
+                                        <% if (studentDecision) { %>
+                                            <% if (studentDecision === 'Accepted') { %>
+                                                <option selected>Accepted</option>
+                                                <option>Declined</option>
+                                            <% } else if (programDecision === 'Declined') { %>
+                                                <option>Accepted</option>
+                                                <option selected>Declined</option>
+                                            <% } %>
+                                        <% } else { %>
+                                            <option>Accepted</option>
+                                            <option>Declined</option>
+                                        <% } %>
+                                    </select>
+                            </div>
+
+                            <div class="col-sm-2">
+                                <h5 for="declineReason">Decline Reason</h5>
+                                <textarea class="form-control" id="declineReason" name="declineReason" rows="2" placeholder="Decline Reason" style="margin-bottom:5px"><%- declineReason %></textarea>
+                            </div>
+                </div>
+    
+            </div>
+
+            <div class="row">
+                <hr>
+                <p>All fields with * are required</p>
+                <a id="edit-close" href="/roles/admin/applications/" class="btn btn-danger btn-default"><span class="glyphicon glyphicon-remove"></span> Cancel Application</a>
+                <button id="edit-submit" type="submit" name="create" class="btn btn-success btn-default pull-center"><span class="glyphicon glyphicon-cloud-upload"></span> Update Application</button>
+            </div>
+        </form>
+    </div>
+    <script src="/js/jquery-3.2.0.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/jquery.metadata.js"></script>
+
+    <script src="https://web.archive.org/web/20161124120603js_/http://www.papercut.com/products/free-software/are-you-sure/jquery.are-you-sure.js"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
+
+    <script src="/js/manage-app.js"></script>
+</body>

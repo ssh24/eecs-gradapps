@@ -147,7 +147,7 @@ table.tablesorter {
   /*End Tablesorter*/
 
 .table-responsive {
-    max-height: 500px;
+    max-height: auto;
 }
 
 .table-striped > tbody > tr:nth-child(odd) > td,

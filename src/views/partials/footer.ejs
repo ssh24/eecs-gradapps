@@ -24,12 +24,13 @@
     <script type="text/javascript"> var presets = <%-JSON.stringify(presets)%>;</script>
 <%}%>
 <% if (role === 'Admin') { %>
-    <script src="/js/admin.js"></script>
     <script src="https://fastcdn.org/FileSaver.js/1.1.20151003/FileSaver.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/TableExport/5.0.0/js/tableexport.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/TableExport/5.0.0/css/tableexport.min.css" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/TableExport/5.0.0/img/csv.svg" />
     <script src="https://web.archive.org/web/20161124120603js_/http://www.papercut.com/products/free-software/are-you-sure/jquery.are-you-sure.js"></script>
+    <script src="/js/admin.js"></script>
+    <script type="text/javascript"> var presets = <%-JSON.stringify(presets)%>;</script>
 <% } %>
 </body>
 </html>
