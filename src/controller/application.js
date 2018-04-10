@@ -65,6 +65,44 @@ Application.prototype.getApplications = function(sql, memberId, cb) {
 };
 
 /**
+ * Get Application reviews
+ * @param {Number} appId
+ * @param {Number} memberId
+ * @param {Function} cb
+ */
+Application.prototype.getApplicationReview = function(appId, memberId, cb) {
+	assert(typeof memberId === 'number');
+	assert(typeof cb === 'function');
+
+	var sql = 'SELECT Background, researchExp AS `Research Experience`, ' +
+    'Comments, c_Rank as `Committee Ranking`, ' +
+		'UniAssessment, Letter ' +
+    'from application_review' +
+    ' where status=\'Submitted\' and appId=' + this.conn.escape(appId);
+
+	var self = this;
+
+	this.utils.getRoles(memberId, function(err, roles) {
+		if (err) return cb(err);
+		if (roles.includes('Professor') || roles.includes('Admin')) {
+			self.conn.query(sql, function(error, result) {
+				if (err) return cb(error);
+				if (result.length > 0) {
+					cb(err, result);
+				} else {
+					err = new Error('No reviews found');
+					return cb(err);
+				}
+			});
+		} else {
+			err = new Error('Member ' + memberId +
+        ' does not have access to see application reviews');
+			return cb(err);
+		}
+	});
+};
+
+/**
  * Update application interest status
  * @param {Number} appId
  * @param {Number} memberId
