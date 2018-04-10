@@ -75,9 +75,11 @@ Application.prototype.getApplicationReview = function(appId, memberId, cb) {
 	assert(typeof cb === 'function');
 
 	var sql = 'SELECT Background, researchExp AS `Research Experience`, ' +
-    'Comments, c_Rank as `Committee Ranking` ' +
+    'Comments, c_Rank as `Committee Ranking`, ' +
+		'UniAssessment, Letter ' +
     'from application_review' +
     ' where status=\'Submitted\' and appId=' + this.conn.escape(appId);
+
 	var self = this;
 
 	this.utils.getRoles(memberId, function(err, roles) {
