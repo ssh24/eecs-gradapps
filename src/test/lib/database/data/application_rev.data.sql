@@ -13,30 +13,39 @@ complicated.
 **/
 
 INSERT INTO `APPLICATION_REVIEW` (`committeeId`, `appId`, `c_Rank`, `Status`) 
+    VALUES (11, 12, 'B', 'Submitted');
+
+INSERT INTO `APPLICATION_REVIEW` (`committeeId`, `appId`, `c_Rank`, `Status`) 
+    VALUES (11, 15, 'A+', 'Submitted');
+
+INSERT INTO `APPLICATION_REVIEW` (`committeeId`, `appId`, `c_Rank`, `Status`) 
     VALUES (10, 16, 'A', 'New');
 INSERT INTO `APPLICATION_REVIEW` (`committeeId`, `appId`, `c_Rank`, `Status`) 
     VALUES (11, 16, 'B+', 'Submitted');
-INSERT INTO `APPLICATION_REVIEW` (`committeeId`, `appId`, `Status`) 
-    VALUES (16, 17, 'In-Progress');
+
+INSERT INTO `APPLICATION_REVIEW` (`assignDate`, `committeeId`, `appId`, `Status`) 
+    VALUES ('2018-02-23', 16, 17, 'New');
+
 INSERT INTO `APPLICATION_REVIEW` (`committeeId`, `appId`, `c_Rank`, `Status`) 
     VALUES (16, 18, 'C', 'Submitted');
+
+INSERT INTO `APPLICATION_REVIEW` (`assignDate`, `committeeId`, `appId`, `Status`) 
+    VALUES ('2018-03-01', 16, 19, 'Draft');
+INSERT INTO `APPLICATION_REVIEW` (`committeeId`, `appId`, `c_Rank`, `Status`) 
+    VALUES (17, 19, 'C', 'Submitted');
+INSERT INTO `APPLICATION_REVIEW` (`committeeId`, `appId`, `c_Rank`, `Status`) 
+    VALUES (19, 19, 'A+', 'Draft');
+
 INSERT INTO `APPLICATION_REVIEW` (`committeeId`, `appId`, `Status`) 
-    VALUES (16, 19, 'In-Progress');
-INSERT INTO `APPLICATION_REVIEW` (`committeeId`, `appId`, `Status`) 
-    VALUES (16, 20, 'In-Progress');
+    VALUES (16, 20, 'New');
+INSERT INTO `APPLICATION_REVIEW` (`committeeId`, `appId`, `c_Rank`, `Status`) 
+    VALUES (17, 20, 'B', 'Draft');
+
 INSERT INTO `APPLICATION_REVIEW` (`committeeId`, `appId`, `Status`) 
     VALUES (16, 21, 'New');
-INSERT INTO `APPLICATION_REVIEW` (`committeeId`, `appId`, `c_Rank`, `Status`) 
-    VALUES (17, 19, 'C', 'Reviewed');
+
+
 INSERT INTO `APPLICATION_REVIEW` (`committeeId`, `appId`, `c_Rank`, `Status`) 
     VALUES (18, 25, 'C', 'Draft');
 INSERT INTO `APPLICATION_REVIEW` (`committeeId`, `appId`, `c_Rank`, `Status`) 
     VALUES (19, 25, 'B', 'Submitted');
-INSERT INTO `APPLICATION_REVIEW` (`committeeId`, `appId`, `c_Rank`, `Status`) 
-    VALUES (17, 20, 'B', 'In-Progress');
-INSERT INTO `APPLICATION_REVIEW` (`committeeId`, `appId`, `c_Rank`, `Status`) 
-    VALUES (19, 19, 'A+', 'Draft');
-INSERT INTO `APPLICATION_REVIEW` (`committeeId`, `appId`, `c_Rank`, `Status`) 
-    VALUES (11, 15, 'A+', 'Submitted');
-INSERT INTO `APPLICATION_REVIEW` (`committeeId`, `appId`, `c_Rank`, `Status`) 
-    VALUES (11, 12, 'B', 'Submitted');

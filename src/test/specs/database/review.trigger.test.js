@@ -94,15 +94,6 @@ describe('Review Triggers', function() {
 					done();
 				});
 			});
-
-		it('unassign a review in-progress from a committee member', 
-			function(done) {
-				review.unassignReview(17, 16, 1, function(err, result) {
-					assert(err, 'Error should exist');
-					assert(!result, 'Result should exist');
-					done();
-				});
-			});
                 
 		it('unassign a completed review from a committee member', 
 			function(done) {
@@ -262,235 +253,45 @@ describe('Review Triggers', function() {
 			});
 	});
 
-	describe('open a review', function() {
+	describe('load a review', function() {
 		before(function setUp(done) {
 			review.assignReview(12, 20, 1, done);
 		});
 
 		after(function cleanUp(done) {
-			async.series([
-				function(callback) {
-					review.saveReview(12, 20, callback);
-				},
-				function(callback) {
-					review.unassignReview(12, 20, 1, callback);
-				}
-			], done);
+			review.unassignReview(12, 20, 1, done);
 		});
-
-		it('open a review that has been saved as a draft', function(done) {
-			review.openReview(19, 19, function(err, result) {
-				if (err) done(err);
-				assert(result, 'Result should exist');
-				done();
-			});
-		});
-
-		it('open a review as a committee member who already has an opened ' 
-			+ 'review in-progress', 
-		function(done) {
-			review.openReview(21, 16, function(err, result) {
-				assert(err, 'Error should exist');
-				assert(!result, 'Result should exist');
-				done();
-			});
-		});
-
-		it('open a submitted review as a committee member', 
-			function(done) {
-				review.openReview(20, 16, function(err, result) {
-					assert(err, 'Error should exist');
-					assert(!result, 'Result should exist');
-					done();
-				});
-			});
-
-		it('open a valid review as a valid committee member', 
-			function(done) {
-				review.openReview(12, 20, function(err, result) {
-					if (err) done(err);
-					assert(result, 'Result should exist');
-					done();
-				});
-			});
 		
-		it('open a valid review as an invalid committee member', 
+		it('load a valid review by a valid member', 
 			function(done) {
-				review.openReview(17, 1, function(err, result) {
-					assert(err, 'Error should exist');
-					assert(!result, 'Result should exist');
-					done();
-				});
-			});
-
-		it('open an invalid review as a valid committee member', 
-			function(done) {
-				review.openReview(0, 20, function(err, result) {
-					assert(err, 'Error should exist');
-					assert(!result, 'Result should not exist');
-					done();
-				});
-			});
-
-		it('open an invalid review as a invalid committee member', 
-			function(done) {
-				review.openReview(0, 1, function(err, result) {
-					assert(err, 'Error should exist');
-					assert(!result, 'Result should not exist');
-					done();
-				});
-			});
-	});
-
-	describe('begin a review', function() {
-		before(function setUp(done) {
-			review.assignReview(12, 20, 1, done);
-		});
-
-		after(function cleanUp(done) {
-			async.series([
-				function(callback) {
-					review.saveReview(12, 20, callback);
-				},
-				function(callback) {
-					review.unassignReview(12, 20, 1, callback);
-				}
-			], done);
-		});
-
-		it('begin a submitted review as a committee member', 
-			function(done) {
-				review.beginReview(16, 11, function(err, result) {
-					assert(err, 'Error should exist');
-					assert(!result, 'Result should exist');
-					done();
-				});
-			});
-
-		it('begin a valid review as a valid committee member', 
-			function(done) {
-				review.beginReview(12, 20, function(err, result) {
-					if (err) done(err);
-					assert(result, 'Result should exist');
-					done();
-				});
-			});
-            
-		it('begin a valid review as an invalid committee member', 
-			function(done) {
-				review.beginReview(17, 1, function(err, result) {
-					assert(err, 'Error should exist');
-					assert(!result, 'Result should exist');
-					done();
-				});
-			});
-
-		it('begin an invalid review as a valid committee member', 
-			function(done) {
-				review.beginReview(0, 20, function(err, result) {
-					assert(err, 'Error should exist');
-					assert(!result, 'Result should not exist');
-					done();
-				});
-			});
-
-		it('begin an invalid review as a invalid committee member', 
-			function(done) {
-				review.beginReview(0, 1, function(err, result) {
-					assert(err, 'Error should exist');
-					assert(!result, 'Result should not exist');
-					done();
-				});
-			});
-	});
-
-	describe('write a review', function() {
-		before(function setUp(done) {
-			async.series([
-				function(callback) {
-					review.assignReview(12, 20, 1, callback);
-				},
-				function(callback) {
-					review.beginReview(12, 20, callback);
-				}
-			], done);
-		});
-
-		after(function cleanUp(done) {
-			async.series([
-				function(callback) {
-					review.saveReview(12, 20, callback);
-				},
-				function(callback) {
-					review.unassignReview(12, 20, 1, callback);
-				}
-			], done);
-		});
-
-		it('write a completed review as a committee member', 
-			function(done) {
-				review.writeReview(19, 17, {
-					'fieldNames': [
-						'Background', 'researchExp', 'c_Rank'
-					],
-					'values': ['"Some background"', '"Some research"', 
-						'"B+"']}, function(err, result) {
-					assert(err, 'Error should exist');
-					assert(!result, 'Result should exist');
-					done();
-				});
-			});
-
-		it('write a valid review as a valid committee member', 
-			function(done) {
-				review.writeReview(12, 20, {
-					'fieldNames': [
-						'Background', 'researchExp', 'c_Rank'
-					],
-					'values': ['"Some background"', '"Some research"', 
-						'"B+"']}, function(err, result) {
+				review.loadReview(12, 20, function(err, result) {
 					if (err) done(err);
 					assert(result, 'Result should exist');
 					done();
 				});
 			});
 
-		it('write a valid review as an invalid committee member', 
+		it('load a valid review by an invalid member', 
 			function(done) {
-				review.writeReview(17, 1, {
-					'fieldNames': [
-						'Background', 'researchExp', 'c_Rank'
-					],
-					'values': ['"Some background"', '"Some research"', 
-						'"B+"']},function(err, result) {
-					assert(err, 'Error should exist');
-					assert(!result, 'Result should exist');
-					done();
-				});
-			});
-
-		it('write an invalid review as a valid committee member', 
-			function(done) {
-				review.writeReview(0, 20, {
-					'fieldNames': [
-						'Background', 'researchExp', 'c_Rank'
-					],
-					'values': ['"Some background"', '"Some research"', 
-						'"B+"']}, function(err, result) {
+				review.loadReview(12, 3, function(err, result) {
 					assert(err, 'Error should exist');
 					assert(!result, 'Result should not exist');
 					done();
 				});
 			});
 
-		it('write an invalid review as an invalid committee member', 
+		it('load a invalid review by a valid member', 
 			function(done) {
-				review.writeReview(0, 1, {
-					'fieldNames': [
-						'Background', 'researchExp', 'c_Rank'
-					],
-					'values': ['"Some background"', '"Some research"', 
-						'"B+"']}, function(err, result) {
+				review.loadReview(0, 1, function(err, result) {
+					assert(err, 'Error should exist');
+					assert(!result, 'Result should not exist');
+					done();
+				});
+			});
+
+		it('load a invalid review by an invalid member', 
+			function(done) {
+				review.loadReview(0, 3, function(err, result) {
 					assert(err, 'Error should exist');
 					assert(!result, 'Result should not exist');
 					done();
@@ -503,9 +304,6 @@ describe('Review Triggers', function() {
 			async.series([
 				function(callback) {
 					review.assignReview(12, 20, 1, callback);
-				},
-				function(callback) {
-					review.beginReview(12, 20, callback);
 				}
 			], done);
 		});
@@ -513,10 +311,54 @@ describe('Review Triggers', function() {
 		after(function cleanUp(done) {
 			async.series([
 				function(callback) {
+					review.saveReview(12, 20, {}, callback);
+				},
+				function(callback) {
 					review.unassignReview(12, 20, 1, callback);
+				},
+				function(callback) {
+					review.removeUniversity('York University', callback);
 				}
 			], done);
 		});
+
+		it('save a review with null data', function(done) {
+			review.saveReview(12, 20, null, function(err, result) {
+				if (err) done(err);
+				assert(result, 'Result should exist');
+				done();
+			});
+		});
+
+		it('save a review with no data', function(done) {
+			review.saveReview(12, 20, function(err, result) {
+				if (err) done(err);
+				assert(result, 'Result should exist');
+				done();
+			});
+		});
+
+		it('save a review with data', 
+			function(done) {
+				var data = {
+					LName: 'Bar',
+					FName: 'Foo',
+					GPA: 'B+',
+					GRE: '150',
+					Degree: 'MSc',
+					PreviousInst: ['York University'],
+					UniAssessment: [{'u_Name': 'York University', 'u_Assessments': 'Well known in Ontario'}],
+					Background: 'Strong programmer',
+					researchExp: 'None',
+					Comments: 'None',
+					c_Rank: 'B+'
+				};
+				review.saveReview(12, 20, data, function(err, result) {
+					if (err) done(err);
+					assert(result, 'Result should exist');
+					done();
+				});
+			});
 
 		it('save a submitted review as a committee member', 
 			function(done) {
@@ -526,16 +368,6 @@ describe('Review Triggers', function() {
 					done();
 				});
 			});
-
-		it('save a valid review as a valid committee member', 
-			function(done) {
-				review.saveReview(12, 20, function(err, result) {
-					if (err) done(err);
-					assert(result, 'Result should exist');
-					done();
-				});
-			});
-
             
 		it('save a valid review as an invalid committee member', 
 			function(done) {
@@ -565,171 +397,21 @@ describe('Review Triggers', function() {
 			});
 	});
 
-	describe('resume a review', function() {
-		before(function setUp(done) {
-			review.assignReview(12, 20, 1, done);
-		});
-
-		after(function cleanUp(done) {
-			async.series([
-				function(callback) {
-					review.saveReview(12, 20, callback);
-				},
-				function(callback) {
-					review.unassignReview(12, 20, 1, callback);
-				}
-			], done);
-		});
-
-		it('resume a submitted review as a committee member', 
-			function(done) {
-				review.resumeReview(16, 11, function(err, result) {
-					assert(err, 'Error should exist');
-					assert(!result, 'Result should exist');
-					done();
-				});
-			});
-
-		it('resume a valid review with valid committee member', 
-			function(done) {
-				review.resumeReview(12, 20, function(err, result) {
-					if (err) done(err);
-					assert(result, 'Result should exist');
-					done();
-				});
-			});
-
-            
-		it('resume a valid review with an invalid committee member', 
-			function(done) {
-				review.resumeReview(17, 1, function(err, result) {
-					assert(err, 'Error should exist');
-					assert(!result, 'Result should exist');
-					done();
-				});
-			});
-
-		it('resume an invalid review with valid committee member', 
-			function(done) {
-				review.resumeReview(0, 20, function(err, result) {
-					assert(err, 'Error should exist');
-					assert(!result, 'Result should not exist');
-					done();
-				});
-			});
-
-		it('resume an invalid review with invalid committee member', 
-			function(done) {
-				review.resumeReview(0, 1, function(err, result) {
-					assert(err, 'Error should exist');
-					assert(!result, 'Result should not exist');
-					done();
-				});
-			});
-	});
-
-	describe('complete a review', function() {
+	describe('submit a review', function() {
 		before(function setUp(done) {
 			async.series([
 				function(callback) {
 					review.assignReview(12, 20, 1, callback);
 				},
 				function(callback) {
-					review.beginReview(12, 20, callback);
+					review.assignReview(11, 20, 1, callback);
 				},
 				function(callback) {
-					review.writeReview(12, 20, {
-						'fieldNames': [
-							'Background', 'researchExp', 'c_Rank'
-						],
-						'values': ['"Some background"', '"Some research"', 
-							'"B+"']}, callback);
-				},
-				function(callback) {
-					review.writeReview(20, 16, {
-						'fieldNames': [
-							'Background', 'researchExp'
-						],
-						'values': ['"Some background"', '"Some research"']}, 
-					callback);
+					review.saveReview(12, 20, {c_Rank: 'B+'}, callback);
 				}
 			], done);
 		});
-        
-		it('complete a review not assigned to the committee member', 
-			function(done) {
-				review.completeReview(16, 12, function(err, result) {
-					assert(err, 'Error should exist');
-					assert(!result, 'Result should exist');
-					done();
-				});
-			});
-
-		it('complete a submitted review as a committee member', 
-			function(done) {
-				review.completeReview(16, 11, function(err, result) {
-					assert(err, 'Error should exist');
-					assert(!result, 'Result should exist');
-					done();
-				});
-			});
-
-		it('complete a review without a rank as a committee member', 
-			function(done) {
-				review.completeReview(20, 16, function(err, result) {
-					assert(err, 'Error should exist');
-					assert(!result, 'Result should exist');
-					done();
-				});
-			});
-
-		it('complete a valid review as a valid committee member and valid rank', 
-			function(done) {
-				review.completeReview(12, 20, function(err, result) {
-					if (err) done(err);
-					assert(result, 'Result should exist');
-					done();
-				});
-			});
-
-		it('complete a valid review as a valid committee member but no rank', 
-			function(done) {
-				review.completeReview(17, 16, function(err, result) {
-					assert(err, 'Error should exist');
-					assert(!result, 'Result should exist');
-					done();
-				});
-			});
-
-		it('complete a valid review as an invalid committee member', 
-			function(done) {
-				review.completeReview(17, 1, function(err, result) {
-					assert(err, 'Error should exist');
-					assert(!result, 'Result should exist');
-					done();
-				});
-			});
-
-		it('complete an invalid review as a valid committee member', 
-			function(done) {
-				review.completeReview(0, 20, function(err, result) {
-					assert(err, 'Error should exist');
-					assert(!result, 'Result should not exist');
-					done();
-				});
-			});
-
-		it('complete an invalid review as an invalid committee member', 
-			function(done) {
-				review.completeReview(0, 1, function(err, result) {
-					assert(err, 'Error should exist');
-					assert(!result, 'Result should not exist');
-					done();
-				});
-			});
-	});
-
-	describe('submit a review', function() {
+		
 		it('submit a submitted review as a committee member', 
 			function(done) {
 				review.submitReview(16, 11, function(err, result) {
@@ -739,7 +421,16 @@ describe('Review Triggers', function() {
 				});
 			});
 
-		it('submit a valid review with valid committee member', 
+		it('submit a valid review with valid committee member w/o a committee rank', 
+			function(done) {
+				review.submitReview(11, 20, function(err, result) {
+					assert(err, 'Error should exist');
+					assert(!result, 'Result should exist');
+					done();
+				});
+			});
+
+		it('submit a valid review with valid committee member w/ a committee rank', 
 			function(done) {
 				review.submitReview(12, 20, function(err, result) {
 					if (err) done(err);
@@ -777,15 +468,126 @@ describe('Review Triggers', function() {
 	});
 
 	describe('helper functions', function() {
+		describe('isSubmitted', function() {
+			it('check if a valid app is submitted', function(done) {
+				review.isSubmitted(12, function(err, result) {
+					if (err) return done(err);
+					assert(result, 'Result should exist');
+					done();
+				});
+			});
+
+			it('check if an valid app is submitted', function(done) {
+				review.isSubmitted(0, function(err, result) {
+					if (err) return done(err);
+					assert(!result, 'Result should not exist');
+					done();
+				});
+			});
+		});
+
+		describe('setReviewStatus', function() {
+			it('set reviewed status to "New"', function(done) {
+				review.setReviewStatus(12, 20, 'New', function(err, result) {
+					if (err) done (err);
+					assert(result, 'Result should exist');
+					done();
+				});
+			});
+
+			it('set reviewed status to "Draft"', function(done) {
+				review.setReviewStatus(12, 20, 'New', function(err, result) {
+					if (err) done (err);
+					assert(result, 'Result should exist');
+					done();
+				});
+			});
+
+			it('set reviewed status to "Submitted"', function(done) {
+				review.setReviewStatus(12, 20, 'Submitted', function(err, result) {
+					if (err) done (err);
+					assert(result, 'Result should exist');
+					done();
+				});
+			});
+
+			it('set reviewed status to a not accepted value', function(done) {
+				review.setReviewStatus(12, 20, 'abcd', function(err, result) {
+					assert(err, 'Error should exist');
+					assert(!result, 'Result should not exist');
+					done();
+				});
+			});
+
+			it('set reviewed status of an unassigned app', function(done) {
+				review.setReviewStatus(0, 20, 'abcd', function(err, result) {
+					assert(err, 'Error should exist');
+					assert(!result, 'Result should not exist');
+					done();
+				});
+			});
+		});
+
 		describe('getCommitteeRank', function() {
 			it('get a committee rank of an application not assigned to a member', 
 				function(done) {
 					review.getCommitteeRank(16, 12, function(err, result) {
 						assert(err, 'Error should exist');
-						assert(!result, 'Result should exist');
+						assert(!result, 'Result should not exist');
 						done();
 					});
 				});
+
+			it('get a committee rank of an application assigned to a member', 
+				function(done) {
+					review.getCommitteeRank(12, 20, function(err, result) {
+						if (err) done(err);
+						assert(result, 'Result should exist');
+						done();
+					});
+				});
+		});
+
+		describe('addUniAssessment', function() {
+			after(function(done) {
+				review.removeUniversity('York University', done);
+			});
+
+			it('add an new university assessment', function(done) {
+				review.addUniAssessment([{'u_Name': 'York University', 
+					'u_Assessments': 'Well Known'}], function(err, result) {
+					if (err) return done(err);
+					assert(result, 'Result should exist');
+					done();
+				});
+			});
+
+			it('add an assessment to existing university', function(done) {
+				review.addUniAssessment([{'u_Name': 'York University', 
+					'u_Assessments': 'Well Known2'}], function(err, result) {
+					if (err) return done(err);
+					assert(result, 'Result should exist');
+					done();
+				});
+			});
+		});
+
+		describe('autoFillReviewInfo', function() {
+			it('auto fill review info of valid app', function(done) {
+				review.autoFillReviewInfo(12, function(err, result) {
+					if (err) return done(err);
+					assert(result, 'Result should exist');
+					done();
+				});
+			});
+
+			it('auto fill review info of invalid app', function(done) {
+				review.autoFillReviewInfo(0, function(err, result) {
+					assert(err, 'Error should exist');
+					assert(!result, 'Result should not exist');
+					done();
+				});
+			});
 		});
 	});
 });

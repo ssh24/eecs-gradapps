@@ -62,6 +62,7 @@ CREATE TABLE `FACULTY_MEMBER` (
 
 CREATE TABLE `APPLICATION` (
     `app_Id` INT NOT NULL AUTO_INCREMENT,
+    `student_Id` BIGINT(9) NOT NULL,
     `app_Date` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `app_Session` ENUM('Fall', 'Winter', 'Summer') NOT NULL,
     `LName` VARCHAR(50) NOT NULL,
@@ -70,7 +71,10 @@ CREATE TABLE `APPLICATION` (
     `Gender` ENUM('M', 'F') DEFAULT NULL,
     `GPA` ENUM('A+', 'A', 'B+', 'B', 'C+', 'C', 'D+', 'D', 'E', 'F') DEFAULT NULL,
     `GPA_FINAL` TINYINT(1) DEFAULT 0,
-    `GRE` INT DEFAULT NULL,
+    `GRE` VARCHAR(20) DEFAULT NULL,
+    `TOEFL` INT DEFAULT NULL,
+    `IELTS` FLOAT DEFAULT NULL,
+    `YELT` INT DEFAULT NULL,
     `Degree` ENUM('PhD', 'MSc', 'MASc') DEFAULT NULL,
     `VStatus` ENUM('Domestic', 'Visa') NOT NULL,
     `Rank` JSON DEFAULT NULL,
@@ -82,10 +86,9 @@ CREATE TABLE `APPLICATION` (
     `letterDate` DATETIME DEFAULT NULL,
     `programDecision` ENUM('Accepted', 'Declined') DEFAULT NULL,
     `studentDecision` ENUM('Accepted', 'Declined') DEFAULT NULL,
-    `declineReason` VARCHAR(1024) DEFAULT NULL,
+    `declineReason` LONGTEXT DEFAULT NULL,
     `ygsAwarded` TINYINT(1) NOT NULL DEFAULT 0,
-    `app_Comments` VARCHAR(1024) DEFAULT NULL,
-    PRIMARY KEY(`app_Id`)
+    PRIMARY KEY(`app_Id`, `student_Id`)
 ) ENGINE=INNODB;
 
 
@@ -103,11 +106,14 @@ CREATE TABLE `APPLICATION_REVIEW` (
     `committeeId` INT NOT NULL,
     `appId` INT NOT NULL,
     `assignDate` DATETIME DEFAULT CURRENT_TIMESTAMP,
-    `Background` VARCHAR(2048) DEFAULT NULL,
-    `researchExp` VARCHAR(2048) DEFAULT NULL,
-    `Comments` VARCHAR(1024) DEFAULT NULL,
+    `PreviousInst` JSON DEFAULT NULL,
+    `UniAssessment` JSON DEFAULT NULL,
+    `Background` LONGTEXT DEFAULT NULL,
+    `researchExp` LONGTEXT DEFAULT NULL,
+    `Letter` LONGTEXT DEFAULT NULL,
+    `Comments` LONGTEXT DEFAULT NULL,
     `c_Rank` ENUM('A+', 'A', 'B+', 'B', 'C') DEFAULT NULL,
-    `Status` ENUM('New', 'Draft', 'In-Progress', 'Reviewed', 'Submitted') NOT NULL,
+    `Status` ENUM('New', 'Draft', 'Submitted') NOT NULL,
     `lastReminded` DATETIME DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY(`committeeId`, `appId`),
     FOREIGN KEY (`committeeId`) REFERENCES `FACULTY_MEMBER`(`fm_Id`) 
@@ -147,7 +153,7 @@ CREATE TABLE `UNIVERSITY` (
     `u_Id` INT NOT NULL AUTO_INCREMENT,
     `u_Name` VARCHAR(50) NOT NULL,
     `u_Assessments` JSON DEFAULT NULL,
-    PRIMARY KEY(`u_Id`)
+    PRIMARY KEY(`u_Id`, `u_Name`)
 ) ENGINE=INNODB;
 
 

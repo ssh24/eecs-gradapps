@@ -1,9 +1,73 @@
 <% include partials/header %>
     <% include partials/navbar %>
-        <div class="jumbotron">
-        <div class="container text-center">
-            <p id="welcome-header"><%= title %></p>
-            <p id="tbd-header">Work TBD: <%= role %> role</p>
+        <!--tables-->
+        <div class="container-fluid">
+            <% if (!filter) { %>
+                <a id="refresh-table" href="/roles/committee" class="btn btn-primary">Refresh Current Table <span class="glyphicon glyphicon-refresh"></span></a>
+            <% } else{ %>
+                <a id="reset-table" href="/roles/committee" class="btn btn-primary"><span class="glyphicon glyphicon-arrow-left"></span> Load Default Table</span></a>
+                <a id="refresh-table" href="/roles/committee/filter" class="btn btn-primary">Refresh Current Table <span class="glyphicon glyphicon-refresh"></span></a>
+            <% } %>
+            <div class="table-responsive">
+                <% if (message.length > 0) { %>
+                    <div id="error-message" class="alert alert-danger text-center">
+                        <%= message %>
+                    </div>
+                <% } else { %>
+                    <table id="applicant-table" class="table table-striped table-hover tablesorter">
+                            <thead id="table-head">
+                                <tr>
+                                    <% for(var i = 0; i < fields.length; i++){ %>
+                                        <% if (hidden.includes(fields[i])) { %>
+                                            <% continue; %>
+                                        <% } else { %>
+                                            <%if (fields[i] === 'Actions'){ %>
+                                                <th class="text-center sorter-false parser-false"><%= fields[i]%></th>
+                                              <%} else {%>
+                                                <th class="text-center"><%= fields[i]%></th>
+                                            <%}%>
+                                        <% } %>
+                                    <%}%>
+                                </tr>
+                            </thead>
+                            <tbody id="table-body">
+                              <% for(var i = 0; i < apps.length; i++){ %>
+                                <tr>
+                                    <% for(var j = 0; j < fields.length; j++){ %>
+                                        <% if (hidden.includes(fields[j])) { %>
+                                            <% continue; %>
+                                        <% } else { %>
+                                            <% if (fields[j] != 'Actions') { %>
+                                                <td id="data-<%=i%>-<%=j%>" class="text-center">
+                                                    <%- highlightFunc(apps[i],fields[j], highlightText)%>
+                                                </td>
+                                            <% } else { %>
+                                                <td class="text-center">
+                                                        <div class="btn-group-vertical">
+                                                            <button class="btn btn-primary" style="margin-bottom: 3px">View Application</button>
+                                                            <form action="/roles/committee/review" method="GET">
+                                                                <input type="text" name="appId" value="<%= apps[i][fields[0]]%>" hidden>
+                                                                <% if (apps[i]['My Review Status'] && apps[i]['My Review Status'] === 'New') { %>
+                                                                    <button id="start-rev-<%= apps[i][fields[0]]%>" class="btn btn-primary">Start Review &raquo;</button>
+                                                                <% } %>
+                                                                <% if (apps[i]['My Review Status'] && apps[i]['My Review Status'] === 'Draft') { %>
+                                                                    <button id="continue-rev-<%= apps[i][fields[0]]%>" class="btn btn-primary">Continue Review &raquo;</button>
+                                                                <% } %>
+                                                                <% if (apps[i]['My Review Status'] && apps[i]['My Review Status'] === 'Submitted') { %>
+                                                                    <button id="view-rev-<%= apps[i][fields[0]]%>" class="btn btn-primary">View Review &raquo;</button>
+                                                                <% } %>
+                                                            </form>
+                                                        </div>
+                                                </td>
+                                            <% } %>
+                                        <% } %>
+                                    <%}%>
+                                </tr>
+                              <%}%>
+                            </tbody>
+                        </table>   
+                <% } %>
+            </div>
         </div>
-    </div>
+<% include partials/filter-committee %>
 <% include partials/footer %>
