@@ -12,10 +12,19 @@ $(document).ready(function() {
         }
     );
 
+    // checker for attempting to leave the form without saving it
+    $('#edit-app-form').areYouSure(
+        {
+            message: 'It looks like you have been editing something. '+ 
+            'If you leave before saving, your changes will be lost.'
+        }
+    );
+
     // when selecting a new file: file size and file type checkers
     $('#app_file').bind('change', function() {
         $('#error-file').attr('hidden', 'hidden');
         $('#new-submit').removeAttr('disabled');
+        $('#edit-submit').attr('disabled', 'disabled');
 
         var size = Math.round(this.files[0].size / (1024 * 1024));
         var type = this.files[0].type;
@@ -26,12 +35,14 @@ $(document).ready(function() {
                 MAX_SIZE + 'MB');
             $('#error-file').removeAttr('hidden');
             $('#new-submit').attr('disabled', 'disabled');
+            $('#edit-submit').attr('disabled', 'disabled');
         }
         if (type !== FILE_TYPE) {
             $('#error-file').append('\nIncorrect file type. Accepted file type: ' + 
                 FILE_TYPE);
             $('#error-file').removeAttr('hidden');
             $('#new-submit').attr('disabled', 'disabled');
+            $('#edit-submit').attr('disabled', 'disabled');
         }
     });
 });

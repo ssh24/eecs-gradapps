@@ -144,7 +144,37 @@ Application.prototype.getApplications = function(sql, memberId, cb) {
 };
 
 /**
- * Create an application.
+ * Update an application
+ * @param {Object} data 
+ * @param {Number} appId 
+ * @param {Number} memberId 
+ * @param {Function} cb 
+ */
+Application.prototype.updateApplication = function(data, appId, memberId, cb) {
+	assert(typeof data === 'object');
+	assert(typeof appId === 'number');
+	assert(typeof memberId === 'number');
+	assert(typeof cb === 'function');
+	
+	var self = this;
+	this.utils.getRoles(memberId, function(err, roles) {
+		if (err) return cb(err);
+		if (roles.includes('Admin')) {
+			self.conn.query('UPDATE application SET ? WHERE app_Id=?', [data, 
+				appId], function(err, result) {
+				if (err) return cb(err);
+				return cb(err, result);
+			});
+		} else {
+			err = new Error('Member ' + memberId + 
+							' does not have access to upload application'); 
+			return cb(err);
+		}
+	});
+};
+
+/**
+ * Create an application
  * @param {Object} data 
  * @param {Number} memberId 
  * @param {Function} cb 
