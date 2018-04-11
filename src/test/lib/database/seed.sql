@@ -10,6 +10,8 @@ CREATE DATABASE `testdb`;
 
 USE `testdb`;
 
+SET GLOBAL max_allowed_packet=10000000;
+
 -- FACULTY_MEMBER table
 -- @fm_Id: unique auto incremental primary key for each faculty member
 -- @fm_Lname: last name of the faculty member

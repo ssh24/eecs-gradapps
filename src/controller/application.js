@@ -201,6 +201,34 @@ Application.prototype.createApplication = function(data, memberId, cb) {
 };
 
 /**
+ * Delete an application
+ * @param {Number} appId
+ * @param {Number} memberId 
+ * @param {Function} cb 
+ */
+Application.prototype.deleteApplication = function(appId, memberId, cb) {
+	assert(typeof appId === 'number');
+	assert(typeof memberId === 'number');
+	assert(typeof cb === 'function');
+	
+	var self = this;
+	this.utils.getRoles(memberId, function(err, roles) {
+		if (err) return cb(err);
+		if (roles.includes('Admin')) {
+			self.conn.query('DELETE FROM APPLICATION WHERE app_Id=?', appId, 
+				function(err, result) {
+					if (err) return cb(err);
+					return cb(err, result);
+				});
+		} else {
+			err = new Error('Member ' + memberId + 
+							' does not have access to delete application'); 
+			return cb(err);
+		}
+	});
+};
+
+/**
  * Get application pdf file.
  * @param {Number} appId 
  * @param {Number} memberId 
@@ -220,9 +248,6 @@ Application.prototype.getApplicationFile = function(appId, memberId, cb) {
 					if (err) return cb(err);
 					if (result.length === 1) {
 						return cb(err, result[0]['app_file']);
-					} else {
-						err = new Error('No application file for app id: ' + appId);
-						return cb(err);
 					}
 				});
 		} else {
@@ -253,9 +278,6 @@ Application.prototype.getApplicationData = function(appId, memberId, cb) {
 					if (err) return cb(err);
 					if (result.length === 1) {
 						return cb(err, result[0]);
-					} else {
-						err = new Error('No application file for app id: ' + appId);
-						return cb(err);
 					}
 				});
 		} else {

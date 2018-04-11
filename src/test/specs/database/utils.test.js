@@ -148,6 +148,10 @@ describe('Util Functionalities', function() {
 
 	describe('get applicant names', function() {
 		it('get all applicant names', function(done) {
+			utils.getApplicantNames(true, done);
+		});
+
+		it('get all reviewed applicant names', function(done) {
 			utils.getApplicantNames(done);
 		});
 	});

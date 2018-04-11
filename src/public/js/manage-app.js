@@ -1,7 +1,7 @@
 'use strict';
 
 $(document).ready(function() {
-    var MAX_SIZE = 20;
+    var MAX_SIZE = 4;
     var FILE_TYPE = 'application/pdf';
 
     // checker for attempting to leave the form without saving it
@@ -44,5 +44,10 @@ $(document).ready(function() {
             $('#new-submit').attr('disabled', 'disabled');
             $('#edit-submit').attr('disabled', 'disabled');
         }
+    });
+
+    $('#delete-app').click(function(e) {
+        var check = confirm("You chose to delete the application. Are you sure?");
+        if (!check) e.preventDefault();
     });
 });

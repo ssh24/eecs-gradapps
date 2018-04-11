@@ -68,6 +68,13 @@ describe('Committee Test', function() {
 		expect(browser.getCurrentUrl()).to.eventually.contain('committee')
 			.then(committee.refreshTable.call(committee));
 	});
+
+	it('- check user manual', function() {
+		utils.openUserManual(committee.userManual)
+			.then(utils.switchTab.call(utils, 1))
+			.then(expect(browser.getCurrentUrl()).to.eventually.contain('committee-manual'))
+			.then(utils.goToTab.call(utils, 0));
+	});
     
 	describe('- order applications', function() {
 		describe('- date column', function() {
@@ -976,8 +983,7 @@ describe('Committee Test', function() {
 				it('- submit the application', function() {
 					review.submitReview()
 						.then(expect(browser.getCurrentUrl()).to.eventually.not.contain('review'))
-						.then(expect(review.getStatus.call(review)).to.eventually.equal('Submitted'))
-						.then(function() {browser.pause();});
+						.then(expect(review.getStatus.call(review)).to.eventually.equal('Submitted'));
 				});
 	
 				describe('- check for fields after submission', function() {

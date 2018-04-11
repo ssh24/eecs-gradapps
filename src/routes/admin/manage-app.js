@@ -12,7 +12,9 @@ module.exports = function(config, fns) {
 	var view = 'manage-app';
 	
 	var basicAdmin = fns.concat([getApps, setLiveSearchData, getPresets]);
-	var filterAdminApps = fns.concat([filterApps, getPresets, setPreset]);
+	var filterAdminAppsGET = fns.concat([filterApps, getPresets, setPreset]);
+	var filterAdminAppsPOST = fns.concat([filterApps, getPresets, setPreset, 
+		getPresets]);
 
 	var builtSql, builtOptions, builtHighlight;
 
@@ -24,8 +26,8 @@ module.exports = function(config, fns) {
 	app.get(route, basicAdmin, defaultView);
 
 	// filter - GET & POST
-	app.get(route + '/filter', filterAdminApps, filterView);
-	app.post(route + '/filter', filterAdminApps, filterView);
+	app.get(route + '/filter', filterAdminAppsGET, filterView);
+	app.post(route + '/filter', filterAdminAppsPOST, filterView);
 	
 	// default view of the table
 	function defaultView(req, res) {
@@ -98,13 +100,17 @@ module.exports = function(config, fns) {
 		utils.getApplicantNames(true, function(err, result) {
 			if (err) next(err);
 			req.apps['applicants'] = result;
-			utils.getAllProfessors(function(err, result) {
+			utils.getFieldOfInterests(function(err, result) {
 				if (err) next(err);
-				req.apps['profs'] = result;
-				utils.getGPA(function(err, result) {
+				req.apps['foi'] = result;
+				utils.getAllProfessors(function(err, result) {
 					if (err) next(err);
-					req.apps['gpa'] = result;
-					next();
+					req.apps['profs'] = result;
+					utils.getGPA(function(err, result) {
+						if (err) next(err);
+						req.apps['gpa'] = result;
+						next();
+					});
 				});
 			});
 		});
@@ -336,7 +342,7 @@ module.exports = function(config, fns) {
 		var whereClause = ' where ';
 
 		sql += joinSql;
-		sql += sqlFilt ? whereClause + sqlFilt : sql;
+		sql = sqlFilt ? sql + whereClause + sqlFilt : sql;
 
 		var options = {
 			actionFieldNum: actionFieldNum
@@ -350,6 +356,8 @@ module.exports = function(config, fns) {
 		} else {
 			req.apps.highlightText = builtHighlight;
 		}
+		if (!builtSql)
+			builtSql = defaultSql + fromClause;
 		getApplications(builtSql, (builtOptions || options), req, res, next);
 	}
 
@@ -370,19 +378,19 @@ module.exports = function(config, fns) {
 		var patt_E = /\w*(A\+|A|B\+|B|C\+|C|D\+|D|E)\w*/gi;
 		var patt_F = /\w*(A\+|A|B\+|B|C\+|C|D\+|D|E|F)\w*/gi;
 	
-		if (field === 'Applicant Name' && highlightText.name && 
+		if (field === 'Applicant Name' && highlightText && highlightText.name && 
 		highlightText.name !== '') {
 			patternHighlight = new RegExp('('+highlightText.name+')', 'gi');
-		} else if (field === 'Degree Applied For' && highlightText.degree && 
+		} else if (field === 'Degree Applied For' && highlightText && highlightText.degree && 
 		highlightText.degree !== '') {
 			patternHighlight = new RegExp('('+highlightText.degree+')', 'gi');
-		} else if (field === 'Visa Status' && highlightText.visa && 
+		} else if (field === 'Visa Status' && highlightText && highlightText.visa && 
 		highlightText.visa !== '') {
 			patternHighlight = new RegExp('('+highlightText.visa+')', 'gi');
-		} else if (field === 'Program Decision' && highlightText.program_decision && 
+		} else if (field === 'Program Decision' && highlightText && highlightText.program_decision && 
 		highlightText.program_decision !== '') {
 			patternHighlight = new RegExp('('+highlightText.program_decision+')', 'gi');
-		} else if (field === 'GPA' && highlightText.gpa && highlightText.gpa !== '') {
+		} else if (field === 'GPA' && highlightText && highlightText.gpa && highlightText.gpa !== '') {
 			if (patt_Aplus.test(highlightText.gpa)) {
 				patternHighlight = patt_Aplus;
 			} else if (patt_A.test(highlightText.gpa)) {
