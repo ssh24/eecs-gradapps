@@ -51,6 +51,9 @@ module.exports = function(config, fns) {
 			} else if (keys === 'GPA_FINAL') {
 				var isFinal = body[keys] === 'interim' ? 0 : 1;
 				data[keys] = isFinal;
+			} else if (keys === 'ygsAwarded') {
+				var isAwarded = body[keys] === 'no-ygs' ? 0 : 1;
+				data[keys] = isAwarded;
 			} else if (keys === 'FOI' || keys === 'prefProfs') {
 				data[keys] = JSON.stringify(body[keys]);
 			} else if (body[keys] != '') {

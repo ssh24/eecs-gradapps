@@ -106,24 +106,27 @@ module.exports = function(config, fns) {
 
 	function updateAppl(req, res, next) {
 		var body = req.body;
-		var data = {};
+		if (body.create === '') {
+			var data = {};
 
-		if (req.files.app_file) 
-			data.app_file = req.files.app_file.data;
-			
-		for(var keys in body) {
-			if (keys === 'Gender') {
-				var gender = body[keys] === 'Male' ? 'M' : (body[keys] === 
-					'Female' ? 'F' : null);
-				data[keys] = gender;
-			} else if (keys === 'FOI' || keys === 'prefProfs' || 
-				keys === 'profContacted' || keys === 'profRequested' || keys === 'Rank') {
-				data[keys] = JSON.stringify(body[keys]);
-			} else if (body[keys] != '') {
-				data[keys] = body[keys];
+			if (req.files.app_file) 
+				data.app_file = req.files.app_file.data;
+				
+			for(var keys in body) {
+				if (keys === 'Gender') {
+					var gender = body[keys] === 'Male' ? 'M' : (body[keys] === 
+						'Female' ? 'F' : null);
+					data[keys] = gender;
+				} else if (keys === 'FOI' || keys === 'prefProfs' || 
+					keys === 'profContacted' || keys === 'profRequested' || keys === 'Rank') {
+					data[keys] = JSON.stringify(body[keys]);
+				} else if (body[keys] != '') {
+					data[keys] = body[keys];
+				}
 			}
+			application.updateApplication(data, appId, req.user.id, next);
+		} else if (body.delete === '') {
+			application.deleteApplication(appId, req.user.id, next);
 		}
-			
-		application.updateApplication(data, appId, req.user.id, next);
 	}
 };

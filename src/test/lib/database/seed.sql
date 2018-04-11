@@ -1,6 +1,8 @@
 -- This SQL file is copyright for the EECS graduate program application --
 -- Latest MySQL working version for this file: 5.7.21 --
 
+SET GLOBAL max_allowed_packet=10000000;
+
 -- faculty_member table
 -- @fm_Id: unique auto incremental primary key for each faculty member
 -- @fm_Lname: last name of the faculty member

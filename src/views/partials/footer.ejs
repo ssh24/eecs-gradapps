@@ -8,7 +8,8 @@
         Need help? Read the <a a id="system-manual" href="/docs/users-manual/user-manual.pdf" class="urlextern" target="_blank" title="System User Manual" rel="nofollow">system user manual</a> <span class="glyphicon glyphicon-file"></span>
     <%} %>
     <% if (role === 'Committee Member') { %> 
-        Need help? Read the <a href="/docs/users-manual/committee-manual.pdf" class="urlextern" target="_blank" title="Admission Committee User Manual" rel="nofollow">user manual</a> <span class="glyphicon glyphicon-file"></span>
+        Need help? Read the <a id="committee-manual" href="/docs/users-manual/committee-manual.pdf" class="urlextern" target="_blank" title="Admission Committee User Manual" rel="nofollow">user manual</a> <span class="glyphicon glyphicon-file"></span>
+        <hr>
     <%} %>
     <hr>
     <p>Gradapps 2.0 / Edward Vaisman, S. Sakib Hasan</p>
@@ -33,7 +34,6 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/TableExport/5.0.0/img/csv.svg" />
     <script src="https://web.archive.org/web/20161124120603js_/http://www.papercut.com/products/free-software/are-you-sure/jquery.are-you-sure.js"></script>
     <script src="/js/admin.js"></script>
-    <script type="text/javascript"> var presets = <%-JSON.stringify(presets)%>;</script>
 <% } %>
 </body>
 </html>

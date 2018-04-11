@@ -89,6 +89,17 @@ Utils.prototype.goToTab = function(goToIndex) {
 	});
 };
 
+Utils.prototype.switchTab = function(goToIndex) {
+	return browser.getAllWindowHandles().then(function (handles) {
+		browser.driver.switchTo().window(handles[goToIndex]);
+	});
+};
+
+Utils.prototype.openUserManual = function(elem) {
+	return this.waitForElementClickable(elem, this.timeout)
+		.then(element(elem).click());
+};
+
 Utils.prototype.clearThenSendKeys = function(elem, keys) {
 	return elem.clear()
 		.then(function() {
@@ -123,6 +134,12 @@ Utils.prototype.waitUntilReady = function(element, timeout) {
 
 Utils.prototype.waitForElementClickable = function(e1, timeout) {
 	return browser.wait(EC.elementToBeClickable(element(e1)), timeout);
+};
+
+Utils.prototype.closeBrowserAlert = function() {
+	return browser.switchTo().alert().then(function (alert) {
+		return alert.accept();
+	});
 };
 
 module.exports = Utils;
