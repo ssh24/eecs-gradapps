@@ -20,7 +20,7 @@ module.exports = function(config, fns) {
 
 	require('./manage-app/new-app')(config, basicAdmin);
 	require('./manage-app/edit-app')(config, basicAdmin);
-	require('./manage-app/view-app')(config, fns);
+	require('../view-app')(config);
     
 	// managing application route
 	app.get(route, basicAdmin, defaultView);

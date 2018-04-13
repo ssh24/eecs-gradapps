@@ -59,7 +59,14 @@ function Review(timeout) {
 
 	this.review.form.selected_list = by.id('selected_list');
 	this.review.form.selected_list.p = by.id('selected_list_p');
+
+	this.review.form.view = by.id('view-app');
 }
+
+Review.prototype.viewApplication = function() {
+	return this.utils.waitForElementClickable(this.review.form.view, this.timeout)
+		.then(element(this.review.form.view).click());
+};
 
 Review.prototype.startReview = function(appId) {
 	var elem = by.id(this.review.start + '-' + appId);

@@ -1647,7 +1647,7 @@ describe('Manage Applications Test', function() {
 			expect(app.getSortType.call(app, 1)).to.eventually.equal('none')
 				.then(app.orderColumn.call(app, 1, 1))
 				.then(expect(app.getSortType.call(app, 1)).to.eventually.equal('ascending'))
-				.then(app.viewApplication.call(app, appId))
+				.then(utils.viewApplication.call(app, appId))
 				.then(utils.switchTab.call(utils, 1))
 				.then(expect(browser.getCurrentUrl()).to.eventually.contain('/view'))
 				.then(utils.goToTab.call(utils, 0));

@@ -64,6 +64,13 @@ Utils.prototype.openNewTab = function(newPageToOpen) {
 	});
 };
 
+Utils.prototype.viewApplication = function(appId) {
+	var elem = by.id('view-app-'+appId);
+
+	return this.waitForElementClickable(elem, this.timeout)
+		.then(element(elem).click());
+};
+
 Utils.prototype.clearBrowserCache = function() {
 	return browser.executeScript('window.localStorage.clear();')
 		.then(browser.executeScript('window.sessionStorage.clear();'))
