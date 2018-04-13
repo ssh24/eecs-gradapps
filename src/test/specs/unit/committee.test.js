@@ -75,6 +75,13 @@ describe('Committee Test', function() {
 			.then(expect(browser.getCurrentUrl()).to.eventually.contain('committee-manual'))
 			.then(utils.goToTab.call(utils, 0));
 	});
+
+	it('- open application view page', function() {
+		utils.viewApplication(0)
+			.then(utils.switchTab.call(utils, 1))
+			.then(expect(browser.getCurrentUrl()).to.eventually.contain('/view'))
+			.then(utils.goToTab.call(utils, 0));
+	});
     
 	describe('- order applications', function() {
 		describe('- date column', function() {
@@ -772,6 +779,19 @@ describe('Committee Test', function() {
 				.then(expect(review.getSelectedListText.call(review)).to.eventually.not.contain('No assessment selected'))
 				.then(expect(review.getSelectedListText.call(review)).to.eventually.contain('Not so well known'))
 				.then(expect(review.getSelectedListText.call(review)).to.eventually.contain('One of the best in the world for medical sciences'))
+				.then(review.closeReview.call(review))
+				.then(expect(browser.getCurrentUrl()).to.eventually.not.contain('review'))
+				.then(expect(review.getStatus.call(review)).to.eventually.equal('New'));
+		});
+
+		it('- start a new application and check the application pdf', function() {
+			expect(review.getStatus.call(review)).to.eventually.equal('New')
+				.then(review.startReview.call(review, 17))
+				.then(expect(browser.getCurrentUrl()).to.eventually.contain('review'))
+				.then(review.viewApplication.call(review))
+				.then(utils.switchTab.call(utils, 1))
+				.then(expect(browser.getCurrentUrl()).to.eventually.contain('/view'))
+				.then(utils.goToTab.call(utils, 0))
 				.then(review.closeReview.call(review))
 				.then(expect(browser.getCurrentUrl()).to.eventually.not.contain('review'))
 				.then(expect(review.getStatus.call(review)).to.eventually.equal('New'));

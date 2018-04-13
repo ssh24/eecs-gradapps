@@ -107,13 +107,6 @@ Application.prototype.editApplication = function(appId) {
 		.then(element(elem).click());
 };
 
-Application.prototype.viewApplication = function(appId) {
-	var elem = by.id('view-app-'+appId);
-
-	return this.utils.waitForElementClickable(elem, this.timeout)
-		.then(element(elem).click());
-};
-
 Application.prototype.deleteApplication = function() {
 	return this.utils.waitForElementClickable(this.app.edit.delete, this.timeout)
 		.then(element(this.app.edit.delete).click());

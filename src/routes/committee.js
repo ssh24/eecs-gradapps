@@ -28,6 +28,11 @@ module.exports = function(app, utils, application, faculty_member, fns) {
 	var role = 'Committee Member';
 	var route = 'committee';
 
+	require('./view-app')({app: app, application: application, route: 
+		'/roles/' + route});
+	require('./view-app')({app: app, application: application, route: 
+			'/roles/' + route + '/review'});
+
 	// committee page route
 	app.get('/roles/' + route, basicCommittee, function(req, res) {
 		var userInfo = req.user;
@@ -123,6 +128,7 @@ module.exports = function(app, utils, application, faculty_member, fns) {
 			fullname: userInfo.fullname,
 			roles: userInfo.roles,
 			role: role,
+			appId: req.review.appId,
 			sid: req.review.auto.student_Id || '',
 			lname: req.review.auto.lname || '',
 			fname: req.review.auto.fname || '',

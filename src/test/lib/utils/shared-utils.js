@@ -65,14 +65,10 @@ Utils.prototype.openNewTab = function(newPageToOpen) {
 	});
 };
 
-Utils.prototype.switchTab = function(goToIndex) {
-	return browser.getAllWindowHandles().then(function (handles) {
-		browser.driver.switchTo().window(handles[goToIndex]);
-	});
-};
+Utils.prototype.viewApplication = function(appId) {
+	var elem = by.id('view-app-'+appId);
 
-Utils.prototype.openUserManual = function(elem) {
-	return this.waitForElementClickable(elem, 5000)
+	return this.waitForElementClickable(elem, this.timeout)
 		.then(element(elem).click());
 };
 
