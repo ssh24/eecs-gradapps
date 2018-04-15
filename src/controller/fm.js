@@ -130,8 +130,8 @@ FM.prototype.getUserInfo = function(memberId, cb) {
 		if (err) return cb(err);
 		if (roles.includes('Admin')) {
 			self.conn.query('SELECT fm_Id, CONCAT_WS(\' \', `fm_Fname`, `fm_Lname`) AS ' + 
-			'`Member Name`, fm_Email as `Member Email`, fm_Roles as ' + 
-			'`Roles Assigned` from faculty_member', 
+			'`Member Name`, fm_Email as `Member Email`, fm_FOS as `Field(s) of ' + 
+			'Specialization`, fm_Roles as ' + '`Roles Assigned` from faculty_member', 
 			function(err, result) {
 				if (err) return cb(err);
 				return cb(err, result);
@@ -139,6 +139,33 @@ FM.prototype.getUserInfo = function(memberId, cb) {
 		} else {
 			err = new Error('Member ' + memberId + 
 							' does not have access to access user informations'); 
+			return cb(err);
+		}
+	});
+};
+
+/**
+ * Create a new user
+ * @param {Object} data 
+ * @param {Number} memberId 
+ * @param {Function} cb 
+ */
+FM.prototype.createUser = function(data, memberId, cb) {
+	assert(typeof data === 'object');
+	assert(typeof memberId === 'number');
+	assert(typeof cb === 'function');
+	
+	var self = this;
+	this.utils.getRoles(memberId, function(err, roles) {
+		if (err) return cb(err);
+		if (roles.includes('Admin')) {
+			self.conn.query('INSERT INTO faculty_member SET ?', data, function(err, result) {
+				if (err) return cb(err);
+				return cb(err, result);
+			});
+		} else {
+			err = new Error('Member ' + memberId + 
+							' does not have access to create new user'); 
 			return cb(err);
 		}
 	});

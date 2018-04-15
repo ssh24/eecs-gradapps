@@ -28,6 +28,7 @@ CREATE TABLE `FACULTY_MEMBER` (
     `fm_Lname` VARCHAR(50) NOT NULL,
     `fm_Fname` VARCHAR(50) NOT NULL,
     `fm_Email` VARCHAR(255) DEFAULT NULL,
+    `fm_FOS` JSON DEFAULT NULL,
     `fm_Roles` JSON DEFAULT NULL,
     `presetProf` JSON DEFAULT NULL,
     `presetCommittee` JSON DEFAULT NULL,
