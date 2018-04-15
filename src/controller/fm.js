@@ -116,4 +116,32 @@ FM.prototype.updatePreset = function(memberId, role, preset_name, options, cb) {
 
 };
 
+/**
+ * Get all user information
+ * @param {Number} memberId 
+ * @param {Function} cb 
+ */
+FM.prototype.getUserInfo = function(memberId, cb) {
+	assert(typeof memberId === 'number');
+	assert(typeof cb === 'function');
+
+	var self = this;
+	this.utils.getRoles(memberId, function(err, roles) {
+		if (err) return cb(err);
+		if (roles.includes('Admin')) {
+			self.conn.query('SELECT fm_Id, CONCAT_WS(\' \', `fm_Fname`, `fm_Lname`) AS ' + 
+			'`Member Name`, fm_Email as `Member Email`, fm_Roles as ' + 
+			'`Roles Assigned` from faculty_member', 
+			function(err, result) {
+				if (err) return cb(err);
+				return cb(err, result);
+			});
+		} else {
+			err = new Error('Member ' + memberId + 
+							' does not have access to access user informations'); 
+			return cb(err);
+		}
+	});
+};
+
 module.exports = FM;
