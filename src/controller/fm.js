@@ -117,7 +117,7 @@ FM.prototype.updatePreset = function(memberId, role, preset_name, options, cb) {
 };
 
 /**
- * Get all user information
+ * Get all user information.
  * @param {Number} memberId 
  * @param {Function} cb 
  */
@@ -145,7 +145,7 @@ FM.prototype.getUserInfo = function(memberId, cb) {
 };
 
 /**
- * Create a new user
+ * Create a new user.
  * @param {Object} data 
  * @param {Number} memberId 
  * @param {Function} cb 
@@ -166,6 +166,94 @@ FM.prototype.createUser = function(data, memberId, cb) {
 		} else {
 			err = new Error('Member ' + memberId + 
 							' does not have access to create new user'); 
+			return cb(err);
+		}
+	});
+};
+
+/**
+ * Update an user.
+ * @param {Object} data 
+ * @param {Number} userId 
+ * @param {Number} memberId 
+ * @param {Function} cb 
+ */
+FM.prototype.updateUser = function(data, userId, memberId, cb) {
+	assert(typeof data === 'object');
+	assert(typeof userId === 'number');
+	assert(typeof memberId === 'number');
+	assert(typeof cb === 'function');
+	
+	var self = this;
+	this.utils.getRoles(memberId, function(err, roles) {
+		if (err) return cb(err);
+		if (roles.includes('Admin')) {
+			self.conn.query('UPDATE faculty_member SET ? WHERE fm_Id=?', [data, 
+				userId], function(err, result) {
+				if (err) return cb(err);
+				return cb(err, result);
+			});
+		} else {
+			err = new Error('Member ' + memberId + 
+							' does not have access to update user'); 
+			return cb(err);
+		}
+	});
+};
+
+/**
+ * Delete an user.
+ * @param {Number} userId
+ * @param {Number} memberId 
+ * @param {Function} cb 
+ */
+FM.prototype.deleteUser = function(userId, memberId, cb) {
+	assert(typeof userId === 'number');
+	assert(typeof memberId === 'number');
+	assert(typeof cb === 'function');
+	
+	var self = this;
+	this.utils.getRoles(memberId, function(err, roles) {
+		if (err) return cb(err);
+		if (roles.includes('Admin')) {
+			self.conn.query('DELETE FROM FACULTY_MEMBER WHERE fm_Id=?', userId, 
+				function(err, result) {
+					if (err) return cb(err);
+					return cb(err, result);
+				});
+		} else {
+			err = new Error('Member ' + memberId + 
+							' does not have access to delete user'); 
+			return cb(err);
+		}
+	});
+};
+
+/**
+ * Get all user data.
+ * @param {Number} appId 
+ * @param {Number} memberId
+ * @param {Function} cb 
+ */
+FM.prototype.getUserData = function(userId, memberId, cb) {
+	assert(typeof userId === 'number');
+	assert(typeof memberId === 'number');
+	assert(typeof cb === 'function');
+
+	var self = this;
+	this.utils.getRoles(memberId, function(err, roles) {
+		if (err) return cb(err);
+		if (roles.includes('Admin')) {
+			self.conn.query('SELECT * from faculty_member where fm_Id=?', [userId], 
+				function(err, result) {
+					if (err) return cb(err);
+					if (result.length === 1) {
+						return cb(err, result[0]);
+					}
+				});
+		} else {
+			err = new Error('Member ' + memberId + 
+							' does not have access to get user data'); 
 			return cb(err);
 		}
 	});

@@ -3,17 +3,15 @@
 module.exports = function(config, fns) {
 	var app = config.app;
 	var fm = config.fm;
-	var utils = config.utils;
 	var role = config.role;
 	var route = config.route;
 	var main = '/new';
 	var view = 'new-user';
 	
-	var getNewUser = fns.concat([setLiveSearchData]);
 	var postNewUser = fns.concat([createUser]);
     
 	// creating new application route - GET
-	app.get(route + main, getNewUser, function(req, res) {
+	app.get(route + main, fns, function(req, res) {
 		var userInfo = req.user;
 		res.render(view, { 
 			title: 'New User',
@@ -44,15 +42,5 @@ module.exports = function(config, fns) {
 		}
 			
 		fm.createUser(data, req.user.id, next);
-	}
-
-	// live search data for field of interest
-	function setLiveSearchData(req, res, next) {
-		req.users = req.users || {};
-		utils.getFieldOfInterests(function(err, result) {
-			if (err) next(err);
-			req.users['foi'] = result;
-			next();
-		});
 	}
 };

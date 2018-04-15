@@ -2,16 +2,16 @@
 
 module.exports = function(config, fns) {
 	var app = config.app;
-	// var application = config.application;
 	var fm = config.fm;
-	// var utils = config.utils;
+	var utils = config.utils;
 	var role = config.role;
 	var route = config.route = '/roles/admin/users';
 	var view = 'manage-user';
     
-	var basicUser = fns.concat([getUsers]);
+	var basicUser = fns.concat([getUsers, setLiveSearchData]);
 
 	require('./manage-user/new-user')(config, basicUser);
+	require('./manage-user/edit-user')(config, basicUser);
     
 	// managing user route
 	app.get(route, basicUser, defaultView);
@@ -55,6 +55,16 @@ module.exports = function(config, fns) {
 				req.users.flds.fields = fields;
 				req.users.flds.hidden = hidden;
 			}
+			next();
+		});
+	}
+
+	// live search data for field of interest
+	function setLiveSearchData(req, res, next) {
+		req.users = req.users || {};
+		utils.getFieldOfInterests(function(err, result) {
+			if (err) next(err);
+			req.users['foi'] = result;
 			next();
 		});
 	}
