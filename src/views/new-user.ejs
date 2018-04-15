@@ -1,0 +1,71 @@
+<% include partials/header %>
+    <div class="container">
+        <h3 class="text-center">New User Form</h3>
+        <form id="new-user-form" action="/roles/admin/users/new" method="POST" encType="multipart/form-data">
+
+            <div class="row" style="margin-bottom:20px">
+                <fieldset><legend style="color:blue;font-weight:bold;">General Information</legend>
+
+                <div class="col-sm-3">
+                    <h5 for="fm_Username">Username*</h5>
+                    <input type="text" class="form-control" placeholder="Username" id="fm_Username" name="fm_Username" required>
+                </div>
+
+                <div class="col-sm-3">
+                    <h5 for="fm_Lname">Last Name*</h5>
+                    <input type="text" class="form-control" placeholder="Last Name" id="fm_Lname" name="fm_Lname" required>
+                </div>
+
+                <div class="col-sm-3">
+                    <h5 for="fm_Fname">First Name*</h5>
+                    <input type="text" class="form-control" placeholder="First Name" id="fm_Fname" name="fm_Fname" required>
+                </div>
+
+                <div class="col-sm-3">
+                    <h5 for="fm_Email">Email*</h5>
+                    <input type="email" class="form-control" placeholder="Email" id="fm_Email" name="fm_Email" required>
+                </div>
+            </div>
+
+            <div class="row" style="margin-bottom:20px">
+                <fieldset><legend style="color:blue;font-weight:bold;">User Information</legend>
+
+                <div class="col-sm-6">
+                    <h5 for="fm_FOS">Field(s) of Specialization*</h5>
+                    <select id="fm_FOS" name="fm_FOS" class="form-control selectpicker" data-live-search="true" title="Select Field(s) of Specialization" multiple required>
+                        <% for(var i = 0; i < foi.length; i++){ %>
+                            <option><%= foi[i]%></option>
+                        <%}%>
+                    </select>
+                </div>
+
+                <div class="col-sm-6">
+                    <h5 for="fm_Roles">Role(s)*</h5>
+                    <select id="fm_Roles" name="fm_Roles" class="form-control selectpicker" data-live-search="true" title="Select Role(s)" multiple required>
+                        <option>Admin</option>
+                        <option>Committee Member</option>
+                        <option>Professor</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row">
+                <hr>
+                <p>All fields with * are required</p>
+                <a id="new-close" href="/roles/admin/users/" class="btn btn-danger btn-default"><span class="glyphicon glyphicon-remove"></span> Cancel User</a>
+                <button id="new-submit" type="submit" name="create" class="btn btn-success btn-default pull-center"><span class="glyphicon glyphicon-cloud-upload"></span> Create User</button>
+            </div>
+        </form>
+    </div>
+    <script src="/js/jquery-3.2.0.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/jquery.metadata.js"></script>
+
+    <script src="https://web.archive.org/web/20161124120603js_/http://www.papercut.com/products/free-software/are-you-sure/jquery.are-you-sure.js"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
+
+    <script src="/js/manage-user.js"></script>
+</body>

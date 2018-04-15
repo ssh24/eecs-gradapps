@@ -24,7 +24,7 @@
                                                     <% for(var i = 0; i < fields.length; i++){ %>
                                                         <% if (hidden.includes(fields[i])) { %>
                                                             <% continue; %>
-                                                        <% } else if (fields[i] === 'Actions'){ %>
+                                                        <% } else if (fields[i] === 'Actions' || fields[i] === 'Field(s) of Specialization' || fields[i] === 'Roles Assigned'){ %>
                                                             <th class="text-center sorter-false parser-false"><%= fields[i]%></th>
                                                         <%} else { %>
                                                             <th class="text-center"><%= fields[i]%></th>

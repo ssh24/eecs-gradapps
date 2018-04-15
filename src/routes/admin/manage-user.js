@@ -9,7 +9,9 @@ module.exports = function(config, fns) {
 	var route = config.route = '/roles/admin/users';
 	var view = 'manage-user';
     
-	var basicUser = fns.concat([loadUsers]);
+	var basicUser = fns.concat([getUsers]);
+
+	require('./manage-user/new-user')(config, basicUser);
     
 	// managing user route
 	app.get(route, basicUser, defaultView);
@@ -31,7 +33,7 @@ module.exports = function(config, fns) {
 		});
 	}
     
-	function loadUsers(req, res, next) {
+	function getUsers(req, res, next) {
 		req.users = {};
 		fm.getUserInfo(req.user.id, function(err, results) {
 			if (err) {
