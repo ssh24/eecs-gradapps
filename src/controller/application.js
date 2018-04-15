@@ -167,7 +167,7 @@ Application.prototype.updateApplication = function(data, appId, memberId, cb) {
 			});
 		} else {
 			err = new Error('Member ' + memberId + 
-							' does not have access to upload application'); 
+							' does not have access to update application'); 
 			return cb(err);
 		}
 	});
@@ -252,7 +252,7 @@ Application.prototype.getApplicationFile = function(appId, memberId, cb) {
 				});
 		} else {
 			err = new Error('Member ' + memberId + 
-							' does not have access to upload application'); 
+							' does not have access to get application file'); 
 			return cb(err);
 		}
 	});
@@ -282,7 +282,7 @@ Application.prototype.getApplicationData = function(appId, memberId, cb) {
 				});
 		} else {
 			err = new Error('Member ' + memberId + 
-							' does not have access to upload application'); 
+							' does not have access to get application data'); 
 			return cb(err);
 		}
 	});

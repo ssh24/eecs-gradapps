@@ -1,0 +1,107 @@
+<% include partials/header %>
+    <div class="container">
+        <h3 class="text-center">Edit User Form</h3>
+        <form id="edit-user-form" action="/roles/admin/users/edit" method="POST" encType="multipart/form-data">
+
+            <div class="row" style="margin-bottom:20px">
+                <fieldset><legend style="color:blue;font-weight:bold;">General Information</legend>
+
+                <div class="col-sm-3">
+                    <h5 for="fm_Username">Username*</h5>
+                    <input type="text" class="form-control" placeholder="Username" id="fm_Username" name="fm_Username" required value="<%- fm_Username %>">
+                </div>
+
+                <div class="col-sm-3">
+                    <h5 for="fm_Lname">Last Name*</h5>
+                    <input type="text" class="form-control" placeholder="Last Name" id="fm_Lname" name="fm_Lname" required value="<%- fm_Lname %>">
+                </div>
+
+                <div class="col-sm-3">
+                    <h5 for="fm_Fname">First Name*</h5>
+                    <input type="text" class="form-control" placeholder="First Name" id="fm_Fname" name="fm_Fname" required value="<%- fm_Fname %>">
+                </div>
+
+                <div class="col-sm-3">
+                    <h5 for="fm_Email">Email*</h5>
+                    <input type="email" class="form-control" placeholder="Email" id="fm_Email" name="fm_Email" required value="<%- fm_Email %>">
+                </div>
+            </div>
+
+            <div class="row" style="margin-bottom:20px">
+                <fieldset><legend style="color:blue;font-weight:bold;">User Information</legend>
+
+                <div class="col-sm-6">
+                    <h5 for="fm_FOS">Field(s) of Specialization*</h5>
+                    <select id="fm_FOS" name="fm_FOS" class="form-control selectpicker" data-live-search="true" title="Select Field(s) of Specialization" multiple required>
+                        <% for(var i = 0; i < foi.length; i++){ %>
+                            <% if (fm_FOS && fm_FOS.includes(foi[i])) { %>
+                                <option selected><%= foi[i]%></option>
+                            <% } else { %>
+                                <option><%= foi[i]%></option>
+                            <% } %>
+                        <%}%>
+                    </select>
+                </div>
+
+                <div class="col-sm-6">
+                    <h5 for="fm_Roles">Role(s)*</h5>
+                    <select id="fm_Roles" name="fm_Roles" class="form-control selectpicker" data-live-search="true" title="Select Role(s)" multiple required>
+                        <option <% if(fm_Roles && fm_Roles.includes('Admin')) {%> selected="true" <% }%>>Admin</option>
+                        <option <% if(fm_Roles && fm_Roles.includes('Committee Member')) {%> selected="true" <% }%>>Committee Member</option>
+                        <option <% if(fm_Roles && fm_Roles.includes('Professor')) {%> selected="true" <% }%>>Professor</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row" style="margin-bottom:20px">
+                <fieldset><legend style="color:blue;font-weight:bold;">User Filter Preset(s)</legend>
+    
+                <div class="col-sm-4">
+                    <h5 for="presetAdmin">Admin Preset</h5>
+                    <select id="presetAdmin" name="presetAdmin" class="form-control selectpicker" data-live-search="true" title="Admin Preset(s)" multiple>
+                        <% for(var keys in presetAdmin) { %>
+                            <option selected><%= keys %></option>
+                        <%}%>
+                    </select>
+                </div>
+
+                <div class="col-sm-4">
+                    <h5 for="presetCommittee">Committee Member Preset</h5>
+                    <select id="presetCommittee" name="presetCommittee" class="form-control selectpicker" data-live-search="true" title="Committee Member Preset(s)" multiple>
+                        <% for(var keys in presetCommittee){ %>
+                            <option selected><%= keys %></option>
+                        <%}%>
+                    </select>
+                </div>
+    
+                <div class="col-sm-4">
+                    <h5 for="presetProf">Professor Preset</h5>
+                    <select id="presetProf" name="presetProf" class="form-control selectpicker" data-live-search="true" title="Professor Preset(s)" multiple>
+                        <% for(var keys in presetProf){ %>
+                            <option selected><%= keys %></option>
+                        <%}%>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row">
+                <hr>
+                <p>All fields with * are required</p>
+                <a id="edit-close" href="/roles/admin/users/" class="btn btn-primary"><span class="glyphicon glyphicon glyphicon-remove-sign"></span> Close User</a>
+                <button id="delete-user" type="submit" name="delete" class="btn btn-danger btn-default pull-center" formnovalidate><span class="glyphicon glyphicon-trash"></span> Delete User</button>
+                <button id="edit-submit" type="submit" name="update" class="btn btn-success btn-default pull-center"><span class="glyphicon glyphicon-cloud-upload"></span> Update User</button>
+            </div>
+        </form>
+    </div>
+    <script src="/js/jquery-3.2.0.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/jquery.metadata.js"></script>
+
+    <script src="https://web.archive.org/web/20161124120603js_/http://www.papercut.com/products/free-software/are-you-sure/jquery.are-you-sure.js"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
+
+    <script src="/js/manage-user.js"></script>
+</body>
