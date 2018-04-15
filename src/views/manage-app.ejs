@@ -27,6 +27,8 @@
                                                     <% } else { %>
                                                         <%if (fields[i]==='GPA') { %>
                                                             <th class="text-center sorter-grades"><%= fields[i]%></th>
+                                                        <%} else if (fields[i] === 'Actions'){ %>
+                                                            <th class="text-center sorter-false parser-false"><%= fields[i]%></th>
                                                         <%} else {%>
                                                             <th class="text-center"><%= fields[i]%></th>
                                                         <%}%>

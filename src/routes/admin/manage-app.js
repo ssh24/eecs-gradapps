@@ -55,7 +55,6 @@ module.exports = function(config, fns) {
 	// get all the applications, calls `getApplications`
 	function getApps(req, res, next) {
 		req.apps = {filter: false};
-		// builtSql = builtOptions = null;
 		var sql = 'SELECT app_Id, DATE_FORMAT(app_Date, "%m/%d/%Y") as `Date Uploaded`, student_Id as `Student Number`, CONCAT_WS(\' \', `FName`, `LName`) AS `Applicant Name`, ' +
 		'GPA, Degree as `Degree Applied For`, ' +
 		'VStatus as `Visa Status`, programDecision as `Program Decision` ' +
