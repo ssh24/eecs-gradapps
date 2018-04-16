@@ -193,6 +193,16 @@ FM.prototype.updateUser = function(data, userId, memberId, cb) {
 				if (err) return cb(err);
 				return cb(err, result);
 			});
+		} else if (roles.includes('Committee Member') || roles.includes('Professor')) {
+			delete data['fm_Roles'];
+			delete data['presetProf'];
+			delete data['presetCommittee'];
+			delete data['presetAdmin'];
+			self.conn.query('UPDATE faculty_member SET ? WHERE fm_Id=?', [data, 
+				userId], function(err, result) {
+				if (err) return cb(err);
+				return cb(err, result);
+			});
 		} else {
 			err = new Error('Member ' + memberId + 
 							' does not have access to update user'); 
@@ -251,6 +261,15 @@ FM.prototype.getUserData = function(userId, memberId, cb) {
 						return cb(err, result[0]);
 					}
 				});
+		} else if (roles.includes('Committee Member') || roles.includes('Professor')) { 
+			self.conn.query('SELECT fm_Id, fm_Username, fm_Lname, fm_Fname, ' + 
+			'fm_Email, fm_FOS from faculty_member where fm_Id=?', [userId], 
+			function(err, result) {
+				if (err) return cb(err);
+				if (result.length === 1) {
+					return cb(err, result[0]);
+				}
+			});
 		} else {
 			err = new Error('Member ' + memberId + 
 							' does not have access to get user data'); 

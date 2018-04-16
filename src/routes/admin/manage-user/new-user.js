@@ -1,5 +1,7 @@
 'use strict';
 
+var User = require('../../../model/user');
+
 module.exports = function(config, fns) {
 	var app = config.app;
 	var fm = config.fm;
@@ -7,6 +9,8 @@ module.exports = function(config, fns) {
 	var route = config.route;
 	var main = '/new';
 	var view = 'new-user';
+
+	var user = new User();
 	
 	var postNewUser = fns.concat([createUser]);
     
@@ -31,16 +35,25 @@ module.exports = function(config, fns) {
 
 	function createUser(req, res, next) {
 		var body = req.body;
-		var data = {};
-			
-		for(var keys in body) {
-			if (keys === 'fm_FOS' || keys === 'fm_Roles') {
-				data[keys] = JSON.stringify(body[keys]);
-			} else if (body[keys] != '') {
-				data[keys] = body[keys];
+
+		var username = body['fm_Username'];
+		var password = body['pass'];
+		delete body['pass'];
+
+		user.createUser(username, password, function(err) {
+			if (err) res.redirect(route);
+			else {
+				var data = {};
+				
+				for(var keys in body) {
+					if (keys === 'fm_FOS' || keys === 'fm_Roles') {
+						data[keys] = JSON.stringify(body[keys]);
+					} else if (body[keys] != '') {
+						data[keys] = body[keys];
+					}
+				}
+				fm.createUser(data, req.user.id, next);
 			}
-		}
-			
-		fm.createUser(data, req.user.id, next);
+		});
 	}
 };

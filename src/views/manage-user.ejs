@@ -48,7 +48,8 @@
                                                                             <a id="edit-user-<%=i%>" href="/roles/admin/users/edit?userId=<%= users[i][fields[0]]%>" class="btn btn-primary" style="margin-bottom: 5px">Manage User &raquo;</a></li>
                                                                         </div>
                                                                     <% } else { %>
-                                                                        <p>Cannot manage own user details! Please seek assistance from another Administrator.</p>
+                                                                        <p>To update own user settings click `Settings` on the navbar.</p>
+                                                                        <p>To assign/unassign yourself from a role, please contact another system administrator.</p>
                                                                     <% } %>
                                                                 </td>
                                                             <% } %>

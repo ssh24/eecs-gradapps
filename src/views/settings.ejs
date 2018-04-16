@@ -1,7 +1,7 @@
 <% include partials/header %>
     <div class="container">
-        <h3 class="text-center">Edit User Form</h3>
-        <form id="edit-user-form" action="/roles/admin/users/edit" method="POST">
+        <h3 class="text-center">User Settings</h3>
+        <form id="user-settings-form" action="/settings" method="POST">
 
             <div class="row" style="margin-bottom:20px">
                 <fieldset><legend style="color:blue;font-weight:bold;">Login Information</legend>
@@ -10,12 +10,16 @@
                     <h5 for="fm_Username">Username*</h5>
                     <input type="text" class="form-control" placeholder="Username" id="fm_Username" name="fm_Username" value="<%- fm_Username %>" required>
                 </div>
-    
+
                 <div class="col-sm-4">
-                    <h5 id="h-set-pass" for="set-pass">New Password</h5>
-                    <input type="text" class="form-control" placeholder="Password" id="set-pass" name="pass">
-                    <button id="gen-pass" type="button" class="btn btn-secondary" style="margin-top: 10px"><span class="glyphicon glyphicon-pencil"></span> Generate Password</button>
-                    <button id="copy-pass" type="button" class="btn btn-secondary" style="margin-top: 10px"><span class="glyphicon glyphicon-copy"></span> Copy Password</button>
+                    <h5 id="h-set-pass-1" for="set-pass-1">New Password</h5>
+                    <input type="password" class="form-control" placeholder="New Password" id="set-pass-1" name="new_pass">
+                </div>
+
+                <div class="col-sm-4">
+                    <h5 id="h-set-pass-2" for="set-pass-2">Confirm New Password</h5>
+                    <input type="password" class="form-control" placeholder="Confirm Password" id="set-pass-2" name="new_pass_confirm" disabled>
+                    <span id="pass-message"></span>
                 </div>
             </div>
 
@@ -53,22 +57,12 @@
                         <%}%>
                     </select>
                 </div>
-
-                <div class="col-sm-6">
-                    <h5 for="fm_Roles">Role(s)*</h5>
-                    <select id="fm_Roles" name="fm_Roles" class="form-control selectpicker" data-live-search="true" title="Select Role(s)" multiple required>
-                        <option <% if(fm_Roles && fm_Roles.includes('Admin')) {%> selected="true" <% }%>>Admin</option>
-                        <option <% if(fm_Roles && fm_Roles.includes('Committee Member')) {%> selected="true" <% }%>>Committee Member</option>
-                        <option <% if(fm_Roles && fm_Roles.includes('Professor')) {%> selected="true" <% }%>>Professor</option>
-                    </select>
-                    <span id="roles-message"></span>
-                </div>
             </div>
 
             <div class="row" style="margin-bottom:20px">
                 <fieldset><legend style="color:blue;font-weight:bold;">User Filter Preset(s)</legend>
     
-                <% if (fm_Roles.includes('Admin')) { %> 
+                <% if (roles.includes('Admin')) { %> 
                     <div class="col-sm-4">
                         <h5 for="presetAdmin">Admin Preset</h5>
                         <select id="presetAdmin" name="presetAdmin" class="form-control selectpicker" data-live-search="true" title="Admin Preset(s)" multiple>
@@ -79,7 +73,7 @@
                     </div>
                 <% } %>
 
-                <% if (fm_Roles.includes('Committee Member')) { %> 
+                <% if (roles.includes('Committee Member')) { %> 
                     <div class="col-sm-4">
                         <h5 for="presetCommittee">Committee Member Preset</h5>
                         <select id="presetCommittee" name="presetCommittee" class="form-control selectpicker" data-live-search="true" title="Committee Member Preset(s)" multiple>
@@ -90,7 +84,7 @@
                     </div>
                 <% } %>
     
-                <% if (fm_Roles.includes('Professor')) { %>
+                <% if (roles.includes('Professor')) { %> 
                     <div class="col-sm-4">
                         <h5 for="presetProf">Professor Preset</h5>
                         <select id="presetProf" name="presetProf" class="form-control selectpicker" data-live-search="true" title="Professor Preset(s)" multiple>
@@ -105,9 +99,8 @@
             <div class="row">
                 <hr>
                 <p>All fields with * are required</p>
-                <a id="edit-close" href="/roles/admin/users/" class="btn btn-primary"><span class="glyphicon glyphicon glyphicon-remove-sign"></span> Close User</a>
-                <button id="delete-user" type="submit" name="delete" class="btn btn-danger btn-default pull-center" formnovalidate><span class="glyphicon glyphicon-trash"></span> Delete User</button>
-                <button id="edit-submit" type="submit" name="update" class="btn btn-success btn-default pull-center"><span class="glyphicon glyphicon-cloud-upload"></span> Update User</button>
+                <a id="edit-close" href="/roles" class="btn btn-danger btn-default"><span class="glyphicon glyphicon-remove"></span> Cancel</a>
+                <button id="edit-submit" type="submit" name="update" class="btn btn-success btn-default pull-center"><span class="glyphicon glyphicon-cloud-upload"></span> Update</button>
             </div>
         </form>
     </div>
@@ -121,5 +114,5 @@
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
 
-    <script src="/js/manage-user.js"></script>
+    <script src="/js/settings.js"></script>
 </body>
