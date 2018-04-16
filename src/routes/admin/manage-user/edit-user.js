@@ -1,14 +1,17 @@
 'use strict';
 
 var _ = require('lodash');
+var User = require('../../../model/user');
 
 module.exports = function(config, fns) {
 	var app = config.app;
 	var fm = config.fm;
+	var utils = config.utils;
 	var role = config.role;
 	var route = config.route;
 	var main = '/edit';
 	var view = 'edit-user';
+	var user = new User();
 	var userId, presetAdmin, presetCommittee, presetProf;
     
 	var getEditUser = fns.concat([getUserData]);
@@ -45,7 +48,7 @@ module.exports = function(config, fns) {
     
 	function getUserData(req, res, next) {
 		userId = parseInt(req.query.userId);
-		if (!userId)
+		if (!userId || userId === req.user.id)
 			res.redirect(route);
 		else {
 			fm.getUserData(userId, req.user.id, function(err, result) {
@@ -72,30 +75,60 @@ module.exports = function(config, fns) {
 
 	function updateOrDeleteUser(req, res, next) {
 		var body = req.body;
-		if (body.update === '') {
-			var data = {};
-			var allPresets;
+		var user_data = {
+			username: body['fm_Username'],
+			password: body['pass']
+		};
+		delete body['pass'];
 
-			for(var keys in body) {
-				if (keys === 'fm_FOS' || keys === 'fm_Roles') {
-					data[keys] = JSON.stringify(body[keys]);
-				} else if (keys === 'presetAdmin' || keys === 'presetCommittee' 
-				|| keys === 'presetProf') {
-					if (keys === 'presetAdmin' ) allPresets = _.clone(presetAdmin);
-					else if (keys === 'presetCommittee') allPresets = _.clone(presetCommittee);
-					else allPresets = _.clone(presetProf);
-					for(var preset in allPresets) {
-						if (!body[keys].includes(preset))
-							delete allPresets[preset];
-					}
-					data[keys] = JSON.stringify(allPresets);
-				} else if (body[keys] != '') {
-					data[keys] = body[keys];
-				}
+		utils.getMemberUsername(userId, function(err, uname) {
+			if (err) res.redirect(route);
+			if (body.update === '') {
+				if (user_data.password) {
+					user.updatePassword(uname, user_data.password, function(err) {
+						if (err) res.redirect(route);
+						updateUserDB(req, res, next);
+					});
+				} else if (user_data.username) {
+					user.updateUsername(uname, user_data.username, function(err) {
+						if (err) res.redirect(route);
+						updateUserDB(req, res, next);
+					});
+				} 
+			} else if (body.delete === '') {
+				user.removeUser(uname, function(err) {
+					if (err) res.redirect(route);
+					else fm.deleteUser(userId, req.user.id, next);
+				});
 			}
-			fm.updateUser(data, userId, req.user.id, next);
-		} else if (body.delete === '') {
-			fm.deleteUser(userId, req.user.id, next);
+		});
+	}
+
+	function updateUserDB(req, res, next) {
+		var body = req.body;
+		var data = {};
+		var allPresets;
+		
+		for(var keys in body) {
+			if (keys === 'fm_FOS' || keys === 'fm_Roles') {
+				data[keys] = JSON.stringify(body[keys]);
+			} else if (keys === 'presetAdmin' || keys === 'presetCommittee' 
+							|| keys === 'presetProf') {
+				if (keys === 'presetAdmin' ) 
+					allPresets = _.clone(presetAdmin);
+				else if (keys === 'presetCommittee') 
+					allPresets = _.clone(presetCommittee);
+				else 
+					allPresets = _.clone(presetProf);
+				for(var preset in allPresets) {
+					if (!body[keys].includes(preset))
+						delete allPresets[preset];
+				}
+				data[keys] = JSON.stringify(allPresets);
+			} else if (body[keys] != '') {
+				data[keys] = body[keys];
+			}
 		}
+		fm.updateUser(data, userId, req.user.id, next);
 	}
 };
