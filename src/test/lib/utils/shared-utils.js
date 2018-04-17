@@ -72,6 +72,11 @@ Utils.prototype.viewApplication = function(appId) {
 		.then(element(elem).click());
 };
 
+Utils.prototype.openSettings = function() {
+	return this.waitForElementClickable(by.id('settings-btn'), this.timeout)
+		.then(element(by.id('settings-btn')).click());
+};
+
 Utils.prototype.clearBrowserCache = function() {
 	return browser.executeScript('window.localStorage.clear();')
 		.then(browser.executeScript('window.sessionStorage.clear();'))

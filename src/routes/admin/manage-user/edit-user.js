@@ -94,7 +94,9 @@ module.exports = function(config, fns) {
 						if (err) res.redirect(route);
 						updateUserDB(req, res, next);
 					});
-				} 
+				} else {
+					updateUserDB(req, res, next);
+				}
 			} else if (body.delete === '') {
 				user.removeUser(uname, function(err) {
 					if (err) res.redirect(route);
@@ -108,19 +110,28 @@ module.exports = function(config, fns) {
 		var body = req.body;
 		var data = {};
 		var allPresets;
+		var preset;
 		
 		for(var keys in body) {
 			if (keys === 'fm_FOS' || keys === 'fm_Roles') {
 				data[keys] = JSON.stringify(body[keys]);
-			} else if (keys === 'presetAdmin' || keys === 'presetCommittee' 
-							|| keys === 'presetProf') {
-				if (keys === 'presetAdmin' ) 
-					allPresets = _.clone(presetAdmin);
-				else if (keys === 'presetCommittee') 
-					allPresets = _.clone(presetCommittee);
-				else 
-					allPresets = _.clone(presetProf);
-				for(var preset in allPresets) {
+			} else if (keys === 'presetAdmin') {
+				allPresets = _.clone(presetAdmin);
+				for(preset in allPresets) {
+					if (!body[keys].includes(preset))
+						delete allPresets[preset];
+				}
+				data[keys] = JSON.stringify(allPresets);
+			} else if (keys === 'presetCommittee') {
+				allPresets = _.clone(presetCommittee);
+				for(preset in allPresets) {
+					if (!body[keys].includes(preset))
+						delete allPresets[preset];
+				}
+				data[keys] = JSON.stringify(allPresets);
+			} else if (keys === 'presetProf') {
+				allPresets = _.clone(presetProf);
+				for(preset in allPresets) {
 					if (!body[keys].includes(preset))
 						delete allPresets[preset];
 				}
@@ -129,6 +140,17 @@ module.exports = function(config, fns) {
 				data[keys] = body[keys];
 			}
 		}
+
+		if (presetAdmin && !body['presetAdmin']) {
+			data['presetAdmin'] = JSON.stringify({});
+		}
+		if (presetCommittee && !body['presetCommittee']) {
+			data['presetCommittee'] = JSON.stringify({});
+		}
+		if (presetProf && !body['presetProf']) {
+			data['presetProf'] = JSON.stringify({});
+		}
+		
 		fm.updateUser(data, userId, req.user.id, next);
 	}
 };

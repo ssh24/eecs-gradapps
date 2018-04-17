@@ -47,7 +47,7 @@ module.exports = {
 			'sessions'],
 		'fields': {
 			'faculty_member': ['fm_Id', 'fm_Username', 'fm_Lname', 'fm_Fname', 
-				'fm_Email', 'fm_Roles', 'presetProf', 'presetCommittee', 
+				'fm_Email', 'fm_Roles', 'fm_FOS', 'presetProf', 'presetCommittee', 
 				'presetAdmin'],
 			'application': ['app_Id', 'student_Id', 'app_Date', 'app_Session', 
 				'LName', 'FName', 'Email', 'Gender', 'GPA', 'GPA_FINAL', 'GRE',

@@ -74,18 +74,12 @@ User.prototype.updateUsername = function(old, newName, cb) {
 									if (err) return cb(err);
 									return cb(err, true);
 								});
-							} else {
-								err = new Error('Could not remove user "' + old + '"');
-								return cb(err);
 							}
 						});
-					} else {
-						err = new Error('Could not fetch password for "' + old + '"');
-						return cb(err);
 					}
 				});
 			} else {
-				err = new Error('User with username "' + old + '" exists');
+				err = new Error('User with username "' + old + '" does not exist');
 				return cb(err);
 			}
 		}
@@ -121,18 +115,12 @@ User.prototype.updatePassword = function(old, newPass, cb) {
 									if (err) return cb(err);
 									return cb(err, true);
 								});
-							} else {
-								err = new Error('Could not remove user "' + old + '"');
-								return cb(err);
 							}
 						});
-					} else {
-						err = new Error('Could not fetch password for "' + old + '"');
-						return cb(err);
 					}
 				});
 			} else {
-				err = new Error('User with username "' + old + '" exists');
+				err = new Error('User with username "' + old + '" does not exist');
 				return cb(err);
 			}
 		}
@@ -154,6 +142,7 @@ User.prototype.removeUser = function(username, cb) {
 	var data = fs.readFileSync(htpasswdFile, 'utf8');
 	lines = data.split(endOfLine);
 	var datas = '';
+	var userRemoved = false;
 
 	for(var i = 0; i < lines.length; i++) {
 		var line = lines[i];
@@ -163,12 +152,14 @@ User.prototype.removeUser = function(username, cb) {
 
 			if (curr_user != username) {
 				datas += curr_user + self.separator + curr_password + endOfLine;
+			} else {
+				userRemoved = true;
 			}
 		}
 	}
 	fs.writeFile(htpasswdFile, datas, function(err) {
 		if (err) return cb(err);
-		return cb(err, true);
+		return cb(err, userRemoved);
 	});
 };
 

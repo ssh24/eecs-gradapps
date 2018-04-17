@@ -203,10 +203,6 @@ FM.prototype.updateUser = function(data, userId, memberId, cb) {
 				if (err) return cb(err);
 				return cb(err, result);
 			});
-		} else {
-			err = new Error('Member ' + memberId + 
-							' does not have access to update user'); 
-			return cb(err);
 		}
 	});
 };
@@ -270,10 +266,6 @@ FM.prototype.getUserData = function(userId, memberId, cb) {
 					return cb(err, result[0]);
 				}
 			});
-		} else {
-			err = new Error('Member ' + memberId + 
-							' does not have access to get user data'); 
-			return cb(err);
 		}
 	});
 };
