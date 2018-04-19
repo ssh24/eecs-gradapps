@@ -7,10 +7,12 @@ connection.connect();
 
 var Application = require('../controller/application');
 var Faculty_Member = require('../controller/fm');
+var Review = require('../controller/review');
 var Utils = require('../controller/utils');
 
 var application = new Application(connection);
 var fm = new Faculty_Member(connection);
+var review = new Review(connection);
 var utils = new Utils(connection);
 
 module.exports = function(app, passport) {
@@ -29,8 +31,8 @@ module.exports = function(app, passport) {
 		[isLoggedIn, hasRole]);
     
 	// admin page route
-	require('./admin.js')({app: app, utils: utils, application: application, fm: fm}, 
-		[isLoggedIn, hasRole]);
+	require('./admin.js')({app: app, utils: utils, application: application, 
+		fm: fm, review: review}, [isLoggedIn, hasRole]);
 	// committee page route
 	require('./committee.js')(app, utils, application, fm, [isLoggedIn, hasRole]);	
 	// professor page route

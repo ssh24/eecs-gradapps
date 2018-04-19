@@ -477,7 +477,7 @@ Utils.prototype.getAllProfessors = function(cb) {
  * @param {Function} cb 
  */
 Utils.prototype.getAllCommitteeMembers = function(cb) {
-	var sql = 'SELECT CONCAT_WS(\' \', `fm_Fname`, `fm_Lname`) AS `CM Name`' 
+	var sql = 'SELECT fm_Id, CONCAT_WS(\' \', `fm_Fname`, `fm_Lname`) AS `CM Name`' 
 	+ ', fm_Roles from faculty_member where fm_Roles is not null';
 	var cm = [];
 	this.conn.query(sql, function(err, result) {
@@ -485,9 +485,9 @@ Utils.prototype.getAllCommitteeMembers = function(cb) {
 		if(result.length > 0) {
 			_.forEach(result, function(res) {
 				if(res['fm_Roles'].includes('Committee Member'))
-				cm.push(res['CM Name']);
+				cm.push({id: res['fm_Id'], name: res['CM Name']});
 			});
-			return cb(err, cm.sort());
+			return cb(err, cm);
 		} else {
 			err = new Error('No committee members found');
 			return cb(err);
