@@ -473,6 +473,29 @@ Utils.prototype.getAllProfessors = function(cb) {
 };
 
 /**
+ * Get all committee member names
+ * @param {Function} cb 
+ */
+Utils.prototype.getAllCommitteeMembers = function(cb) {
+	var sql = 'SELECT CONCAT_WS(\' \', `fm_Fname`, `fm_Lname`) AS `CM Name`' 
+	+ ', fm_Roles from faculty_member where fm_Roles is not null';
+	var cm = [];
+	this.conn.query(sql, function(err, result) {
+		if (err) return cb(err);
+		if(result.length > 0) {
+			_.forEach(result, function(res) {
+				if(res['fm_Roles'].includes('Committee Member'))
+				cm.push(res['CM Name']);
+			});
+			return cb(err, cm.sort());
+		} else {
+			err = new Error('No committee members found');
+			return cb(err);
+		}
+	});
+};
+
+/**
  * Get list of all field of interests
  * @param {Function} cb 
  */

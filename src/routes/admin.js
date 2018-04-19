@@ -9,7 +9,7 @@ module.exports = function(config, fns) {
 	// admin page route
 	app.get('/roles/' + route, fns, function(req, res) {
 		var userInfo = req.user;
-		res.render('admin', { 
+		res.render(role, { 
 			title: 'Administrator Dashboard',
 			user: userInfo.id,
 			fullname: userInfo.fullname,
