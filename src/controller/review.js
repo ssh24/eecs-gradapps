@@ -93,6 +93,47 @@ Review.prototype.unassignReview = function(appId, committeeId, adminId, cb) {
 };
 
 /**
+ * Dismiss a submitted review from committee.
+ * @param {Number} appId 
+ * @param {Number} committeeId 
+ * @param {Number} adminId 
+ * @param {Function} cb 
+ */
+Review.prototype.dismissReview = function(appId, committeeId, adminId, cb) {
+	assert(typeof appId == 'number');
+	assert(typeof committeeId == 'number');
+	assert(typeof adminId == 'number');
+	assert(typeof cb === 'function');
+    
+	var self = this;
+	var deleteStmt;
+
+	this.utils.getRoles(adminId, function(err, roles) {
+		if (err) return cb (err);
+		if (roles.includes('Admin')) {
+			self.getReviewStatus(appId, committeeId, function(err, status) {
+				if (err) return cb(err);
+				if(status === 'Submitted') {
+					deleteStmt = self.utils.
+						createDeleteStatement('application_review', 
+							['committeeId', 'appId'], [committeeId, 
+								appId]);
+					self.conn.query(deleteStmt, cb);
+				} else {
+					err = new Error('Application ' + appId + 
+							' has not been submitted by ' + 
+							'member ' + committeeId);
+					return cb(err);
+				}
+			});
+		} else {
+			err = new Error('Member ' + adminId + ' cannot dismiss a review'); 
+			return cb(err);
+		}
+	});
+};
+
+/**
  * Remind a review to a committee member.
  * @param {Number} adminId 
  * @param {Number} committeeId 
@@ -383,6 +424,36 @@ Review.prototype.getReviewStatus = function(appId, committeeId, cb) {
 };
 
 /**
+ * Get the review assigned date.
+ * @param {Number} appId 
+ * @param {Number} committeeId 
+ * @param {Function} cb 
+ */
+Review.prototype.getReviewAssignedDate = function(appId, committeeId, cb) {
+	assert(typeof appId == 'number');
+	assert(typeof committeeId == 'number');
+	assert(typeof cb === 'function');
+    
+	var self = this;
+    
+	this.isAssigned(appId, committeeId, function(err, result) {
+		if (err) return cb(err);
+		else if(!result) {
+			err = new Error('Application ' + appId + 
+            ' is not assigned to member ' + committeeId);
+			return cb(err);
+		} else {
+			self.conn.query('Select DATE_FORMAT(assignDate, "%m/%d/%Y") as `Date Assigned` from application_review where appId = ? ' 
+            + 'and committeeId = ?', [appId, committeeId], function(err, results) {
+				if (err) return cb(err);
+				assert(1, results.length);
+				return cb(err, results[0]['Date Assigned']);
+			});
+		}
+	});
+};
+
+/**
  * set the review status of an application assigned to a member.
  * @param {Number} appId 
  * @param {Number} committeeId 
@@ -557,6 +628,40 @@ Review.prototype.removeUniversity = function(uni, cb) {
 		[JSON.stringify(uni)]);
 
 	this.conn.query(deleteStmt, cb);
+};
+
+/**
+ * Get all the assignees of an app.
+ * @param {Number} appId 
+ * @param {Function} cb
+ */
+Review.prototype.getReviewAssigneeID = function(appId, cb) {
+	assert(typeof appId === 'number');
+	assert(typeof cb === 'function');
+
+	this.conn.query('Select committeeId from application_review where ' + 
+    'appId = ?', [appId], 
+	function(err, results) {
+		if (err) return cb(err);
+		return cb(err, results);
+	});
+};
+
+/**
+ * Get review count for an app.
+ * @param {Number} appId 
+ * @param {Function} cb
+ */
+Review.prototype.getReviewCount = function(appId, cb) {
+	assert(typeof appId === 'number');
+	assert(typeof cb === 'function');
+
+	this.conn.query('Select * from application_review where ' + 
+    'appId = ?', [appId], 
+	function(err, results) {
+		if (err) return cb(err);
+		return cb(err, results.length);
+	});
 };
 
 module.exports = Review;

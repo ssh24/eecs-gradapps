@@ -213,7 +213,7 @@
             
                             <div class="col-sm-2">
                                 <h5 for="profContacted">Contacted By</h5>
-                                <select id="profContacted" name="profContacted" class="form-control selectpicker" data-live-search="true" title="Select Professor(s) Contacted" multiple required>
+                                <select id="profContacted" name="profContacted" class="form-control selectpicker" data-live-search="true" title="Select Professor(s) Contacted" multiple>
                                     <% for(var i = 0; i < profs.length; i++){ %>
                                         <% if (profContacted && profContacted.includes(profs[i])) { %>
                                             <option selected><%= profs[i]%></option>
@@ -226,7 +226,7 @@
             
                             <div class="col-sm-2">
                                 <h5 for="profRequested">Requested By</h5>
-                                <select id="profRequested" name="profRequested" class="form-control selectpicker" data-live-search="true" title="Select Professor(s) Requested" multiple required>
+                                <select id="profRequested" name="profRequested" class="form-control selectpicker" data-live-search="true" title="Select Professor(s) Requested" multiple>
                                     <% for(var i = 0; i < profs.length; i++){ %>
                                         <% if (profRequested && profRequested.includes(profs[i])) { %>
                                             <option selected><%= profs[i]%></option>
