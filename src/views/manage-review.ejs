@@ -58,22 +58,26 @@
                                                             <%} %>
                                                         <% } else { %>
                                                             <td class="text-center">
-                                                                <% if(apps[i]['Visa Status'] === 'Domestic' && apps[i]['Reviews Assigned'] != max_dom) { %> 
-                                                                    <select id="cms" name="cms" class="form-control selectpicker" data-live-search="true" title="Pick one or more assignee" multiple data-max-options= <%= max_dom - apps[i]['Reviews Assigned'] %> >
-                                                                        <% for(var k = 0; k < cms.length; k++){ %>
-                                                                            <option><%= cms[k]%></option>
-                                                                        <%}%>
-                                                                    </select>
-                                                                    <button id="assign-<%=i%>-<%=j%>" class="btn btn-success" style="margin-bottom: 5px"><span class="glyphicon glyphicon-ok"></span> Assign</button>
-                                                                <% } else if ((apps[i]['Visa Status'] === 'Visa' && apps[i]['Reviews Assigned'] != max_visa)) { %>
-                                                                    <select id="cms" name="cms" class="form-control selectpicker" data-live-search="true" title="Pick one or more assignee" multiple data-max-options= <%= max_visa - apps[i]['Reviews Assigned'] %>>
-                                                                        <% for(var k = 0; k < cms.length; k++){ %>
-                                                                            <option><%= cms[k]%></option>
-                                                                        <%}%>
-                                                                    </select>
-                                                                    <button id="assign-<%=i%>-<%=j%>" class="btn btn-success" style="margin-bottom: 5px"><span class="glyphicon glyphicon-ok"></span> Assign</button>
-                                                                <% } %>
-                                                                <button id="manage-<%=i%>-<%=j%>" class="btn btn-primary">Manage Reviews &raquo;</button>
+                                                                <form id="assign-review-<%=i%>-<%=j%>" action="/roles/admin/reviews" method="POST">
+                                                                    <% if(apps[i]['Visa Status'] === 'Domestic' && apps[i]['Reviews Assigned'] != max_dom) { %> 
+                                                                        <select id="cms" name="cms" class="form-control selectpicker" data-live-search="true" title="Pick one or more assignee" multiple data-max-options= <%= max_dom - apps[i]['Reviews Assigned'] %> >
+                                                                            <% for(var k = 0; k < cms.length; k++){ %>
+                                                                                <option><%= cms[k]%></option>
+                                                                            <%}%>
+                                                                        </select>
+                                                                        <button id="assign-<%=i%>-<%=j%>" name="appId" value="<%= apps[i]['app_Id'] %>" class="btn btn-success" style="margin-bottom: 5px"><span class="glyphicon glyphicon-ok"></span> Assign</button>
+                                                                    <% } else if ((apps[i]['Visa Status'] === 'Visa' && apps[i]['Reviews Assigned'] != max_visa)) { %>
+                                                                        <select id="cms" name="cms" class="form-control selectpicker" data-live-search="true" title="Pick one or more assignee" multiple data-max-options= <%= max_visa - apps[i]['Reviews Assigned'] %>>
+                                                                            <% for(var k = 0; k < cms.length; k++){ %>
+                                                                                <option><%= cms[k]%></option>
+                                                                            <%}%>
+                                                                        </select>
+                                                                        <button id="assign-<%=i%>-<%=j%>" name="appId" value="<%= apps[i]['app_Id'] %>" class="btn btn-success" style="margin-bottom: 5px"><span class="glyphicon glyphicon-ok"></span> Assign</button>
+                                                                    <% } %>
+                                                                    <% if (apps[i]['Reviews Assigned'] > 0) { %> 
+                                                                        <button id="manage-<%=i%>-<%=j%>" class="btn btn-primary">Manage Reviews &raquo;</button>
+                                                                    <% } %>
+                                                                </form>
                                                             </td>
                                                         <% } %>
                                                     <% } %>

@@ -5,16 +5,22 @@ var _ = require('lodash');
 module.exports = function(config, fns) {
 	var app = config.app;
 	var application = config.application;
-	// var fm = config.fm;
+	var review = config.review;
 	var utils = config.utils;
 	var role = config.role;
 	var route = config.route = '/roles/admin/reviews';
 	var view = 'manage-review';
 	
-	var basicAdmin = fns.concat([getApps, setLiveSearchData]);
+	var basicReviews = fns.concat([getApps, setLiveSearchData]);
+	var postReviews = fns.concat([setLiveSearchData, postReview, getApps]);
+
+	var cmInfo;
     
-	// managing application route
-	app.get(route, basicAdmin, defaultView);
+	// managing review route - GET
+	app.get(route, basicReviews, defaultView);
+
+	// managing review route - POST
+	app.post(route, postReviews, defaultView);
 	
 	// default view of the table
 	function defaultView(req, res) {
@@ -80,7 +86,7 @@ module.exports = function(config, fns) {
 		});
 	}
 
-	// setting live search data such as GPA, Professor Names, Fields of Interest(s)
+	// setting live search data such as GPA, CM Names, Fields of Interest(s)
 	function setLiveSearchData(req, res, next) {
 		req.apps = req.apps || {};
 		utils.getApplicantNames(true, function(err, result) {
@@ -91,7 +97,11 @@ module.exports = function(config, fns) {
 				req.apps['foi'] = result;
 				utils.getAllCommitteeMembers(function(err, result) {
 					if (err) next(err);
-					req.apps['cms'] = result;
+					var arr = _.filter(result, function(elem) {
+						return elem['id'] != req.user.id;
+					});
+					req.apps['cms'] = _.map(arr, 'name').sort();
+					cmInfo = arr;
 					utils.getGPA(function(err, result) {
 						if (err) next(err);
 						req.apps['gpa'] = result;
@@ -100,5 +110,17 @@ module.exports = function(config, fns) {
 				});
 			});
 		});
+	}
+
+	// assigning review application
+	function postReview(req, res, next) {
+		var body = req.body;
+
+		var assignee = body.cms;
+		var userAssigned = _.find(cmInfo, {name: assignee});
+		var userId = userAssigned['id'];
+		var appId = parseInt(body.appId);
+
+		review.assignReview(appId, userId, req.user.id, next);
 	}
 };
