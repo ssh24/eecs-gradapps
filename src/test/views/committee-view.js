@@ -16,6 +16,8 @@ function Committee(timeout) {
 	this.tables.refresh = by.id('refresh-table');
 
 	this.tables.error = by.id('error-message');
+
+	this.userManual = by.id('committee-manual');
 }
 
 Committee.prototype.applicationTableIsDisplayed = function() {

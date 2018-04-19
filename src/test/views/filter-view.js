@@ -23,6 +23,9 @@ var Filter = function(timeout) {
 	this.filter.cols = {};
 	this.filter.cols.active = by.css('.btn.btn-default.active');
 
+	this.filter.cols.sid = by.id('btn_col_sid');
+	this.filter.cols.sid.index = by.css('#btn_col_sid > span');
+
 	this.filter.cols.date = by.id('btn_col_date');
 	this.filter.cols.date.index = by.css('#btn_col_date > span');
 
