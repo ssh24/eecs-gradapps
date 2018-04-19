@@ -20,6 +20,6 @@ module.exports = function(config, fns) {
 	});
 
 	require('./admin/manage-app')(config, fns);
-	require('./admin/manage-review')(config, fns);
+	require('./admin/view-review')(config, fns);
 	require('./admin/manage-user')(config, fns);
 };

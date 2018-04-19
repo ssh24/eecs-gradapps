@@ -383,6 +383,28 @@ Utils.prototype.getMemberFullName = function(memberId, cb) {
 };
 
 /**
+ * Get member email
+ * @param {Number} memberId
+ * @param {Function} cb 
+ */
+Utils.prototype.getMemberEmail = function(memberId, cb) {
+	assert(typeof memberId === 'number');
+	assert(typeof cb === 'function');
+
+	this.conn.query('Select fm_Email from faculty_member where fm_Id=?', 
+		[memberId], function(err, result) {
+			if (err) return cb(err);
+			if (result.length === 0) {
+				err = new Error('Member with id ' + memberId + 
+				' does not exist');
+				return cb(err);
+			} else {
+				return cb(err, result[0]['fm_Email']);
+			}
+		});
+};
+
+/**
  * Get all applicant names
  * @param {Function} cb 
  */
@@ -485,7 +507,7 @@ Utils.prototype.getAllCommitteeMembers = function(cb) {
 		if(result.length > 0) {
 			_.forEach(result, function(res) {
 				if(res['fm_Roles'].includes('Committee Member'))
-				cm.push({id: res['fm_Id'], name: res['CM Name']});
+					cm.push({id: res['fm_Id'], name: res['CM Name']});
 			});
 			return cb(err, cm);
 		} else {
@@ -531,6 +553,24 @@ Utils.prototype.getGPA = function(cb) {
 			return cb(err);
 		}
 	});
+};
+
+/**
+ * Get visa status of an application.
+ * @param {Number} appId 
+ * @param {Function} cb 
+ */
+Utils.prototype.getVisaStatus = function(appId, cb) {
+	assert(typeof appId === 'number');
+	assert(typeof cb === 'function');
+
+	this.conn.query('SELECT VStatus from application where app_Id=?', [appId], 
+		function(err, result) {
+			if (err) return cb(err);
+			if (result.length === 1) {
+				return cb(err, result[0]['VStatus']);
+			}
+		});
 };
 
 module.exports = Utils;

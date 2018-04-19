@@ -1,93 +1,119 @@
 <% include partials/header %>
-    <% include partials/navbar %>
-                <!--tables-->
-                <div class="container-fluid" style="margin-top: 5px">
-                        <div class="container text-center">
-                            <a id="go-back" href="/roles/admin/" class="btn btn-link"><span class="glyphicon glyphicon-backward"></span> Go back to dashboard</a>
-                        </div>
-                        <% if (!filter) { %>
-                            <a id="refresh-table" href="/roles/admin/reviews" class="btn btn-primary"><b>Refresh Current Table</b> <span class="glyphicon glyphicon-refresh"></span></a>
-                        <% } else { %>
-                            <a id="reset-table" href="/roles/admin/reviews" class="btn btn-primary"><span class="glyphicon glyphicon-arrow-left"></span> Load Default Table</a>
-                            <a id="refresh-table" href="/roles/admin/reviews/filter" class="btn btn-primary">Refresh Current Table <span class="glyphicon glyphicon-refresh"></span></a>
-                        <% } %>
-                        <div class="table-responsive">
-                            <% if (message.length > 0) { %>
-                                <div id="error-message" class="alert alert-danger text-center">
-                                    <%= message %>
+    <div class="container">
+        <h3 class="text-center">Manage Reviews</h3>
+            <fieldset><legend style="color:blue;font-weight:bold;">General Information</legend>
+                <div class="row" >
+                        <div class="col-sm-3">
+                                <div class="form-group">
+                                    <h5>Student Number:</h5>
+                                    <p id="sid"><%= sid %></p>
                                 </div>
-                            <% } else { %>
-                                <table id="review-table" class="table table-striped table-hover tablesorter">
-                                        <thead id="table-head">
-                                            <tr>
-                                                <% for(var i = 0; i < fields.length; i++){ %>
-                                                    <% if (hidden.includes(fields[i])) { %>
-                                                        <% continue; %>
-                                                    <% } else { %>
-                                                        <% if (fields[i] === 'Actions' || fields[i] === 'Field(s) of Interest' || fields[i] === 'Preferred Professor(s)'){ %>
-                                                            <th class="text-center sorter-false parser-false"><%= fields[i]%></th>
-                                                        <%} else {%>
-                                                            <th class="text-center"><%= fields[i]%></th>
-                                                        <%}%>
-                                                    <% } %>
-                                                <%}%>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="table-body">
-                                          <% for(var i = 0; i < apps.length; i++){ %>
-                                            <tr>
-                                                <% for(var j = 0; j < fields.length; j++){ %>
-                                                    <% if (hidden.includes(fields[j])) { %>
-                                                        <% continue; %>
-                                                    <% } else { %>
-                                                        <% if (fields[j] != 'Actions') { %>
-                                                            <% if (fields[j] === 'Reviews Assigned') { %>
-                                                                <% if (apps[i]['Visa Status'] === 'Domestic') { %> 
-                                                                    <td id="data-<%=i%>-<%=j%>" class="text-center">
-                                                                        <%= apps[i][fields[j]]%>  / <%= max_dom %>
-                                                                    </td>
-                                                                <%} else if (apps[i]['Visa Status'] === 'Visa') { %>
-                                                                    <td id="data-<%=i%>-<%=j%>" class="text-center">
-                                                                        <%= apps[i][fields[j]]%>  / <%= max_visa %>
-                                                                    </td>
-                                                                <%} %>
-                                                            <%} else { %>
-                                                                <td id="data-<%=i%>-<%=j%>" class="text-center">
-                                                                    <%= apps[i][fields[j]]%>
-                                                                </td>
-                                                            <%} %>
-                                                        <% } else { %>
-                                                            <td class="text-center">
-                                                                <form id="assign-review-<%=i%>-<%=j%>" action="/roles/admin/reviews" method="POST">
-                                                                    <% if(apps[i]['Visa Status'] === 'Domestic' && apps[i]['Reviews Assigned'] != max_dom) { %> 
-                                                                        <select id="cms" name="cms" class="form-control selectpicker" data-live-search="true" title="Pick one or more assignee" multiple data-max-options= <%= max_dom - apps[i]['Reviews Assigned'] %> >
-                                                                            <% for(var k = 0; k < cms.length; k++){ %>
-                                                                                <option><%= cms[k]%></option>
-                                                                            <%}%>
-                                                                        </select>
-                                                                        <button id="assign-<%=i%>-<%=j%>" name="appId" value="<%= apps[i]['app_Id'] %>" class="btn btn-success" style="margin-bottom: 5px"><span class="glyphicon glyphicon-ok"></span> Assign</button>
-                                                                    <% } else if ((apps[i]['Visa Status'] === 'Visa' && apps[i]['Reviews Assigned'] != max_visa)) { %>
-                                                                        <select id="cms" name="cms" class="form-control selectpicker" data-live-search="true" title="Pick one or more assignee" multiple data-max-options= <%= max_visa - apps[i]['Reviews Assigned'] %>>
-                                                                            <% for(var k = 0; k < cms.length; k++){ %>
-                                                                                <option><%= cms[k]%></option>
-                                                                            <%}%>
-                                                                        </select>
-                                                                        <button id="assign-<%=i%>-<%=j%>" name="appId" value="<%= apps[i]['app_Id'] %>" class="btn btn-success" style="margin-bottom: 5px"><span class="glyphicon glyphicon-ok"></span> Assign</button>
-                                                                    <% } %>
-                                                                    <% if (apps[i]['Reviews Assigned'] > 0) { %> 
-                                                                        <button id="manage-<%=i%>-<%=j%>" class="btn btn-primary">Manage Reviews &raquo;</button>
-                                                                    <% } %>
-                                                                </form>
-                                                            </td>
-                                                        <% } %>
-                                                    <% } %>
-                                                <% } %>
-                                            </tr>
-                                            <% } %>
-                                        </tbody>
-                                    </table>
-                            <% } %>
+                            </div>
+
+                            <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <h5>Last Name:</h5>
+                                        <p id="lname"><%= lname %></p>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <h5>First Name:</h5>
+                                        <p id="fname"><%= fname %></p>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <h5>Visa Status:</h5>
+                                        <p id="visa"><%= visa %></p>
+                                    </div>
+                                </div>
+                </div>
+
+                <div class="row" >
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <h5>Field(s) of Interest:</h5>
+                                <ol>
+                                    <% for(var i = 0; i < foi.length; i++) { %> 
+                                        <li>
+                                            <%= foi[i] %>
+                                        </li>
+                                    <%} %>
+                                </ol>              
+                            </div>
                         </div>
+
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <h5>Preferred Professor(s):</h5>
+                                <ol>
+                                    <% for(var i = 0; i < prefProfs.length; i++) { %> 
+                                        <li>
+                                            <%= prefProfs[i] %>
+                                        </li>
+                                    <%} %>
+                                </ol>              
+                            </div>
+                        </div>
+                </div>
+
+
+            <div class="row" style="margin-bottom:20px">
+                <fieldset><legend style="color:blue;font-weight:bold;">Review Information</legend>
+
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <h5>Assigned Reviewer(s):</h5>
+                        <table id="assigned-reviewers" class="table text-center">
+                            <thead id="table-head">
+                                <tr>
+                                    <th>Date Assigned</th>
+                                    <th>Member Name</th>
+                                    <th>Member Email</th>
+                                    <th>Review Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-body">
+                                <% for(var i = 0; i < assignees.length; i++) { %>
+                                    <tr>
+                                        <td><%= assignees[i]['a_date'] %></td>
+                                        <td><%= assignees[i]['name'] %></td>
+                                        <td><%= assignees[i]['email'] || 'N/A' %></td>
+                                        <td><%= assignees[i]['status'] %></td>
+                                        <td>
+                                            <% if(assignees[i]['status'] != 'Submitted') { %>
+                                                <form id="unassign-review-<%= i %>" action="/roles/admin/reviews/manage" method="POST">
+                                                    <button id="unassign-review" type="submit" name="unassign" value="<%= assignees[i]['id'] %>" class="btn btn-danger btn-default pull-center"><span class="glyphicon glyphicon-remove-sign"></span> Unassign Review</button>
+                                                </form>
+                                            <%} else { %>
+                                                <form id="dismiss-review-<%= i %>" action="/roles/admin/reviews/manage" method="POST">
+                                                    <button id="dismiss-review" type="submit" name="dismiss" value="<%= assignees[i]['id'] %>" class="btn btn-danger btn-default pull-center"><span class="glyphicon glyphicon-trash"></span> Dismiss Review</button>
+                                                </form>
+                                            <%} %>
+                                        </td>
+                                    </tr>
+                                <%} %>
+                            </tbody>
+                        </table>            
                     </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <a id="edit-close" href="/roles/admin/reviews/manage" class="btn btn-primary"><span class="glyphicon glyphicon glyphicon-remove-sign"></span> Close</a>
+            </div>
     </div>
-<% include partials/footer %>
+    <script src="/js/jquery-3.2.0.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/jquery.metadata.js"></script>
+
+    <script src="https://web.archive.org/web/20161124120603js_/http://www.papercut.com/products/free-software/are-you-sure/jquery.are-you-sure.js"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
+</body>
