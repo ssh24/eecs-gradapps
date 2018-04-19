@@ -80,6 +80,8 @@ $(document).ready(function() {
 
     $('#user-table').tablesorter();
 
+    $('#review-table').tablesorter();
+
     //The below is meant to keep track of the columns selected and their order.
     var colOrder = [];
     $("#div_col button").click(function() {
