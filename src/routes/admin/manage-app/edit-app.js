@@ -12,7 +12,7 @@ module.exports = function(config, fns) {
 	var role = config.role;
 	var route = config.route;
 	var main = '/edit';
-	var appId;
+	var appId, assignees, cms;
     
 	var getEditApplication = fns.concat([getApplicationData]);
 	var postEditApplication = fns.concat([updateAppl]);
@@ -107,24 +107,25 @@ module.exports = function(config, fns) {
 				req.apps.edit.ygsAwarded = result['ygsAwarded'];
 				req.apps.edit.app_file = result['app_file'];
 	
-				req.apps.edit.assignees = [];
+				req.apps.edit.assignees = assignees = [];
 
-				review.getReviewAssigneeID(appId, function(err, ids) {
+				utils.getAllCommitteeMembers(function(err, rcms) {
 					if (err) res.redirect(route);
-					ids = _.map(ids, 'committeeId');
+					req.apps.edit.cms = cms = rcms;
 
-					async.each(ids, getMemberName, next);
+					review.getReviewAssigneeID(appId, function(err, ids) {
+						if (err) res.redirect(route);
+						ids = _.map(ids, 'committeeId');
+	
+						async.each(ids, getMemberName, next);
+					});
 				});
 
 				function getMemberName(id, cb) {
 					utils.getMemberFullName(id, function(err, res1) {
 						if (err) return cb(err);
 						req.apps.edit.assignees.push(res1);
-						utils.getAllCommitteeMembers(function(err, cms) {
-							if (err) return cb(err);
-							req.apps.edit.cms = cms;
-							cb();
-						});
+						cb();
 					});
 				}
 			});
@@ -133,6 +134,9 @@ module.exports = function(config, fns) {
 
 	function updateAppl(req, res, next) {
 		var body = req.body;
+		var reviewers = body['Reviewers'] && Array.isArray(body['Reviewers']) ? body['Reviewers'] : [body['Reviewers']];
+		delete body['Reviewers'];
+
 		if (body.create === '') {
 			var data = {};
 
@@ -151,7 +155,39 @@ module.exports = function(config, fns) {
 					data[keys] = body[keys];
 				}
 			}
-			application.updateApplication(data, appId, req.user.id, next);
+			
+			application.updateApplication(data, appId, req.user.id, function(err) {
+				if (err) res.redirect(route);
+				var rev_ids = [];
+				var diff = _.difference(reviewers, assignees);
+
+				if (!(_.isEmpty(diff))) { // assign a review
+					async.each(cms, function(cm, cb1) {
+						if (diff.includes(cm['name'])) rev_ids.push(cm['id']);
+						cb1();
+					}, function() {
+						async.each(rev_ids, function(id, cb2) {
+							review.assignReview(appId, id, req.user.id, cb2);
+						}, next);
+					});
+				} else {
+					// unassign or dismiss a review
+					diff = _.difference(assignees, reviewers);
+					async.each(cms, function(cm, cb1) {
+						if (diff.includes(cm['name'])) rev_ids.push(cm['id']);
+						cb1();
+					}, function() {
+						async.each(rev_ids, function(id, cb2) {
+							review.getReviewStatus(appId, id, function(err, status) {
+								if (err) return cb2(err);
+								else if (status === 'Submitted')
+									review.dismissReview(appId, id, req.user.id, cb2);
+								else review.unassignReview(appId, id, req.user.id, cb2);
+							});	
+						}, next);
+					});
+				}
+			});
 		} else if (body.delete === '') {
 			application.deleteApplication(appId, req.user.id, next);
 		}

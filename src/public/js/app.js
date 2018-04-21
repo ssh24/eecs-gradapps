@@ -24,7 +24,7 @@ $(document).ready(function() {
     $('#app_file').bind('change', function() {
         $('#error-file').attr('hidden', 'hidden');
         $('#new-submit').removeAttr('disabled');
-        $('#edit-submit').attr('disabled', 'disabled');
+        $('#edit-submit').removeAttr('disabled');
 
         var size = Math.round(this.files[0].size / (1024 * 1024));
         var type = this.files[0].type;
