@@ -64,8 +64,8 @@ module.exports = function(config, fns) {
 				req.apps.review.fname = result['FName'];
 				req.apps.review.visa = result['VStatus'];
 
-				req.apps.review.foi = result['FOI'];
-				req.apps.review.prefProfs = result['prefProfs'];
+				req.apps.review.foi = result['FOI'] && Array.isArray(result['FOI']) ? result['FOI'] : [result['FOI']];
+				req.apps.review.prefProfs = result['prefProfs'] && Array.isArray(result['prefProfs']) ? result['prefProfs'] : [result['prefProfs']];
 
 				req.apps.review.assignees = [];
 
