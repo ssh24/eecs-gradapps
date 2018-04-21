@@ -46,6 +46,28 @@ $(document).ready(function() {
         }
     });
 
+    // when selecting a new visa status, the number of reviews assigned changes
+    // according to the quota
+    $('#VStatus').bind('change', function() {
+        var status = $(this).val();
+        $('#Reviewers').val('');
+
+        if (status === 'Visa') {
+            $('#Reviewers').removeAttr('disabled');
+            $('#Reviewers').selectpicker({
+                maxOptions: 1
+            });
+        } else if (status === 'Domestic') {
+            $('#Reviewers').removeAttr('disabled');
+            $('#Reviewers').selectpicker({
+                maxOptions: 2
+            });
+        } else {
+            $('#Reviewers').attr('disabled', 'disabled');
+        }
+        $('#Reviewers').selectpicker('refresh');
+    });
+
     $('#delete-app').click(function(e) {
         var check = confirm("You chose to delete the application. Are you sure?");
         if (!check) e.preventDefault();

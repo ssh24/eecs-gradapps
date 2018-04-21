@@ -144,6 +144,19 @@
     
             </div>
 
+            <div class="row" style="margin-bottom:20px">
+                    <fieldset><legend style="color:blue;font-weight:bold;">Assign Reviews</legend></fieldset>
+                        
+                    <div class="col-sm-5">
+                        <h5 for="Reviewers">Reviewers</h5>
+                        <select id="Reviewers" name="Reviewers" class="form-control selectpicker show-menu-arrow" data-live-search="true" title="Assign Reviewer(s)" multiple disabled>
+                            <% for(var i = 0; i < cms.length; i++) { %>
+                                <option><%= cms[i]['name'] %></option>
+                            <%} %>
+                        </select>
+                    </div>
+                </div>
+
             <div class="row">
                 <hr>
                 <p>All fields with * are required</p>

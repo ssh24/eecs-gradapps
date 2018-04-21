@@ -1,20 +1,25 @@
 'use strict';
 
+var async = require('async');
 var fileUpload = require('express-fileupload');
 
 module.exports = function(config, fns) {
 	var app = config.app;
 	var application = config.application;
+	var review = config.review;
+	var utils = config.utils;
 	var role = config.role;
 	var route = config.route;
 	var main = '/new';
-    
+	var cms;
+	
+	var getNewApplication = fns.concat([getAppl]);
 	var postNewApplication = fns.concat([createAppl]);
 	
 	app.use(fileUpload()); // needed for file upload
     
 	// creating new application route - GET
-	app.get(route + main, fns, function(req, res) {
+	app.get(route + main, getNewApplication, function(req, res) {
 		var userInfo = req.user;
 		res.render('new-app', { 
 			title: 'New Application',
@@ -25,6 +30,7 @@ module.exports = function(config, fns) {
 			gpa: req.apps.gpa || [],
 			foi: req.apps.foi || [],
 			profs: req.apps.profs || [],
+			cms: req.apps.cms || [],
 			showfilter: false,
 		});
 	});
@@ -34,10 +40,20 @@ module.exports = function(config, fns) {
 		res.redirect(route);
 	});
 
+	function getAppl(req, res, next) {
+		utils.getAllCommitteeMembers(function(err, rcms) {
+			if (err) res.redirect(route);
+			req.apps.cms = cms = rcms;
+			next();
+		});
+	}
+
 	function createAppl(req, res, next) {
 		var body = req.body;
 		var file = req.files.app_file;
 		var f_data = file.data;
+		var reviewers = body['Reviewers'] && Array.isArray(body['Reviewers']) ? body['Reviewers'] : [body['Reviewers']];
+		delete body['Reviewers'];
 	
 		var data = {
 			app_file: f_data
@@ -61,6 +77,18 @@ module.exports = function(config, fns) {
 			}
 		}
 			
-		application.createApplication(data, req.user.id, next);
+		application.createApplication(data, req.user.id, function(err, result) {
+			if (err) res.redirect(route);
+			var appId = result && result['insertId'];
+			var rev_ids = [];
+			async.each(cms, function(cm, cb1) {
+				if (reviewers.includes(cm['name'])) rev_ids.push(cm['id']);
+				cb1();
+			}, function() {
+				async.each(rev_ids, function(id, cb2) {
+					review.assignReview(appId, id, req.user.id, cb2);
+				}, next);
+			});
+		});
 	}
 };
