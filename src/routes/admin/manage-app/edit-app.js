@@ -1,8 +1,14 @@
 'use strict';
 
+var _ = require('lodash');
+
+var async = require('async');
+
 module.exports = function(config, fns) {
 	var app = config.app;
 	var application = config.application;
+	var review = config.review;
+	var utils = config.utils;
 	var role = config.role;
 	var route = config.route;
 	var main = '/edit';
@@ -49,6 +55,8 @@ module.exports = function(config, fns) {
 			declineReason: req.apps.edit.declineReason,
 			ygsAwarded: req.apps.edit.ygsAwarded,
 			app_file: req.apps.edit.app_file,
+			assignees: req.apps.edit.assignees,
+			cms: req.apps.edit.cms,
 			showfilter: false,
 		});
 	});
@@ -99,7 +107,26 @@ module.exports = function(config, fns) {
 				req.apps.edit.ygsAwarded = result['ygsAwarded'];
 				req.apps.edit.app_file = result['app_file'];
 	
-				next();
+				req.apps.edit.assignees = [];
+
+				review.getReviewAssigneeID(appId, function(err, ids) {
+					if (err) res.redirect(route);
+					ids = _.map(ids, 'committeeId');
+
+					async.each(ids, getMemberName, next);
+				});
+
+				function getMemberName(id, cb) {
+					utils.getMemberFullName(id, function(err, res1) {
+						if (err) return cb(err);
+						req.apps.edit.assignees.push(res1);
+						utils.getAllCommitteeMembers(function(err, cms) {
+							if (err) return cb(err);
+							req.apps.edit.cms = cms;
+							cb();
+						});
+					});
+				}
 			});
 		}
 	}
