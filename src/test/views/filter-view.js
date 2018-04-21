@@ -41,6 +41,12 @@ var Filter = function(timeout) {
 	this.filter.cols.professor = by.id('btn_col_prof');
 	this.filter.cols.professor.index = by.css('#btn_col_prof > span');
 
+	this.filter.cols.rAssigned = by.id('btn_col_rev_assigned');
+	this.filter.cols.rAssigned.index = by.css('#btn_col_rev_assigned > span');
+
+	this.filter.cols.rPending = by.id('btn_col_rev_pending');
+	this.filter.cols.rPending.index = by.css('#btn_col_rev_pending > span');
+
 	this.filter.cols.crank = by.id('btn_col_ranking');
 	this.filter.cols.crank.index = by.css('#btn_col_ranking > span');
 

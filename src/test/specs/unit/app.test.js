@@ -1083,6 +1083,12 @@ describe('Manage Applications Test', function() {
 					expect(app.checkForYGS.call(app)).to.eventually.be.true;
 				});
 			});
+
+			describe('- application reviews section', function() {
+				it('- check for reviewers field', function() {
+					expect(app.checkForReviewers.call(app)).to.eventually.be.true;
+				});
+			});
 		});
         
 		describe('- validating fields', function() {
@@ -1434,6 +1440,12 @@ describe('Manage Applications Test', function() {
 					expect(app.checkForDeclineReason.call(app)).to.eventually.be.true;
 				});
 			});
+
+			describe('- application reviews section', function() {
+				it('- check for reviewers field', function() {
+					expect(app.checkForReviewers.call(app)).to.eventually.be.true;
+				});
+			});
 		});
 
 		describe('- validating fields', function() {
@@ -1651,6 +1663,85 @@ describe('Manage Applications Test', function() {
 				.then(utils.switchTab.call(utils, 1))
 				.then(expect(browser.getCurrentUrl()).to.eventually.contain('/view'))
 				.then(utils.goToTab.call(utils, 0));
+		});
+	});
+
+	describe('- setting application reviewers from app page', function() {
+		student['reviewers'] = {
+			index: 0,
+			name: 'Joeann Edgeon'
+		};
+
+		var update = {
+			index: 1,
+			name: 'Byrom Allbones'
+		};
+
+		describe('- creating an app with application reviewrs', function() {
+			after(function cleanUp() {
+				expect(app.getSortType.call(app, 1)).to.eventually.equal('none')
+					.then(app.orderColumn.call(app, 1, 1))
+					.then(expect(app.getSortType.call(app, 1)).to.eventually.equal('ascending'))
+					.then(app.editApplication.call(app, appId))
+					.then(expect(app.getStudentNumber.call(app)).to.eventually.equal(student.sid))
+					.then(expect(app.getLName.call(app)).to.eventually.equal(student.lname))
+					.then(expect(app.getFName.call(app)).to.eventually.equal(student.fname))
+					.then(app.deleteApplication.call(app))
+					.then(utils.closeBrowserAlert.call(utils));
+			});
+
+			it('- create an app with reviewers', function() {
+				app.openNewApplicationForm()
+					.then(app.fillApplication.call(app, student))
+					.then(app.selectFOI.call(app, student.foi[0].index))
+					.then(app.selectFOI.call(app, student.foi[1].index))
+					.then(app.selectProfs.call(app, student.profs[0].index))
+					.then(app.selectProfs.call(app, student.profs[1].index))
+					.then(app.selectReviewer.call(app, student.reviewers.index))
+					.then(expect(app.isOptionSelected.call(app, student.reviewers.name))
+						.to.eventually.be.true)
+					.then(app.submitApplication.call(app));
+			});
+		});
+
+		describe('- editing an app with application reviewrs', function() {
+			before(function setUp () {
+				app.openNewApplicationForm()
+					.then(app.fillApplication.call(app, student))
+					.then(app.selectFOI.call(app, student.foi[0].index))
+					.then(app.selectFOI.call(app, student.foi[1].index))
+					.then(app.selectProfs.call(app, student.profs[0].index))
+					.then(app.selectProfs.call(app, student.profs[1].index))
+					.then(app.selectReviewer.call(app, student.reviewers.index))
+					.then(expect(app.isOptionSelected.call(app, student.reviewers.name))
+						.to.eventually.be.true)
+					.then(app.submitApplication.call(app));
+			});
+
+			after(function cleanUp() {
+				expect(app.getSortType.call(app, 1)).to.eventually.equal('none')
+					.then(app.orderColumn.call(app, 1, 1))
+					.then(expect(app.getSortType.call(app, 1)).to.eventually.equal('ascending'))
+					.then(app.editApplication.call(app, appId))
+					.then(expect(app.getStudentNumber.call(app)).to.eventually.equal(student.sid))
+					.then(expect(app.getLName.call(app)).to.eventually.equal(student.lname))
+					.then(expect(app.getFName.call(app)).to.eventually.equal(student.fname))
+					.then(app.deleteApplication.call(app))
+					.then(utils.closeBrowserAlert.call(utils));
+			});
+
+			it('- edit an app with reviewers', function() {
+				expect(app.getSortType.call(app, 1)).to.eventually.equal('none')
+					.then(app.orderColumn.call(app, 1, 1))
+					.then(expect(app.getSortType.call(app, 1)).to.eventually.equal('ascending'))
+					.then(app.editApplication.call(app, appId))
+					.then(app.selectReviewer.call(app, update.index))
+					.then(expect(app.isOptionSelected.call(app, update.name))
+						.to.eventually.be.true)
+					.then(expect(app.isOptionSelected.call(app, student.reviewers.name))
+						.to.eventually.be.false)
+					.then(app.saveApplication.call(app));
+			});
 		});
 	});
 });

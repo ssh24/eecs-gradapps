@@ -134,7 +134,11 @@ module.exports = function(config, fns) {
 
 	function updateAppl(req, res, next) {
 		var body = req.body;
-		var reviewers = body['Reviewers'] && Array.isArray(body['Reviewers']) ? body['Reviewers'] : [body['Reviewers']];
+		var reviewers = [];
+		if (body['Reviewers']) {
+			if (Array.isArray(body['Reviewers'])) reviewers = body['Reviewers'];
+			else reviewers.push(body['Reviewers']);
+		}
 		delete body['Reviewers'];
 
 		if (body.create === '') {
@@ -159,22 +163,34 @@ module.exports = function(config, fns) {
 			application.updateApplication(data, appId, req.user.id, function(err) {
 				if (err) res.redirect(route);
 				var rev_ids = [];
-				var diff = _.difference(reviewers, assignees);
-
-				if (!(_.isEmpty(diff))) { // assign a review
+				var diffIn = _.differenceWith(reviewers, assignees, _.isEqual);
+				var diffOut = _.differenceWith(assignees, reviewers, _.isEqual);
+	
+				if (!(_.isEmpty(diffIn))) {
+					// assign a review
 					async.each(cms, function(cm, cb1) {
-						if (diff.includes(cm['name'])) rev_ids.push(cm['id']);
+						if (diffIn.includes(cm['name'])) rev_ids.push(cm['id']);
 						cb1();
 					}, function() {
 						async.each(rev_ids, function(id, cb2) {
 							review.assignReview(appId, id, req.user.id, cb2);
-						}, next);
+						}, function() {
+							if (!(_.isEmpty(diffOut))) {
+								rev_ids = [];
+								unassignOrDismissReview(next);
+							} else {
+								next();
+							}
+						});
 					});
 				} else {
+					unassignOrDismissReview(next);
+				}
+
+				function unassignOrDismissReview(cb) {
 					// unassign or dismiss a review
-					diff = _.difference(assignees, reviewers);
 					async.each(cms, function(cm, cb1) {
-						if (diff.includes(cm['name'])) rev_ids.push(cm['id']);
+						if (diffOut.includes(cm['name'])) rev_ids.push(cm['id']);
 						cb1();
 					}, function() {
 						async.each(rev_ids, function(id, cb2) {
@@ -184,7 +200,7 @@ module.exports = function(config, fns) {
 									review.dismissReview(appId, id, req.user.id, cb2);
 								else review.unassignReview(appId, id, req.user.id, cb2);
 							});	
-						}, next);
+						}, cb);
 					});
 				}
 			});
