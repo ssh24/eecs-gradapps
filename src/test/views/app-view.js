@@ -64,6 +64,8 @@ function Application(timeout) {
 	this.app.fields.sdecision = by.css('button[data-id="studentDecision"');
 	this.app.fields.declineReason = by.id('declineReason');
 
+	this.app.fields.reviewers = by.css('button[data-id="Reviewers"]');
+
 	this.app.selected = by.css('.btn-group.bootstrap-select.form-control > button');
 }
 
@@ -229,6 +231,10 @@ Application.prototype.checkForDeclineReason = function() {
 Application.prototype.checkForYGS = function() {
 	return this.utils.waitForElementDisplayed(this.app.fields.ygs.yes, this.timeout)
 		.then(this.utils.waitForElementDisplayed(this.app.fields.ygs.no, this.timeout));
+};
+
+Application.prototype.checkForReviewers = function() {
+	return this.utils.waitForElementDisplayed(this.app.fields.reviewers, this.timeout);
 };
 
 Application.prototype.toggleDD = function(elem) {
@@ -420,6 +426,11 @@ Application.prototype.selectPDecision = function(index) {
 
 Application.prototype.selectSDecision = function(index) {
 	return this.toggleDD(this.app.fields.sdecision)
+		.then(this.selectIthElement.call(this, index));
+};
+
+Application.prototype.selectReviewer = function(index) {
+	return this.toggleDD(this.app.fields.reviewers)
 		.then(this.selectIthElement.call(this, index));
 };
 

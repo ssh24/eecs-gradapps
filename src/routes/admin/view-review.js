@@ -186,51 +186,45 @@ module.exports = function(config, fns) {
 			userId = [];
 			userAssigned = _.find(cmInfo, {name: assignee});
 			userId.push(userAssigned['id']);
-			async.each(userId, assignReviews, next);
+			async.each(userId, assignReviews, function(err) {
+				if (err) res.redirect(route);
+				next();
+			});
 		}
 
 		function assignReviews(uId, cb) {
-			var allIds;
-			if (!appId) {
-				allIds = _.map(req.apps.appls, 'app_Id');
-			} else {
-				allIds = [];
-				allIds.push(appId);
-			}
-			async.each(allIds, function(aId, cb1) {
-				async.waterfall([
-					function(callback) {
-						utils.getVisaStatus(aId, function(err, vstatus) {
-							if (err) return callback(err);
-							var max;
-							if (vstatus === 'Domestic') max = max_domestic;
-							if (vstatus === 'Visa') max = max_visa;
-							callback(null, max);
-						});
-					},
-					function(arg1, callback) {
-						review.getReviewCount(aId, function(err, reviewCount) {
-							if (err) return callback(err);
-							if((reviewCount + userId.length) <= arg1) {
-								callback(null);
-							} else {
-								cb1();
-							}
-						});
-					},
-					function(callback) {
-						review.getReviewAssigneeID(aId, function(err, assignees) {
-							if (err) return callback(err);
-							if (!assignees.includes(uId)) {
-								review.assignReview(aId, uId, req.user.id, callback);
-							}
-							else {
-								cb1();
-							}
-						});	
-					}
-				], cb1);
-			}, cb);
+			async.waterfall([
+				function(callback) {
+					utils.getVisaStatus(appId, function(err, vstatus) {
+						if (err) return callback(err);
+						var max;
+						if (vstatus === 'Domestic') max = max_domestic;
+						if (vstatus === 'Visa') max = max_visa;
+						callback(null, max);
+					});
+				},
+				function(arg1, callback) {
+					review.getReviewCount(appId, function(err, reviewCount) {
+						if (err) return callback(err);
+						if((reviewCount + userId.length) <= arg1) {
+							callback(null);
+						} else {
+							cb();
+						}
+					});
+				},
+				function(callback) {
+					review.getReviewAssigneeID(appId, function(err, assignees) {
+						if (err) return callback(err);
+						if (!assignees.includes(uId)) {
+							review.assignReview(appId, uId, req.user.id, callback);
+						}
+						else {
+							cb();
+						}
+					});	
+				}
+			], cb);
 		}
 	}
 
