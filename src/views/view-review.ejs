@@ -11,18 +11,6 @@
                             <a id="reset-table" href="/roles/admin/reviews" class="btn btn-primary"><span class="glyphicon glyphicon-arrow-left"></span> Load Default Table</a>
                             <a id="refresh-table" href="/roles/admin/reviews/filter" class="btn btn-primary">Refresh Current Table <span class="glyphicon glyphicon-refresh"></span></a>
                         <% } %>
-                        <form id="assign-review-form" action="/roles/admin/reviews" method="POST">
-                            <div class="container">
-                                <h5>Assign all application for review:</h5>
-                                <select id="cms" name="cms" class="form-control selectpicker" data-live-search="true" title="Pick one or more assignee" multiple data-max-options=<%= max_dom %>>
-                                    <% for(var k = 0; k < cms.length; k++){ %>
-                                        <option><%= cms[k]%></option>
-                                    <%}%>
-                                </select>
-                                <button id="assign-review-btn" class="btn btn-success" style="margin-bottom: 5px"><span class="glyphicon glyphicon-ok"></span> Assign</button>
-                                <h6>NB: Selected committee members will be only assigned to applications which still requires reviews to fulfill review quota.</h6>
-                            </div>
-                        </form>
                         <div class="table-responsive">
                             <% if (message.length > 0) { %>
                                 <div id="error-message" class="alert alert-danger text-center">
@@ -65,7 +53,7 @@
                                                                 <%} %>
                                                             <%} else { %>
                                                                 <td id="data-<%=i%>-<%=j%>" class="text-center">
-                                                                    <%= apps[i][fields[j]]%>
+                                                                    <%- highlightFunc(apps[i],fields[j], highlightText)%>
                                                                 </td>
                                                             <%} %>
                                                         <% } else { %>
