@@ -9,17 +9,6 @@
       </div>
       <form id="filterForm" method="post">
         <div class="modal-body">
-          <div id="div_preset" class="row">
-            <h4>Load a Preset</h4>
-            <select id="preset" name="preset" style="display: inline-block;" class="selectpicker" data-live-search="true" title="Nothing Selected">
-              <% if (presets) {%>
-                <% for(var key in presets) { %>
-                  <option><%= key %></option>
-                <% } %>
-              <% } %>
-            </select>
-            <hr>
-          </div>
           <div id="div_col" class="form-group row">
             <h4>Choose Your Columns</h4>
 
@@ -104,12 +93,6 @@
           <div class="form-group row">
             <button id="filter_close" class="btn btn-danger btn-default pull-left" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
             <button id="filter_submit" type="submit" class="btn btn-success btn-default pull-left"><span class="glyphicon glyphicon-check"></span> Submit</button>
-            <div class="input-group">
-              <input id="preset_name" name="preset_name" type="text" class="form-control" placeholder="Preset Name">
-              <span class="input-group-btn">
-                    <button id="save_preset" name="save_preset" class="btn btn-primary form-control" type="submit">Save Preset</button>
-              </span>
-            </div>
           </div>
         </div>
       </form>

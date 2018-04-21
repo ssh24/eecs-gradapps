@@ -14,13 +14,6 @@ module.exports = function(config, fns) {
 	var view = 'view-review';
 	var max_domestic = 2;
 	var max_visa = 1;
-	
-	var basicReviews = fns.concat([getApps, setLiveSearchData]);
-	var postReviews = basicReviews.concat([postReview, getApps, setLiveSearchData]);
-
-	var filterReviewGET = fns.concat([setLiveSearchData, filterApps]);
-	var filterReviewPOST = fns.concat([setLiveSearchData, filterApps]);
-
 	var cmInfo, builtSql, builtOptions, builtHighlight;
 
 	var select_assigned = '((select count(*) from application_review where application_review.appId=application.app_Id))';
@@ -32,6 +25,13 @@ module.exports = function(config, fns) {
 	var case_dom_pending = 'WHEN application.VStatus = "Domestic" THEN' + ' ' + select_pending;
 	var case_visa_pending = 'WHEN application.VStatus = "Visa" THEN' + ' ' + select_pending;
 	var case_pending = '(CASE ' + case_dom_pending + ' ' + case_visa_pending + ' END)';
+
+	var basicReviews = fns.concat([getApps, setLiveSearchData]);
+	var postReviews = basicReviews.concat([postReview, getApps, setLiveSearchData]);
+
+	var filterReviewGET, filterReviewPOST;
+	filterReviewGET = filterReviewPOST = fns.concat([setLiveSearchData, filterApps]);
+	
 	
 	require('../view-app')({app: app, application: application, route: route});
 	require('./manage-review')(config, fns);
@@ -41,7 +41,6 @@ module.exports = function(config, fns) {
 
 	// viewing review route - POST
 	app.post(route, postReviews, defaultView);
-
 	
 	// filter - GET & POST
 	app.get(route + '/filter', filterReviewGET, filterView);
@@ -65,11 +64,11 @@ module.exports = function(config, fns) {
 			profs: req.apps.profs || [],
 			filter: req.apps.filter || false,
 			showfilter: true,
-			max_dom: 2,
-			max_visa: 1,
-			// highlightText: {},
-			// highlightFunc: highlight,
-			presets: req.presets,
+			max_dom: max_domestic,
+			max_visa: max_visa,
+			highlightText: {},
+			highlightFunc: highlight,
+			url: req.originalUrl
 		});
 	}
 
@@ -87,12 +86,15 @@ module.exports = function(config, fns) {
 			fields: req.apps.flds ? (req.apps.flds.fields || []) : [],
 			hidden: req.apps.flds ? (req.apps.flds.hidden || []) : [],
 			foi: req.apps.foi || [],
+			cms: req.apps.cms || [],
 			profs: req.apps.profs || [],
 			filter: req.apps.filter || false,
 			showfilter: true,
-			// highlightText: req.apps.highlightText,
-			// highlightFunc: highlight,
-			presets: req.presets
+			max_dom: max_domestic,
+			max_visa: max_visa,
+			highlightText: req.apps.highlightText,
+			highlightFunc: highlight,
+			url: req.originalUrl
 		});
 	}
 
@@ -126,7 +128,7 @@ module.exports = function(config, fns) {
 					else 
 						fields.push('Actions');
 				}
-			
+
 				req.apps.appls = results;
 			
 				req.apps.flds = {};
@@ -170,7 +172,7 @@ module.exports = function(config, fns) {
 		var appId = parseInt(body.appId);
 		var userAssigned, userId;
 
-		if(!assignee) res.redirect(route);
+		if(!assignee) next();
 		else if (Array.isArray(assignee)) {
 			userId = [];
 			async.each(assignee, function(a, cb) {
@@ -263,9 +265,9 @@ module.exports = function(config, fns) {
 				} else if (cols[i] === 'btn_col_prof') {
 					sqlCol += ',application.prefProfs as `Preferred Professor(s)`';
 				} else if (cols[i] === 'btn_col_rev_assigned') {
-					sqlCol += case_assigned + ' as `Reviews Assigned`';
+					sqlCol += ',' + case_assigned + ' as `Reviews Assigned`';
 				} else if (cols[i] === 'btn_col_rev_pending') {
-					sqlCol += case_pending + ' as `Reviews Pending`';
+					sqlCol += ',' + case_pending + ' as `Reviews Pending`';
 				} else if (cols[i] === 'btn_col_actions') {
 					actionFieldNum = i + 1; // offset of the appId
 				}
@@ -278,25 +280,22 @@ module.exports = function(config, fns) {
 		/* build where statements */
 		if (req.body.btn_filter_visa && req.body.btn_filter_visa !== 'Any' && 
 				req.body.btn_filter_visa !== '') {
-			if (sqlFilt != '') sqlFilt += ' and ';
-			sqlFilt += 'application.VStatus="' + req.body.btn_filter_visa + '"';
-			// highlightText.visa = req.body.btn_filter_visa;
+			sqlFilt += ' and application.VStatus="' + req.body.btn_filter_visa + '"';
+			highlightText.visa = req.body.btn_filter_visa;
 		}
 		if (req.body.btn_filter_foi &&
 			req.body.btn_filter_foi !== 'Any' && req.body.btn_filter_foi !== '') {
-				  sqlFilt += ' and JSON_CONTAINS(foi, \'"' +
-			  req.body.btn_filter_foi + '"\')';
-				  // highlightText.foi = req.body.btn_filter_foi;
+			sqlFilt += ' and JSON_CONTAINS(foi, \'"' + req.body.btn_filter_foi + '"\')';
+			highlightText.foi = req.body.btn_filter_foi;
 		}
 		if (req.body.btn_filter_prof && req.body.btn_filter_prof !== 'Any' &&
 			req.body.btn_filter_prof !== '') {
-			  sqlFilt += ' and JSON_CONTAINS(prefProfs, \'"' +
-		  req.body.btn_filter_prof + '"\')';
-			  // highlightText.prof = req.body.btn_filter_prof;
-		  }
+			sqlFilt += ' and JSON_CONTAINS(prefProfs, \'"' + req.body.btn_filter_prof + '"\')';
+			highlightText.prof = req.body.btn_filter_prof;
+		}
 	
 		
-		var whereClause = ' where committeeReviewed = 0 ';
+		var whereClause = ' where committeeReviewed = 0';
 	
 		sql = sqlFilt ? sql + whereClause + sqlFilt : sql + whereClause;
 	
@@ -313,186 +312,34 @@ module.exports = function(config, fns) {
 			req.apps.highlightText = builtHighlight;
 		}
 		if (!builtSql)
-			builtSql = defaultSql + fromClause;
+			builtSql = defaultSql + fromClause + whereClause;
 		getApplications(builtSql, (builtOptions || options), req, res, next);
 	}
 
-	// middleware that will help load a users preset to the filter form.
-	// function getPresets(req, res, next) {
-	// 	fm.getPresets(req.user.id, role, function(err, results) {
-	// 		if (err) {
-	// 			next(err);
-	// 		} else {
-	// 			req.presets = results[0]['presetAdmin'];
-	// 			next();
-	// 		}
-	// 	});
-	// }
-
-	// middleware that will help update/set a users preset from the filter form
-	// function setPreset(req, res, next) {
-	// 	var presetName = req.body.preset_name;
-	// 	if (presetName) {
-	// 		var activeCols = req.body.selectedCol;
-	// 		var cols;
-	// 		if (activeCols) {
-	// 			cols = activeCols.slice(); //  copy the active cols.
-	// 		} else {
-	// 			cols = [];
-	// 		}
-	// 		var filters = [];
-	// 		var colValues = [];
-	// 		var filterValues = [];
-	// 		for (var i = 0; i < cols.length; i++) {
-	// 			colValues.push(i + 1);
-	// 		}
-			
-	// 		//add the nonactive ones to the end. with empty values
-	// 		if (!cols.includes('btn_col_date')) {
-	// 			cols.push('btn_col_date');
-	// 			colValues.push('');
-	// 		}
-	// 		if (!cols.includes('btn_col_name')) {
-	// 			cols.push('btn_col_name');
-	// 			colValues.push('');
-	// 		}
-	// 		if (!cols.includes('btn_col_sid')) {
-	// 			cols.push('btn_col_sid');
-	// 			colValues.push('');
-	// 		}
-	// 		if (!cols.includes('btn_col_degree')) {
-	// 			cols.push('btn_col_degree');
-	// 			colValues.push('');
-	// 		}
-	// 		if (!cols.includes('btn_col_gpa')) {
-	// 			cols.push('btn_col_gpa');
-	// 			colValues.push('');
-	// 		}
-	// 		if (!cols.includes('btn_col_visa')) {
-	// 			cols.push('btn_col_visa');
-	// 			colValues.push('');
-	// 		}
-	// 		if (!cols.includes('btn_col_program_decision')) {
-	// 			cols.push('btn_col_program_decision');
-	// 			colValues.push('');
-	// 		}
-	// 		if (!cols.includes('btn_col_actions')) {
-	// 			cols.push('btn_col_actions');
-	// 			colValues.push('');
-	// 		}
-		
-	// 		//add filters to array and their values
-	// 		filters.push('btn_filter_name');
-	// 		if (req.body.btn_filter_name && req.body.btn_filter_name !== 'Any' &&
-	// 				req.body.btn_filter_name !== '') {
-	// 			filterValues.push(req.body.btn_filter_name);
-	// 		} else {
-	// 			filterValues.push('');
-	// 		}
-	// 		filters.push('btn_filter_degree');
-	// 		if (req.body.btn_filter_degree && req.body.btn_filter_degree !== 'Any' &&
-	// 				req.body.btn_filter_degree !== '') {
-	// 			filterValues.push(req.body.btn_filter_degree);
-	// 		} else {
-	// 			filterValues.push('');
-	// 		}
-	// 		filters.push('btn_filter_gpa');
-	// 		if (req.body.btn_filter_gpa && req.body.btn_filter_gpa !== 'Any' &&
-	// 				req.body.btn_filter_gpa !== '') {
-	// 			filterValues.push(req.body.btn_filter_gpa);
-	// 		} else {
-	// 			filterValues.push('');
-	// 		}
-	// 		filters.push('btn_filter_visa');
-	// 		if (req.body.btn_filter_visa && req.body.btn_filter_visa !== 'Any' &&
-	// 				req.body.btn_filter_visa !== '') {
-	// 			filterValues.push(req.body.btn_filter_visa);
-	// 		} else {
-	// 			filterValues.push('');
-	// 		}
-	// 		filters.push('btn_filter_program_decision');
-	// 		if (req.body.btn_filter_program_decision && req.body.btn_filter_program_decision 
-	// 			!== 'Any' && req.body.btn_filter_program_decision !== '') {
-	// 			filterValues.push(req.body.btn_filter_program_decision);
-	// 		} else {
-	// 			filterValues.push('');
-	// 		}
-		
-	// 		var options = {
-	// 			column_name: cols,
-	// 			column_val: colValues,
-	// 			filter_name: filters,
-	// 			filter_val: filterValues
-	// 		};
-	// 		fm.updatePreset(req.user.id, role, presetName, options, next);
-	// 	} else {
-	// 		next();
-	// 	}
-	// }
-
 	// highlighting fields middleware after applying filter
-	// function highlight(app, field, highlightText) {
-	// 	var patternHighlight = null;
-	// 	var returnString = app[field];
+	function highlight(app, field, highlightText) {
+		var patternHighlight = null;
+		var returnString = app[field];
 
-	// 	//patterns for committee rank and gpa ranking matching
-	// 	var patt_Aplus = /\w*(A\+)\w*/gi;
-	// 	var patt_A = /\w*(A\+|A)\w*/gi;
-	// 	var patt_Bplus = /\w*(A\+|A|B\+)\w*/gi;
-	// 	var patt_B = /\w*(A\+|A|B\+|B)\w*/gi;
-	// 	var patt_Cplus = /\w*(A\+|A|B\+|B|C\+)\w*/gi;
-	// 	var patt_C = /\w*(A\+|A|B\+|B|C\+|C)\w*/gi;
-	// 	var patt_Dplus = /\w*(A\+|A|B\+|B|C\+|C|D\+)\w*/gi;
-	// 	var patt_D = /\w*(A\+|A|B\+|B|C\+|C|D\+|D)\w*/gi;
-	// 	var patt_E = /\w*(A\+|A|B\+|B|C\+|C|D\+|D|E)\w*/gi;
-	// 	var patt_F = /\w*(A\+|A|B\+|B|C\+|C|D\+|D|E|F)\w*/gi;
-	
-	// 	if (field === 'Applicant Name' && highlightText && highlightText.name && 
-	// 	highlightText.name !== '') {
-	// 		patternHighlight = new RegExp('('+highlightText.name+')', 'gi');
-	// 	} else if (field === 'Degree Applied For' && highlightText && highlightText.degree && 
-	// 	highlightText.degree !== '') {
-	// 		patternHighlight = new RegExp('('+highlightText.degree+')', 'gi');
-	// 	} else if (field === 'Visa Status' && highlightText && highlightText.visa && 
-	// 	highlightText.visa !== '') {
-	// 		patternHighlight = new RegExp('('+highlightText.visa+')', 'gi');
-	// 	} else if (field === 'Program Decision' && highlightText && highlightText.program_decision && 
-	// 	highlightText.program_decision !== '') {
-	// 		patternHighlight = new RegExp('('+highlightText.program_decision+')', 'gi');
-	// 	} else if (field === 'GPA' && highlightText && highlightText.gpa && highlightText.gpa !== '') {
-	// 		if (patt_Aplus.test(highlightText.gpa)) {
-	// 			patternHighlight = patt_Aplus;
-	// 		} else if (patt_A.test(highlightText.gpa)) {
-	// 			patternHighlight = patt_A;
-	// 		} else if (patt_Bplus.test(highlightText.gpa)) {
-	// 			patternHighlight = patt_Bplus;
-	// 		} else if (patt_B.test(highlightText.gpa)) {
-	// 			patternHighlight = patt_B;
-	// 		} else if (patt_Cplus.test(highlightText.gpa)) {
-	// 			patternHighlight = patt_Cplus;
-	// 		} else if (patt_C.test(highlightText.gpa)) {
-	// 			patternHighlight = patt_C;
-	// 		} else if (patt_Dplus.test(highlightText.gpa)) {
-	// 			patternHighlight = patt_Dplus;
-	// 		} else if (patt_D.test(highlightText.gpa)) {
-	// 			patternHighlight = patt_D;
-	// 		} else if (patt_E.test(highlightText.gpa)) {
-	// 			patternHighlight = patt_E;
-	// 		} else if (patt_F.test(highlightText.gpa)) {
-	// 			patternHighlight = patt_F;
-	// 		} else {
-	// 			patternHighlight = null;
-	// 		}
-	// 	} else {
-	// 		patternHighlight = null;
-	// 	}
-	// 	if (patternHighlight) {
-	// 		if (app[field]) {
-	// 			var word = app[field].toString();
-	// 			returnString = word.replace(patternHighlight, 
-	// 				'<span style="color:red">$1</span>');
-	// 		}
-	// 	}
-	// 	return returnString;
-	// }
+		if (field === 'Visa Status' && highlightText && highlightText.visa && 
+		highlightText.visa !== '') {
+			patternHighlight = new RegExp('('+highlightText.visa+')', 'gi');
+		} else if (field === 'Field(s) of Interest' && highlightText && highlightText.foi &&
+		highlightText.foi !== '') {
+			patternHighlight = new RegExp('(' + highlightText.foi + ')', 'gi');
+		} else if (field === 'Preferred Professor(s)' && highlightText && highlightText.prof &&
+		highlightText.prof !== '') {
+			patternHighlight = new RegExp('(' + highlightText.prof + ')', 'gi');
+		} else {
+			patternHighlight = null;
+		}
+		if (patternHighlight) {
+			if (app[field]) {
+				var word = app[field].toString();
+				returnString = word.replace(patternHighlight, 
+					'<span style="color:red">$1</span>');
+			}
+		}
+		return returnString;
+	}
 };
