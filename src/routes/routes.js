@@ -23,9 +23,14 @@ module.exports = function(app, passport) {
 
 	// roles page route
 	require('./roles.js')(app, [isLoggedIn]);
+
+	// user settings route
+	require('./settings.js')({app: app, utils: utils, fm: fm}, 
+		[isLoggedIn, hasRole]);
     
 	// admin page route
-	require('./admin.js')(app, [isLoggedIn, hasRole]);
+	require('./admin.js')({app: app, utils: utils, application: application, fm: fm}, 
+		[isLoggedIn, hasRole]);
 	// committee page route
 	require('./committee.js')(app, utils, application, fm, [isLoggedIn, hasRole]);	
 	// professor page route

@@ -2,7 +2,9 @@
 <% include partials/navbar %>
     <div class="container">
         <h3 class="text-center">Review Form</h3>
-            <div class="text-center"><button class="btn btn-primary">View Application PDF &raquo;</button></div>
+            <div class="text-center">
+                <a id="view-app" href="/roles/admin/applications/view?appId=<%= appId %>" target="_blank" class="btn btn-primary" style="margin-bottom: 5px">View Application PDF &raquo;</a></li>
+            </div>
             <hr>
             <form id="review-form" action="/roles/committee/" method="POST">
                     <fieldset><legend style="color:blue;font-weight:bold;">General Information</legend>

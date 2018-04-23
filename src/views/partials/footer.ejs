@@ -1,11 +1,11 @@
 <!-- Footer -->
-<footer class="navbar-fixed-bottom container-fluid text-center">
+<footer class="navbar sticky-bottom container-fluid text-center">
     <a class="up-arrow" href="#" data-toggle="tooltip" title="TO TOP">
         <span class="glyphicon glyphicon-chevron-up"></span>
     </a>
     <br><br>
     <% if (role === 'Committee Member') { %> 
-        Need help? Read the <a href="/docs/users-manual/committee-manual.pdf" class="urlextern" target="_blank" title="Admission Committee User Manual" rel="nofollow">user manual</a> <span class="glyphicon glyphicon-file"></span>
+        Need help? Read the <a id="committee-manual" href="/docs/users-manual/committee-manual.pdf" class="urlextern" target="_blank" title="Admission Committee User Manual" rel="nofollow">user manual</a> <span class="glyphicon glyphicon-file"></span>
         <hr>
     <%} %>
     <p>Gradapps 2.0 / Edward Vaisman, S. Sakib Hasan</p>
@@ -17,12 +17,19 @@
 <script src="/js/bootstrap.min.js"></script>
 <script src="/js/jquery.metadata.js"></script>
 <script src="/js/jquery.tablesorter.min.js"></script>
-<script src="https://web.archive.org/web/20161124120603js_/http://www.papercut.com/products/free-software/are-you-sure/jquery.are-you-sure.js"></script>
 <!-- Latest compiled and minified JavaScript -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
 <% if (role === 'Committee Member') {%>
     <script src="/js/committee.js"></script>
     <script type="text/javascript"> var presets = <%-JSON.stringify(presets)%>;</script>
 <%}%>
+<% if (role === 'Admin') { %>
+    <script src="https://fastcdn.org/FileSaver.js/1.1.20151003/FileSaver.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/TableExport/5.0.0/js/tableexport.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/TableExport/5.0.0/css/tableexport.min.css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/TableExport/5.0.0/img/csv.svg" />
+    <script src="https://web.archive.org/web/20161124120603js_/http://www.papercut.com/products/free-software/are-you-sure/jquery.are-you-sure.js"></script>
+    <script src="/js/admin.js"></script>
+<% } %>
 </body>
 </html>
