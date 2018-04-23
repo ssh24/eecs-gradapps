@@ -149,6 +149,79 @@ describe('Review Triggers', function() {
 				});
 			});
 	});
+
+	describe('dismiss a review', function() {
+		before(function setUp(done) {
+			review.assignReview(12, 20, 1, done);
+		});
+
+		after(function cleanUp(done){
+			review.unassignReview(12, 20, 1, done);
+		});
+
+		it('dismiss a valid review by an invalid admin', 
+			function(done) {
+				review.dismissReview(12, 20, 19, function(err, result) {
+					assert(err, 'Error should exist');
+					assert(!result, 'Result should exist');
+					done();
+				});
+			});
+                
+		it('dismiss a completed review from a committee member', 
+			function(done) {
+				review.dismissReview(19, 17, 1, function(err, result) {
+					if (err) done(err);
+					assert(result, 'Result should exist');
+					done();
+				});
+			});
+                
+		it('dismiss a submited review from a committee member', 
+			function(done) {
+				review.dismissReview(16, 11, 1, function(err, result) {
+					if (err) done(err);
+					assert(result, 'Result should exist');
+					done();
+				});
+			});
+
+		it('dismiss a not submitted review from a valid committee member', 
+			function(done) {
+				review.dismissReview(12, 20, 1, function(err, result) {
+					assert(err, 'Error should exist');
+					assert(!result, 'Result should exist');
+					done();
+				});
+			});
+            
+		it('dismiss a valid review from an invalid committee member', 
+			function(done) {
+				review.dismissReview(17, 1, 1, function(err, result) {
+					assert(err, 'Error should exist');
+					assert(!result, 'Result should exist');
+					done();
+				});
+			});
+
+		it('dismiss an invalid review from valid committee member', 
+			function(done) {
+				review.dismissReview(0, 20, 1, function(err, result) {
+					assert(err, 'Error should exist');
+					assert(!result, 'Result should not exist');
+					done();
+				});
+			});
+                
+		it('dismiss an invalid review from invalid committee member', 
+			function(done) {
+				review.dismissReview(0, 1, 1, function(err, result) {
+					assert(err, 'Error should exist');
+					assert(!result, 'Result should not exist');
+					done();
+				});
+			});
+	});
         
 	describe('remind a review', function() {
 		before(function setUp(done) {
@@ -588,6 +661,75 @@ describe('Review Triggers', function() {
 					done();
 				});
 			});
+		});
+
+		describe('getReviewAssignedDate', function() {
+			it('get review assigned date of an invalid application w/ valid committee member', 
+				function(done) {
+					review.getReviewAssignedDate(0, 12, function(err, result) {
+						assert(err, 'Error should exist');
+						assert(!result, 'Result should not exist');
+						done();
+					});
+				});
+
+			it('get review assigned date of an invalid application w/ invalid committee member', 
+				function(done) {
+					review.getReviewAssignedDate(0, 0, function(err, result) {
+						assert(err, 'Error should exist');
+						assert(!result, 'Result should not exist');
+						done();
+					});
+				});
+
+			it('get review assigned date of an valid application w/ invalid committee member', 
+				function(done) {
+					review.getReviewAssignedDate(8, 0, function(err, result) {
+						assert(err, 'Error should exist');
+						assert(!result, 'Result should not exist');
+						done();
+					});
+				});
+
+			it('get review assigned date of an valid application w/ valid committee member', 
+				function(done) {
+					review.getReviewAssignedDate(12, 20, function(err, result) {
+						if (err) done(err);
+						assert(result, 'Result should exist');
+						done();
+					});
+				});
+		});
+
+		describe('getReviewAssigneeID', function() {
+			it('get reviewers id of a valid app', 
+				function(done) {
+					review.getReviewAssigneeID(12, function(err, result) {
+						if (err) done(err);
+						assert(result, 'Result should exist');
+						done();
+					});
+				});
+		});
+
+		describe('getReviewCount', function() {
+			it('get reviewer count of an invalid app', 
+				function(done) {
+					review.getReviewCount(0, function(err, result) {
+						if (err) done(err);
+						assert(!result, 'Result should be false');
+						done();
+					});
+				});
+
+			it('get reviewer count of a valid app', 
+				function(done) {
+					review.getReviewCount(12, function(err, result) {
+						if (err) done(err);
+						assert(result, 'Result should exist');
+						done();
+					});
+				});
 		});
 	});
 });

@@ -68,6 +68,20 @@ describe('Committee Test', function() {
 		expect(browser.getCurrentUrl()).to.eventually.contain('committee')
 			.then(committee.refreshTable.call(committee));
 	});
+
+	it('- check user manual', function() {
+		utils.openUserManual(committee.userManual)
+			.then(utils.switchTab.call(utils, 1))
+			.then(expect(browser.getCurrentUrl()).to.eventually.contain('committee-manual'))
+			.then(utils.goToTab.call(utils, 0));
+	});
+
+	it('- open application view page', function() {
+		utils.viewApplication(0)
+			.then(utils.switchTab.call(utils, 1))
+			.then(expect(browser.getCurrentUrl()).to.eventually.contain('/view'))
+			.then(utils.goToTab.call(utils, 0));
+	});
     
 	describe('- order applications', function() {
 		describe('- date column', function() {
@@ -770,6 +784,19 @@ describe('Committee Test', function() {
 				.then(expect(review.getStatus.call(review)).to.eventually.equal('New'));
 		});
 
+		it('- start a new application and check the application pdf', function() {
+			expect(review.getStatus.call(review)).to.eventually.equal('New')
+				.then(review.startReview.call(review, 17))
+				.then(expect(browser.getCurrentUrl()).to.eventually.contain('review'))
+				.then(review.viewApplication.call(review))
+				.then(utils.switchTab.call(utils, 1))
+				.then(expect(browser.getCurrentUrl()).to.eventually.contain('/view'))
+				.then(utils.goToTab.call(utils, 0))
+				.then(review.closeReview.call(review))
+				.then(expect(browser.getCurrentUrl()).to.eventually.not.contain('review'))
+				.then(expect(review.getStatus.call(review)).to.eventually.equal('New'));
+		});
+
 		describe('- check for fields in a new application', function() {
 			before(function setUp() {
 				review.startReview(17);
@@ -976,8 +1003,7 @@ describe('Committee Test', function() {
 				it('- submit the application', function() {
 					review.submitReview()
 						.then(expect(browser.getCurrentUrl()).to.eventually.not.contain('review'))
-						.then(expect(review.getStatus.call(review)).to.eventually.equal('Submitted'))
-						.then(function() {browser.pause();});
+						.then(expect(review.getStatus.call(review)).to.eventually.equal('Submitted'));
 				});
 	
 				describe('- check for fields after submission', function() {

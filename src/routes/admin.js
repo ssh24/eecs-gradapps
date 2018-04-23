@@ -1,18 +1,25 @@
 'use strict';
 
-module.exports = function(app, fns) {
+module.exports = function(config, fns) {
+	var app = config.app;
+
+	var route;
+	var role = route = config.role = 'Admin';
+
 	// admin page route
-	app.get('/roles/admin', fns, function(req, res) {
+	app.get('/roles/' + route, fns, function(req, res) {
 		var userInfo = req.user;
-		var role = 'Admin';
 		res.render(role, { 
-			title: 'Welcome ' + role,
+			title: 'Administrator Dashboard',
 			user: userInfo.id,
 			fullname: userInfo.fullname,
 			roles: userInfo.roles,
 			role: role,
-			showfilter: false,
-			review: false
+			showfilter: false
 		});
 	});
+
+	require('./admin/manage-app')(config, fns);
+	require('./admin/view-review')(config, fns);
+	require('./admin/manage-user')(config, fns);
 };
