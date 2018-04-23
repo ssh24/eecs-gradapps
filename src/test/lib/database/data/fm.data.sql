@@ -15,65 +15,83 @@ INSERT INTO `FACULTY_MEMBER` (`fm_Username`, `fm_Lname`, `fm_Fname`, `fm_Email`,
 
 ---- ONLY PROFESSOR ROLE ----
 
-INSERT INTO `FACULTY_MEMBER` (`fm_Lname`, `fm_Fname`, `fm_Email`, `fm_Roles`) 
-    VALUES ('Boneham', 'Sheff', 'sboneham2@aol.com', '["Professor"]');
-INSERT INTO `FACULTY_MEMBER` (`fm_Lname`, `fm_Fname`, `fm_Email`, `fm_Roles`) 
-    VALUES ('Poole', 'Bronny', 'bpoole3@ifeng.com', '["Professor"]');
-INSERT INTO `FACULTY_MEMBER` (`fm_Lname`, `fm_Fname`, `fm_Email`, `fm_Roles`) 
-    VALUES ('Dalyell', 'Winny', 'wdalyell4@yellowbook.com', '["Professor"]');
-INSERT INTO `FACULTY_MEMBER` (`fm_Lname`, `fm_Fname`, `fm_Email`, `fm_Roles`) 
-    VALUES ('Skerritt', 'Ame', 'askerritt5@guardian.co.uk', '["Professor"]');
-INSERT INTO `FACULTY_MEMBER` (`fm_Lname`, `fm_Fname`, `fm_Email`, `fm_Roles`) 
-    VALUES ('Donaghie', 'Chad', 'cdonaghie6@sourceforge.net', '["Professor"]');
-INSERT INTO `FACULTY_MEMBER` (`fm_Lname`, `fm_Fname`, `fm_Email`, `fm_Roles`) 
-    VALUES ('Cleef', 'Reamonn', 'rcleef7@umich.edu', '["Professor"]');
-INSERT INTO `FACULTY_MEMBER` (`fm_Lname`, `fm_Fname`, `fm_Email`, `fm_Roles`) 
-    VALUES ('Truran', 'Buiron', 'btruran8@mashable.com', '["Professor"]');
+INSERT INTO `FACULTY_MEMBER` (`fm_Lname`, `fm_Fname`, `fm_Email`, `fm_Roles`, `fm_FOS`) 
+    VALUES ('Boneham', 'Sheff', 'sboneham2@aol.com', '["Professor"]', 
+    '["Artificial Intelligence", "Data Mining"]');
+INSERT INTO `FACULTY_MEMBER` (`fm_Lname`, `fm_Fname`, `fm_Email`, `fm_Roles`, `fm_FOS`) 
+    VALUES ('Poole', 'Bronny', 'bpoole3@ifeng.com', '["Professor"]', 
+    '["Biomedical Engineering", "Graph Mining"]');
+INSERT INTO `FACULTY_MEMBER` (`fm_Lname`, `fm_Fname`, `fm_Email`, `fm_Roles`, `fm_FOS`) 
+    VALUES ('Dalyell', 'Winny', 'wdalyell4@yellowbook.com', '["Professor"]', 
+    '["Bioinformatics", "Computer Networks"]');
+INSERT INTO `FACULTY_MEMBER` (`fm_Lname`, `fm_Fname`, `fm_Email`, `fm_Roles`, `fm_FOS`) 
+    VALUES ('Skerritt', 'Ame', 'askerritt5@guardian.co.uk', '["Professor"]', 
+    '["Artificial Intelligence", "Bioinformatics"]');
+INSERT INTO `FACULTY_MEMBER` (`fm_Lname`, `fm_Fname`, `fm_Email`, `fm_Roles`, `fm_FOS`) 
+    VALUES ('Donaghie', 'Chad', 'cdonaghie6@sourceforge.net', '["Professor"]', 
+    '["Machine Learning", "Computer Graphics and Media"]');
+INSERT INTO `FACULTY_MEMBER` (`fm_Lname`, `fm_Fname`, `fm_Email`, `fm_Roles`, `fm_FOS`) 
+    VALUES ('Cleef', 'Reamonn', 'rcleef7@umich.edu', '["Professor"]', 
+    '["Artificial Intelligence", "Performance Engineering"]');
+INSERT INTO `FACULTY_MEMBER` (`fm_Lname`, `fm_Fname`, `fm_Email`, `fm_Roles`, `fm_FOS`) 
+    VALUES ('Truran', 'Buiron', 'btruran8@mashable.com', '["Professor"]', 
+    '["Machine Learning", "Data Science"]');
 
 
 ---- ONLY COMMITTEE MEMBER ROLE ----
 
-INSERT INTO `FACULTY_MEMBER` (`fm_Lname`, `fm_Fname`, `fm_Email`, `fm_Roles`) 
-    VALUES ('Edgeon', 'Joeann', 'jedgeon9@reverbnation.com', '["Committee Member"]');
-INSERT INTO `FACULTY_MEMBER` (`fm_Lname`, `fm_Fname`, `fm_Email`, `fm_Roles`) 
-    VALUES ('Allbones', 'Byrom', 'ballbonesa@cam.ac.uk', '["Committee Member"]');
-INSERT INTO `FACULTY_MEMBER` (`fm_Lname`, `fm_Fname`, `fm_Email`, `fm_Roles`) 
-    VALUES ('Laville', 'Hillier', 'hlavilleb@hc360.com', '["Committee Member"]');
-INSERT INTO `FACULTY_MEMBER` (`fm_Lname`, `fm_Fname`, `fm_Email`, `fm_Roles`) 
-    VALUES ('Satteford', 'Alida', 'asattefordc@cnet.com', '["Committee Member"]');
+INSERT INTO `FACULTY_MEMBER` (`fm_Lname`, `fm_Fname`, `fm_Email`, `fm_Roles`, `fm_FOS`) 
+    VALUES ('Edgeon', 'Joeann', 'jedgeon9@reverbnation.com', '["Committee Member"]', 
+    '["Machine Learning", "Performance Engineering"]');
+INSERT INTO `FACULTY_MEMBER` (`fm_Lname`, `fm_Fname`, `fm_Email`, `fm_Roles`, `fm_FOS`) 
+    VALUES ('Allbones', 'Byrom', 'ballbonesa@cam.ac.uk', '["Committee Member"]', 
+    '["Machine Learning", "Data Science"]');
+INSERT INTO `FACULTY_MEMBER` (`fm_Lname`, `fm_Fname`, `fm_Email`, `fm_Roles`, `fm_FOS`) 
+    VALUES ('Laville', 'Hillier', 'hlavilleb@hc360.com', '["Committee Member"]', 
+    '["History of Computing", "Distributed Computing"]');
+INSERT INTO `FACULTY_MEMBER` (`fm_Lname`, `fm_Fname`, `fm_Email`, `fm_Roles`, `fm_FOS`) 
+    VALUES ('Satteford', 'Alida', 'asattefordc@cnet.com', '["Committee Member"]', 
+    '["Artificial Intelligence", "Data Science"]');
 
 
 ---- ADMIN & PROFESSOR ROLE ----
 
-INSERT INTO `FACULTY_MEMBER` (`fm_Lname`, `fm_Fname`, `fm_Email`, `fm_Roles`) 
+INSERT INTO `FACULTY_MEMBER` (`fm_Lname`, `fm_Fname`, `fm_Email`, `fm_Roles`, `fm_FOS`) 
     VALUES ('Chesher', 'Susanna', 'schesherd@scientificamerican.com', 
-    '["Admin", "Professor"]');
-INSERT INTO `FACULTY_MEMBER` (`fm_Lname`, `fm_Fname`, `fm_Email`, `fm_Roles`) 
-    VALUES ('Kubera', 'Jenna', 'jkuberae@techcrunch.com', '["Admin", "Professor"]');
+    '["Admin", "Professor"]', 
+    '["Artificial Intelligence", "Performance Engineering"]');
+INSERT INTO `FACULTY_MEMBER` (`fm_Lname`, `fm_Fname`, `fm_Email`, `fm_Roles`, `fm_FOS`) 
+    VALUES ('Kubera', 'Jenna', 'jkuberae@techcrunch.com', '["Admin", "Professor"]', 
+    '["Machine Learning", "Distributed Computing"]');
 
 ---- ADMIN & COMMITTEE MEMBER ROLE ----
 
-INSERT INTO `FACULTY_MEMBER` (`fm_Username`, `fm_Lname`, `fm_Fname`, `fm_Email`, `fm_Roles`) 
-    VALUES ('von', 'Brakespear', 'Von', 'vbrakespearf@e-recht24.de', '["Admin", "Committee Member"]');
-INSERT INTO `FACULTY_MEMBER` (`fm_Lname`, `fm_Fname`, `fm_Email`, `fm_Roles`) 
-    VALUES ('Dahlen', 'Davine', 'ddahleng@odnoklassniki.ru', '["Admin", "Committee Member"]');
+INSERT INTO `FACULTY_MEMBER` (`fm_Username`, `fm_Lname`, `fm_Fname`, `fm_Email`, `fm_Roles`, `fm_FOS`) 
+    VALUES ('von', 'Brakespear', 'Von', 'vbrakespearf@e-recht24.de', '["Admin", "Committee Member"]', 
+    '["Machine Learning", "Data Science"]');
+INSERT INTO `FACULTY_MEMBER` (`fm_Lname`, `fm_Fname`, `fm_Email`, `fm_Roles`, `fm_FOS`) 
+    VALUES ('Dahlen', 'Davine', 'ddahleng@odnoklassniki.ru', '["Admin", "Committee Member"]', 
+    '["Artificial Intelligence", "Data Science"]');
 
 ---- PROFESSOR & COMMITTEE MEMBER ROLE ----
 
-INSERT INTO `FACULTY_MEMBER` (`fm_Lname`, `fm_Fname`, `fm_Email`, `fm_Roles`) 
-    VALUES ('Mahomet', 'Moyna', 'mmahometh@rediff.com', '["Professor", "Committee Member"]');
-INSERT INTO `FACULTY_MEMBER` (`fm_Lname`, `fm_Fname`, `fm_Email`, `fm_Roles`) 
-    VALUES ('Bennough', 'Willamina', 'wbennoughi@jigsy.com', '["Professor", "Committee Member"]');
+INSERT INTO `FACULTY_MEMBER` (`fm_Lname`, `fm_Fname`, `fm_Email`, `fm_Roles`, `fm_FOS`) 
+    VALUES ('Mahomet', 'Moyna', 'mmahometh@rediff.com', '["Professor", "Committee Member"]', 
+    '["History of Computing", "Embedded Systems"]');
+INSERT INTO `FACULTY_MEMBER` (`fm_Lname`, `fm_Fname`, `fm_Email`, `fm_Roles`, `fm_FOS`) 
+    VALUES ('Bennough', 'Willamina', 'wbennoughi@jigsy.com', '["Professor", "Committee Member"]', 
+    '["Artificial Intelligence", "Embedded Systems"]');
 
 
 ---- ADMIN & PROFESSOR & COMMITTEE MEMBER ROLE ----
 
 INSERT INTO `FACULTY_MEMBER` (`fm_Username`, `fm_Lname`, `fm_Fname`, `fm_Email`, 
-    `fm_Roles`) VALUES ('admin', 'Doe', 'John', 'john_doe@example.com', 
-    '["Admin", "Professor", "Committee Member"]');
+    `fm_Roles`, `fm_FOS`) VALUES ('admin', 'Doe', 'John', 'john_doe@example.com', 
+    '["Admin", "Professor", "Committee Member"]', '["Computer Vision", "Graph Mining"]');
 INSERT INTO `FACULTY_MEMBER` (`fm_Username`, `fm_Lname`, `fm_Fname`, `fm_Email`, 
-    `fm_Roles`) VALUES ('admin2', 'Roberston', 
-    'John', 'john_r@example.com', '["Admin", "Professor", "Committee Member"]');
+    `fm_Roles`, `fm_FOS`) VALUES ('admin2', 'Roberston', 
+    'John', 'john_r@example.com', '["Admin", "Professor", "Committee Member"]'
+    , '["Artificial Intelligence", "Distributed Computing"]');
 
 
 /****************** ACTUAL FACULTY MEMBER DATA ******************/

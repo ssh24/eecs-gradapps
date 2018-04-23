@@ -146,8 +146,30 @@ describe('Util Functionalities', function() {
 		});
 	});
 
+	describe('get member email function', function() {
+		it('get member email of a valid faculty member', function(done) {
+			utils.getMemberEmail(20, function(err, result) {
+				if (err) done(err);
+				assert(result, 'Result should exist');
+				done();
+			});
+		});
+        
+		it('get member email of an invalid faculty member', function(done) {
+			utils.getMemberEmail(0, function(err, result) {
+				assert(err, 'Error should exist');
+				assert(!result, 'Result should not exist');
+				done();
+			});
+		});
+	});
+
 	describe('get applicant names', function() {
 		it('get all applicant names', function(done) {
+			utils.getApplicantNames(true, done);
+		});
+
+		it('get all reviewed applicant names', function(done) {
 			utils.getApplicantNames(done);
 		});
 	});
@@ -161,6 +183,16 @@ describe('Util Functionalities', function() {
 	describe('get university descriptions', function() {
 		it('get all university descriptions', function(done) {
 			utils.getUniversityDescriptions(done);
+		});
+	});
+
+	describe('get committee member name function', function(){
+		it('return all committtee member names', function(done) {
+			utils.getAllCommitteeMembers(function(err, result) {
+				if (err) done(err);
+				assert(result, 'Result should exist');
+				done();
+			});
 		});
 	});
 });

@@ -41,24 +41,26 @@ module.exports = {
 	},
 	'database': {
 		'tables': ['application', 'application_review', 
-			'application_seen', 'faculty_member', 'university', 'foi', 'sessions'],
+			'application_seen', 'faculty_member', 'university', 'foi', 'gpa', 
+			'sessions'],
 		'fields': {
 			'faculty_member': ['fm_Id', 'fm_Username', 'fm_Lname', 'fm_Fname', 
-				'fm_Email', 'fm_Roles', 'presetProf', 'presetCommittee', 
+				'fm_Email', 'fm_Roles', 'fm_FOS', 'presetProf', 'presetCommittee', 
 				'presetAdmin'],
-			'application': ['app_Id', 'student_Id', 'app_Date', 'app_Session', 'LName', 
-				'FName', 'Email', 'Gender', 'GPA', 'GPA_FINAL', 'GRE', 'Rank',
+			'application': ['app_Id', 'student_Id', 'app_Date', 'app_Session', 
+				'LName', 'FName', 'Email', 'Gender', 'GPA', 'GPA_FINAL', 'GRE',
 				'Degree', 'VStatus', 'committeeReviewed', 'FOI', 'prefProfs', 
-				'profContacted', 'profRequested', 'letterDate', 
+				'profContacted', 'profRequested', 'letterDate', 'Rank',
 				'programDecision', 'studentDecision', 'declineReason', 
-				'ygsAwarded', 'TOEFL', 'IELTS', 'YELT'],
+				'ygsAwarded', 'TOEFL', 'IELTS', 'YELT', 'app_file'],
 			'application_review': ['committeeId', 'appId', 'assignDate', 
 				'Background', 'researchExp', 'Letter', 'Comments', 'c_Rank', 'Status', 
 				'lastReminded', 'PreviousInst', 'UniAssessment'],
 			'application_seen': ['fmId', 'appId', 'seen'],
 			'university': ['u_Id', 'u_Name', 'u_Assessments'],
 			'foi': ['field_Id', 'field_Name'],
-			'sessions': ['session_id', 'expires', 'data']
+			'sessions': ['session_id', 'expires', 'data'],
+			'gpa': ['letter_grade', 'grade_point']
 		}
 	}
 };

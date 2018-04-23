@@ -33,8 +33,6 @@ INSERT INTO `APPLICATION_REVIEW` (`assignDate`, `committeeId`, `appId`, `Status`
     VALUES ('2018-03-01', 16, 19, 'Draft');
 INSERT INTO `APPLICATION_REVIEW` (`committeeId`, `appId`, `c_Rank`, `Status`) 
     VALUES (17, 19, 'C', 'Submitted');
-INSERT INTO `APPLICATION_REVIEW` (`committeeId`, `appId`, `c_Rank`, `Status`) 
-    VALUES (19, 19, 'A+', 'Draft');
 
 INSERT INTO `APPLICATION_REVIEW` (`committeeId`, `appId`, `Status`) 
     VALUES (16, 20, 'New');

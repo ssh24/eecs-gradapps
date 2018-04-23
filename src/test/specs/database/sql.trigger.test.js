@@ -73,6 +73,34 @@ describe('SQL Triggers', function() {
 					});
 				});
 		});
+
+		it('delete trigger', function(done) {
+			var app_id = 12;
+			var committee_id = 11;
+			var oldReview;
+			connection.query('SELECT * from application where app_Id = ?', 
+				[app_id], function(err, res) {
+					if(err) done(err);
+					assert(res);
+					oldReview = res[0]['committeeReviewed'];
+					connection.query('DELETE FROM `APPLICATION_REVIEW` ' + 
+                        'WHERE appId = ? AND ' + 
+                        'committeeId = ?', [app_id, committee_id], 
+					function(err, res) {
+						if(err) done(err);
+						assert(res);
+						connection.query('SELECT * from application where ' + 
+                            'app_Id = ?', [app_id], function(err, res) {
+							if(err) done(err);
+							assert(res);
+							var newReview = res[0]['committeeReviewed'];
+							assert.notEqual(oldReview, newReview, 
+								'Committee review is submitted');
+							done();
+						});
+					});
+				});
+		});
 	});
 
 	describe('application_seen', function() {

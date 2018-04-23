@@ -32,25 +32,23 @@ Role.prototype.getCommitteeText = function() {
 };
 
 Role.prototype.selectRole = function(role) {
-	if(role === 'Admin')
-		return element(this.roles.admin).click();
-	else if (role === 'Professor')
-		return element(this.roles.professor).click();
-	else if (role === 'Committee Member')
-		return element(this.roles.committee).click();
-	else
-		return;
+	var elem;
+	if (role === 'Admin') elem = this.roles.admin;
+	else if (role === 'Professor') elem = this.roles.professor;
+	else if (role === 'Committee Member') elem = this.roles.committee;
+
+	return this.utils.waitForElementClickable(elem, this.timeout)
+		.then(element(elem).click());
 };
 
 Role.prototype.changeRole = function(role) {
-	if(role === 'Admin')
-		return element(this.roles.switch.admin).click();
-	else if (role === 'Professor')
-		return element(this.roles.switch.professor).click();
-	else if (role === 'Committee Member')
-		return element(this.roles.switch.committee).click();
-	else
-		return;
+	var elem;
+	if (role === 'Admin') elem = this.roles.switch.admin;
+	else if (role === 'Professor') elem = this.roles.switch.professor;
+	else if (role === 'Committee Member') elem = this.roles.switch.committee;
+
+	return this.utils.waitForElementClickable(elem, this.timeout)
+		.then(element(elem).click());
 };
 
 module.exports = Role;

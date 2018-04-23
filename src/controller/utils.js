@@ -383,6 +383,28 @@ Utils.prototype.getMemberFullName = function(memberId, cb) {
 };
 
 /**
+ * Get member email
+ * @param {Number} memberId
+ * @param {Function} cb 
+ */
+Utils.prototype.getMemberEmail = function(memberId, cb) {
+	assert(typeof memberId === 'number');
+	assert(typeof cb === 'function');
+
+	this.conn.query('Select fm_Email from faculty_member where fm_Id=?', 
+		[memberId], function(err, result) {
+			if (err) return cb(err);
+			if (result.length === 0) {
+				err = new Error('Member with id ' + memberId + 
+				' does not exist');
+				return cb(err);
+			} else {
+				return cb(err, result[0]['fm_Email']);
+			}
+		});
+};
+
+/**
  * Get all applicant names
  * @param {Function} cb 
  */
@@ -447,6 +469,108 @@ Utils.prototype.getUniversityDescriptions = function(cb) {
 			return cb(err);
 		}
 	});
+};
+
+/**
+ * Get all professor names
+ * @param {Function} cb 
+ */
+Utils.prototype.getAllProfessors = function(cb) {
+	var sql = 'SELECT CONCAT_WS(\' \', `fm_Fname`, `fm_Lname`) AS `Professor Name`' 
+	+ ', fm_Roles from faculty_member where fm_Roles is not null';
+	var professors = [];
+	this.conn.query(sql, function(err, result) {
+		if (err) return cb(err);
+		if(result.length > 0) {
+			_.forEach(result, function(res) {
+				if(res['fm_Roles'].includes('Professor'))
+					professors.push(res['Professor Name']);
+			});
+			return cb(err, professors.sort());
+		} else {
+			err = new Error('No professors found');
+			return cb(err);
+		}
+	});
+};
+
+/**
+ * Get all committee member names
+ * @param {Function} cb 
+ */
+Utils.prototype.getAllCommitteeMembers = function(cb) {
+	var sql = 'SELECT fm_Id, CONCAT_WS(\' \', `fm_Fname`, `fm_Lname`) AS `CM Name`' 
+	+ ', fm_Roles from faculty_member where fm_Roles is not null';
+	var cm = [];
+	this.conn.query(sql, function(err, result) {
+		if (err) return cb(err);
+		if(result.length > 0) {
+			_.forEach(result, function(res) {
+				if(res['fm_Roles'].includes('Committee Member'))
+					cm.push({id: res['fm_Id'], name: res['CM Name']});
+			});
+			return cb(err, cm);
+		} else {
+			err = new Error('No committee members found');
+			return cb(err);
+		}
+	});
+};
+
+/**
+ * Get list of all field of interests
+ * @param {Function} cb 
+ */
+Utils.prototype.getFieldOfInterests = function(cb) {
+	var sql = 'SELECT field_Name from foi';
+	var foi;
+	this.conn.query(sql, function(err, result) {
+		if (err) return cb(err);
+		if(result.length > 0) {
+			foi = _.map(result, 'field_Name');
+			return cb(err, foi.sort());
+		} else {
+			err = new Error('No field of interest found');
+			return cb(err);
+		}
+	});
+};
+
+/**
+ * Get all gpa
+ * @param {Function} cb 
+ */
+Utils.prototype.getGPA = function(cb) {
+	var sql = 'SELECT letter_grade as `GPA` from gpa';
+	var gpas;
+	this.conn.query(sql, function(err, result) {
+		if (err) return cb(err);
+		if(result.length > 0) {
+			gpas = _.map(result, 'GPA');
+			return cb(err, gpas);
+		} else {
+			err = new Error('No gpa found');
+			return cb(err);
+		}
+	});
+};
+
+/**
+ * Get visa status of an application.
+ * @param {Number} appId 
+ * @param {Function} cb 
+ */
+Utils.prototype.getVisaStatus = function(appId, cb) {
+	assert(typeof appId === 'number');
+	assert(typeof cb === 'function');
+
+	this.conn.query('SELECT VStatus from application where app_Id=?', [appId], 
+		function(err, result) {
+			if (err) return cb(err);
+			if (result.length === 1) {
+				return cb(err, result[0]['VStatus']);
+			}
+		});
 };
 
 module.exports = Utils;
