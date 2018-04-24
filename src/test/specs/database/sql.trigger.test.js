@@ -27,7 +27,7 @@ describe('SQL Triggers', function() {
 					if(err) done(err);
 					assert(res);
 					oldReview = res[0]['committeeReviewed'];
-					connection.query('INSERT INTO `APPLICATION_REVIEW` ' + 
+					connection.query('INSERT INTO `application_review` ' + 
                         '(`committeeId`, `appId`, `c_Rank`, `Status`) ' + 
                         'VALUES (?, ?, "B", "Submitted");', [committee_id, 
 						app_id], function(err, res) {
@@ -55,7 +55,7 @@ describe('SQL Triggers', function() {
 					if(err) done(err);
 					assert(res);
 					oldReview = res[0]['committeeReviewed'];
-					connection.query('UPDATE `APPLICATION_REVIEW` ' + 
+					connection.query('UPDATE `application_review` ' + 
                         'SET Status = "Submitted" WHERE appId = ? AND ' + 
                         'committeeId = ?', [app_id, committee_id], 
 					function(err, res) {
@@ -80,7 +80,7 @@ describe('SQL Triggers', function() {
 			it('error case', function(done) {
 				var app_id = 24;
 				var prof_id = 5;
-				connection.query('INSERT INTO `APPLICATION_SEEN` ' + 
+				connection.query('INSERT INTO `application_seen` ' + 
                 '(`fmId`, `appId`, `seen`) VALUES (?, ?, 1);', 
 				[prof_id, app_id], function(err, res) {
 					assert(err, 'Error should exist');
@@ -92,7 +92,7 @@ describe('SQL Triggers', function() {
 			it('non-error case', function(done) {
 				var app_id = 25;
 				var prof_id = 5;
-				connection.query('INSERT INTO `APPLICATION_SEEN` ' + 
+				connection.query('INSERT INTO `application_seen` ' + 
                 '(`fmId`, `appId`, `seen`) VALUES (?, ?, 1);', 
 				[prof_id, app_id], function(err, res) {
 					if(err) done(err);
@@ -106,7 +106,7 @@ describe('SQL Triggers', function() {
 			it('error case', function(done) {
 				var app_id = 20;
 				var prof_id = 7;
-				connection.query('UPDATE `APPLICATION_SEEN` ' + 
+				connection.query('UPDATE `application_seen` ' + 
                 'SET seen = 1 WHERE fmId = ? AND appId = ?', 
 				[prof_id, app_id], function(err, res) {
 					assert(err, 'Error should exist');
@@ -118,7 +118,7 @@ describe('SQL Triggers', function() {
 			it('non-error case', function(done) {
 				var app_id = 15;
 				var prof_id = 6;
-				connection.query('UPDATE `APPLICATION_SEEN` ' + 
+				connection.query('UPDATE `application_seen` ' + 
                 'SET seen = 1 WHERE fmId = ? AND appId = ?', 
 				[prof_id, app_id], function(err, res) {
 					if(err) done(err);

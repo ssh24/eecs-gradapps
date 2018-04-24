@@ -395,10 +395,10 @@ Utils.prototype.getApplicantNames = function(all, cb) {
 	var sql;
 	if (all) {
 		sql = 'SELECT CONCAT_WS(\' \', `FName`, `LName`) AS `Applicant Name`' + 
-		' FROM APPLICATION;';
+		' FROM application;';
 	} else {
 		sql = 'SELECT CONCAT_WS(\' \', `FName`, `LName`) AS `Applicant Name`' + 
-	' FROM APPLICATION where committeeReviewed=1 and Rank is not null';
+	' FROM application where committeeReviewed=1 and Rank is not null';
 	}
 	var applicants;
 	this.conn.query(sql, function(err, result) {
