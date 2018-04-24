@@ -392,7 +392,7 @@ The \emph{Required} deliverables were decided by the majority vote on a list of 
 \item Reason for Decline
 \item Comment
 \end{enumerate}
-\item Reviewed Status (Similar to application status but is user specific)
+\item Interest Status (Similar to application status but is user specific)
 \begin{enumerate}
 \item \hl{Interested - once a professor has seen a student application and has shortlisted to be contacted}
 \item \hl{Not Interested - once a professor has seen a student application and decided to not move on to contact them}
@@ -542,6 +542,7 @@ The following three use case textual representation describes the \emph{Authenti
 \item Table \ref{tbl:uc1Atd} describes a user is logging into the system
 \item Table \ref{tbl:uc1Btd} describes a user once validated, selecting a role to log in as.
 \item Table \ref{tbl:uc1Ctd} describes a user logging out of the system.
+\item \hl{Table} \ref{tbl:uc1Dtd} \hl{describes a user updating their email address.}
 \end{itemize}
 
 \begin{table}[!htb]
@@ -632,6 +633,32 @@ The following three use case textual representation describes the \emph{Authenti
 \end{center}
 \caption {Use Case Textual Description for Logout}
 \label{tbl:uc1Ctd}
+\end{table}
+
+\begin{table}[!htb]
+\begin{center}
+\begin{tabular}{|l|l|}
+\hline
+\textbf{Use Case ID:} \hl{UC-1D} \\ \hline
+\textbf{Use Case Name:} \hl{Update Email Address} \\ \hline
+\textbf {Primary Actor:} \hl{Admin, Professor, Committee Member}\\ \hline
+\textbf{Description:} \hl{A user is already logged into the system. The user clicks on the }\\ \hl{settings button. The user is redirected to the settings page. The user updates }\\ \hl{the email and clicks submit. The user is brought back to the role selection page.}\\ \hline
+\textbf{Trigger:} \hl{User indicates to update the email.}\\ \hline
+\textbf{Precondition:}
+\\ PRE-1. \hl{The user is logged in to the system.}\\ \hline
+\textbf{Postcondition:}
+\\ POST-1. \hl{The user has updated their email address.}\\ \hline
+\textbf{Normal Flow: 1C.0 Update Email Address}
+\\ \hl{1. User clicks on the settings button.}
+\\ \hl{2. User is redirected to the settings page.}
+\\ \hl{3. User inputs a new email address.}
+\\ \hl{4. User clicks on submit.}
+\\ \hl{5. System updates the user email address and returns a valid response back.}
+\\ \hl{6. The user is redirected to the roles page.}\\ \hline
+\end{tabular}
+\end{center}
+\caption {Use Case Textual Description for Updating Email Address}
+\label{tbl:uc1Dtd}
 \end{table}
 
 \clearpage
@@ -1231,6 +1258,14 @@ The following are the E/R Descriptions elicited from Use Case 1, refer to Sectio
 
 \smallskip
 \noindent \textbf{Rationale}: A logged in user cannot be logged in with two different roles. This is to avoid conflicting access control between two different roles.
+
+\rdescription
+{\hl{A user shall be able to manage their personal user settings such as username, password and etc.}\\}
+{\hl{The fields available to update are: username, password, last name, first name, email, field(s) of specialization}}
+
+\smallskip
+\noindent \hl{\textbf{Rationale}: A logged in user can update their own user settings. The fields mentioned above can be modified by the user to personalize their settings.}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%END E/R USE CASE 1%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%E/R USE CASE 2%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
