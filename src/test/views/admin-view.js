@@ -16,6 +16,7 @@ function Admin(timeout) {
 	this.admin.manage.reviews = by.id('manage-review');
     
 	this.admin.goBack = by.id('go-back');
+	this.userManual = by.id('admin-manual');
 }
 
 Admin.prototype.manageUsers = function() {

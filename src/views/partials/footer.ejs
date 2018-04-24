@@ -11,7 +11,10 @@
         Need help? Read the <a id="committee-manual" href="/docs/users-manual/committee-manual.pdf" class="urlextern" target="_blank" title="Admission Committee User Manual" rel="nofollow">user manual</a> <span class="glyphicon glyphicon-file"></span>
         <hr>
     <%} %>
-    <hr>
+    <% if (role === 'Admin') { %> 
+        Need help? Read the <a id="admin-manual" href="/docs/users-manual/admin-manual.pdf" class="urlextern" target="_blank" title="Administrator User Manual" rel="nofollow">user manual</a> <span class="glyphicon glyphicon-file"></span>
+        <hr>
+    <%} %>
     <p>Gradapps 2.0 / Edward Vaisman, S. Sakib Hasan</p>
 </footer>
 <!-- Bootstrap core JavaScript

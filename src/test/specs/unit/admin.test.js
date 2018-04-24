@@ -65,4 +65,11 @@ describe('Admin Test', function() {
 			.then(expect(browser.getCurrentUrl()).to.not.eventually.contain('/reviews'))
 			.then(expect(browser.getCurrentUrl()).to.eventually.contain('/admin'));
 	});
+
+	it('- check user manual', function() {
+		utils.openUserManual(admin.userManual)
+			.then(utils.switchTab.call(utils, 1))
+			.then(expect(browser.getCurrentUrl()).to.eventually.contain('admin-manual'))
+			.then(utils.goToTab.call(utils, 0));
+	});
 });
