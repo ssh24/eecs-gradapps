@@ -176,10 +176,10 @@ source test/lib/database/trigger/application_rev.trigger.sql;COMMIT;
 SET autocommit=0;
 source test/lib/database/trigger/application_seen.trigger.sql;COMMIT;
 
-
 -- Source all the data sql files
 SET autocommit=0; source test/lib/database/data/foi.data.sql; COMMIT;
-SET autocommit=0; source test/lib/database/data/fm.data.sql; COMMIT;
+SET autocommit=0; source test/lib/database/data/test.fm.data.sql; COMMIT;
+SET autocommit=0; source test/lib/database/data/actual.fm.data.sql; COMMIT;
 SET autocommit=0; source test/lib/database/data/application.data.sql; COMMIT;
 SET autocommit=0; source test/lib/database/data/university.data.sql; COMMIT;
 SET autocommit=0; source test/lib/database/data/application_rev.data.sql; COMMIT;
