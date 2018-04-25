@@ -8,5 +8,8 @@ exports.config = {
 	specs: ['test/specs/unit/*'],
 	capabilities: {
 		browserName: 'chrome'
+	},
+	onPrepare: function() {
+		process.env.NODE_ENV = 'test';
 	}
 };

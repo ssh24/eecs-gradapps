@@ -5,7 +5,7 @@ module.exports = function(app, fns) {
 	app.get('/roles/admin', fns, function(req, res) {
 		var userInfo = req.user;
 		var role = 'Admin';
-		res.render(role, { 
+		res.render('admin', { 
 			title: 'Welcome ' + role,
 			user: userInfo.id,
 			fullname: userInfo.fullname,

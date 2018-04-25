@@ -1,15 +1,6 @@
 -- This SQL file is copyright for the EECS graduate program application --
 -- Latest MySQL working version for this file: 5.7.21 --
 
--- Create the database
-
-DROP DATABASE IF EXISTS `testdb`;
-CREATE DATABASE `testdb`;
-
--- Select the database
-
-USE `testdb`;
-
 -- faculty_member table
 -- @fm_Id: unique auto incremental primary key for each faculty member
 -- @fm_Lname: last name of the faculty member
