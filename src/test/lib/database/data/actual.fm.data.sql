@@ -35,7 +35,7 @@ INSERT INTO `faculty_member` (`fm_Username`, `fm_Lname`, `fm_Fname`, `fm_Roles`)
 INSERT INTO `faculty_member` (`fm_Username`, `fm_Lname`, `fm_Fname`, `fm_Roles`) VALUES 
     ('hmkim', 'Kim', 'Henry M','["Professor"]');
 INSERT INTO `faculty_member` (`fm_Username`, `fm_Lname`, `fm_Fname`, `fm_Roles`) VALUES 
-    ('mb', 'Brubaker', 'Marcus','["Professor"]');
+    ('mab', 'Brubaker', 'Marcus','["Professor"]');
 INSERT INTO `faculty_member` (`fm_Username`, `fm_Lname`, `fm_Fname`, `fm_Roles`) VALUES 
     ('hefarag', 'Farag', 'Hany E. Z.','["Professor"]');
 INSERT INTO `faculty_member` (`fm_Username`, `fm_Lname`, `fm_Fname`, `fm_Roles`) VALUES 
@@ -67,7 +67,7 @@ INSERT INTO `faculty_member` (`fm_Username`, `fm_Lname`, `fm_Fname`, `fm_Roles`)
     ('aan', 'An', 'Aijun','["Professor"]');
 
 INSERT INTO `faculty_member` (`fm_Username`,`fm_Lname`, `fm_Fname`, `fm_Roles`) VALUES 
-    ('mab', 'Balijko', 'Melanie A','["Professor"]');
+    ('mb', 'Balijko', 'Melanie A','["Professor"]');
 INSERT INTO `faculty_member` (`fm_Username`,`fm_Lname`, `fm_Fname`, `fm_Roles`) VALUES 
     ('datta', 'Datta', 'Suprakash','["Professor"]');
 INSERT INTO `faculty_member` (`fm_Username`,`fm_Lname`, `fm_Fname`, `fm_Roles`) VALUES 
