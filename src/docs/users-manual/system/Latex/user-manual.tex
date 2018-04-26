@@ -39,7 +39,7 @@
 %%%%Rest of your document goes here%%%%%%%%%%%%%%%%%%%
 
 \section{General Information}
-General Information section explains in general terms the system and the purpose for which it is
+This section explains in general terms the system and the purpose for which it is
 intended.
 
 \subsection{System Overview}
@@ -68,7 +68,7 @@ system’s behavior in case of any contingencies.
 
 \newpage
 \section{System Summary}
-System Summary section provides a general overview of the system. The summary outlines the uses of
+This section provides a general overview of the system. The summary outlines the uses of
 the system's hardware and software requirements, system’s configuration, user access levels and
 system’s behavior in case of any contingencies.
 
@@ -127,7 +127,7 @@ In case of power outage or unexpected shutdown of the web server, the applicatio
 
 \newpage
 \section{Getting Started}
-Getting Started section explains how to get GradApps 2.0 on the machine, install it and start the application. Please note this section is solely for the system administrator's who will maintain the application.
+This section explains how to get GradApps 2.0 on the machine, install it and start the application. Please note this section is solely for the system administrator's who will maintain the application.
 
 \bigskip
 \noindent To install the application, it has to be pulled from the private GitHub repository as it is not a published application for other uses.
@@ -177,7 +177,7 @@ Getting Started section explains how to get GradApps 2.0 on the machine, install
 
 \newpage
 \section{Using The System}
-section provides a detailed description of the common system functions. Common system functions are functionality that are available to all users who has access to the system. The list of common system functions are listed below:
+This section provides a detailed description of the common system functions. Common system functions are functionality that are available to all users who has access to the system. The list of common system functions are listed below:
 
 \subsection{Logging In}
 
@@ -274,6 +274,328 @@ To logout of the system, simply click on the ``Sign out" button from the navigat
 \label{fig:logout}
 \end{figure}
 
+%%%%%%%%% COMMITTEE MEMBER %%%%%%%%%%%
+
+\newpage
+\section{Committee Member}
+This section provides a detailed description of the committee member system functions.
+
+\subsection{Default Portal}
+After logging in and selecting the \emph{Committee Member} role you will have access to the committee member portal. In this portal you will be presented with a table containing all the students who have applied to be a graduate student. Here you can perform the following:
+\begin{itemize}
+\item View current and past reviewed application(s)
+\item Apply filters on current and past reviewed application(s)
+\item Review an assigned application(s)
+\item Save a review as a draft for later completion.
+\item Add new university assessments in the system to be used in a review. Such a new assessment will be added globally to the system and can be seen and used by other committee members when filling out a review.
+\end{itemize} 
+
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.8\textwidth]{images/cm/default_table.png}
+\end{center}
+\caption{Committee Member Portal}
+\label{fig:cm:cm_portal}
+\textbf{Note:} If there are no reviews assigned, it will display a message instead. 
+\end{figure}
+
+\newpage
+\subsection{Filtering the Table}
+This section describes how you would use/build/save/load a filter on the table.
+\begin{figure}[!htb]
+\subsubsection{Opening the Modal}
+To begin with filtering you must open the modal. To do so click on the ``Filter" button on the navigation bar.
+\begin{center}
+\includegraphics[width=.99\textwidth]{images/cm/open_modal.png}
+\end{center}
+\caption{Opening the  Modal}
+\label{fig:cm:open_modal}
+\end{figure}
+
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.99\textwidth]{images/cm/default_filter_view.png}
+\end{center}
+\caption{Filter View}
+\label{fig:cm:filter_view}
+\end{figure}
+
+\clearpage
+\newpage
+
+\begin{figure}[!htb]
+\subsubsection{Choose Your Columns}
+Once the modal is opened you can then choose the columns you wish to be displayed on the table. To do so, click on the button indicating which column you wish to see. Once clicked the button will display the order that column will appear in the table.\begin{center}
+\includegraphics[width=.99\textwidth]{images/cm/selected_col.png}
+\end{center}
+\caption{Choose Your Columns}
+\label{fig:cm:choose_columns}
+\textbf{Note:} Not selecting any column will use the same columns and order as the default table. If the \emph{Actions} column is not selected it will automatically be placed as the right most column. 
+\end{figure}
+
+\clearpage
+\begin{figure}[!htb]
+\subsubsection{Choose Your Filters}
+After selecting your columns, you can then choose the attributes by which you wish to filter your table. Begin by clicking on the drop down of the attribute you wish to filter and select an option from a list of generated options.
+\begin{center}
+\includegraphics[width=.99\textwidth]{images/cm/selected_filter.png}
+\end{center}
+\caption{Choose Your Filters}
+\textbf{Note:} You can use the search bar to help locate values. Begin by typing in the text box displayed. You can only select an option that appears in the dropdown.
+\label{fig:cm:choose_filters}
+\end{figure} 
+
+\clearpage 
+\begin{figure}[!htb]
+\subsubsection{Submitting a Filter}
+Once you have chosen your columns and filter attributes confirm your filter by reading the text under ``Selected Filter'' and click ``Submit". The text under the ``Selected Filter'' will change based on your filter attributes.
+\begin{center}
+\includegraphics[width=.9\textwidth]{images/cm/submit_filter.png}
+\end{center}
+\caption{Submit Filter}
+\textbf{Note}: When submitting a filter with no selected filters, the default table will be loaded.
+\label{fig:cm:submit_filter}
+\end{figure}
+
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.9\textwidth]{images/cm/example_filter_table.png}
+\end{center}
+\caption{Resulted Table After Applying Filter}
+\label{fig:cm:resulted_table}
+\end{figure}
+
+\clearpage
+
+\begin{figure}[!htb]
+\subsubsection{Saving a Filter}
+Once you have chosen your columns and filter attributes confirm your filter by reading the text under ``Selected Filter'' and give the preset a name by typing in the text box between the ``Submit'' and the ``Save Preset'' button. Once that is done click ``Save Preset''.
+\begin{center}
+\includegraphics[width=.99\textwidth]{images/cm/saving_preset.png}
+\end{center}
+\caption{Save a Filter}
+Once you have saved a filter you will be provided with a new table to match your filter and it will appear in the dropdown to be used for loading a filter.\\
+\textbf{Pro-tip:} You can update a filter by typing in the same name as an existing filter.
+\label{fig:cm:save_filter}
+\end{figure}
+
+\clearpage
+\begin{figure}[!htb]
+\subsubsection{Loading a Filter}
+To load a saved filter click the dropdown under ``Load a Preset'' and select the preset you wish to use. Once selected the modal will auto-populate.
+\begin{center}
+\includegraphics[width=.99\textwidth]{images/cm/load_preset.png}
+\end{center}
+\caption{Loading a Filter}
+\textbf{Pro-tip:} Create a preset called \emph{Default} with no columns or filters selected. You can then use this to load the default table or help clear any data you put in the modal.
+\label{fig:cm:save_filter}
+\end{figure}
+\clearpage
+\newpage
+\subsection{Sorting the Table}
+If you wish to sort the table displayed simply click on the columns that display arrows next to the name. The table can be sorted in Ascending/Descending order described below.
+\begin{itemize}
+\item \textbf{Name:} Descending Order = Z to A, Ascending order = A to Z
+\item \textbf{Date Assigned:} Descending Order = Newest - Oldest, Ascending order = Oldest - Newest
+\item \textbf{Degree Applied For:} Descending Order = Z to A, Ascending order = A to Z
+\item \textbf{Review Status:} Descending Order = Z to A, Ascending order = A to Z
+\end{itemize}
+\textbf{Pro-tip:} To sort by multiple columns hold the shift key while clicking on the columns.
+
+
+\bigskip
+\noindent \textbf{Note}: Ordering fields can be done on both filtered and unfiltered review application lists.
+
+\bigskip
+\noindent The following images depicts on how to order review applications using the \emph{Date Assigned} field in ascending and descending order.
+
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.99\textwidth]{images/cm/order_ascending.png}
+\end{center}
+\caption{Ascending order of Date Assigned field}
+\label{fig:cm:order_ascending}
+\end{figure}
+
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.99\textwidth]{images/cm/order_descending.png}
+\end{center}
+\caption{Descending order of Date Assigned field}
+\label{fig:cm:order_descending}
+\end{figure}
+
+\newpage
+
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.99\textwidth]{images/cm/multiple_order.png}
+\end{center}
+\caption{Ordering using multiple fields}
+\label{fig:cm:multiple_order}
+\end{figure}
+
+\clearpage
+\newpage
+\subsection{Reviewing Applications} \label{sec:reviews}
+The review process can have \textbf{three} different statuses shown
+\begin{itemize}
+\item \textbf{New}: A new application has been assigned to the committee member and no changes have been made on the review yet.
+\item \textbf{Draft}: A previously saved draft review. A review is considered as a draft when there has been at least one or more changes committed and the user has decided to save the changes.
+\item \textbf{Submitted}: A completed review which has been submitted and uploaded to the server. Once a review is submitted, it cannot be undone.
+\end{itemize}
+
+\bigskip
+\noindent The following list denotes the fields in a review form that is \textbf{not} submitted yet and their requirement status:
+\begin{table}[h]
+\centering
+\begin{tabular}{|c | c |}
+	\cline{1-2}
+	\textbf{Field Name} & \textbf{Required}\\ \hline
+	Institution Name(s) & No \\ \hline
+	Institution Assessment(s) & No \\ \hline
+	Background Information & No \\ \hline
+	Research Experience & No \\ \hline
+	Letter of Intent Analysis & No \\ \hline
+	Additional Comments & No \\ \hline
+	Applicant Rank & Yes \\ \hline
+\end{tabular}
+\caption {Review Fields}
+\label{tbl:cm:review_fields}
+\end{table}
+
+\newpage
+\bigskip
+\noindent The following image depicts the full view of the review form. The \emph{View Application PDF} link opens the student application in PDF version uploaded by the system administrator. 
+
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.99\textwidth]{images/cm/review_form.png}
+\end{center}
+\caption{Full view of the Review Form}
+\label{fig:cm:review_form}
+\end{figure}
+
+\clearpage
+\newpage
+\subsubsection{Opening a new Review}
+When a new review is received it will show on the portal. After that you will have the option of opening the review and start completing the form. The action for opening a new review will say \textbf{Start Review}.
+
+\bigskip
+\noindent The following image depicts user opening a brand new review.
+
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.99\textwidth]{images/cm/opening_new_review.png}
+\end{center}
+\caption{Opening a brand new review}
+\label{fig:cm:opening_new_review}
+\end{figure}
+
+\bigskip
+\noindent The following image depicts user making no changes to the opened review and exiting out of the review form.
+
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.99\textwidth]{images/cm/new_review_exit_wo_changes.png}
+\end{center}
+\caption{Exiting out of a brand new review application without changes}
+\label{fig:cm:new_review_exit_w/o_changes}
+\end{figure}
+
+\subsubsection{Filling out a Review}
+Table \ref{tbl:cm:review_fields} outlines the fields in a review application and their required status. The following table specializes Table \ref{tbl:cm:review_fields} and displays the type of input each field takes.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|c | c |}
+	\cline{1-2}
+	\textbf{Field Name} & \textbf{Input Type}\\ \hline
+	Institution Name(s) & Multiple Drop-Down \\ \hline
+	Institution Assessment(s) & Multiple Drop-Down \\ \hline
+	Background Information & Text \\ \hline
+	Research Experience & Text \\ \hline
+	Letter of Intent Analysis & Text \\ \hline
+	Additional Comments & Text \\ \hline
+	Applicant Rank & Single Drop-Down \\ \hline
+\end{tabular}
+\caption {Review Fields Input Type}
+\label{tbl:cm:review_fields_input}
+\end{table}
+
+\bigskip
+\noindent \textbf{Institution Assessment}: When performing a institution assessment you can select from one or more institutions and a description in the database. If the institution does not exist or their description is inadequate you can also create a new institution/assessment.
+
+\bigskip
+\noindent The following image depicts an user selecting two institutions the applicant has attended and selecting an assessment from each of the institutions.
+
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.7\textwidth]{images/cm/uni_assessment.png}
+\end{center}
+\caption{Institution Assessment View}
+\label{fig:cm:uni_assessment}
+\end{figure}
+
+\clearpage
+\newpage
+\subsubsection{Saving a Review as Draft}
+While filling out a review you will have the opportunity to save an on-going review as a draft for future completion.
+
+\bigskip
+\noindent The following images depicts a user making changes to an application review and then saving it as a draft. Consequently, the status of the review is changed to \textbf{Draft}. And if the user wants to continue working on the draft sometime later, the action for opening a drafted review will say \textbf{Continue Review}.
+
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.9\textwidth]{images/cm/save_as_draft_review.png}
+\end{center}
+\caption{Save a review as draft}
+\label{fig:cm:save_as_draft_review}
+\end{figure}
+
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.9\textwidth]{images/cm/drafted_review.png}
+\end{center}
+\caption{Drafted Review View}
+\label{fig:cm:drafted_review}
+\end{figure}
+
+\clearpage
+\subsubsection{Submitting a Review}
+Once you are satisfied with your review simply  click the \textbf{Submit Review} button to complete your review. If the correct number of reviews for an application has been submitted (depending on visa status), the application will be automatically available for selection to those on the \textbf{Professor Portal}. The only required field needed for submitting a review is the final application rank that is to be decided by the admission committee member upon analysing the application.
+
+\bigskip
+\noindent The following image depicts an end user submitting a review. 
+
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.8\textwidth]{images/cm/submit_review.png}
+\end{center}
+\caption{Submit a Review}
+\label{fig:cm:submit_review}
+\end{figure}
+\clearpage
+\bigskip
+\noindent Once the review is submitted, it will show up on the user dashboard with status as \textbf{Submitted} and The user action to view a submitted review will say \textbf{View Review}. Submitted reviews are only viewable as a plain text application form. The following images depicts viewing a submitted review.
+
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.8\textwidth]{images/cm/submitted_review.png}
+\end{center}
+\caption{Submitted Review View}
+\label{fig:cm:submitted_review}
+\end{figure}
+
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.8\textwidth]{images/cm/submit_review_view.png}
+\end{center}
+\caption{Submitted Review View}
+\label{fig:cm:submit_review_view}
+\end{figure}
+
+\clearpage
 \newpage
 \section{Help}
 For further help or information please contact the Graduate Program Director (GPD) or the Graduate Program Assistant (GPA) of the EECS Graduate Program at Lassonde School of Engineering.\\
