@@ -274,7 +274,7 @@ To logout of the system, simply click on the ``Sign out" button from the navigat
 \label{fig:logout}
 \end{figure}
 
-%%%%%%%%% COMMITTEE MEMBER %%%%%%%%%%%
+%%%%%%%%% COMMITTEE MEMBER MANUAL %%%%%%%%%%%
 
 \newpage
 \section{Committee Member}
@@ -593,6 +593,181 @@ Once you are satisfied with your review simply  click the \textbf{Submit Review}
 \end{center}
 \caption{Submitted Review View}
 \label{fig:cm:submit_review_view}
+\end{figure}
+
+%%%%%%%%%% PROFESSOR MANUAL %%%%
+\clearpage
+\newpage
+\section{Professor}
+This section provides a detailed description of the professor system functions.
+
+\subsection{Default Portal}
+After logging in and selecting the professor role you will have access to the professor portal. In this portal you will be presented with a table containing all the students who have applied to be a graduate student. Here you can perform the following:
+\begin{itemize}
+\item Filter the table to only display applications based on a criteria of your choosing
+\item Sort the table on certain columns
+\item View applications and their respective committee review
+\item Set application attributes such as notifying others if you have contacted/requested an applicant or indicate to yourself if you find an applicant interesting or not.
+\end{itemize}
+
+\subsection{Filtering the Table}
+This section describes how you would use/build/save/load a filter on the table.
+
+\newpage
+\subsubsection{Opening the Modal}
+To begin with filtering you must open the modal. To do so click on the ``Filter" button on the navigation bar.
+
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.99\textwidth]{images/prof/open_modal.png}
+\end{center}
+\caption{Opening the  Modal}
+\label{fig:prof/open_modal}
+\end{figure}
+
+\clearpage
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.99\textwidth]{images/prof/filter_view.png}
+\end{center}
+\caption{Filter View}
+\label{fig:prof/filter_view}
+\end{figure}
+
+\clearpage
+\begin{figure}[!htb]
+\subsubsection{Choose Your Columns}
+Once the modal is opened you can then choose the columns you wish to be displayed on the table. To do so, click on the button indicating which column you wish to see. Once clicked the button will display the order that column will appear in the table.\begin{center}
+\includegraphics[width=.99\textwidth]{images/prof/choose_columns.png}
+\end{center}
+\caption{Choose Your Columns}
+\label{fig:prof/choose_columns}
+\textbf{Note:} Not selecting any column will use the same columns and order as the default table. If the \emph{Actions} column is not selected it will automatically be placed as the right most column. \emph{My Interest Status} is account specific and can only be seen by you.
+\end{figure}
+
+\clearpage
+
+\begin{figure}[!htb]
+\subsubsection{Choose Your Filters}
+After selecting your columns, you can then choose the attributes by which you wish to filter your table. Begin by clicking on the drop down of the attribute you wish to filter and select an option from a list of generated options.
+\begin{center}
+\includegraphics[width=.99\textwidth]{images/prof/choose_filters.png}
+\end{center}
+\caption{Choose Your Filters}
+\textbf{Note:} You can use the search bar to help locate values. Begin by typing in the text box displayed. You can only select an option that appears in the dropdown.
+\label{fig:prof/choose_filters}
+\end{figure}
+
+\clearpage 
+\begin{figure}[!htb]
+\subsubsection{Submitting a Filter}
+Once you have chosen your columns and filter attributes confirm your filter by reading the text under ``Selected Filter'' and click ``Submit". The text under the ``Selected Filter'' will change based on your filter attributes.
+\begin{center}
+\includegraphics[width=.99\textwidth]{images/prof/submit_filter.png}
+\end{center}
+\caption{Submit Filter}
+\label{fig:prof/submit_filter}
+\end{figure}
+
+\clearpage
+After you submit a filter you will be provided with a new table to match your filter.
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.99\textwidth]{images/prof/filtered_table.png}
+\end{center}
+\caption{Filtered Table}
+\textbf{Pro-tip:} Attributes that satisfy your filter will be highlighted. Make sure to include the right column to see those highlights!
+\label{fig:prof/filtered_table}
+\end{figure}
+
+\clearpage 
+
+\begin{figure}[!htb]
+\subsubsection{Saving a Filter}
+Once you have chosen your columns and filter attributes confirm your filter by reading the text under ``Selected Filter'' and give the preset a name by typing in the text box between the ``Submit'' and the ``Save Preset'' button. Once that is done click ``Save Preset''.
+\begin{center}
+\includegraphics[width=.99\textwidth]{images/prof/save_filter.png}
+\end{center}
+\caption{Save a Filter}
+Once you have saved a filter you will be provided with a new table to match your filter and it will appear in the dropdown to be used for loading a filter.\\
+\textbf{Pro-tip:} You can update a filter by typing in the same name as an existing filter.
+\label{fig:prof/save_filter}
+\end{figure}
+
+\clearpage
+\begin{figure}[!htb]
+\subsubsection{Loading a Filter}
+To load a saved filter click the dropdown under ``Load a Preset'' and select the preset you wish to use. Once selected the modal will auto-populate.
+\begin{center}
+\includegraphics[width=.99\textwidth]{images/prof/load_filter.png}
+\end{center}
+\caption{Loading a Filter}
+\textbf{Pro-tip:} Create a preset called \emph{Default} with no columns or filters selected. You can then use this to load the default table or help clear any data you put in the modal.
+\label{fig:prof/save_filter}
+\end{figure}
+
+\clearpage
+
+\subsection{Sorting the Table}
+If you wish to sort the table displayed simply click on the columns that display arrows next to the name. The table can be sorted in Ascending/Descending order described below.
+\begin{itemize}
+\item \textbf{Name:} Descending Order = Z to A, Ascending order = A to Z
+\item \textbf{Gender:} Descending Order = Z to A, Ascending order = A to Z
+\item \textbf{Committee Rank:} Descending Order = A+ to C, Ascending order = C to A+
+\item \textbf{GPA:} Descending Order = A+ to C, Ascending order = C to A+
+\item \textbf{Degree Applied For:} Descending Order = Z to A, Ascending order = A to Z
+\item \textbf{Visa Status:} Descending Order = Z to A, Ascending order = A to Z
+\item \textbf{Program Decision:} Descending Order = Z to A, Ascending order = A to Z
+\item \textbf{Interest Status:} Descending Order = Z to A, Ascending order = A to Z
+\end{itemize}
+\textbf{Pro-tip:} To sort by multiple columns hold the shift key while clicking on the columns. For example to sort by Committee Rank and then GPA, hold onto shift and left click Committee Rank and then GPA.
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.99\textwidth]{images/prof/sorted_table.png}
+\end{center}
+\caption{Sort Table}
+\label{fig:prof/sorted_table}
+\end{figure}
+\clearpage
+\subsection{Viewing an Application}
+To view an application click on ``View Application'' at the row corresponding to the applicant you wish to view.
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.99\textwidth]{images/prof/view_app.png}
+\end{center}
+\caption{Viewing an Application}
+\end{figure}
+\begin{figure}[!htb]
+You will be redirected to an application summary page that will contain a summary of the application and the committee review. If you wish to see more click on ``View Application PDF".
+\begin{center}
+\includegraphics[width=.99\textwidth]{images/prof/viewapp.png}
+\end{center}
+\caption{Application Summary}
+\label{fig:prof/sorted_table}
+\end{figure}
+\clearpage
+
+\subsection{Setting Application Attributes}
+Clicking on the ``Set To" drop down on an applicant row will provide you options to update the following fields on an application.
+\begin{itemize}
+\item \textbf{Contacted/Requested:} Indicate to others whether or not you have contacted/requested a student (default not contacted and not requested).
+\item \textbf{My Interest Status:} This is a personal field to help you keep track of applications you have/haven't viewed and your opinion of them. It can only be seen by you.
+\end{itemize}
+
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.99\textwidth]{images/prof/set_attribute.png}
+\end{center}
+\caption{Setting Application Attribute}
+\label{fig:prof/set_attribute}
+\end{figure}
+
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.99\textwidth]{images/prof/set_attribute2.png}
+\end{center}`
+\caption{Results}
+\label{fig:prof/set_attribute_results}
 \end{figure}
 
 \clearpage
