@@ -29,11 +29,11 @@
 \maketitle
 
 \newpage
-
+\clearpage
 \section*{Revisions}
 
 %%%%%%%%%%%%Table of revisions%%%%%%%%
-\begin{tabular}{|l|l|p{3in}|}
+\begin{tabular}{|l|l|p{3.5in}|}
 \hline
 Date & Revision & Description \\ 
 \hline
@@ -71,7 +71,7 @@ Date & Revision & Description \\
 & 5.0
 & Add abstract UI grammar and acceptance tests \\
 \hline
-29 December, 2017
+29 December,2017
 & 6.0
 & \begin{mylist}
 \item Add system invariants
@@ -79,7 +79,7 @@ Date & Revision & Description \\
 \item Fix UI grammar and acceptance tests
 \end{mylist} \\  
 \hline
-2 January,  2017
+2 January, 2018
 & 7.0
 & \begin{mylist}
 \item Updated Use Case Textual Descriptions 
@@ -88,6 +88,10 @@ Date & Revision & Description \\
 \item General typo fixes
 \item Added more system goals
 \end{mylist} \\  
+\hline
+23 April, 2018
+& 8.0
+& Final revision of the document after product implementation. New additions from v7.0 are \hl{highlighted}. \\
 \hline
 \end{tabular}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -139,18 +143,19 @@ The current system in place for the the EECS Graduate Program completes the bare
 
 \item \textbf{G2}---An Admin should be able to assign applications to be reviewed by Committee Members.
 
-\item \textbf{G3}---An Admin should be able to manage Committee Members.
+\item \textbf{G3}---An Admin should be able to manage all users in the system (i.e add/remove users, assign/unassign roles).
 
-\item \textbf{G4}-- An Admin should be able to assign/remove roles of other faculty members.
+\item \textbf{G4}---A Committee Member should be able to view applications to be reviewed.
 
-\item \textbf{G5}---A Committee Member should be able to view applications to be reviewed.
+\item \textbf{G5}---A Committee Member should be able to use or add university descriptions in the system for their reviews.
 
-\item \textbf{G6}---A Committee Member should be able to use/modify/add university descriptions in the system for their reviews.
+\item \textbf{G6}---A Professor and Admin should be able to search for desired student applications by applying a filter (See Appendix \ref{app:defns}) on application attributes.
 
-\item \textbf{G7}---A Professor and Admin should be able to search for desired student applications by applying a filter (See Appendix \ref{app:defns}) on application attributes.
-
-\item \textbf{G8}---A Professor should be able to indicate Admins to request a student for admission.
+\item \textbf{G7}---A Professor should be able to indicate Admins to request a student for admission.
 \end{mylist}
+
+\smallskip
+\noindent \hl{The type of application for our business system will be a \textbf{Graphical User Interface Web Application}.} 
 
 
 \newpage
@@ -225,9 +230,9 @@ The \emph{admin} in our system under description are  the \emph{Graduate Program
 \item Can remove a member from the list of EECS graduate program members except for themselves
 \item Can assign a new role to an existing member
 \item Can assign applications to be reviewed by a graduate committee member
-\item Can send email reminders to committee members about assigned applications
 \item Can upload a student application to the portal
 \item Can update all attributes of a student application
+\item \hl{Can filter student applications}
 \end{mylist}
 
 \subsection{Committee Member}
@@ -240,7 +245,8 @@ The \emph{committee member} in our system under description is a subset of EECS 
 \begin{mylist}
 \item Can review an assigned application(s)
 \item Can view past reviewed application(s)
-\item Can add/use/modify university descriptions in the system to be used for all applications.
+\item Can use/add university descriptions in the system to be used for all applications
+\item \hl{Can filter review applications}
 \end{mylist}
 
 \subsection{Professor}
@@ -252,8 +258,12 @@ The \emph{professors} in our system are a subset of EECS graduate program member
 
 \begin{mylist}
 \item Can contact a student, once interested
-\item Can request a student for admission, once	 contacted
+\item Can request a student for admission, once	contacted
+\item \hl{Can filter student applications}
 \end{mylist}
+
+\bigskip
+\noindent \hl{In addition to the above, all users in the system can manage their personal user settings (i.e change username, password, user informations such as first and last name, email address and their field(s) of specialization).}
 
 \newpage
 \section{Deliverables}
@@ -272,20 +282,23 @@ The \emph{Required} deliverables were decided by the majority vote on a list of 
 \item Any user shall be able to log into the system if and only if they are a member of the EECS graduate program
 \item Any user shall be able to log out of the system if and only if they are logged in
 \item Any user shall be logged out of the system after a maximum of 15 minutes of idleness
+\item \hl{Any user can manage their personal user settings such as username, password and etc.}
+\item \hl{Any user with filtering abilities on applications or reviews shall be able to save filter presets}
 \item An \emph{admin} shall be able to add a new member to the list of EECS graduate program members
 \item An \emph{admin} shall be able to remove a member from the list of EECS graduate program members except for themselves
 \item An \emph{admin} shall be able to assign a new role to an existing faculty member
+\item \hl{An \emph{admin} shall be able to unassign a role from an existing faculty member except for themselves}
 \item An \emph{admin} shall be able to assign applications to be reviewed by committee members
+\item \hl{An \emph{admin} shall be able to unassign applications to be reviewed by committee members (only if they are still in \emph{New} or \emph{Draft} stage of the review)}
+\item \hl{An \emph{admin} shall be able to dismiss applications to be reviewed by committee members (only if they are still in \emph{Submitted} stage of the review)}
 \item An \emph{admin} shall be able to upload a student application to the portal
 \item An \emph{admin} shall be able to update all attributes of a student application
-\item An \emph{admin} who assigned an application shall be notified when reviews for that application has been completed
 \item An \emph{admin} shall be able to export the applications to CSV format
-\item A \emph{committee member} shall be notified when a batch of applications come in for review
 \item A \emph{committee member} shall be able to see the list of new and previously reviewed application(s)
-\item A \emph{committee member} shall be able to apply filtering only on previously reviewed application(s)
+\item A \emph{committee member} shall be able to apply filtering on application reviews
 \item A \emph{committee member} shall be able to save applications as a draft for future completion
-\item A \emph{committee member} shall be able to view, use or modify a university assessment if it has already been used when reviewing applications
-\item An \emph{admin} and \emph{professor} shall be able to see details about an application in an organized table with the following attributes:
+\item A \emph{committee member} shall be able to use or add an university assessment if it has already been used when reviewing applications
+\item An \emph{admin} and \emph{professor} shall be able to see details about an application in an organized table with one or more of the following attributes:
 \begin{enumerate}
 \item Date of Application
 \item Year
@@ -379,21 +392,13 @@ The \emph{Required} deliverables were decided by the majority vote on a list of 
 \item Reason for Decline
 \item Comment
 \end{enumerate}
-\item Reviewed Status (Similar to application status but is user specific)
+\item Interest Status (Similar to application status but is user specific)
 \begin{enumerate}
-\item Reviewed - once a professor has seen a student application and decided to not move on to contact them
-\item Not Reviewed - not looked into the application yet
+\item \hl{Interested - once a professor has seen a student application and has shortlisted to be contacted}
+\item \hl{Not Interested - once a professor has seen a student application and decided to not move on to contact them}
 \end{enumerate}
 \end{enumerate}
 \item An \emph{admin} and \emph{professor} shall be able to perform advanced filtering on all of the above attributes
-\item In addition, \emph{Application Status} attribute can only be filtered on:
-\begin{enumerate}
-\item The date of application uploaded
-\item The professor(s) who has been in contact with the student
-\item The professor(s) who has requested the student
-\item The decision by the program
-\item The decision by the student
-\end{enumerate}
 \end{mylist}
 
 \smallskip
@@ -421,8 +426,13 @@ The \emph{Required} deliverables were decided by the majority vote on a list of 
 \end{enumerate}
 \end{mylist}
 
-\bigskip
+\smallskip
+\noindent \hl{\textbf{Note on Field(s) of Interest:} In order to add a new entry to field(s) of interest, the query has to be done through the backend of the system. A table is manipulated which consisting a list of current field(s) of interest. With a simple insert, delete or update action one could change the corresponding field(s) of interest.}
 
+\smallskip
+\noindent \hl{\textbf{Note on Enumerated Type Attributes:} Attributes such as \emph{Session}, \emph{Gender}, \emph{Degree Applied For}, \emph{Visa Status} are enumerated type attributes. The validation of the enumerated values are to be done in the client and server side before being stored in the database allowing a steady flow of modularity. Hence, removing/adding options for any of the enumerated attributes can be easily incorporated.}
+
+\bigskip
 \noindent\textbf{Application Attributes}
 
 \smallskip
@@ -447,7 +457,7 @@ The \emph{Required} deliverables were decided by the majority vote on a list of 
 	Visa Status & Enumerated & $\{Visa, Domestic\}$ \\ \hline
 	Committee Reviewer & Enumerated & $GC$ \\ \hline
 	Application Status & Enumerated & Refer to Section \ref{req_delvs} \\ \hline
-	Reviewed Status & Enumerated & $\{Reviewed, Not Reviewed\}$ \\ \hline
+	Reviewed Status & Enumerated & $\{Interested, Not Interested\}$ \\ \hline
 \end{tabular}
 \caption {Attributes on uploaded applications}
 \label{tbl:attr_uploaded}
@@ -476,8 +486,8 @@ The \emph{Required} deliverables were decided by the majority vote on a list of 
 The \emph{Optional} deliverables were decided by the minority vote on a list of questionnaires conducted on the EECS graduate program staffs. Following are the \textbf{\emph{Optional}} deliverables for the System Under Description:\\
 
 \begin{mylist}
+\item \hl{\textbf{Achieved:} A \emph{committee member} completing a review form shall be able to have a head start on the form with information automatically extracted and filled such as Name, Student No., GPA}
 \item An \emph{admin} may be able to import a CSV file and extend the database with the new data
-\item A \emph{committee member} completing a review form may be able to have a head start on the form with information automatically extracted and filled such as Name, Student No., GPA
 \item A \emph{committee member} may be able to download offline forms (XML format) and upload it back into the server
 \item A \emph{professor} might be interested in other attributes that are to be provided in an organized table and used for advanced filtering
 \begin{enumerate}
@@ -532,6 +542,7 @@ The following three use case textual representation describes the \emph{Authenti
 \item Table \ref{tbl:uc1Atd} describes a user is logging into the system
 \item Table \ref{tbl:uc1Btd} describes a user once validated, selecting a role to log in as.
 \item Table \ref{tbl:uc1Ctd} describes a user logging out of the system.
+\item \hl{Table} \ref{tbl:uc1Dtd} \hl{describes a user updating their email address.}
 \end{itemize}
 
 \begin{table}[!htb]
@@ -541,18 +552,18 @@ The following three use case textual representation describes the \emph{Authenti
 \textbf{Use Case ID:} UC-1A \\ \hline
 \textbf{Use Case Name:} Login \\ \hline
 \textbf {Primary Actor:} Admin, Professor, Committee Member\\ \hline
-\textbf{Description:} A user opens the browser and goes to the portal webpage. \\The user enters their Passport York username along with the password associated \\with it. The user clicks the login button, the credentials get authenticated \\and succeeds. The user is now logged into the system. \\ \hline
+\textbf{Description:} A user opens the browser and goes to the portal webpage. \\The user enters their EECS username along with the password associated \\with it. The user clicks the login button, the credentials get authenticated \\and succeeds. The user is now logged into the system. \\ \hline
 \textbf{Trigger:} User indicates to login to the system.\\ \hline
 \textbf{Precondition:}
-\\ PRE-1. The user has a PPY account. 
+\\ PRE-1. The user has an EECS account. 
 \\ PRE-2. The user is not logged into the system. \\ \hline
 \textbf{Postcondition:}
 \\ POST-1. The user is logged into the system. \\ \hline
 \textbf{Normal Flow: 1A.0 Login to the system}
 \\ 1. User opens a web browser and visits the grad apps webpage.
-\\ 2. System prompts the user to enter their PPY username and password.
+\\ 2. System prompts the user to enter their EECS username and password.
 \\ 3. User enters the username and password and clicks enter.
-\\ 4. System sends authentication request to PPY and gets a valid response back.
+\\ 4. System sends authentication request and gets a valid response back.
 \\ 5. The user is redirected to the next page for selecting the role. Extension \\point to UC-3.\\ \hline
 \textbf{Exception Flow: 1A.0.E1 User ID or Password is not valid}
 \\ 1. System displays error \hyperref[app:error]{\textbf{e1}}
@@ -601,7 +612,7 @@ The following three use case textual representation describes the \emph{Authenti
 \textbf{Use Case ID:} UC-1C \\ \hline
 \textbf{Use Case Name:} Logout \\ \hline
 \textbf {Primary Actor:} Admin, Professor, Committee Member\\ \hline
-\textbf{Description:} A user is already logged into the system. The user clicks on the \\logout button. The user's logged in session is successfully terminated by PPY \\and the user is bought back into the login page. \\ \hline
+\textbf{Description:} A user is already logged into the system. The user clicks on the \\logout button. The user's logged in session is successfully terminated \\and the user is bought back into the login page. \\ \hline
 \textbf{Trigger:} User indicates to logout of the system.\\ \hline
 \textbf{Precondition:}
 \\ PRE-1. The user is logged in to the system.
@@ -612,7 +623,7 @@ The following three use case textual representation describes the \emph{Authenti
 \\ 1. User clicks on the logout button.
 \\ 2. System prompts the user to confirm logging out of the system.
 \\ 3. User chooses ok.
-\\ 4. System sends session termination request to PPY and gets a valid response back.
+\\ 4. System sends session termination request and gets a valid response back.
 \\ 5. The user is logged out and redirected to the login page.\\ \hline
 \textbf{Exception Flow: 1C.0.E1 Already logged out}
 \\ 1. System displays error \hyperref[app:error]{\textbf{e3}}
@@ -622,6 +633,32 @@ The following three use case textual representation describes the \emph{Authenti
 \end{center}
 \caption {Use Case Textual Description for Logout}
 \label{tbl:uc1Ctd}
+\end{table}
+
+\begin{table}[!htb]
+\begin{center}
+\begin{tabular}{|l|l|}
+\hline
+\textbf{Use Case ID:} \hl{UC-1D} \\ \hline
+\textbf{Use Case Name:} \hl{Update Email Address} \\ \hline
+\textbf {Primary Actor:} \hl{Admin, Professor, Committee Member}\\ \hline
+\textbf{Description:} \hl{A user is already logged into the system. The user clicks on the }\\ \hl{settings button. The user is redirected to the settings page. The user updates }\\ \hl{the email and clicks submit. The user is brought back to the role selection page.}\\ \hline
+\textbf{Trigger:} \hl{User indicates to update the email.}\\ \hline
+\textbf{Precondition:}
+\\ PRE-1. \hl{The user is logged in to the system.}\\ \hline
+\textbf{Postcondition:}
+\\ POST-1. \hl{The user has updated their email address.}\\ \hline
+\textbf{Normal Flow: 1C.0 Update Email Address}
+\\ \hl{1. User clicks on the settings button.}
+\\ \hl{2. User is redirected to the settings page.}
+\\ \hl{3. User inputs a new email address.}
+\\ \hl{4. User clicks on submit.}
+\\ \hl{5. System updates the user email address and returns a valid response back.}
+\\ \hl{6. The user is redirected to the roles page.}\\ \hline
+\end{tabular}
+\end{center}
+\caption {Use Case Textual Description for Updating Email Address}
+\label{tbl:uc1Dtd}
 \end{table}
 
 \clearpage
@@ -687,7 +724,7 @@ The following four use case textual representation describes the \emph{Add/Remov
 \textbf{Use Case ID:} UC-3A \\ \hline
 \textbf{Use Case Name:} Add a Member \\ \hline
 \textbf {Primary Actor:} Admin \\ \hline
-\textbf{Description:} A user has logged into the system. \\The user wants to add a new user. The user selects the option to \\add a new member, a prompt is shown to enter the member's PPY id. \\ The user enters all the information and submits a request. \\ The system confirms success in adding the new member.\\ \hline
+\textbf{Description:} A user has logged into the system. \\The user wants to add a new user. The user selects the option to \\add a new member, a prompt is shown to enter the member's EECS username. \\ The user enters all the information and submits a request. \\ The system confirms success in adding the new member.\\ \hline
 \textbf{Precondition:}
 \\ PRE-1. The user is logged in.
 \\ PRE-2. The role selected by the user is admin.
@@ -723,7 +760,7 @@ The following four use case textual representation describes the \emph{Add/Remov
 \textbf{Use Case ID:} UC-3B \\ \hline
 \textbf{Use Case Name:} Remove a Member \\ \hline
 \textbf {Primary Actor:} Admin \\ \hline
-\textbf{Description:} A user has logged into the system. The user wants to remove\\ a user from the system. The user selects the option to remove the member,\\ a prompt is shown to enter the member's PPY id. \\The user enters all the information and submits a request. \\The system confirms success in removing the member.\\ \hline
+\textbf{Description:} A user has logged into the system. The user wants to remove\\ a user from the system. The user selects the option to remove the member,\\ a prompt is shown to enter the member's EECS username. \\The user enters all the information and submits a request. \\The system confirms success in removing the member.\\ \hline
 \textbf{Precondition:}
 \\ PRE-1. The user is logged in.
 \\ PRE-2. The role selected by the user is admin.
@@ -762,7 +799,7 @@ The following four use case textual representation describes the \emph{Add/Remov
 \textbf{Use Case ID:} UC-3C \\ \hline
 \textbf{Use Case Name:} Assign a Role \\ \hline
 \textbf {Primary Actor:} Admin \\ \hline
-\textbf{Description:} A user has logged into the system. The user wants to assign \\a new role to an existing user. \\The user selects the option to assign the role of a member, a prompt is shown \\to enter the member's PPY id and the role to be assigned. The user enters \\the information and submits a request. The system confirms success in \\adding the members role.\\ \hline
+\textbf{Description:} A user has logged into the system. The user wants to assign \\a new role to an existing user. \\The user selects the option to assign the role of a member, a prompt is shown \\to enter the member's EECS username and the role to be assigned. The user enters \\the information and submits a request. The system confirms success in \\adding the members role.\\ \hline
 \textbf{Precondition:}
 \\ PRE-1. The user is logged in.
 \\ PRE-2. The role selected by the user is admin.
@@ -807,7 +844,7 @@ The following four use case textual representation describes the \emph{Add/Remov
 \textbf{Use Case ID:} UC-3D \\ \hline
 \textbf{Use Case Name:} Unassign a Role \\ \hline
 \textbf {Primary Actor:} Admin \\ \hline
-\textbf{Description:} A user has logged into the system. The user wants to \\unassign a role for an existing user. \\The user selects the option to unassign the role of a member, a prompt is \\shown to enter the member's PPY id and the role to be unassigned. The user \\enters the information and submits a request. The system confirms success in \\removing the members role.\\ \hline
+\textbf{Description:} A user has logged into the system. The user wants to \\unassign a role for an existing user. \\The user selects the option to unassign the role of a member, a prompt is \\shown to enter the member's EECS username and the role to be unassigned. The user \\enters the information and submits a request. The system confirms success in \\removing the members role.\\ \hline
 \textbf{Precondition:}
 \\ PRE-1. The user is logged in.
 \\ PRE-2. The role selected by the user is admin.
@@ -858,7 +895,7 @@ The following four use case textual representation describes the \emph{Add/Remov
 \textbf{Use Case ID:} UC-4 \\ \hline
 \textbf{Use Case Name:} Assign Application \\ \hline
 \textbf {Primary Actor:} Admin \\ \hline
-\textbf{Description:} A user has logged into the system. The user wants \\to assign an application to a committee member for review. The user \\selects the option to assign an application to a committee member, a \\prompt is shown to enter the member's PPY id and the application to be \\assigned. The user enters the information and submits a request.\\ \hline
+\textbf{Description:} A user has logged into the system. The user wants \\to assign an application to a committee member for review. The user \\selects the option to assign an application to a committee member, a \\prompt is shown to enter the member's EECS username and the application to be \\assigned. The user enters the information and submits a request.\\ \hline
 \textbf{Precondition:}
 \\ PRE-1. The user is logged in with the role admin.
 \\ PRE-2. The committee member is in the system.
@@ -982,8 +1019,8 @@ The following two use case textual representation describes the \emph{View/Filte
 \textbf{Use Case Name:} Update Application \\ \hline
 \textbf {Primary Actor:} Admin, Professor \\ \hline
 \textbf{Description:} A user has logged into the system. The user wants to update an \\application. The user selects the attribute to update and clicks enter. The system \\processes the request updates the attribute on the application if their role permits it.
-\\Valid attributes for professors to update could be seen at \hyperref[R23]{REQ23} and \hyperref[R24]{REQ24}.
-\\Valid attributes for admins to update could be seen at \hyperref[R20]{REQ20}. \\ \hline
+\\Valid attributes for professors to update could be seen at \hyperref[R21]{REQ21} and \hyperref[R22]{REQ22}.
+\\Valid attributes for admins to update could be seen at \hyperref[R19]{REQ19}. \\ \hline
 \textbf{Precondition:}
 \\ PRE-1. The user is logged in.
 \\ PRE-2. The user has selected a role.\\ \hline
@@ -991,7 +1028,7 @@ The following two use case textual representation describes the \emph{View/Filte
 \\ POST-1. The user has updated an application. \\ \hline
 \textbf{Normal Flow: 6.0 Update an Application}
 \\ 1. User selects an application to update.
-\\ 2. User selects an attribute to update and enters a new value.\\see  \hyperref[R20]{REQ20}, \hyperref[R23]{REQ23} and \hyperref[R24]{REQ24}
+\\ 2. User selects an attribute to update and enters a new value.\\see  \hyperref[R19]{REQ19}, \hyperref[R21]{REQ21} and \hyperref[R22]{REQ22}
 \\ 2. System processes the input and succeeds.
 \\ 3. System displays a success message \hyperref[app:success]{\textbf{s6}}\\ \hline
 \textbf{Exception Flow: 6.0.E1 Incorrect type of value entered}
@@ -1168,19 +1205,11 @@ The following four use case textual representation describes the \emph{Review St
 
 The following are the E/R Descriptions elicited from Use Case 1, refer to Section \ref{subsec:uc1}
 
-\genenv{Each EECS graduate program member must have an unique username and password associated with their account via PPY.\\}{}
+\genenv{Each EECS graduate program member must have an unique EECS username and password associated with their account.\\}{}
 \label{E1}
 
 \smallskip
-\noindent \textbf{Rationale}: The login credentials will be handled through the Passport York. This is to simplify login uses and since this business system is under York University, PPY is the most secure option.
-
-\edescription
-{If the PPY is down for maintenance service, the system must not be accessible.\\}
-{See Env. \ref{E1}}
-\label{E2}
-
-\smallskip
-\noindent \textbf{Rationale}: Since the system heavily relies on PPY authentication, if PPY is scheduled down for maintenance, the system becomes inaccessible.
+\noindent \textbf{Rationale}: The authentication will be handled through the EECS credentials.
 
 \rdescription
 {A user shall be able to login to the system \emph{iff} they are a member of the EECS graduate program with a role assigned.\\}
@@ -1188,7 +1217,7 @@ The following are the E/R Descriptions elicited from Use Case 1, refer to Sectio
 \label{R1}
 
 \smallskip
-\noindent \textbf{Rationale}: A user shall be able to log into the system if they are a member of the EECS graduate program and have a role assigned to them. The login will be completed using Passport York Authentication (PPY).
+\noindent \textbf{Rationale}: A user shall be able to log into the system if they are a member of the EECS graduate program and have a role assigned to them. The login will be completed using EECS credentials.
 
 \genreq
 {A user shall be able to logout of the system \emph{iff} they are already logged in.\\}
@@ -1196,7 +1225,7 @@ The following are the E/R Descriptions elicited from Use Case 1, refer to Sectio
 \label{R2}
 
 \smallskip
-\noindent \textbf{Rationale}: A user shall be able to log out of the system iff they are logged into the system through PPY.
+\noindent \textbf{Rationale}: A user shall be able to log out of the system iff they are logged into the system using their EECS credentials.
 
 \rdescription
 {A user shall be not both logged in and logged out at the same time.\\}
@@ -1229,6 +1258,14 @@ The following are the E/R Descriptions elicited from Use Case 1, refer to Sectio
 
 \smallskip
 \noindent \textbf{Rationale}: A logged in user cannot be logged in with two different roles. This is to avoid conflicting access control between two different roles.
+
+\rdescription
+{\hl{A user shall be able to manage their personal user settings such as username, password and etc.}\\}
+{\hl{The fields available to update are: username, password, last name, first name, email, field(s) of specialization}}
+
+\smallskip
+\noindent \hl{\textbf{Rationale}: A logged in user can update their own user settings. The fields mentioned above can be modified by the user to personalize their settings.}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%END E/R USE CASE 1%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%E/R USE CASE 2%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1285,7 +1322,7 @@ Following are the E/R Descriptions elicited from Use Case 3, refer to Section \r
 \noindent \textbf{Rationale}: Only an \emph{admin} user shall be able to change existing roles of a registered user. An \emph{admin} \textbf{cannot} change their own role in the system.
 
 \genreq
-{An \emph{admin} shall be able to remove a role from an existing graduate program member with a at least one role assigned.\\}
+{An \emph{admin} shall be able to remove a role from an existing graduate program member with at least one role assigned.\\}
 {}
 \label{R11}
 
@@ -1307,13 +1344,20 @@ Following are the E/R Descriptions elicited from Use Case 4, refer to Section \r
 \smallskip
 \noindent \textbf{Rationale}: Only an \emph{admin} user shall be able to assign applications for review to a graduate committee member. For simplicity, there is no maximum cap enforced for reviewing an application by a committee member.
 
-\genreq
-{A \emph{committee member} shall be notified when a batch of applications come in for review.\\}
-{}
-\label{R13}
+\rdescription
+{\hl{An \emph{admin} shall be able to unassign reviews assigned to a graduate committee member.\\}}
+{\hl{The set $GC$ denotes the set of all graduate committee members which is a subset of all members in the system, $GC \subseteq FM$.}}
 
 \smallskip
-\noindent \textbf{Rationale}: After an \emph{admin} sends out application(s) for review to a committee member, the \emph{committee member} gets an in app notification associated with their PPY.
+\noindent \hl{\textbf{Rationale}: Only an \emph{admin} user shall be able to unassign an application review from a graduate committee member iff the review is either in \emph{New} or \emph{Draft} state.}
+
+\rdescription
+{\hl{An \emph{admin} shall be able to dismiss reviews assigned to a graduate committee member.\\}}
+{\hl{The set $GC$ denotes the set of all graduate committee members which is a subset of all members in the system, $GC \subseteq FM$.}}
+
+\smallskip
+\hl{\noindent \textbf{Rationale}: Only an \emph{admin} user shall be able to dismiss an application review from a graduate committee member iff the review is in \emph{Submitted} state.}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%END E/R USE CASE 4%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%E/R USE CASE 5%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1338,12 +1382,12 @@ Following are the E/R Descriptions elicited from Use Case 5, refer to Section \r
 \noindent \textbf{Rationale}: A \emph{committee member} shall be allowed to view a list of new (to be reviewed) and previously reviewed application(s). This will allow the committee members to have an organized view of the applications left to review and the applications that have been reviewed already.
 
 \rdescription
-{A \emph{committee member} shall be able to apply filtering only on selected attributes.\\}
+{A \emph{committee member} shall be able to apply filtering on review applications.\\}
 {Refer to Table \ref{tbl:attr_reviewed}}
 \label{R16}
 
 \smallskip
-\noindent \textbf{Rationale}: Allowing extra filtering on assigned application will cause favouritism of some student X while student Y will never get reviewed. Thus, it has been decided to only allow filtering on already reviewed application(s).
+\noindent \textbf{Rationale}: Committee Members have the option to apply filtering on attributes to narrow down the search for reviews and also their statuses.
 
 \rdescription
 {An \emph{admin} shall be able to view a list of all student application(s).\\}
@@ -1396,14 +1440,6 @@ Following are the E/R Descriptions elicited from Use Case 6, refer to Section \r
 \smallskip
 \noindent \textbf{Rationale}: Only an \emph{admin} user shall be able to update all attributes of an application (refer to Table \ref{tbl:attr_uploaded}). This to allow updating secured information on the application that maybe confidential.
 
-\rdescription
-{The \emph{GPA} shall be notified when a \emph{professor} has requested a student for admission.\\}
-{refer to Env. \ref{E5}}
-\label{R21}
-
-\smallskip
-\noindent \textbf{Rationale}: The \emph{GPA} shall be notified when a \emph{professor} requests a student for admission. The graduate program assistant can then contact the graduate office with further information (refer to Env. \ref{E5}).
-
 \genreq
 {A \emph{professor} shall be able to review a student application.\\}
 {}
@@ -1422,11 +1458,11 @@ Following are the E/R Descriptions elicited from Use Case 6, refer to Section \r
 
 \rdescription
 {A \emph{professor} shall be able to request a student for admission.\\}
-{refer to Req. \ref{R21} and Env. \ref{E5}}
+{refer to Env. \ref{E5}}
 \label{R24}
 
 \smallskip
-\noindent \textbf{Rationale}: A \emph{professor} shall be allowed to request a student for admission. Once the request has been sent in, the \emph{GPA} will receive a notification (refer to Req. \ref{R21}) and then can reach out the institutions graduate office with a request for admission (refer to Env. \ref{E5}).
+\noindent \textbf{Rationale}: A \emph{professor} shall be allowed to request a student for admission. An \emph{admin} then can reach out the institutions graduate office with a request for admission (refer to Env. \ref{E5}).
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%END E/R USE CASE 6%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%E/R USE CASE 7%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1434,14 +1470,19 @@ Following are the E/R Descriptions elicited from Use Case 6, refer to Section \r
 
 Following are the E/R Descriptions elicited from Use Case 7, refer to Section \ref{subsec:uc7}
 
-
-\genreq
-{The \emph{GPA} shall be notified when reviews for an application have been completed.\\}
-{}
-\label{R25}
+\genenv
+{\hl{The maximum number of review quota for Visa (International) Applicants is 1.}}
 
 \smallskip
-\noindent \textbf{Rationale}: Only the \emph{GPA} shall be notified when the review has been completed. It shall be a 1-to-1 relation to avoid multiple levels of notification between users.
+\noindent \hl{\textbf{Rationale}: This is the maximum quota set by the Graduate Committee for Visa students. This means an applicant who is international can be only assigned to a maximum 1 review.}
+\label{E6}
+
+\genenv
+{\hl{The maximum number of review quota for Domestic Applicants is 2.}}
+\label{E7}
+
+\smallskip
+\noindent \hl{\textbf{Rationale}: This is the maximum quota set by the Graduate Committee for Domestic students. This means an applicant who is domestic can be only assigned to a maximum 2 reviews.}
 
 \genreq
 {A \emph{committee member} shall be able to save ongoing reviews as a draft for future completion.\\}
@@ -1461,11 +1502,11 @@ Following are the E/R Descriptions elicited from Use Case 7, refer to Section \r
 
 \rdescription
 {A \emph{committee member} shall be able to submit a completed review to the \emph{GPA}.\\}
-{Refer to Req. \ref{R25}}
+{}
 \label{R28}
 
 \smallskip
-\noindent \textbf{Rationale}: A \emph{committee member} shall be able to submit a completed review to the \emph{GPA}. The \emph{GPA} can then upload the application to the portal for professors to access the application.
+\noindent \textbf{Rationale}: A \emph{committee member} shall be able to submit a completed review to the \emph{GPA}. The application is then automatically available to be viewed by the professor if the review quota limit has been reached for that application (refer to Env. \ref{E6} and Env. \ref{E7}).
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%END E/R USE CASE 7%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1481,8 +1522,8 @@ system gradapps
 
 /************************ definitions ************************/
 
--- set of all PPY ids at York University --
-type PPY_IDS = STRING
+-- set of all EECS ids at York University --
+type EECS_IDS = STRING
 
 -- set of roles --
 -- the empty role is to hold users who can be --
@@ -1490,13 +1531,13 @@ type PPY_IDS = STRING
 type ROLES = {"admin", "professor", "committee member"}
 
 -- users who have access to the system is --
--- a function from PPY_IDS to an array of roles --
-type USERS = PPY_IDS |-> [ROLES]
+-- a function from EECS_IDS to an array of roles --
+type USERS = EECS_IDS |-> [ROLES]
 
 -- logged in users are the users who --
 -- are logged into the system --
 -- i.e a user can be only logged in with one role --
-typed LOGGED_IN_USERS = PPY_IDS |-> ROLES
+typed LOGGED_IN_USERS = EECS_IDS |-> ROLES
 
 -- the fields of an application -- 
 -- as specified in Table 3 -- 
@@ -1525,12 +1566,12 @@ type REV_STATUS = {"new", "draft", "in progress", "completed",
 "submitted"}
 
 -- set of all review applications in different phases --
-type REV_APPLS = REVIEWS |-> [TUPLE[PPY_IDS, REV_STATUS]]
+type REV_APPLS = REVIEWS |-> [TUPLE[EECS_IDS, REV_STATUS]]
 
 -- set of all actions when applying an assessment --
 type ACTIONS = {save, modify, use}
 
-login(mid: PPY_IDS, mrole: ROLES)
+login(mid: EECS_IDS, mrole: ROLES)
 	-- pre: 
 		1. USERS(mid) must return at least one role
 		2. LOGGED_IN_USERS(mid) must return null
@@ -1538,7 +1579,7 @@ login(mid: PPY_IDS, mrole: ROLES)
 	-- post:
 		1. LOGGED_IN_USERS(mid) must return mrole
 
-logout(mid: PPY_IDS, mrole: ROLES)
+logout(mid: EECS_IDS, mrole: ROLES)
 	-- pre: 
 		1. USERS(mid) must return at least one role
 		2. LOGGED_IN_USERS(mid) must return mrole
@@ -1548,28 +1589,28 @@ logout(mid: PPY_IDS, mrole: ROLES)
 
 \newpage
 \begin{code}
-add_member(mid: PPY_IDS, role: ARRAY[ROLES])
+add_member(mid: EECS_IDS, role: ARRAY[ROLES])
 	-- pre: 
 		1. USERS(mid) must return null
 		2. role must contain all valid roles
 	-- post:
 		1. USERS(mid) must return role
 
-remove_member(mid: PPY_IDS)
+remove_member(mid: EECS_IDS)
 	-- pre: 
 		1. USERS(mid) must return at least one role
 		2. LOGGED_IN_USERS(mid) must return null
 	-- post:
 		1. USERS(mid) must return null
 
-assign_role(mid: PPY_IDS, role: ROLES)
+assign_role(mid: EECS_IDS, role: ROLES)
 	-- pre: 
 		1. USERS(mid) must return at least one role
 		2. USERS(mid) must not include role
 	-- post:
 		1. USERS(mid) must include role
 
-unassign_role(mid: PPY_IDS, role: ROLES)
+unassign_role(mid: EECS_IDS, role: ROLES)
 	-- pre: 
 		1. USERS(mid) must return at least one role
 		2. USERS(mid) must include role
@@ -1577,7 +1618,7 @@ unassign_role(mid: PPY_IDS, role: ROLES)
 	-- post:
 		1. USERS(mid) must not include role
 		
-upload_application(mid: PPY_IDS, appl: APPLICATIONS)
+upload_application(mid: EECS_IDS, appl: APPLICATIONS)
 	-- pre: 
 		1. USERS(mid) must return at least one role
 		2. LOGGED_IN_USERS(mid) must return admin
@@ -1588,13 +1629,13 @@ upload_application(mid: PPY_IDS, appl: APPLICATIONS)
 
 \newpage
 \begin{code}
-view_application(mid: PPY_IDS, appl: APPLICATIONS)
+view_application(mid: EECS_IDS, appl: APPLICATIONS)
 	-- pre: 
 		1. USERS(mid) must return at least one role
 		2. LOGGED_IN_USERS(mid) must return a role
 		3. appl is an element of UPLOADED_APPS
 
-filter_applications(mid: PPY_IDS, appl: APPLICATIONS,
+filter_applications(mid: EECS_IDS, appl: APPLICATIONS,
 	filter: FILTERS, new_appls: APPLICATIONS)
 	-- pre: 
 		1. USERS(mid) must return at least one role
@@ -1604,7 +1645,7 @@ filter_applications(mid: PPY_IDS, appl: APPLICATIONS,
 	-- post:
 		1. new_appls is a subset of UPLOADED_APPS
 
-update_application(mid: PPY_IDS, appl: APPLICATIONS, 
+update_application(mid: EECS_IDS, appl: APPLICATIONS, 
 	attr: ATTRIBUTES; data: VALUE)
 	-- pre: 
 		1. USERS(mid) must return at least one role
@@ -1627,7 +1668,7 @@ assign_review(mid: IDS, rev: REVIEWS)
 
 \newpage
 \begin{code}
-save_review(mid: PPY_IDS, rev: REVIEWS)
+save_review(mid: EECS_IDS, rev: REVIEWS)
 	-- pre: 
 		1. LOGGED_IN_USERS(mid) must return
 		committee member
@@ -1637,7 +1678,7 @@ save_review(mid: PPY_IDS, rev: REVIEWS)
 		1. REV_APPLS(rev) must include a tuple of mid
 		and status of draft
 
-resume_review(mid: PPY_IDS, rev: REVIEWS)
+resume_review(mid: EECS_IDS, rev: REVIEWS)
 	-- pre: 
 		1. LOGGED_IN_USERS(mid) must return
 		committee member
@@ -1647,7 +1688,7 @@ resume_review(mid: PPY_IDS, rev: REVIEWS)
 		1. REV_APPLS(rev) must include a tuple of mid
 		and status of in progress
 		
-submit_review(mid: PPY_IDS, rev: REVIEWS)
+submit_review(mid: EECS_IDS, rev: REVIEWS)
 	-- pre: 
 		1. LOGGED_IN_USERS(mid) must return
 		committee member
@@ -1660,7 +1701,7 @@ submit_review(mid: PPY_IDS, rev: REVIEWS)
 
 \newpage
 \begin{code}
-apply_assessment(mid: PPY_IDS, rev: REVIEWS,
+apply_assessment(mid: EECS_IDS, rev: REVIEWS,
 	appl: APPLICATIONS, uni: STRING, 
 	asmt: STRING, act: ACTIONS)
 	-- pre: 
