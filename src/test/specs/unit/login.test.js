@@ -32,6 +32,13 @@ describe('Login Test', function() {
 		browser.restart();
 		utils.stopApp(done);
 	});
+
+	it('- check system user manual', function() {
+		utils.openUserManual(utils.userManual)
+			.then(utils.switchTab.call(utils, 1))
+			.then(expect(browser.getCurrentUrl()).to.eventually.contain('user-manual'))
+			.then(utils.goToTab.call(utils, 0));
+	});
     
 	it('- get login text', function() {
 		expect(login.getLoginText.call(login)).to.eventually

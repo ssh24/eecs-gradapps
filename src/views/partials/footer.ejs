@@ -4,10 +4,13 @@
         <span class="glyphicon glyphicon-chevron-up"></span>
     </a>
     <br><br>
+    <% if (!role) { %> 
+        Need help? Read the <a a id="system-manual" href="/docs/users-manual/user-manual.pdf" class="urlextern" target="_blank" title="System User Manual" rel="nofollow">system user manual</a> <span class="glyphicon glyphicon-file"></span>
+    <%} %>
     <% if (role === 'Committee Member') { %> 
         Need help? Read the <a href="/docs/users-manual/committee-manual.pdf" class="urlextern" target="_blank" title="Admission Committee User Manual" rel="nofollow">user manual</a> <span class="glyphicon glyphicon-file"></span>
-        <hr>
     <%} %>
+    <hr>
     <p>Gradapps 2.0 / Edward Vaisman, S. Sakib Hasan</p>
 </footer>
 <!-- Bootstrap core JavaScript

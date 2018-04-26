@@ -22,8 +22,11 @@ require('./config/passport')(passport); // pass passport for configuration
 app.use(morgan('dev')); // log every request to the console
 app.use(cookieParser()); // read cookies (needed for auth)
 // get information from html forms
-app.use(bodyParser.json());
+app.use(bodyParser.json({
+	limit: '10mb',
+}));
 app.use(bodyParser.urlencoded({
+	limit: '10mb',
 	extended: true
 }));
 
