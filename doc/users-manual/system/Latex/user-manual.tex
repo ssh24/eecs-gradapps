@@ -39,15 +39,13 @@
 %%%%Rest of your document goes here%%%%%%%%%%%%%%%%%%%
 
 \section{General Information}
-This section explains in general terms the system and the purpose for which it is
-intended.
 
 \subsection{System Overview}
 
-GradApps 2.0 is a business system application, which allows, our client to \emph{automate} the selection of the best candidate into the EECS Graduate Program by \emph{minimizing} the manual work to be done. Our client are the members of \textbf{The EECS Graduate Program}.
+GradApps 2.0 is a business system application, which assists \textbf{The EECS Graduate Program} to \emph{locate} the best candidate into the EECS Graduate Program by \emph{minimizing} the manual work to be done.
 
 \bigskip
-\noindent The application is broken down into three user levels: \emph{Administrator}, \emph{Committee Member} and \emph{Professor}. Each of the roles play a crucial part in order to select the best candidate into the graduate program. GradApps 2.0 operates as a web application, hence, a reliable internet connection is required when interacting with the application.
+\noindent The application is broken down into three user levels: \emph{Administrator}, \emph{Committee Member} and \emph{Professor}. GradApps 2.0 operates as a web application, hence, a reliable internet connection is required when interacting with the application.
 
 \subsection{Organization of the Manual}
 The user’s manual consists of eight sections:
@@ -152,7 +150,7 @@ This section explains how to get GradApps 2.0 on the machine, install it and sta
 \begin{lstlisting}[language=bash]
   $ npm install
 \end{lstlisting}
-\item Set the required environmental variables:
+\item Set the required environmental variables (CentOS):
 \begin{lstlisting}[language=bash]
   $ SET MYSQL_HOST = <host>
   $ SET MYSQL_PORT = <port>
@@ -235,6 +233,7 @@ If you have selected another role and wish to switch roles you will be presented
 \noindent \textbf{Note:} To access the administrator/committee/professor portal you must be granted access from an administrator.
 
 \subsection{User Settings}
+\label{user-settings}
 To customize personal user settings, simply click on the ``Settings" button from the navigation bar on any page. The following are the required fields when update personal user settings:
 \begin{itemize}
 \item Username
@@ -984,8 +983,9 @@ Once you have saved a filter you will be provided with a new table to match your
 \textbf{Pro-tip:} You can update a filter by typing in the same name as an existing filter.
 \label{fig:cm:save_filter}
 \end{figure}
-
 \clearpage
+\subsubsection{Deleting a Filter}
+You can delete a filter by going into your settings. See Section \ref{user-settings}.
 \begin{figure}[!htb]
 \subsubsection{Loading a Filter}
 To load a saved filter click the dropdown under ``Load a Preset'' and select the preset you wish to use. Once selected the modal will auto-populate.
@@ -1301,6 +1301,8 @@ Once you have saved a filter you will be provided with a new table to match your
 \end{figure}
 
 \clearpage
+\subsubsection{Deleting a Filter}
+You can delete a filter by going into your settings. See Section \ref{user-settings}.
 \begin{figure}[!htb]
 \subsubsection{Loading a Filter}
 To load a saved filter click the dropdown under ``Load a Preset'' and select the preset you wish to use. Once selected the modal will auto-populate.
