@@ -10,6 +10,7 @@ var Utils = function() {
 	this.shared.logout = by.id('logout-btn');
 	this.shared.user = by.id('logged-in-as');
 	this.shared.role = by.id('role-selected');
+	this.userManual = by.id('system-manual');
 };
 
 var server;
@@ -62,6 +63,17 @@ Utils.prototype.openNewTab = function(newPageToOpen) {
 			});
 		});
 	});
+};
+
+Utils.prototype.switchTab = function(goToIndex) {
+	return browser.getAllWindowHandles().then(function (handles) {
+		browser.driver.switchTo().window(handles[goToIndex]);
+	});
+};
+
+Utils.prototype.openUserManual = function(elem) {
+	return this.waitForElementClickable(elem, 5000)
+		.then(element(elem).click());
 };
 
 Utils.prototype.clearBrowserCache = function() {

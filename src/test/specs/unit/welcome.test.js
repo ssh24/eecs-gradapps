@@ -25,6 +25,13 @@ describe('Welcome Test', function() {
 		utils.stopApp(done);
 	});
 
+	it('- check system user manual', function() {
+		utils.openUserManual(utils.userManual)
+			.then(utils.switchTab.call(utils, 1))
+			.then(expect(browser.getCurrentUrl()).to.eventually.contain('user-manual'))
+			.then(utils.goToTab.call(utils, 0));
+	});
+
 	it('- load welcome page', function() {
 		expect(browser.getCurrentUrl()).to.eventually.contain('#');
 	});
