@@ -1,17 +1,25 @@
 'use strict';
 
-var fs = require('fs');
 var cp = require('child_process');
+var db = require('../config/db-type');
+
 var isApp = process.env.NODE_ENV === 'test' ? true : (process.argv[2] ? 
 	process.argv[2] : false);
-var sql;
-	
+var sql, dbType, dropStmt, createStmt, useStmt, setStmt;
+
 if (isApp) {
-	sql = fs.createReadStream(require.resolve('./lib/database/appdb.sql'));
+	dbType = db.app;
 }
 else {
-	sql = fs.createReadStream(require.resolve('./lib/database/testdb.sql'));
+	dbType = db.test;
 }
+
+dropStmt = 'DROP DATABASE IF EXISTS `' + dbType + '`; ';
+createStmt = 'CREATE DATABASE `' + dbType + '`; ';
+useStmt = 'USE `' + dbType + '`; ';
+setStmt = 'SET autocommit=0; source test/lib/database/seed.sql; COMMIT;';
+
+sql = dropStmt + createStmt + useStmt + setStmt;  
 
 process.env.TEST_MYSQL_HOST =
 		process.env.TEST_MYSQL_HOST || process.env.MYSQL_HOST || 
@@ -28,7 +36,7 @@ process.env.TEST_MYSQL_PASSWORD =
 	
 	
 var stdio = ['pipe', process.stdout, process.stderr];
-var args = ['--user=' + process.env.TEST_MYSQL_USER];
+var args = ['--user=' + process.env.TEST_MYSQL_USER, '--execute=' + sql];
 	
 if (process.env.TEST_MYSQL_HOST) {
 	args.push('--host=' + process.env.TEST_MYSQL_HOST);
@@ -41,5 +49,4 @@ if (process.env.TEST_MYSQL_PASSWORD) {
 }
 	
 console.log('>> seeding database for ' + (isApp ? 'app ...' : 'test ...'));
-var mysql = cp.spawn('mysql', args, {stdio: stdio});
-sql.pipe(mysql.stdin);
+cp.spawn('mysql', args, {stdio: stdio});

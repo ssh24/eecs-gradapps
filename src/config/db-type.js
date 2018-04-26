@@ -1,4 +1,4 @@
 module.exports = {
-	'test': 'testdb', // default test database
-	'app': 'gradapps' // default app database
+	'test': process.env.TEST_MYSQL_DATABASE || 'testdb', // default test database
+	'app': process.env.MYSQL_DATABASE || 'gradapps' // default app database
 };
