@@ -5,7 +5,7 @@
 
 
 -- Accepted by University, Accepted by Student
-INSERT INTO `APPLICATION` (`student_Id`, `app_Session`, `LName`, `FName`, `Email`, `Gender`, 
+INSERT INTO `application` (`student_Id`, `app_Session`, `LName`, `FName`, `Email`, `Gender`, 
     `GPA`, `GPA_FINAL`, `Degree`, `VStatus`, `Rank`, `committeeReviewed`, `FOI`, 
     `prefProfs`, `profContacted`, `profRequested`, `letterDate`, 
     `programDecision`, `studentDecision`, `ygsAwarded`) VALUES 
@@ -15,7 +15,7 @@ INSERT INTO `APPLICATION` (`student_Id`, `app_Session`, `LName`, `FName`, `Email
     '["Sheff Boneham", "Buiron Truran"]', '["Sheff Boneham"]', 
     '["Sheff Boneham"]', CURRENT_TIMESTAMP, 'Accepted', 'Accepted', 1);
 
-INSERT INTO `APPLICATION` (`student_Id`, `app_Session`, `LName`, `FName`, `Email`, `Gender`, 
+INSERT INTO `application` (`student_Id`, `app_Session`, `LName`, `FName`, `Email`, `Gender`, 
     `GPA`, `GPA_FINAL`, `Degree`, `VStatus`, `Rank`, `committeeReviewed`, `FOI`, 
     `prefProfs`, `profContacted`, `profRequested`, `letterDate`, 
     `programDecision`, `studentDecision`, `ygsAwarded`) VALUES  
@@ -25,7 +25,7 @@ INSERT INTO `APPLICATION` (`student_Id`, `app_Session`, `LName`, `FName`, `Email
     '["Susanna Chesher", "Chad Donaghie"]', '["Chad Donaghie"]', 
     '["Chad Donaghie"]', CURRENT_TIMESTAMP, 'Accepted', 'Accepted', 1);
 
-INSERT INTO `APPLICATION` (`student_Id`, `app_Session`, `LName`, `FName`, `Email`, `Gender`, 
+INSERT INTO `application` (`student_Id`, `app_Session`, `LName`, `FName`, `Email`, `Gender`, 
     `GPA`, `GPA_FINAL`, `Degree`, `VStatus`, `Rank`, `committeeReviewed`, `FOI`, 
     `prefProfs`, `profContacted`, `profRequested`, `letterDate`, 
     `programDecision`, `studentDecision`, `ygsAwarded`) VALUES  
@@ -36,7 +36,7 @@ INSERT INTO `APPLICATION` (`student_Id`, `app_Session`, `LName`, `FName`, `Email
     '["Chad Donaghie", "Susanna Chesher"]', 
     '["Susanna Chesher"]', CURRENT_TIMESTAMP, 'Accepted', 'Accepted', 1);
 
-INSERT INTO `APPLICATION` (`student_Id`, `app_Session`, `LName`, `FName`, `Email`, `Gender`, 
+INSERT INTO `application` (`student_Id`, `app_Session`, `LName`, `FName`, `Email`, `Gender`, 
     `GPA`, `GPA_FINAL`, `Degree`, `VStatus`, `Rank`, `committeeReviewed`, `FOI`, 
     `prefProfs`, `profContacted`, `profRequested`, `letterDate`, 
     `programDecision`, `studentDecision`, `ygsAwarded`) VALUES 
@@ -46,7 +46,7 @@ INSERT INTO `APPLICATION` (`student_Id`, `app_Session`, `LName`, `FName`, `Email
     '["Sheff Boneham", "Buiron Truran", "Reamonn Cleef"]', '["Reamonn Cleef"]', 
     '["Reamonn Cleef"]', CURRENT_TIMESTAMP, 'Accepted', 'Accepted', 0);
 
-INSERT INTO `APPLICATION` (`student_Id`, `app_Session`, `LName`, `FName`, `Email`, `Gender`, 
+INSERT INTO `application` (`student_Id`, `app_Session`, `LName`, `FName`, `Email`, `Gender`, 
     `GPA`, `GPA_FINAL`, `Degree`, `VStatus`, `Rank`, `committeeReviewed`, `FOI`, 
     `prefProfs`, `profContacted`, `profRequested`, `letterDate`, 
     `programDecision`, `studentDecision`, `ygsAwarded`) VALUES 
@@ -55,7 +55,7 @@ INSERT INTO `APPLICATION` (`student_Id`, `app_Session`, `LName`, `FName`, `Email
     '["Winny Dalyell", "Buiron Truran"]', '["Winny Dalyell", "Buiron Truran"]', 
     '["Buiron Truran"]', CURRENT_TIMESTAMP, 'Accepted', 'Accepted', 1);
 
-INSERT INTO `APPLICATION` (`student_Id`, `app_Session`, `LName`, `FName`, `Email`, `Gender`, 
+INSERT INTO `application` (`student_Id`, `app_Session`, `LName`, `FName`, `Email`, `Gender`, 
     `GPA`, `GPA_FINAL`, `Degree`, `VStatus`, `Rank`, `committeeReviewed`, `FOI`, 
     `prefProfs`, `profContacted`, `profRequested`, `letterDate`, 
     `programDecision`, `studentDecision`, `ygsAwarded`) VALUES  
@@ -64,7 +64,7 @@ INSERT INTO `APPLICATION` (`student_Id`, `app_Session`, `LName`, `FName`, `Email
     '["Winny Dalyell", "Buiron Truran"]', '["Winny Dalyell", "Buiron Truran"]', 
     '["Buiron Truran"]', CURRENT_TIMESTAMP, 'Accepted', 'Accepted', 0);
 
-INSERT INTO `APPLICATION` (`student_Id`, `app_Session`, `LName`, `FName`, `Email`, `Gender`, 
+INSERT INTO `application` (`student_Id`, `app_Session`, `LName`, `FName`, `Email`, `Gender`, 
     `GPA`, `GPA_FINAL`, `Degree`, `VStatus`, `Rank`, `committeeReviewed`, `FOI`, 
     `prefProfs`, `profContacted`, `profRequested`, `letterDate`, 
     `programDecision`, `studentDecision`, `ygsAwarded`) VALUES 
@@ -77,7 +77,7 @@ INSERT INTO `APPLICATION` (`student_Id`, `app_Session`, `LName`, `FName`, `Email
 
 
 -- Accepted by University, Reject by Student
-INSERT INTO `APPLICATION` (`student_Id`, `app_Session`, `LName`, `FName`, `Email`, `Gender`, 
+INSERT INTO `application` (`student_Id`, `app_Session`, `LName`, `FName`, `Email`, `Gender`, 
     `GPA`, `GPA_FINAL`, `Degree`, `VStatus`, `Rank`, `committeeReviewed`, `FOI`, 
     `prefProfs`, `profContacted`, `profRequested`, `programDecision`, 
     `studentDecision`, `declineReason`) VALUES 
@@ -87,7 +87,7 @@ INSERT INTO `APPLICATION` (`student_Id`, `app_Session`, `LName`, `FName`, `Email
     '["Sheff Boneham", "Buiron Truran"]', '["Sheff Boneham"]', 
     '["Sheff Boneham"]', 'Accepted', 'Declined', 'N/A');
 
-INSERT INTO `APPLICATION` (`student_Id`, `app_Session`, `LName`, `FName`, `Email`, `Gender`, 
+INSERT INTO `application` (`student_Id`, `app_Session`, `LName`, `FName`, `Email`, `Gender`, 
     `GPA`, `GPA_FINAL`, `Degree`, `VStatus`, `Rank`, `committeeReviewed`, `FOI`, 
     `prefProfs`, `profContacted`, `profRequested`, `programDecision`, 
     `studentDecision`, `declineReason`) VALUES 
@@ -98,7 +98,7 @@ INSERT INTO `APPLICATION` (`student_Id`, `app_Session`, `LName`, `FName`, `Email
     '["Buiron Truran"]', 'Accepted', 'Declined', 
     'Accepted offer from other university.');
 
-INSERT INTO `APPLICATION` (`student_Id`, `app_Session`, `LName`, `FName`, `Email`, `Gender`, 
+INSERT INTO `application` (`student_Id`, `app_Session`, `LName`, `FName`, `Email`, `Gender`, 
     `GPA`, `GPA_FINAL`, `Degree`, `VStatus`, `Rank`, `committeeReviewed`, `FOI`, 
     `prefProfs`, `profContacted`, `profRequested`, `programDecision`, 
     `studentDecision`, `declineReason`) VALUES  
@@ -111,7 +111,7 @@ INSERT INTO `APPLICATION` (`student_Id`, `app_Session`, `LName`, `FName`, `Email
 
 
 -- Declined by University --
-INSERT INTO `APPLICATION` (`student_Id`, `app_Session`, `LName`, `FName`, `Email`, `Gender`, 
+INSERT INTO `application` (`student_Id`, `app_Session`, `LName`, `FName`, `Email`, `Gender`, 
     `GPA`, `GPA_FINAL`, `Degree`, `VStatus`, `Rank`, `committeeReviewed`, `FOI`, 
     `prefProfs`, `programDecision`, `declineReason`) VALUES 
     (212123416, 'Winter', 'O''Halloran', 'Carley', 'cohalloran1@cargocollective.com', 
@@ -120,14 +120,14 @@ INSERT INTO `APPLICATION` (`student_Id`, `app_Session`, `LName`, `FName`, `Email
     '["Sheff Boneham", "Buiron Truran"]', 'Declined',
     'GPA is below minimum requirement.');
 
-INSERT INTO `APPLICATION` (`student_Id`, `app_Session`, `LName`, `FName`, `Email`, `Gender`, 
+INSERT INTO `application` (`student_Id`, `app_Session`, `LName`, `FName`, `Email`, `Gender`, 
     `GPA`, `GPA_FINAL`, `Degree`, `VStatus`, `Rank`, `committeeReviewed`, `FOI`, 
     `prefProfs`, `programDecision`, `declineReason`) VALUES 
     (212123406, 'Winter', 'McQuade', 'Perry', 'pmcquade4@tiny.cc', 'M', 'C+', 1, 'MSc', 
     'Visa', '["C"]', 1, '["Data Mining"]', '["Bronny Poole"]', 'Declined',
     'GPA is below minimum requirement.');
 
-INSERT INTO `APPLICATION` (`student_Id`, `app_Session`, `LName`, `FName`, `Email`, `Gender`, 
+INSERT INTO `application` (`student_Id`, `app_Session`, `LName`, `FName`, `Email`, `Gender`, 
     `GPA`, `GPA_FINAL`, `Degree`, `VStatus`, `Rank`, `committeeReviewed`, `FOI`, 
     `prefProfs`, `programDecision`, `declineReason`) VALUES 
     (212123356, 'Fall', 'Really', 'Chrysa', 'creally5@live.com', 'F', 'E', 0, 'PhD', 
@@ -136,7 +136,7 @@ INSERT INTO `APPLICATION` (`student_Id`, `app_Session`, `LName`, `FName`, `Email
     '["Sheff Boneham", "Buiron Truran", "Reamonn Cleef"]', 'Declined',
     'GPA is below minimum requirement.');
 
-INSERT INTO `APPLICATION` (`student_Id`, `app_Session`, `LName`, `FName`, `Email`, `Gender`, 
+INSERT INTO `application` (`student_Id`, `app_Session`, `LName`, `FName`, `Email`, `Gender`, 
     `GPA`, `GPA_FINAL`, `Degree`, `VStatus`, `Rank`, `committeeReviewed`, `FOI`, 
     `prefProfs`, `programDecision`, `declineReason`) VALUES 
     (212123256, 'Winter', 'De Hoogh', 'Alexandro', 'adehoogh8@uiuc.edu', 'M', 'C+', 1, 
@@ -145,7 +145,7 @@ INSERT INTO `APPLICATION` (`student_Id`, `app_Session`, `LName`, `FName`, `Email
     '["Jenna Kubera", "Buiron Truran", "Reamonn Cleef"]', 'Declined',
     'GPA is below minimum requirement.');
 
-INSERT INTO `APPLICATION` (`student_Id`, `app_Session`, `LName`, `FName`, `Email`, `Gender`, 
+INSERT INTO `application` (`student_Id`, `app_Session`, `LName`, `FName`, `Email`, `Gender`, 
     `GPA`, `GPA_FINAL`, `Degree`, `VStatus`, `Rank`, `committeeReviewed`, `FOI`, 
     `prefProfs`, `programDecision`, `declineReason`) VALUES (212123156, 'Winter', 
     'Thaxton', 'Delilah', 'dthaxton9@delicious.com', 'F', 'C', 0, 'MSc', 
@@ -158,27 +158,27 @@ INSERT INTO `APPLICATION` (`student_Id`, `app_Session`, `LName`, `FName`, `Email
 
 ---- Committee Non-Reviewed Applications (10) ----
 
-INSERT INTO `APPLICATION` (`student_Id`, `app_Session`, `LName`, `FName`, `Email`, `Gender`, 
+INSERT INTO `application` (`student_Id`, `app_Session`, `LName`, `FName`, `Email`, `Gender`, 
     `GPA`, `GPA_FINAL`, `Degree`, `VStatus`, `committeeReviewed`, `FOI`, 
     `prefProfs`) VALUES 
     (212123056, 'Summer', 'Borrel', 'Glennis', 'gborrela@shinystat.com', 'F', 'A', 0, 'MSc', 
     'Domestic', 0, '["Machine Learning", "Data Mining"]', 
     '["Jenna Kubera", "Buiron Truran", "Reamonn Cleef"]');
 
-INSERT INTO `APPLICATION` (`student_Id`, `app_Session`, `LName`, `FName`, `Email`, `Gender`, 
+INSERT INTO `application` (`student_Id`, `app_Session`, `LName`, `FName`, `Email`, `Gender`, 
     `GPA`, `GPA_FINAL`, `Degree`, `VStatus`, `committeeReviewed`, `FOI`, 
     `prefProfs`) VALUES  
     (212122456, 'Fall', 'Tirte', 'Igor', 'itirteb@ifeng.com', 'M', 'C+', 0, 'MSc', 
     'Domestic', 0, '["Data Mining"]', '["Bronny Poole"]');
 
-INSERT INTO `APPLICATION` (`student_Id`, `app_Session`, `LName`, `FName`, `Email`, `Gender`, 
+INSERT INTO `application` (`student_Id`, `app_Session`, `LName`, `FName`, `Email`, `Gender`, 
     `GPA`, `GPA_FINAL`, `Degree`, `VStatus`, `committeeReviewed`, `FOI`, 
     `prefProfs`) VALUES (212121456, 'Winter',
     'Oakwell', 'Fulvia', 'foakwelld@examiner.com', 'F', 'D+', 0, 'MSc', 
     'Domestic', 0, '["Artificial Intelligence", "Graph Mining"]',
     '["Winny Dalyell", "Buiron Truran"]');
 
-INSERT INTO `APPLICATION` (`student_Id`, `app_Session`, `LName`, `FName`, `Email`, `Gender`, 
+INSERT INTO `application` (`student_Id`, `app_Session`, `LName`, `FName`, `Email`, `Gender`, 
     `GPA`, `GPA_FINAL`, `Degree`, `VStatus`, `committeeReviewed`, `FOI`, 
     `prefProfs`) VALUES (212120456, 'Fall',
     'Enbury', 'Ciro', 'cenburye@jigsy.com', 'M', 'F', 0, 'MASc', 'Domestic', 
@@ -186,42 +186,42 @@ INSERT INTO `APPLICATION` (`student_Id`, `app_Session`, `LName`, `FName`, `Email
     "Micro/Nano Electronic Systems", "Software Engineering"]', 
     '["Susanna Chesher", "Chad Donaghie"]');
 
-INSERT INTO `APPLICATION` (`student_Id`, `app_Session`, `LName`, `FName`, `Email`, `Gender`, 
+INSERT INTO `application` (`student_Id`, `app_Session`, `LName`, `FName`, `Email`, `Gender`, 
     `GPA`, `GPA_FINAL`, `Degree`, `VStatus`, `committeeReviewed`, `FOI`, 
     `prefProfs`) VALUES (212113456, 'Fall', 
     'Sywell', 'Celestine', 'csywellg@guardian.co.uk', 'F', 'A', 1, 'PhD', 
     'Domestic', 0, '["Bioinformatics", "Embedded Systems", "Data Mining"]', 
     '["Sheff Boneham", "Buiron Truran", "Reamonn Cleef"]');
 
-INSERT INTO `APPLICATION` (`student_Id`, `app_Session`, `LName`, `FName`, `Email`, `Gender`, 
+INSERT INTO `application` (`student_Id`, `app_Session`, `LName`, `FName`, `Email`, `Gender`, 
     `GPA`, `GPA_FINAL`, `Degree`, `VStatus`, `committeeReviewed`, `FOI`, 
     `prefProfs`) VALUES  (212103456, 'Fall', 'Poag', 'Cos', 'cpoagj@imdb.com', 'M', 'C', 1, 
     'PhD', 'Domestic', 0, 
     '["Distributed Computing", "Performance Engineering", "Computer Vision"]',
     '["Winny Dalyell", "Buiron Truran", "Susanna Chesher"]');
 
-INSERT INTO `APPLICATION` (`student_Id`, `app_Session`, `LName`, `FName`, `Email`, `Gender`, 
+INSERT INTO `application` (`student_Id`, `app_Session`, `LName`, `FName`, `Email`, `Gender`, 
     `GPA`, `GPA_FINAL`, `Degree`, `VStatus`, `committeeReviewed`, `FOI`, 
     `prefProfs`) VALUES  
     (212023456, 'Winter', 'Foxen', 'Fleurette', 'ffoxen0@google.it', 'F', 'A+', 1, 'MSc', 
     'Domestic', 0, '["Artificial Intelligence", "Graph Mining"]',
     '["Winny Dalyell", "Buiron Truran"]');
 
-INSERT INTO `APPLICATION` (`student_Id`, `app_Session`, `LName`, `FName`, `Email`, `Gender`, 
+INSERT INTO `application` (`student_Id`, `app_Session`, `LName`, `FName`, `Email`, `Gender`, 
     `GPA`, `GPA_FINAL`, `Degree`, `VStatus`, `committeeReviewed`, `FOI`, 
     `prefProfs`) VALUES
     (212423456, 'Winter', 'Shorey', 'Erica', 'eshorey2@slate.com', 'F', 'A+', 0, 'MASc', 
     'Visa', 0, '["Machine Learning", "Data Mining"]', 
     '["Jenna Kubera", "Buiron Truran", "Reamonn Cleef"]');
 
-INSERT INTO `APPLICATION` (`student_Id`, `app_Session`, `LName`, `FName`, `Email`, `Gender`, 
+INSERT INTO `application` (`student_Id`, `app_Session`, `LName`, `FName`, `Email`, `Gender`, 
     `GPA`, `GPA_FINAL`, `Degree`, `VStatus`, `committeeReviewed`, `FOI`, 
     `prefProfs`) VALUES (212523456,'Summer', 
     'Orta', 'Hazel', 'horta3@hp.com', 'F', 'C+', 0, 'PhD', 'Domestic', 0, 
     '["Biomedical Engineering", "Software Engineering", "Graph Mining"]', 
     '["Sheff Boneham", "Jenna Kubera", "Reamonn Cleef"]');
 
-INSERT INTO `APPLICATION` (`student_Id`, `app_Session`, `LName`, `FName`, `Email`, `Gender`, 
+INSERT INTO `application` (`student_Id`, `app_Session`, `LName`, `FName`, `Email`, `Gender`, 
     `GPA`, `GPA_FINAL`, `Degree`, `VStatus`, `committeeReviewed`, `FOI`, 
     `prefProfs`) VALUES
     (212623456, 'Summer', 'Sautter', 'Doy', 'dsautter6@bbb.org', 'M', 'C', 1, 'MASc', 

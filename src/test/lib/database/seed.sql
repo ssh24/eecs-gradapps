@@ -1,16 +1,7 @@
 -- This SQL file is copyright for the EECS graduate program application --
 -- Latest MySQL working version for this file: 5.7.21 --
 
--- Create the database
-
-DROP DATABASE IF EXISTS `testdb`;
-CREATE DATABASE `testdb`;
-
--- Select the database
-
-USE `testdb`;
-
--- FACULTY_MEMBER table
+-- faculty_member table
 -- @fm_Id: unique auto incremental primary key for each faculty member
 -- @fm_Lname: last name of the faculty member
 -- @fm_Fname: first name of the faculty member
@@ -20,9 +11,9 @@ USE `testdb`;
 -- @presetCommittee: preset filters for the role of a committee
 -- @presetAdmin: preset filters for the role of an admin
 
-CREATE TABLE `FACULTY_MEMBER` (
+CREATE TABLE `faculty_member` (
     `fm_Id` INT NOT NULL AUTO_INCREMENT,
-    `fm_Username` VARCHAR(50) UNIQUE DEFAULT NULL,
+    `fm_Username` VARCHAR(50) UNIQUE NOT NULL,
     `fm_Lname` VARCHAR(50) NOT NULL,
     `fm_Fname` VARCHAR(50) NOT NULL,
     `fm_Email` VARCHAR(255) DEFAULT NULL,
@@ -34,7 +25,7 @@ CREATE TABLE `FACULTY_MEMBER` (
 ) ENGINE=INNODB;
 
 
--- APPLICATION table
+-- application table
 -- @app_Id: unique auto incremental primary key for each application
 -- @app_Date: creation date of the application
 -- @app_Session: the session of the student application
@@ -60,7 +51,7 @@ CREATE TABLE `FACULTY_MEMBER` (
 -- @app_Comments: additional comments for the application
 -- @committeeReviewed: boolean value to state if all the committee reviews are in
 
-CREATE TABLE `APPLICATION` (
+CREATE TABLE `application` (
     `app_Id` INT NOT NULL AUTO_INCREMENT,
     `student_Id` BIGINT(9) NOT NULL,
     `app_Date` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -102,7 +93,7 @@ CREATE TABLE `APPLICATION` (
 -- @Status: status of the application review
 -- @lastReminded: date when the committee member was last reminded for the review
 
-CREATE TABLE `APPLICATION_REVIEW` (
+CREATE TABLE `application_review` (
     `committeeId` INT NOT NULL,
     `appId` INT NOT NULL,
     `assignDate` DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -116,10 +107,10 @@ CREATE TABLE `APPLICATION_REVIEW` (
     `Status` VARCHAR(50) NOT NULL,
     `lastReminded` DATETIME DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY(`committeeId`, `appId`),
-    FOREIGN KEY (`committeeId`) REFERENCES `FACULTY_MEMBER`(`fm_Id`) 
+    FOREIGN KEY (`committeeId`) REFERENCES `faculty_member`(`fm_Id`) 
         ON DELETE CASCADE
         ON UPDATE CASCADE,
-    FOREIGN KEY (`appId`) REFERENCES `APPLICATION`(`app_Id`) 
+    FOREIGN KEY (`appId`) REFERENCES `application`(`app_Id`) 
         ON DELETE CASCADE
         ON UPDATE CASCADE
 ) ENGINE=INNODB;
@@ -130,15 +121,15 @@ CREATE TABLE `APPLICATION_REVIEW` (
 -- @appId: application id
 -- @seen: application is seen by the professor
 
-CREATE TABLE `APPLICATION_SEEN` (
+CREATE TABLE `application_seen` (
     `fmId` INT NOT NULL,
     `appId` INT NOT NULL,
     `seen` TINYINT(1) NOT NULL DEFAULT 0,
     PRIMARY KEY(`fmId`, `appId`),
-    FOREIGN KEY (`fmId`) REFERENCES `FACULTY_MEMBER`(`fm_Id`) 
+    FOREIGN KEY (`fmId`) REFERENCES `faculty_member`(`fm_Id`) 
         ON DELETE CASCADE
         ON UPDATE CASCADE,
-    FOREIGN KEY (`appId`) REFERENCES `APPLICATION`(`app_Id`) 
+    FOREIGN KEY (`appId`) REFERENCES `application`(`app_Id`) 
         ON DELETE CASCADE
         ON UPDATE CASCADE
 ) ENGINE=INNODB;
@@ -149,7 +140,7 @@ CREATE TABLE `APPLICATION_SEEN` (
 -- @u_Name: full accredited name of the university
 -- @u_Assessments: list of assessments for the university
 
-CREATE TABLE `UNIVERSITY` (
+CREATE TABLE `university` (
     `u_Id` INT NOT NULL AUTO_INCREMENT,
     `u_Name` VARCHAR(50) NOT NULL,
     `u_Assessments` JSON DEFAULT NULL,
@@ -161,7 +152,7 @@ CREATE TABLE `UNIVERSITY` (
 -- @field_Id: unique auto incremental primary key for each field of interest
 -- @field_Name: full name of the field
 
-CREATE TABLE `FOI` (
+CREATE TABLE `foi` (
     `field_Id` INT NOT NULL AUTO_INCREMENT,
     `field_Name` VARCHAR(50) NOT NULL,
     PRIMARY KEY(`field_Id`)
@@ -185,10 +176,10 @@ source test/lib/database/trigger/application_rev.trigger.sql;COMMIT;
 SET autocommit=0;
 source test/lib/database/trigger/application_seen.trigger.sql;COMMIT;
 
-
 -- Source all the data sql files
 SET autocommit=0; source test/lib/database/data/foi.data.sql; COMMIT;
-SET autocommit=0; source test/lib/database/data/fm.data.sql; COMMIT;
+SET autocommit=0; source test/lib/database/data/test.fm.data.sql; COMMIT;
+SET autocommit=0; source test/lib/database/data/actual.fm.data.sql; COMMIT;
 SET autocommit=0; source test/lib/database/data/application.data.sql; COMMIT;
 SET autocommit=0; source test/lib/database/data/university.data.sql; COMMIT;
 SET autocommit=0; source test/lib/database/data/application_rev.data.sql; COMMIT;

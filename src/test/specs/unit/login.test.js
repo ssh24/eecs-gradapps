@@ -28,7 +28,7 @@ describe('Login Test', function() {
 	});
 
 	after(function (done) {
-		require('../../pretest');
+		require('../../seed');
 		browser.restart();
 		utils.stopApp(done);
 	});

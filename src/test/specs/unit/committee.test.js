@@ -41,7 +41,7 @@ describe('Committee Test', function() {
 	after(function cleanUp(done) {
 		utils.logOut()
 			.then(function() {
-				require('../../pretest');
+				require('../../seed');
 				browser.restart();
 				utils.stopApp(done);
 			});

@@ -8,19 +8,19 @@ trigger. This is because writing triggers for such logics become extremely
 complicated.
 **/
 
-INSERT INTO `APPLICATION_SEEN` (`fmId`, `appId`, `seen`) 
+INSERT INTO `application_seen` (`fmId`, `appId`, `seen`) 
     VALUES (3, 15, 1);
-INSERT INTO `APPLICATION_SEEN` (`fmId`, `appId`, `seen`) 
+INSERT INTO `application_seen` (`fmId`, `appId`, `seen`) 
     VALUES (3, 9, 1);
-INSERT INTO `APPLICATION_SEEN` (`fmId`, `appId`, `seen`) 
+INSERT INTO `application_seen` (`fmId`, `appId`, `seen`) 
     VALUES (5, 9, 1);
-INSERT INTO `APPLICATION_SEEN` (`fmId`, `appId`, `seen`) 
+INSERT INTO `application_seen` (`fmId`, `appId`, `seen`) 
     VALUES (6, 15, 0);
-INSERT INTO `APPLICATION_SEEN` (`fmId`, `appId`, `seen`) 
+INSERT INTO `application_seen` (`fmId`, `appId`, `seen`) 
     VALUES (3, 8, 0);
-INSERT INTO `APPLICATION_SEEN` (`fmId`, `appId`, `seen`) 
+INSERT INTO `application_seen` (`fmId`, `appId`, `seen`) 
     VALUES (4, 9, 1);
-INSERT INTO `APPLICATION_SEEN` (`fmId`, `appId`, `seen`) 
+INSERT INTO `application_seen` (`fmId`, `appId`, `seen`) 
     VALUES (7, 15, 0);
-INSERT INTO `APPLICATION_SEEN` (`fmId`, `appId`, `seen`) 
+INSERT INTO `application_seen` (`fmId`, `appId`, `seen`) 
     VALUES (7, 20, 0);

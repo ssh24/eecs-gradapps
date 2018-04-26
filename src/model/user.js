@@ -7,7 +7,8 @@ var endOfLine = require('os').EOL;
 
 // this file path can be pointed to any server located file or local file for htpasswd to work
 // for security reasons, all htpasswd should be bycrypted
-var htpasswdFile = path.resolve(__dirname, '..', '.private', '.htpasswd');
+var htpasswdFile = process.env.NODE_ENV === 'test' ? path.resolve(__dirname, '..', '.private', '.htpasswd.test') : 
+	path.resolve(__dirname, '..', '.private', '.htpasswd');
      
 var User = function() {};
 

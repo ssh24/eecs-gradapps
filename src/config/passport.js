@@ -8,8 +8,7 @@ var USER = require('../model/user');
 var User = new USER();
 
 var mysql = require('mysql2');
-var config = require('../test/lib/utils/config');
-var creds = config.credentials.database;
+var creds = require('./database');
 var connection = mysql.createConnection(creds);
 connection.connect();
 
