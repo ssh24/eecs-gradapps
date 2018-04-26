@@ -493,12 +493,21 @@ SQL injection is a code injection technique that may corrupt the underlying data
 \bigskip
 \noindent Injecting malicious SQL statements through the controller will result in throwing such exceptions. This is because the SQL call is built by escaping the user inputs in a safe manner after the input is verified. Since, it can never reach the stage of a malicious type input within the controller, our application is safe from SQL injection.
 
-
 \section{Code Linter}
 The final execution after running a test suite is to lint the code to fix any syntactic or formatting issues in the code. This is done automatically as part of the post test, however, if one wants to lint the code at any point, they can simply do so by running the following command from the source directory.
+
 
 \begin{lstlisting}[language=bash]
 	$ npm run lint
 \end{lstlisting}
 
+\section{Coverage and Sufficiency}
+\begin{quote}
+``Program testing can be used to show the presence of bugs, but never to show their absence!'' - Dijkstra.
+\end{quote}
+
+\noindent Testers live and breed trade-off's. Coverage measurements is a good tool to show \emph{how far} you are from complete testing, but a lousy tool to be used for investigating how close you are to complete testing. The time needed for tests related tasks is infinitely larger than the time available. Hence, it is impossible to fully test a software system in a reasonable amount of time or money.
+
+\bigskip
+\noindent That being said for the purpose of this project we have chosen to meet a minimum requirement of 80\% code coverage. With that we are confident enough to release a usable application.
 \end{document}
