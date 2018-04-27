@@ -33,6 +33,8 @@ function Professor(timeout) {
 	this.tables.data.contacted = by.id('data-0-10');
 	this.tables.data.requested = by.id('data-0-11');
 	this.tables.data.interested = by.id('data-0-12');
+
+	this.userManual = by.id('prof-manual');
 }
 
 Professor.prototype.applicationTableIsDisplayed = function() {

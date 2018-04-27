@@ -22,7 +22,7 @@ var Welcome = require('../../views/welcome-view');
 var application, connection, timeout;
 var creds = config.credentials.database;
 
-describe.only('Professor Test', function() {
+describe('Professor Test', function() {
 	timeout = ms('40s');
 	this.timeout(timeout);
 
@@ -50,10 +50,17 @@ describe.only('Professor Test', function() {
 	after(function cleanUp(done) {
 		utils.logOut()
 			.then(function() {
-				require('../../pretest');
+				require('../../seed');
 				browser.restart();
 				utils.stopApp(done);
 			});
+	});
+
+	it('- check user manual', function() {
+		utils.openUserManual(prof.userManual)
+			.then(utils.switchTab.call(utils, 1))
+			.then(expect(browser.getCurrentUrl()).to.eventually.contain('professor-manual'))
+			.then(utils.goToTab.call(utils, 0));
 	});
 
 	it('- table loads properly', function() {
