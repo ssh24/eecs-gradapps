@@ -53,7 +53,7 @@ describe('User Settings Test', function() {
 			name: 'Professor'
 		}],
 	};
-	var userIndex = 78;
+	var userIndex = 76;
 
 	before(function setUp() {
 		utils.startApp();
@@ -85,7 +85,10 @@ describe('User Settings Test', function() {
 			.then(utils.closeBrowserAlert.call(utils))
 			.then(utils.logOut.call(utils))
 			.then(function() {
+				require('../../seed');
+			}).then(function() {
 				browser.restart();
+			}).then(function() {
 				utils.stopApp(done);
 			});
 	});

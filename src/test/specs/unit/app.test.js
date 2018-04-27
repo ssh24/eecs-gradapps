@@ -99,7 +99,10 @@ describe('Manage Applications Test', function() {
 	after(function cleanUp(done) {
 		utils.logOut()
 			.then(function() {
+				require('../../seed');
+			}).then(function() {
 				browser.restart();
+			}).then(function() {
 				utils.stopApp(done);
 			});
 	});
