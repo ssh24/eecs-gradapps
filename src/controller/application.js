@@ -58,10 +58,10 @@ Application.prototype.markApplicationSeen = function(appId, memberId, cb) {
  * @param {Function} cb
  */
 Application.prototype.getReviewApplications = function(sql, memberId, cb) {
-	sql = sql || 'select application.app_Id, DATE_FORMAT(application_review.assignDate, "%m/%d/%Y") as `Date Assigned`, ' + 
-	'CONCAT_WS(\' \', application.FName, application.LName) AS `Applicant Name`,  application.Degree as `Degree Applied For`, ' + 
-	'application_review.Status as `My Review Status` from application inner join application_review ' + 
-	'where application.app_Id = application_review.appId and application_review.committeeId=' + memberId 
+	sql = sql || 'select application.app_Id, DATE_FORMAT(application_review.assignDate, "%m/%d/%Y") as `Date Assigned`, ' +
+	'CONCAT_WS(\' \', application.FName, application.LName) AS `Applicant Name`,  application.Degree as `Degree Applied For`, ' +
+	'application_review.Status as `My Review Status` from application inner join application_review ' +
+	'where application.app_Id = application_review.appId and application_review.committeeId=' + memberId
 	+ ' order by application_review.assignDate;';
 
 	assert(typeof sql === 'string');
@@ -83,8 +83,45 @@ Application.prototype.getReviewApplications = function(sql, memberId, cb) {
 				}
 			});
 		} else {
-			err = new Error('Member ' + memberId + 
-							' does not have access to see all applications'); 
+			err = new Error('Member ' + memberId +
+							' does not have access to see all applications');
+			return cb(err);
+		}
+	});
+};
+
+/**
+ * Get a single Applicants review(s)
+ * @param {Number} appId
+ * @param {Number} memberId
+ * @param {Function} cb
+ */
+Application.prototype.getApplicationReview = function(appId, memberId, cb) {
+	assert(typeof memberId === 'number');
+	assert(typeof cb === 'function');
+
+	var sql = 'SELECT Background, researchExp AS `Research Experience`, ' +
+    'Comments, c_Rank as `Committee Ranking`, ' +
+		'UniAssessment, Letter ' +
+    'from application_review' +
+    ' where status=\'Submitted\' and appId=' + this.conn.escape(appId);
+	var self = this;
+
+	this.utils.getRoles(memberId, function(err, roles) {
+		if (err) return cb(err);
+		if (roles.includes('Professor') || roles.includes('Admin')) {
+			self.conn.query(sql, function(error, result) {
+				if (err) return cb(error);
+				if (result.length > 0) {
+					cb(err, result);
+				} else {
+					err = new Error('No reviews found');
+					return cb(err);
+				}
+			});
+		} else {
+			err = new Error('Member ' + memberId +
+        ' does not have access to see application reviews');
 			return cb(err);
 		}
 	});
@@ -144,29 +181,29 @@ Application.prototype.getApplications = function(sql, memberId, cb) {
 
 /**
  * Update an application
- * @param {Object} data 
- * @param {Number} appId 
- * @param {Number} memberId 
- * @param {Function} cb 
+ * @param {Object} data
+ * @param {Number} appId
+ * @param {Number} memberId
+ * @param {Function} cb
  */
 Application.prototype.updateApplication = function(data, appId, memberId, cb) {
 	assert(typeof data === 'object');
 	assert(typeof appId === 'number');
 	assert(typeof memberId === 'number');
 	assert(typeof cb === 'function');
-	
+
 	var self = this;
 	this.utils.getRoles(memberId, function(err, roles) {
 		if (err) return cb(err);
 		if (roles.includes('Admin')) {
-			self.conn.query('UPDATE application SET ? WHERE app_Id=?', [data, 
+			self.conn.query('UPDATE application SET ? WHERE app_Id=?', [data,
 				appId], function(err, result) {
 				if (err) return cb(err);
 				return cb(err, result);
 			});
 		} else {
-			err = new Error('Member ' + memberId + 
-							' does not have access to update application'); 
+			err = new Error('Member ' + memberId +
+							' does not have access to update application');
 			return cb(err);
 		}
 	});
@@ -174,15 +211,15 @@ Application.prototype.updateApplication = function(data, appId, memberId, cb) {
 
 /**
  * Create an application
- * @param {Object} data 
- * @param {Number} memberId 
- * @param {Function} cb 
+ * @param {Object} data
+ * @param {Number} memberId
+ * @param {Function} cb
  */
 Application.prototype.createApplication = function(data, memberId, cb) {
 	assert(typeof data === 'object');
 	assert(typeof memberId === 'number');
 	assert(typeof cb === 'function');
-	
+
 	var self = this;
 	this.utils.getRoles(memberId, function(err, roles) {
 		if (err) return cb(err);
@@ -192,8 +229,8 @@ Application.prototype.createApplication = function(data, memberId, cb) {
 				return cb(err, result);
 			});
 		} else {
-			err = new Error('Member ' + memberId + 
-							' does not have access to upload application'); 
+			err = new Error('Member ' + memberId +
+							' does not have access to upload application');
 			return cb(err);
 		}
 	});
@@ -202,26 +239,26 @@ Application.prototype.createApplication = function(data, memberId, cb) {
 /**
  * Delete an application
  * @param {Number} appId
- * @param {Number} memberId 
- * @param {Function} cb 
+ * @param {Number} memberId
+ * @param {Function} cb
  */
 Application.prototype.deleteApplication = function(appId, memberId, cb) {
 	assert(typeof appId === 'number');
 	assert(typeof memberId === 'number');
 	assert(typeof cb === 'function');
-	
+
 	var self = this;
 	this.utils.getRoles(memberId, function(err, roles) {
 		if (err) return cb(err);
 		if (roles.includes('Admin')) {
-			self.conn.query('DELETE FROM application WHERE app_Id=?', appId, 
+			self.conn.query('DELETE FROM application WHERE app_Id=?', appId,
 				function(err, result) {
 					if (err) return cb(err);
 					return cb(err, result);
 				});
 		} else {
-			err = new Error('Member ' + memberId + 
-							' does not have access to delete application'); 
+			err = new Error('Member ' + memberId +
+							' does not have access to delete application');
 			return cb(err);
 		}
 	});
@@ -229,20 +266,20 @@ Application.prototype.deleteApplication = function(appId, memberId, cb) {
 
 /**
  * Get application pdf file.
- * @param {Number} appId 
- * @param {Number} memberId 
- * @param {Function} cb 
+ * @param {Number} appId
+ * @param {Number} memberId
+ * @param {Function} cb
  */
 Application.prototype.getApplicationFile = function(appId, memberId, cb) {
 	assert(typeof appId === 'number');
 	assert(typeof memberId === 'number');
 	assert(typeof cb === 'function');
-	
+
 	var self = this;
 	this.utils.getRoles(memberId, function(err, roles) {
 		if (err) return cb(err);
 		if (roles.includes('Admin')) {
-			self.conn.query('SELECT app_file from application where app_Id=?', 
+			self.conn.query('SELECT app_file from application where app_Id=?',
 				appId, function(err, result) {
 					if (err) return cb(err);
 					if (result.length === 1) {
@@ -250,8 +287,8 @@ Application.prototype.getApplicationFile = function(appId, memberId, cb) {
 					}
 				});
 		} else {
-			err = new Error('Member ' + memberId + 
-							' does not have access to get application file'); 
+			err = new Error('Member ' + memberId +
+							' does not have access to get application file');
 			return cb(err);
 		}
 	});
@@ -259,9 +296,9 @@ Application.prototype.getApplicationFile = function(appId, memberId, cb) {
 
 /**
  * Get all application data.
- * @param {Number} appId 
+ * @param {Number} appId
  * @param {Number} memberId
- * @param {Function} cb 
+ * @param {Function} cb
  */
 Application.prototype.getApplicationData = function(appId, memberId, cb) {
 	assert(typeof appId === 'number');
@@ -272,7 +309,7 @@ Application.prototype.getApplicationData = function(appId, memberId, cb) {
 	this.utils.getRoles(memberId, function(err, roles) {
 		if (err) return cb(err);
 		if (roles.includes('Admin')) {
-			self.conn.query('SELECT * from application where app_Id=?', [appId], 
+			self.conn.query('SELECT * from application where app_Id=?', [appId],
 				function(err, result) {
 					if (err) return cb(err);
 					if (result.length === 1) {
@@ -280,8 +317,8 @@ Application.prototype.getApplicationData = function(appId, memberId, cb) {
 					}
 				});
 		} else {
-			err = new Error('Member ' + memberId + 
-							' does not have access to get application data'); 
+			err = new Error('Member ' + memberId +
+							' does not have access to get application data');
 			return cb(err);
 		}
 	});
