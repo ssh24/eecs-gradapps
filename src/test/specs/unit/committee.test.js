@@ -46,19 +46,19 @@ describe('Committee Test', function() {
 				utils.stopApp(done);
 			});
 	});
-    
+
 	it('- table loads properly', function() {
 		expect(committee.applicationTableIsDisplayed.call(committee)).to.eventually.be.true;
 	});
-    
+
 	it('- table header loads properly', function() {
 		expect(committee.tableHeaderExists.call(committee)).to.eventually.be.true;
 	});
-    
+
 	it('- table body loads properly', function() {
 		expect(committee.tableBodyExists.call(committee)).to.eventually.be.true;
 	});
-    
+
 	it('- get refresh table text', function() {
 		expect(committee.getRefreshTableText.call(committee)).to.eventually
 			.contain('Refresh Current Table');
@@ -68,7 +68,7 @@ describe('Committee Test', function() {
 		expect(browser.getCurrentUrl()).to.eventually.contain('committee')
 			.then(committee.refreshTable.call(committee));
 	});
-    
+
 	describe('- order applications', function() {
 		describe('- date column', function() {
 			afterEach(function cleanUpEach() {
@@ -94,7 +94,7 @@ describe('Committee Test', function() {
 					.then(committee.orderColumn.call(committee, 0, -1))
 					.then(expect(committee.getSortType.call(committee, 0)).to.eventually.equal('descending'));
 			});
-			
+
 			it('- order column in descending order and then ascending order', function() {
 				expect(committee.getSortType.call(committee, 0)).to.eventually.equal('none')
 					.then(committee.orderColumn.call(committee, 0, -1))
@@ -103,7 +103,7 @@ describe('Committee Test', function() {
 					.then(expect(committee.getSortType.call(committee, 0)).to.eventually.equal('ascending'));
 			});
 		});
-        
+
 		describe('- name column', function() {
 			afterEach(function cleanUpEach() {
 				committee.refreshTable();
@@ -128,7 +128,7 @@ describe('Committee Test', function() {
 					.then(committee.orderColumn.call(committee, 1, -1))
 					.then(expect(committee.getSortType.call(committee, 1)).to.eventually.equal('descending'));
 			});
-			
+
 			it('- order column in descending order and then ascending order', function() {
 				expect(committee.getSortType.call(committee, 1)).to.eventually.equal('none')
 					.then(committee.orderColumn.call(committee, 1, -1))
@@ -162,7 +162,7 @@ describe('Committee Test', function() {
 					.then(committee.orderColumn.call(committee, 2, -1))
 					.then(expect(committee.getSortType.call(committee, 2)).to.eventually.equal('descending'));
 			});
-			
+
 			it('- order column in descending order and then ascending order', function() {
 				expect(committee.getSortType.call(committee, 2)).to.eventually.equal('none')
 					.then(committee.orderColumn.call(committee, 2, -1))
@@ -171,7 +171,7 @@ describe('Committee Test', function() {
 					.then(expect(committee.getSortType.call(committee, 2)).to.eventually.equal('ascending'));
 			});
 		});
-        
+
 		describe('- my review status column', function() {
 			afterEach(function cleanUpEach() {
 				committee.refreshTable();
@@ -196,7 +196,7 @@ describe('Committee Test', function() {
 					.then(committee.orderColumn.call(committee, 3, -1))
 					.then(expect(committee.getSortType.call(committee, 3)).to.eventually.equal('descending'));
 			});
-			
+
 			it('- order column in descending order and then ascending order', function() {
 				expect(committee.getSortType.call(committee, 3)).to.eventually.equal('none')
 					.then(committee.orderColumn.call(committee, 3, -1))
@@ -206,7 +206,7 @@ describe('Committee Test', function() {
 			});
 		});
 	});
-    
+
 	describe('- filter applications', function() {
 		describe('- check for all fields', function() {
 			it('- get applicant name field', function() {
@@ -343,7 +343,7 @@ describe('Committee Test', function() {
 			after(function cleanUp() {
 				committee.refreshTable();
 			});
-            
+
 			it('- select date column', function() {
 				filter.openFilterModal().then(filter.waitForModalOpen.call(filter))
 					.then(expect(filter.columnIsSelected.call(filter, 'Date Assigned'))
@@ -601,7 +601,7 @@ describe('Committee Test', function() {
 					.then(expect(committee.isHighlighted.call(committee, 0, 4)).to.eventually.equal('Draft'));
 			});
 		});
-		
+
 		describe('- filtering', function() {
 			afterEach(function cleanUpEach() {
 				filter.resetFilteredTable();
@@ -678,12 +678,12 @@ describe('Committee Test', function() {
 					.then(expect(filter.isFieldDDOpen.call(filter, filter.filter
 						.fields.rstatus.openDD)).to
 						.eventually.be.true)
-					.then(filter.searchText.call(filter, 't'))
-					.then(filter.selectIthElement.call(filter, 3))
+					.then(filter.searchText.call(filter, 'n'))
+					.then(filter.selectIthElement.call(filter, 1))
 					.then(expect(filter.getSelectedElement.call(filter)).to
-						.eventually.contain('Submitted'))
+						.eventually.contain('New'))
 					.then(expect(filter.getSelectedFilter.call(filter)).to.eventually
-						.contain('My Review Status = Submitted'))
+						.contain('My Review Status = New'))
 					.then(filter.submitFilter.call(filter))
 					.then(expect(browser.getCurrentUrl()).to.eventually.contain('filter'))
 					.then(expect(committee.applicationTableIsDisplayed.call(committee)).to.eventually.be.false)
@@ -903,7 +903,7 @@ describe('Committee Test', function() {
 				before(function setUp() {
 					review.startReview(17);
 				});
-	
+
 				after(function cleanUp() {
 					review.saveReview()
 						.then(expect(review.getStatus.call(review)).to.eventually.equal('Draft'))
@@ -920,33 +920,33 @@ describe('Committee Test', function() {
 						.then(expect(review.getSelectedRank.call(review)).to.eventually.contain(data.rank))
 						.then(review.closeReview.call(review));
 				});
-	
+
 				it('- select two existing universities', function() {
 					review.selectUniversity(0)
 						.then(review.selectUniversity.call(review, 2))
 						.then(expect(review.getSelectedUniversity.call(review)).to.eventually.contain(data.university[0]))
 						.then(expect(review.getSelectedUniversity.call(review)).to.eventually.contain(data.university[1]));
 				});
-	
+
 				it('- select assessment for each university', function() {
 					review.selectAssessment(0)
 						.then(review.selectAssessment.call(review, 2))
 						.then(expect(review.getSelectedAssessment.call(review)).to.eventually.contain(data.assessment[0]))
 						.then(expect(review.getSelectedAssessment.call(review)).to.eventually.contain(data.assessment[1]));
 				});
-	
+
 				it('- add a new university w/ assessment', function() {
 					review.addNewUniversity(data.university[2])
 						.then(expect(review.getSelectedUniversity.call(review)).to.eventually.contain(data.university[2]))
 						.then(review.addUniversityAssessment.call(review, 2, data.assessment[2]))
 						.then(expect(review.getSelectedAssessment.call(review)).to.eventually.contain(data.assessment[2]));
 				});
-	
+
 				it('- add background info', function() {
 					review.setBackground(data.background)
 						.then(expect(review.getBackground.call(review)).to.eventually.contain(data.background));
 				});
-	
+
 				it('- add research info', function() {
 					review.setResearch(data.research)
 						.then(expect(review.getResearch.call(review)).to.eventually.contain(data.research));
@@ -956,12 +956,12 @@ describe('Committee Test', function() {
 					review.setLetterAnalysis(data.letter)
 						.then(expect(review.getLetterAnalysis.call(review)).to.eventually.contain(data.letter));
 				});
-	
+
 				it('- add comments', function() {
 					review.setComments(data.comments)
 						.then(expect(review.getComments.call(review)).to.eventually.contain(data.comments));
 				});
-	
+
 				it('- select committee rank', function() {
 					review.selectRank(4)
 						.then(expect(review.getSelectedRank.call(review)).to.eventually.contain(data.rank));
@@ -972,23 +972,23 @@ describe('Committee Test', function() {
 				before(function setUp() {
 					review.continueReview(17);
 				});
-	
+
 				it('- submit the application', function() {
 					review.submitReview()
 						.then(expect(browser.getCurrentUrl()).to.eventually.not.contain('review'))
 						.then(expect(review.getStatus.call(review)).to.eventually.equal('Submitted'))
 						.then(function() {browser.pause();});
 				});
-	
+
 				describe('- check for fields after submission', function() {
 					before(function setUp() {
 						review.viewReview(17);
 					});
-		
+
 					after(function cleanUp() {
 						review.closeReview();
 					});
-		
+
 					describe('- check for name fields', function() {
 						it('- check for sid field', function() {
 							expect(review.isSIDDisplayed.call(review)).to.eventually.be.true;
@@ -999,13 +999,13 @@ describe('Committee Test', function() {
 								.then(expect(review.isFNameDisplayed.call(review)).to.eventually.be.true);
 						});
 					});
-		
+
 					describe('- check for degree fields', function() {
 						it('- check for degree field displayed', function() {
 							expect(review.isDegreeDisplayed.call(review)).to.eventually.be.true;
 						});
 					});
-		
+
 					describe('- check for grade fields', function() {
 						it('- check for grade fields displayed', function() {
 							expect(review.isGPADisplayed.call(review)).to.eventually.be.true
@@ -1015,14 +1015,14 @@ describe('Committee Test', function() {
 								.then(expect(review.isYELTDisplayed.call(review)).to.eventually.be.true);
 						});
 					});
-		
+
 					describe('- check for uni and assessment fields', function() {
 						it('- check for uni and assessment fields displayed', function() {
 							expect(review.isSelectedListHeaderDisplayed.call(review)).to.eventually.be.true
 								.then(expect(review.isSelectedListDisplayed.call(review)).to.eventually.be.true);
 						});
 					});
-		
+
 					describe('- check for background, research, letter and comments field', function() {
 						it('- check for background, research, letter and comments field', function() {
 							expect(review.isBackgroundDisplayed.call(review)).to.eventually.be.true
@@ -1031,13 +1031,13 @@ describe('Committee Test', function() {
 								.then(expect(review.isCommentsDisplayed.call(review)).to.eventually.be.true);
 						});
 					});
-		
+
 					describe('- check for rank field', function() {
 						it('- check for rank field displayed', function() {
 							expect(review.isRankPDisplayed.call(review)).to.eventually.be.true;
 						});
 					});
-		
+
 					it('- check for exit button', function() {
 						expect(review.isCancelBtnDisplayed.call(review)).to.eventually.be.true;
 					});

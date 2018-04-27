@@ -22,7 +22,7 @@ var Welcome = require('../../views/welcome-view');
 var application, connection, timeout;
 var creds = config.credentials.database;
 
-describe('Professor Test', function() {
+describe.only('Professor Test', function() {
 	timeout = ms('40s');
 	this.timeout(timeout);
 
@@ -1279,29 +1279,29 @@ describe('Professor Test', function() {
 						.fields.contacted.openDD)).to
 						.eventually.be.true)
 					.then(filter.searchText.call(filter, 'do'))
-					.then(filter.selectIthElement.call(filter, 30))
+					.then(filter.selectIthElement.call(filter, 10))
 					.then(expect(filter.getSelectedElement.call(filter)).to
-						.eventually.contain('John Doe'))
+						.eventually.contain('Chad Donaghie'))
 					.then(expect(filter.getSelectedFilter.call(filter)).to.eventually
-						.contain('Contacted By = John Doe'))
+						.contain('Contacted By = Chad Donaghie'))
 					.then(filter.openFieldDD.call(filter, filter.filter.fields
 						.foi.openDD))
 					.then(expect(filter.isFieldDDOpen.call(filter, filter.filter
 						.fields.foi.openDD)).to
 						.eventually.be.true)
-					.then(filter.searchText.call(filter, 'in'))
-					.then(filter.selectIthElement.call(filter, 1))
+					.then(filter.searchText.call(filter, 'soft'))
+					.then(filter.selectIthElement.call(filter, 24))
 					.then(expect(filter.getSelectedElement.call(filter)).to
-						.eventually.contain('Artificial Intelligence'))
+						.eventually.contain('Software Engineering'))
 					.then(expect(filter.getSelectedFilter.call(filter)).to.eventually
-						.contain('Field of Interest = Artificial Intelligence'))
+						.contain('Field of Interest = Software Engineering'))
 					.then(filter.submitFilter.call(filter))
 					.then(expect(browser.getCurrentUrl()).to.eventually.contain('filter'))
 					.then(expect(prof.applicationTableIsDisplayed.call(prof)).to.eventually.be.true)
 					.then(expect(prof.tableHeaderExists.call(prof)).to.eventually.be.true)
 					.then(expect(prof.tableBodyExists.call(prof)).to.eventually.be.true)
-					.then(expect(prof.isHighlighted.call(prof, 0, 3)).to.eventually.equal('Artificial Intelligence'))
-					.then(expect(prof.isHighlighted.call(prof, 1, 10)).to.eventually.equal('John Doe'));
+					.then(expect(prof.isHighlighted.call(prof, 0, 3)).to.eventually.equal('Software Engineering'))
+					.then(expect(prof.isHighlighted.call(prof, 1, 10)).to.eventually.equal('Chad Donaghie'));
 			});
 		});
 
@@ -1690,6 +1690,47 @@ describe('Professor Test', function() {
 						.contain('GPA > B+'))
 					.then(filter.closeFilterModal.call(filter));
 			});
+		});
+	});
+	describe.skip('- View Application', function(){
+		it('- check name', function (){
+
+		});
+		it('- check session', function(){
+
+		});
+		it('- check email', function(){
+
+		});
+		it('- check gender', function (){
+
+		});
+		it('- check gpa', function(){
+
+		});
+		it('- check gre', function(){
+
+		});
+		it('- check degree', function (){
+
+		});
+		it('- check visa', function(){
+
+		});
+		it('- check foi', function(){
+
+		});
+		it('- check pref professor', function (){
+
+		});
+		it('- check program decision', function(){
+
+		});
+		it('- check contacted by', function(){
+
+		});
+		it('- check requested by', function(){
+
 		});
 	});
 });

@@ -1,0 +1,132 @@
+<% include partials/header %>
+
+  <body>
+    <div class="container">
+      <% if (message.length > 0) { %>
+        <div id="error-message" class="alert alert-danger text-center">
+          <%= message %>
+        </div>
+        <% } else { %>
+          <div class="page-header">
+            <h1 class="text-center">Application Summary</h1>
+            <div class="text-center"><a id="view-app" href="/roles/professor/view?appId=<%= app[0]['app_Id'] %>" target="_blank" class="btn btn-primary" style="margin-bottom: 5px">View Application PDF &raquo;</a></div>
+            <div class="row">
+              <div class="col-md-4">
+                <h4>Applicant Name</h4>
+                <p><%= app[0]['Applicant Name'] %></p>
+              </div>
+              <div class="col-md-4">
+                <h4>Session</h4>
+                <p><%= app[0]['Session'] %></p>
+              </div>
+              <div class="col-md-4">
+                <h4>Email</h4>
+                <p><%= app[0]['Email'] %></p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4">
+                <h4>Gender</h4>
+                <p><%= app[0]['Gender'] %></p>
+              </div>
+              <div class="col-md-4">
+                <h4>GPA - <% if(app[0]['GPA_FINAL'] === 1) {%>
+                  Final
+                <% } else { %>
+                  Interim
+                <% } %>
+                </h4>
+                <p><%= app[0]['GPA'] %></p>
+              </div>
+              <div class="col-md-4">
+                <h4>GRE | TOEFL | IELTS | YELT</h4>
+                <p>
+                <% if (app[0]['GRE'] === null ||  app[0]['GRE'] === '') { %>
+                    -
+                <% } else { %>
+                  <%= app[0]['GRE'] %>
+                <% } %> |
+                <% if (app[0]['TOEFL'] === null ||  app[0]['TOEFL'] === '') { %>
+                    -
+                <% } else { %>
+                  <%= app[0]['TOEFL'] %>
+                <% } %> |
+                <% if (app[0]['IELTS'] === null ||  app[0]['IELTS'] === '') { %>
+                    -
+                <% } else { %>
+                  <%= app[0]['IELTS'] %>
+                <% } %> |
+                <% if (app[0]['YELT'] === null ||  app[0]['YELT'] === '') { %>
+                    -
+                <% } else { %>
+                  <%= app[0]['YELT'] %>
+                <% } %>
+                </p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4">
+                <h4>Degree</h4>
+                <p><%= app[0]['Degree'] %></p>
+              </div>
+              <div class="col-md-4">
+                <h4>Visa Status</h4>
+                <p><%= app[0]['Visa Status'] %></p>
+              </div>
+              <div class="col-md-4">
+                <h4>Fields of Interest</h4>
+                <p><%= app[0]['Fields of Interest'] %></p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-3">
+                <h4>Preferred Professor(s)</h4>
+                <p><%= app[0]['Preferred Professors'] %></p>
+              </div>
+              <div class="col-md-3">
+                <h4>Program Decision</h4>
+                <p><%= app[0]['Program Decision'] %></p>
+              </div>
+              <div class="col-md-3">
+                <h4>Contacted By</h4>
+                <p><%= app[0]['Contacted By'] %></p>
+              </div>
+              <div class="col-md-3">
+                <h4>Requested By</h4>
+                <p><%= app[0]['Requested By'] %></p>
+              </div>
+            </div>
+          </div>
+          <% for(var i=0; i < reviews.length; i++) { %>
+            <h2 class="text-center">Committee Review #<%= i+1 %></h2>
+            <h3>Background</h3>
+            <p> <%= reviews[i]['Background'] %> </p>
+            <h3>Research Experience</h3>
+            <p> <%= reviews[i]['Research Experience'] %></p>
+            <h3>University Quality</h3>
+            <ol>
+              <% if(reviews[i]['UniAssessment']) { %>
+                <% for(var j=0; j < reviews[i]['UniAssessment'].length; j++) {%>
+                <li><%= reviews[i]['UniAssessment'][j]['u_Name'] %>
+                <ul>
+                <% if(reviews[i]['UniAssessment'][j]['u_Assessments']) { %>
+                  <% for(var k=0; k < reviews[i]['UniAssessment'][j]['u_Assessments'].length; k++) {%>
+                    <li><%= reviews[i]['UniAssessment'][j]['u_Assessments'][k] %></li>
+                  <% } %>
+                <% } %>
+                </ul>
+                </li>
+                <% } %>
+              <% } %>
+
+            </ol>
+            <h3>Letter</h3>
+            <p><%= reviews[i]['Letter'] %>
+            <h3>Comments</h3>
+            <p><%= reviews[i]['Comments'] %></p>
+            <h3>Committee Rank</h3>
+            <p><%= reviews[i]['Committee Ranking'] %></p>
+          <% } %>
+        <% } %>
+    </div>
+  </body>

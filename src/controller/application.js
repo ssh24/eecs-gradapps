@@ -19,10 +19,10 @@ var Application = function(connection) {
  * @param {Function} cb
  */
 Application.prototype.getReviewApplications = function(sql, memberId, cb) {
-	sql = sql || 'select application.app_Id, DATE_FORMAT(application_review.assignDate, "%m/%d/%Y") as `Date Assigned`, ' + 
-	'CONCAT_WS(\' \', application.FName, application.LName) AS `Applicant Name`,  application.Degree as `Degree Applied For`, ' + 
-	'application_review.Status as `My Review Status` from application inner join application_review ' + 
-	'where application.app_Id = application_review.appId and application_review.committeeId=' + memberId 
+	sql = sql || 'select application.app_Id, DATE_FORMAT(application_review.assignDate, "%m/%d/%Y") as `Date Assigned`, ' +
+	'CONCAT_WS(\' \', application.FName, application.LName) AS `Applicant Name`,  application.Degree as `Degree Applied For`, ' +
+	'application_review.Status as `My Review Status` from application inner join application_review ' +
+	'where application.app_Id = application_review.appId and application_review.committeeId=' + memberId
 	+ ' order by application_review.assignDate;';
 
 	assert(typeof sql === 'string');
@@ -44,8 +44,8 @@ Application.prototype.getReviewApplications = function(sql, memberId, cb) {
 				}
 			});
 		} else {
-			err = new Error('Member ' + memberId + 
-							' does not have access to see all applications'); 
+			err = new Error('Member ' + memberId +
+							' does not have access to see all applications');
 			return cb(err);
 		}
 	});
@@ -98,6 +98,43 @@ Application.prototype.getApplications = function(sql, memberId, cb) {
 		} else {
 			err = new Error('Member ' + memberId +
         ' does not have access to see all applications');
+			return cb(err);
+		}
+	});
+};
+
+/**
+ * Get a Applicatants review(s)
+ * @param {Number} appId
+ * @param {Number} memberId
+ * @param {Function} cb
+ */
+Application.prototype.getApplicationReview = function(appId, memberId, cb) {
+	assert(typeof memberId === 'number');
+	assert(typeof cb === 'function');
+
+	var sql = 'SELECT Background, researchExp AS `Research Experience`, ' +
+    'Comments, c_Rank as `Committee Ranking`, ' +
+		'UniAssessment, Letter ' +
+    'from application_review' +
+    ' where status=\'Submitted\' and appId=' + this.conn.escape(appId);
+	var self = this;
+
+	this.utils.getRoles(memberId, function(err, roles) {
+		if (err) return cb(err);
+		if (roles.includes('Professor') || roles.includes('Admin')) {
+			self.conn.query(sql, function(error, result) {
+				if (err) return cb(error);
+				if (result.length > 0) {
+					cb(err, result);
+				} else {
+					err = new Error('No reviews found');
+					return cb(err);
+				}
+			});
+		} else {
+			err = new Error('Member ' + memberId +
+        ' does not have access to see application reviews');
 			return cb(err);
 		}
 	});
@@ -264,6 +301,36 @@ Application.prototype.updateRequestedStatus = function(appId, memberId, memberNa
 		} else {
 			err = new Error('Member ' + memberId +
         ' does not have access to set requested status');
+			return cb(err);
+		}
+	});
+};
+
+/**
+ * Get application pdf file.
+ * @param {Number} appId
+ * @param {Number} memberId
+ * @param {Function} cb
+ */
+Application.prototype.getApplicationFile = function(appId, memberId, cb) {
+	assert(typeof appId === 'number');
+	assert(typeof memberId === 'number');
+	assert(typeof cb === 'function');
+
+	var self = this;
+	this.utils.getRoles(memberId, function(err, roles) {
+		if (err) return cb(err);
+		if (roles.includes('Admin')) {
+			self.conn.query('SELECT app_file from application where app_Id=?',
+				appId, function(err, result) {
+					if (err) return cb(err);
+					if (result.length === 1) {
+						return cb(err, result[0]['app_file']);
+					}
+				});
+		} else {
+			err = new Error('Member ' + memberId +
+							' does not have access to get application file');
 			return cb(err);
 		}
 	});
