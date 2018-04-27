@@ -65,15 +65,16 @@ Utils.prototype.openNewTab = function(newPageToOpen) {
 	});
 };
 
-Utils.prototype.switchTab = function(goToIndex) {
-	return browser.getAllWindowHandles().then(function (handles) {
-		browser.driver.switchTo().window(handles[goToIndex]);
-	});
+Utils.prototype.viewApplication = function(appId) {
+	var elem = by.id('view-app-'+appId);
+
+	return this.waitForElementClickable(elem, this.timeout)
+		.then(element(elem).click());
 };
 
-Utils.prototype.openUserManual = function(elem) {
-	return this.waitForElementClickable(elem, 5000)
-		.then(element(elem).click());
+Utils.prototype.openSettings = function() {
+	return this.waitForElementClickable(by.id('settings-btn'), this.timeout)
+		.then(element(by.id('settings-btn')).click());
 };
 
 Utils.prototype.clearBrowserCache = function() {
@@ -87,6 +88,17 @@ Utils.prototype.goToTab = function(goToIndex) {
 		browser.driver.close();
 		browser.driver.switchTo().window(handles[goToIndex]);
 	});
+};
+
+Utils.prototype.switchTab = function(goToIndex) {
+	return browser.getAllWindowHandles().then(function (handles) {
+		browser.driver.switchTo().window(handles[goToIndex]);
+	});
+};
+
+Utils.prototype.openUserManual = function(elem) {
+	return this.waitForElementClickable(elem, this.timeout)
+		.then(element(elem).click());
 };
 
 Utils.prototype.clearThenSendKeys = function(elem, keys) {
@@ -123,6 +135,12 @@ Utils.prototype.waitUntilReady = function(element, timeout) {
 
 Utils.prototype.waitForElementClickable = function(e1, timeout) {
 	return browser.wait(EC.elementToBeClickable(element(e1)), timeout);
+};
+
+Utils.prototype.closeBrowserAlert = function() {
+	return browser.switchTo().alert().then(function (alert) {
+		return alert.accept();
+	});
 };
 
 module.exports = Utils;

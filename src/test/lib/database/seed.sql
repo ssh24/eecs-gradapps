@@ -1,6 +1,8 @@
 -- This SQL file is copyright for the EECS graduate program application --
 -- Latest MySQL working version for this file: 5.7.21 --
 
+SET GLOBAL max_allowed_packet=10000000;
+
 -- faculty_member table
 -- @fm_Id: unique auto incremental primary key for each faculty member
 -- @fm_Lname: last name of the faculty member
@@ -17,6 +19,7 @@ CREATE TABLE `faculty_member` (
     `fm_Lname` VARCHAR(50) NOT NULL,
     `fm_Fname` VARCHAR(50) NOT NULL,
     `fm_Email` VARCHAR(255) DEFAULT NULL,
+    `fm_FOS` JSON DEFAULT NULL,
     `fm_Roles` JSON DEFAULT NULL,
     `presetProf` JSON DEFAULT NULL,
     `presetCommittee` JSON DEFAULT NULL,
@@ -79,6 +82,7 @@ CREATE TABLE `application` (
     `studentDecision` VARCHAR(50) DEFAULT NULL,
     `declineReason` LONGTEXT DEFAULT NULL,
     `ygsAwarded` TINYINT(1) NOT NULL DEFAULT 0,
+    `app_file` LONGBLOB,
     PRIMARY KEY(`app_Id`, `student_Id`)
 ) ENGINE=INNODB;
 
@@ -158,6 +162,16 @@ CREATE TABLE `foi` (
     PRIMARY KEY(`field_Id`)
 ) ENGINE=INNODB;
 
+-- GPA table
+-- @letter_grade: letter grade corressponding to the York University scale
+-- @grade_point: grade point corresponding to the York University scale
+
+CREATE TABLE `GPA` (
+    `letter_grade` ENUM('A+', 'A', 'B+', 'B', 'C+', 'C', 'D+', 'D', 'E', 'F') NOT NULL,
+    `grade_point` INT NOT NULL,
+    PRIMARY KEY(`letter_grade`)
+) ENGINE=INNODB;
+
 -- SESSIONS table
 -- @session_id: unique session id
 -- @expires: time milliseconds of the session expiry
@@ -182,5 +196,6 @@ SET autocommit=0; source test/lib/database/data/test.fm.data.sql; COMMIT;
 SET autocommit=0; source test/lib/database/data/actual.fm.data.sql; COMMIT;
 SET autocommit=0; source test/lib/database/data/application.data.sql; COMMIT;
 SET autocommit=0; source test/lib/database/data/university.data.sql; COMMIT;
+SET autocommit=0; source test/lib/database/data/gpa.data.sql; COMMIT;
 SET autocommit=0; source test/lib/database/data/application_rev.data.sql; COMMIT;
 SET autocommit=0; source test/lib/database/data/application_seen.data.sql; COMMIT;

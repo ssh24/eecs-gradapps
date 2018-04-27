@@ -51,4 +51,14 @@ CREATE TRIGGER committeeReviewOnUpdate AFTER UPDATE ON `application_review`
             END IF;
         END //
 
+---- This trigger deletes the committee review status on `APPLICATION` table 
+---- upon a delete on the `APPLICATION_REVIEW` table.
+DROP TRIGGER IF EXISTS committeeReviewOnDelete //
+CREATE TRIGGER committeeReviewOnDelete AFTER DELETE ON `APPLICATION_REVIEW`
+    FOR EACH ROW
+        BEGIN
+            UPDATE `APPLICATION` SET committeeReviewed = 0 WHERE 
+                app_Id = Old.appId;
+        END //
+
 DELIMITER ;

@@ -4,6 +4,7 @@ var chai = require('chai');
 var chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
 var expect = chai.expect;
+var ms = require('ms');
 
 var Admin = require('../../views/admin-view');
 var Login = require('../../views/login-view');
@@ -14,13 +15,14 @@ var Welcome = require('../../views/welcome-view');
 var config = require('../../lib/utils/config');
 
 describe('Admin Test', function() {
-	this.timeout(20000);
+	var timeout = ms('20s');
+	this.timeout(timeout);
 
-	var admin = new Admin(20000);
-	var login = new Login();
-	var role = new Role();
-	var utils = new Utils();
-	var welcome = new Welcome();
+	var admin = new Admin(timeout);
+	var login = new Login(timeout);
+	var role = new Role(timeout);
+	var utils = new Utils(timeout);
+	var welcome = new Welcome(timeout);
 
 	before(function setUp() {
 		utils.startApp();
@@ -34,7 +36,6 @@ describe('Admin Test', function() {
 	after(function cleanUp(done) {
 		utils.logOut()
 			.then(function() {
-				require('../../pretest');
 				browser.restart();
 				utils.stopApp(done);
 			});
@@ -63,5 +64,11 @@ describe('Admin Test', function() {
 			.then(expect(browser.getCurrentUrl()).to.not.eventually.contain('/reviews'))
 			.then(expect(browser.getCurrentUrl()).to.eventually.contain('/admin'));
 	});
-    
+
+	it('- check user manual', function() {
+		utils.openUserManual(admin.userManual)
+			.then(utils.switchTab.call(utils, 1))
+			.then(expect(browser.getCurrentUrl()).to.eventually.contain('admin-manual'))
+			.then(utils.goToTab.call(utils, 0));
+	});
 });

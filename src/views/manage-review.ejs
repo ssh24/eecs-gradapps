@@ -1,8 +1,111 @@
 <% include partials/header %>
-    <% include partials/navbar %>
-        <div class="jumbotron">
-        <div class="container text-center">
-            <a id="go-back" href="/roles/admin/" class="btn btn-primary"><span class="glyphicon glyphicon-backward"></span> Go back to dashboard </a>
-        </div>
+    <div class="container">
+        <h3 class="text-center">Manage Reviews</h3>
+            <fieldset><legend style="color:blue;font-weight:bold;">General Information</legend>
+                <div class="row" >
+                        <div class="col-sm-3">
+                                <div class="form-group">
+                                    <h5>Student Number:</h5>
+                                    <p id="sid"><%= sid %></p>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <h5>Last Name:</h5>
+                                        <p id="lname"><%= lname %></p>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <h5>First Name:</h5>
+                                        <p id="fname"><%= fname %></p>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <h5>Visa Status:</h5>
+                                        <p id="visa"><%= visa %></p>
+                                    </div>
+                                </div>
+                </div>
+
+                <div class="row" >
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <h5>Field(s) of Interest:</h5>
+                                <ol id="foi">
+                                    <% for(var i = 0; i < foi.length; i++) { %> 
+                                        <li>
+                                            <%= foi[i] %>
+                                        </li>
+                                    <%} %>
+                                </ol>              
+                            </div>
+                        </div>
+
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <h5>Preferred Professor(s):</h5>
+                                <ol id="prefProfs">
+                                    <% for(var i = 0; i < prefProfs.length; i++) { %> 
+                                        <li>
+                                            <%= prefProfs[i] %>
+                                        </li>
+                                    <%} %>
+                                </ol>              
+                            </div>
+                        </div>
+                </div>
+
+
+            <div class="row" style="margin-bottom:20px">
+                <fieldset><legend style="color:blue;font-weight:bold;">Review Information</legend>
+
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <h5>Assigned Reviewer(s):</h5>
+                        <table id="assigned-reviewers" class="table text-center">
+                            <thead id="table-head">
+                                <tr>
+                                    <th>Date Assigned</th>
+                                    <th>Member Name</th>
+                                    <th>Member Email</th>
+                                    <th>Review Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-body">
+                                <% for(var i = 0; i < assignees.length; i++) { %>
+                                    <tr>
+                                        <td><%= assignees[i]['a_date'] %></td>
+                                        <td><%= assignees[i]['name'] %></td>
+                                        <td><%= assignees[i]['email'] || 'N/A' %></td>
+                                        <td><%= assignees[i]['status'] %></td>
+                                        <td>
+                                            <% if(assignees[i]['status'] != 'Submitted') { %>
+                                                <form id="unassign-review-<%= i %>" action="/roles/admin/reviews/manage" method="POST">
+                                                    <button id="unassign-review-<%= i %>" type="submit" name="unassign" value="<%= assignees[i]['id'] %>" class="btn btn-danger btn-default pull-center"><span class="glyphicon glyphicon-remove-sign"></span> Unassign Review</button>
+                                                </form>
+                                            <%} else { %>
+                                                <form id="dismiss-review-<%= i %>" action="/roles/admin/reviews/manage" method="POST">
+                                                    <button id="dismiss-review-<%= i %>" type="submit" name="dismiss" value="<%= assignees[i]['id'] %>" class="btn btn-danger btn-default pull-center"><span class="glyphicon glyphicon-trash"></span> Dismiss Review</button>
+                                                </form>
+                                            <%} %>
+                                        </td>
+                                    </tr>
+                                <%} %>
+                            </tbody>
+                        </table>            
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <a id="edit-close" href="/roles/admin/reviews/manage" class="btn btn-primary"><span class="glyphicon glyphicon glyphicon-remove-sign"></span> Close</a>
+            </div>
     </div>
-<% include partials/footer %>
+    <script src="https://web.archive.org/web/20161124120603js_/http://www.papercut.com/products/free-software/are-you-sure/jquery.are-you-sure.js"></script>
+</body>
