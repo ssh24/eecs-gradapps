@@ -1,0 +1,74 @@
+<% include partials/header %>
+    <% include partials/navbar %>
+                <!--tables-->
+                <div class="container-fluid" style="margin-top: 5px">
+                        <div class="container text-center">
+                            <a id="go-back" href="/roles/admin/" class="btn btn-link"><span class="glyphicon glyphicon-backward"></span> Go back to dashboard</a>
+                        </div>
+                        <% if (!filter) { %>
+                            <a id="refresh-table" href="/roles/admin/applications" class="btn"><b>Refresh Current Table</b> <span class="glyphicon glyphicon-refresh"></span></a>
+                            <a id="new-app" href="/roles/admin/applications/new" class="btn btn-primary"><b>Create New Application</b> <span class="glyphicon glyphicon-plus"></span></a>
+                        <% } else { %>
+                            <a id="reset-table" href="/roles/admin/applications" class="btn btn-primary"><span class="glyphicon glyphicon-arrow-left"></span> Load Default Table</a>
+                            <a id="refresh-table" href="/roles/admin/applications/filter" class="btn btn-primary">Refresh Current Table <span class="glyphicon glyphicon-refresh"></span></a>
+                        <% } %>
+                        <div class="table-responsive">
+                            <% if (message.length > 0) { %>
+                                <div id="error-message" class="alert alert-danger text-center">
+                                    <%= message %>
+                                </div>
+                            <% } else{ %>
+                                <table id="applicant-table" class="table table-striped table-hover tablesorter">
+                                        <thead id="table-head">
+                                            <tr>
+                                                <% for(var i = 0; i < fields.length; i++){ %>
+                                                    <% if (hidden.includes(fields[i])) { %>
+                                                        <% continue; %>
+                                                    <% } else { %>
+                                                        <%if (fields[i]==='GPA') { %>
+                                                            <th class="text-center sorter-grades"><%= fields[i]%></th>
+                                                        <%} else if (fields[i] === 'Actions'){ %>
+                                                            <th class="text-center sorter-false parser-false"><%= fields[i]%></th>
+                                                        <%} else {%>
+                                                            <th class="text-center"><%= fields[i]%></th>
+                                                        <%}%>
+                                                    <% } %>
+                                                <%}%>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="table-body">
+                                          <% for(var i = 0; i < apps.length; i++){ %>
+                                            <tr>
+                                                <% for(var j = 0; j < fields.length; j++){ %>
+                                                    <% if (hidden.includes(fields[j])) { %>
+                                                        <% continue; %>
+                                                    <% } else { %>
+                                                        <% if (fields[j] != 'Actions') { %>
+                                                            <td id="data-<%=i%>-<%=j%>" class="text-center">
+                                                                <%- highlightFunc(apps[i],fields[j], highlightText)%>
+                                                            </td>
+                                                        <% } else { %>
+                                                            <td class="text-center">
+                                                                    <div class="btn-group-vertical">
+                                                                        <a id="view-app-<%=i%>" href="/roles/admin/applications/view?appId=<%= apps[i][fields[0]]%>" target="_blank" class="btn btn-primary" style="margin-bottom: 5px">View Application PDF &raquo;</a></li>
+                                                                        <a id="edit-app-<%=i%>" href="/roles/admin/applications/edit?appId=<%= apps[i][fields[0]]%>" class="btn btn-primary" style="margin-bottom: 5px">Edit Application</a></li>
+                                                                    </div>
+                                                            </td>
+                                                        <% } %>
+                                                    <% } %>
+                                                <%}%>
+                                            </tr>
+                                            <%}%>
+                                        </tbody>
+                                    </table>
+                            <% } %>
+                        </div>
+                    </div>
+    </div>
+<% include partials/filter-application %>
+<% include partials/footer %>
+<script type="text/javascript"> var presets = <%-JSON.stringify(presets)%>;</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/TableExport/5.0.0/js/tableexport.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/TableExport/5.0.0/css/tableexport.min.css" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/TableExport/5.0.0/img/csv.svg" />
+<script src="/js/manage-app.js"></script>

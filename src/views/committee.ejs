@@ -44,7 +44,7 @@
                                             <% } else { %>
                                                 <td class="text-center">
                                                         <div class="btn-group-vertical">
-                                                            <button class="btn btn-primary" style="margin-bottom: 3px">View Application</button>
+                                                            <a id="view-app-<%=i%>" href="/roles/admin/applications/view?appId=<%= apps[i][fields[0]]%>" target="_blank" class="btn btn-primary" style="margin-bottom: 5px">View Application PDF &raquo;</a></li>
                                                             <form action="/roles/committee/review" method="GET">
                                                                 <input type="text" name="appId" value="<%= apps[i][fields[0]]%>" hidden>
                                                                 <% if (apps[i]['My Review Status'] && apps[i]['My Review Status'] === 'New') { %>

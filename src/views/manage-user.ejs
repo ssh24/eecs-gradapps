@@ -1,0 +1,67 @@
+<% include partials/header %>
+    <% include partials/navbar %>
+                <!--tables-->
+                <div class="container-fluid" style="margin-top: 5px">
+                        <div class="container text-center">
+                            <a id="go-back" href="/roles/admin/" class="btn btn-link"><span class="glyphicon glyphicon-backward"></span> Go back to dashboard</a>
+                        </div>
+                        <% if (!filter) { %>
+                            <a id="refresh-table" href="/roles/admin/users" class="btn"><b>Refresh Current Table</b> <span class="glyphicon glyphicon-refresh"></span></a>
+                            <a id="new-user" href="/roles/admin/users/new" class="btn btn-primary"><b>Add New User</b> <span class="glyphicon glyphicon-plus"></span></a>
+                        <% } else { %>
+                            <a id="reset-table" href="/roles/admin/users" class="btn btn-primary"><span class="glyphicon glyphicon-arrow-left"></span> Load Default Table</a>
+                            <a id="refresh-table" href="/roles/admin/users/filter" class="btn btn-primary">Refresh Current Table <span class="glyphicon glyphicon-refresh"></span></a>
+                        <% } %>
+                        <div class="table-responsive">
+                                <% if (message.length > 0) { %>
+                                    <div id="error-message" class="alert alert-danger text-center">
+                                        <%= message %>
+                                    </div>
+                                <% } else{ %>
+                                    <table id="user-table" class="table table-striped table-hover tablesorter">
+                                            <thead id="table-head">
+                                                <tr>
+                                                    <% for(var i = 0; i < fields.length; i++){ %>
+                                                        <% if (hidden.includes(fields[i])) { %>
+                                                            <% continue; %>
+                                                        <% } else if (fields[i] === 'Actions' || fields[i] === 'Field(s) of Specialization' || fields[i] === 'Roles Assigned'){ %>
+                                                            <th class="text-center sorter-false parser-false"><%= fields[i]%></th>
+                                                        <%} else { %>
+                                                            <th class="text-center"><%= fields[i]%></th>
+                                                        <% } %>
+                                                    <%}%>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="table-body">
+                                              <% for(var i = 0; i < users.length; i++){ %>
+                                                <tr>
+                                                    <% for(var j = 0; j < fields.length; j++){ %>
+                                                        <% if (hidden.includes(fields[j])) { %>
+                                                            <% continue; %>
+                                                        <% } else { %>
+                                                            <% if (fields[j] != 'Actions') { %>
+                                                                <td id="data-<%=i%>-<%=j%>" class="text-center"><%= users[i][fields[j]]%></td>
+                                                            <% } else { %>
+                                                                <td class="text-center">
+                                                                    <% if (users[i][fields[0]] != user) { %> 
+                                                                        <div class="btn-group-vertical">
+                                                                            <a id="edit-user-<%=i%>" href="/roles/admin/users/edit?userId=<%= users[i][fields[0]]%>" class="btn btn-primary" style="margin-bottom: 5px">Manage User &raquo;</a></li>
+                                                                        </div>
+                                                                    <% } else { %>
+                                                                        <p>To update own user settings click `Settings` on the navbar.</p>
+                                                                        <p>To assign/unassign yourself from a role, please contact another system administrator.</p>
+                                                                    <% } %>
+                                                                </td>
+                                                            <% } %>
+                                                        <% } %>
+                                                    <%}%>
+                                                </tr>
+                                                <%}%>
+                                            </tbody>
+                                        </table>
+                                <% } %>
+                            </div>
+                    </div>
+    </div>
+<% include partials/footer %>
+<script src="/js/manage-user.js"></script>
