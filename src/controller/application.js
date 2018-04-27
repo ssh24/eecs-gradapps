@@ -120,11 +120,11 @@ Application.prototype.getApplications = function(sql, memberId, cb) {
 				if (err) return cb(err);
 				if (result1.length > 0) {
 					_.forEach(result1, function(res1) {
-						if (res1['My Interest Status'] === null) {
+						if(res1['My Interest Status'] === null) {
 							res1['My Interest Status'] = '-';
 						} else if (res1['My Interest Status'] === 1) {
 							res1['My Interest Status'] = 'Interested';
-						} else {
+						} else if (res1['My Interest Status'] === 0) {
 							res1['My Interest Status'] = 'Not Interested';
 						}
 					});

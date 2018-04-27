@@ -22,7 +22,7 @@ var Welcome = require('../../views/welcome-view');
 var application, connection, timeout;
 var creds = config.credentials.database;
 
-describe('Professor Test', function() {
+describe.only('Professor Test', function() {
 	timeout = ms('40s');
 	this.timeout(timeout);
 

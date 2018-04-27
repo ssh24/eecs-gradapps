@@ -16,7 +16,7 @@ var Welcome = require('../../views/welcome-view');
 
 var config = require('../../lib/utils/config');
 
-describe('Manage Reviews Test', function() {
+describe.skip('Manage Reviews Test', function() {
 	var timeout = ms('30s');
 	this.timeout(timeout);
 

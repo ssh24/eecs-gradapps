@@ -84,7 +84,7 @@ describe('Manage Applications Test', function() {
 		}],
 		ygs: 'yes'
 	};
-	var appId=24;
+	var appId=34;
 
 	before(function setUp() {
 		utils.startApp();
@@ -424,7 +424,7 @@ describe('Manage Applications Test', function() {
 					.then(expect(filter.isFieldDDOpen.call(filter, filter.filter
 						.fields.applicant.openDD)).to
 						.eventually.be.true)
-					.then(filter.selectIthElement.call(filter, 6))
+					.then(filter.selectIthElement.call(filter, 8))
 					.then(expect(filter.getSelectedElement.call(filter)).to
 						.eventually.contain('Celestine Sywell'))
 					.then(expect(filter.getSelectedFilter.call(filter)).to.eventually
@@ -506,7 +506,7 @@ describe('Manage Applications Test', function() {
 						.fields.applicant.openDD)).to
 						.eventually.be.true)
 					.then(filter.searchText.call(filter, 'ea'))
-					.then(filter.selectIthElement.call(filter, 7))
+					.then(filter.selectIthElement.call(filter, 9))
 					.then(expect(filter.getSelectedElement.call(filter)).to
 						.eventually.contain('Chrysa Really'))
 					.then(expect(filter.getSelectedFilter.call(filter)).to.eventually
