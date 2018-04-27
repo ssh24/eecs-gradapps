@@ -17,7 +17,7 @@ FM.prototype.getPresets = function(memberId, role, cb) {
 	assert(typeof memberId === 'number', 'memberId should be a number');
 	assert(typeof role === 'string', 'role should  be a string');
 	assert(typeof cb === 'function', 'cb should be a function');
-	var self=this;
+	var self = this;
 	//check if the user has the roles
 	this.utils.hasRole(memberId, role, function(err, result) {
 		var presetRole;
@@ -58,6 +58,7 @@ FM.prototype.updatePreset = function(memberId, role, preset_name, options, cb) {
 	assert(typeof role === 'string', 'role should  be a string');
 	assert(typeof preset_name === 'string', 'preset_name should be a string');
 	assert(typeof options === 'object', 'options should be an object');
+	assert(preset_name, 'preset_name should exist. This could be a result of attempting to create a preset with no name');
 	assert(options.column_name, 'options.column_name should exist');
 	assert(options.column_val, 'options.column_val should exist');
 	assert(options.filter_name, 'options.column_name should exist');
@@ -73,7 +74,6 @@ FM.prototype.updatePreset = function(memberId, role, preset_name, options, cb) {
 	var commaDelimeter = ',';
 	var presetRole;
 	var self = this;
-
 	//check if the user has the roles
 	this.utils.hasRole(memberId, role, function(err, result) {
 		if (err) return cb(err);
@@ -94,22 +94,22 @@ FM.prototype.updatePreset = function(memberId, role, preset_name, options, cb) {
 		var col = 'JSON_OBJECT(';
 		for (var i = 0; i < options.column_name.length; i++) {
 			if (i < options.column_name.length - 1) {
-				col = col + '\'' + options.column_name[i] + '\'' + commaDelimeter + '\'' + options.column_val[i] + '\'' + commaDelimeter;
+				col = col + self.conn.escape(options.column_name[i]) + commaDelimeter + self.conn.escape(options.column_val[i]) + commaDelimeter;
 			} else {
-				col = col + '\'' + options.column_name[i] + '\'' + commaDelimeter + '\'' + options.column_val[i] + '\'' + ')';
+				col = col + self.conn.escape(options.column_name[i]) + commaDelimeter + self.conn.escape(options.column_val[i]) + ')';
 			}
 		}
 		var filt = 'JSON_OBJECT(';
 		for (i = 0; i < options.filter_name.length; i++) {
 			if (i < options.filter_name.length - 1) {
-				filt = filt + '\'' + options.filter_name[i] + '\'' + commaDelimeter + '\'' + options.filter_val[i] + '\'' + commaDelimeter;
+				filt = filt + self.conn.escape(options.filter_name[i]) + commaDelimeter + self.conn.escape(options.filter_val[i]) + commaDelimeter;
 			} else {
-				filt = filt + '\'' + options.filter_name[i] + '\'' + commaDelimeter + '\'' + options.filter_val[i] + '\'' + ')';
+				filt = filt + self.conn.escape(options.filter_name[i]) + commaDelimeter + self.conn.escape(options.filter_val[i]) + ')';
 			}
 		}
 
 		var preset_json = 'JSON_OBJECT(\'cols\'' + commaDelimeter + col + commaDelimeter + '\'filt\'' + commaDelimeter + filt + ')';
-		var presetRoleVal = 'IF(' + presetRole + ' is NULL, JSON_OBJECT(\'' + preset_name + '\'' + commaDelimeter + preset_json + ')' + commaDelimeter + 'JSON_SET(' + presetRole + commaDelimeter + '\'$."' + preset_name + '"\'' + commaDelimeter + preset_json + '))';
+		var presetRoleVal = 'IF(' + presetRole + ' is NULL, JSON_OBJECT(' + self.conn.escape(preset_name) + commaDelimeter + preset_json + ')' + commaDelimeter + 'JSON_SET(' + presetRole + commaDelimeter + 'concat(\'$.\', json_quote(' + self.conn.escape(preset_name) + '))' + commaDelimeter + preset_json + '))';
 		var updateStatement = self.utils.createUpdateStatement(tableName, [presetRole], [presetRoleVal], [whereField], [memberId]);
 		self.conn.query(updateStatement, cb);
 	});
@@ -118,8 +118,8 @@ FM.prototype.updatePreset = function(memberId, role, preset_name, options, cb) {
 
 /**
  * Get all user information.
- * @param {Number} memberId 
- * @param {Function} cb 
+ * @param {Number} memberId
+ * @param {Function} cb
  */
 FM.prototype.getUserInfo = function(memberId, cb) {
 	assert(typeof memberId === 'number');
@@ -129,16 +129,16 @@ FM.prototype.getUserInfo = function(memberId, cb) {
 	this.utils.getRoles(memberId, function(err, roles) {
 		if (err) return cb(err);
 		if (roles.includes('Admin')) {
-			self.conn.query('SELECT fm_Id, CONCAT_WS(\' \', `fm_Fname`, `fm_Lname`) AS ' + 
-			'`Member Name`, fm_Email as `Member Email`, fm_FOS as `Field(s) of ' + 
-			'Specialization`, fm_Roles as ' + '`Roles Assigned` from faculty_member', 
+			self.conn.query('SELECT fm_Id, CONCAT_WS(\' \', `fm_Fname`, `fm_Lname`) AS ' +
+        '`Member Name`, fm_Email as `Member Email`, fm_FOS as `Field(s) of ' +
+        'Specialization`, fm_Roles as ' + '`Roles Assigned` from faculty_member',
 			function(err, result) {
 				if (err) return cb(err);
 				return cb(err, result);
 			});
 		} else {
-			err = new Error('Member ' + memberId + 
-							' does not have access to access user informations'); 
+			err = new Error('Member ' + memberId +
+        ' does not have access to access user informations');
 			return cb(err);
 		}
 	});
@@ -146,15 +146,15 @@ FM.prototype.getUserInfo = function(memberId, cb) {
 
 /**
  * Create a new user.
- * @param {Object} data 
- * @param {Number} memberId 
- * @param {Function} cb 
+ * @param {Object} data
+ * @param {Number} memberId
+ * @param {Function} cb
  */
 FM.prototype.createUser = function(data, memberId, cb) {
 	assert(typeof data === 'object');
 	assert(typeof memberId === 'number');
 	assert(typeof cb === 'function');
-	
+
 	var self = this;
 	this.utils.getRoles(memberId, function(err, roles) {
 		if (err) return cb(err);
@@ -164,8 +164,8 @@ FM.prototype.createUser = function(data, memberId, cb) {
 				return cb(err, result);
 			});
 		} else {
-			err = new Error('Member ' + memberId + 
-							' does not have access to create new user'); 
+			err = new Error('Member ' + memberId +
+        ' does not have access to create new user');
 			return cb(err);
 		}
 	});
@@ -173,23 +173,24 @@ FM.prototype.createUser = function(data, memberId, cb) {
 
 /**
  * Update an user.
- * @param {Object} data 
- * @param {Number} userId 
- * @param {Number} memberId 
- * @param {Function} cb 
+ * @param {Object} data
+ * @param {Number} userId
+ * @param {Number} memberId
+ * @param {Function} cb
  */
 FM.prototype.updateUser = function(data, userId, memberId, cb) {
 	assert(typeof data === 'object');
 	assert(typeof userId === 'number');
 	assert(typeof memberId === 'number');
 	assert(typeof cb === 'function');
-	
+
 	var self = this;
 	this.utils.getRoles(memberId, function(err, roles) {
 		if (err) return cb(err);
 		if (roles.includes('Admin')) {
-			self.conn.query('UPDATE faculty_member SET ? WHERE fm_Id=?', [data, 
-				userId], function(err, result) {
+			self.conn.query('UPDATE faculty_member SET ? WHERE fm_Id=?', [data,
+				userId
+			], function(err, result) {
 				if (err) return cb(err);
 				return cb(err, result);
 			});
@@ -198,8 +199,9 @@ FM.prototype.updateUser = function(data, userId, memberId, cb) {
 			delete data['presetProf'];
 			delete data['presetCommittee'];
 			delete data['presetAdmin'];
-			self.conn.query('UPDATE faculty_member SET ? WHERE fm_Id=?', [data, 
-				userId], function(err, result) {
+			self.conn.query('UPDATE faculty_member SET ? WHERE fm_Id=?', [data,
+				userId
+			], function(err, result) {
 				if (err) return cb(err);
 				return cb(err, result);
 			});
@@ -210,26 +212,26 @@ FM.prototype.updateUser = function(data, userId, memberId, cb) {
 /**
  * Delete an user.
  * @param {Number} userId
- * @param {Number} memberId 
- * @param {Function} cb 
+ * @param {Number} memberId
+ * @param {Function} cb
  */
 FM.prototype.deleteUser = function(userId, memberId, cb) {
 	assert(typeof userId === 'number');
 	assert(typeof memberId === 'number');
 	assert(typeof cb === 'function');
-	
+
 	var self = this;
 	this.utils.getRoles(memberId, function(err, roles) {
 		if (err) return cb(err);
 		if (roles.includes('Admin')) {
-			self.conn.query('DELETE FROM faculty_member WHERE fm_Id=?', userId, 
+			self.conn.query('DELETE FROM faculty_member WHERE fm_Id=?', userId,
 				function(err, result) {
 					if (err) return cb(err);
 					return cb(err, result);
 				});
 		} else {
-			err = new Error('Member ' + memberId + 
-							' does not have access to delete user'); 
+			err = new Error('Member ' + memberId +
+        ' does not have access to delete user');
 			return cb(err);
 		}
 	});
@@ -237,9 +239,9 @@ FM.prototype.deleteUser = function(userId, memberId, cb) {
 
 /**
  * Get all user data.
- * @param {Number} appId 
+ * @param {Number} appId
  * @param {Number} memberId
- * @param {Function} cb 
+ * @param {Function} cb
  */
 FM.prototype.getUserData = function(userId, memberId, cb) {
 	assert(typeof userId === 'number');
@@ -250,16 +252,16 @@ FM.prototype.getUserData = function(userId, memberId, cb) {
 	this.utils.getRoles(memberId, function(err, roles) {
 		if (err) return cb(err);
 		if (roles.includes('Admin')) {
-			self.conn.query('SELECT * from faculty_member where fm_Id=?', [userId], 
+			self.conn.query('SELECT * from faculty_member where fm_Id=?', [userId],
 				function(err, result) {
 					if (err) return cb(err);
 					if (result.length === 1) {
 						return cb(err, result[0]);
 					}
 				});
-		} else if (roles.includes('Committee Member') || roles.includes('Professor')) { 
-			self.conn.query('SELECT fm_Id, fm_Username, fm_Lname, fm_Fname, ' + 
-			'fm_Email, fm_FOS from faculty_member where fm_Id=?', [userId], 
+		} else if (roles.includes('Committee Member') || roles.includes('Professor')) {
+			self.conn.query('SELECT fm_Id, fm_Username, fm_Lname, fm_Fname, ' +
+        'fm_Email, fm_FOS from faculty_member where fm_Id=?', [userId],
 			function(err, result) {
 				if (err) return cb(err);
 				if (result.length === 1) {
