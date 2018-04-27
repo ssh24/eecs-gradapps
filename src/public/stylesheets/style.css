@@ -155,6 +155,10 @@ table.tablesorter {
     max-height: 650px;
 }
 
+.fullpage {
+    height: 100%
+}
+
 .table-striped > tbody > tr:nth-child(odd) > td,
 .table-striped > tbody > tr:nth-child(odd) > th {}
 
