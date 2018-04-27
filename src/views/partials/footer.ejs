@@ -4,15 +4,18 @@
         <span class="glyphicon glyphicon-chevron-up"></span>
     </a>
     <br><br>
-
-
-    <p>
-      Gradapps 2.0 / Edward Vaisman, S. Sakib Hasan /
-      <% if (role === 'Professor') { %>
-        <a href="/docs/users-manual/professor-manual.pdf" class="urlextern" target="_blank" title="Professor User Manual" rel="nofollow">User Manual <span class="glyphicon glyphicon-file"></span></a>
+    <p>Gradapps 2.0 / Edward Vaisman, S. Sakib Hasan /
+      <% if (!role) { %>
+          <a a id="system-manual" href="/docs/users-manual/user-manual.pdf" class="urlextern" target="_blank" title="System User Manual" rel="nofollow">User Manual <span class="glyphicon glyphicon-file"></span></a>
       <%} %>
       <% if (role === 'Committee Member') { %>
-        <a href="/docs/users-manual/committee-manual.pdf" class="urlextern" target="_blank" title="Admission Committee User Manual" rel="nofollow">User Manual  <span class="glyphicon glyphicon-file"></span></a>
+        <a id="committee-manual" href="/docs/users-manual/committee-manual.pdf" class="urlextern" target="_blank" title="Admission Committee User Manual" rel="nofollow">User Manual <span class="glyphicon glyphicon-file"></span></a>
+      <%} %>
+      <% if (role === 'Admin') { %>
+        <a id="admin-manual" href="/docs/users-manual/admin-manual.pdf" class="urlextern" target="_blank" title="Administrator User Manual" rel="nofollow">User Manual <span class="glyphicon glyphicon-file"></span></a>
+      <%} %>
+      <% if (role === 'Professor') { %>
+        <a id="prof-manual" href="/docs/users-manual/professor-manual.pdf" class="urlextern" target="_blank" title="Professor User Manual" rel="nofollow">User Manual <span class="glyphicon glyphicon-file"></span></a>
       <%} %>
     </p>
 </footer>

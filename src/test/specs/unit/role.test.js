@@ -33,7 +33,7 @@ describe('Role Test', function() {
 	});
 
 	after(function cleanUp(done) {
-		require('../../pretest');
+		require('../../seed');
 		browser.restart();
 		utils.stopApp(done);
 	});

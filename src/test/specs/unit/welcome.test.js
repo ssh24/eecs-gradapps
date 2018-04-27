@@ -25,7 +25,6 @@ describe('Welcome Test', function() {
 	});
 
 	after(function cleanUp(done) {
-		require('../../pretest');
 		browser.restart();
 		utils.stopApp(done);
 	});
