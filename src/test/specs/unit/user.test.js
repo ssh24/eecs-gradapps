@@ -54,6 +54,7 @@ describe('Manage Users Test', function() {
 	var userIndex = 78;
 
 	before(function setUp() {
+		require('../../seed');
 		utils.startApp();
 		utils.openView('#');
 		utils.maximizeBrowserWindow();
@@ -66,7 +67,6 @@ describe('Manage Users Test', function() {
 	after(function cleanUp(done) {
 		utils.logOut()
 			.then(function() {
-				require('../../pretest');
 				browser.restart();
 				utils.stopApp(done);
 			});

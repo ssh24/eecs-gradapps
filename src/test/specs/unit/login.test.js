@@ -21,6 +21,7 @@ describe('Login Test', function() {
 	var welcome = new Welcome();
 
 	before(function () {
+		require('../../seed');
 		utils.startApp();
 		utils.openView('#');
 		utils.maximizeBrowserWindow();
@@ -28,7 +29,6 @@ describe('Login Test', function() {
 	});
 
 	after(function (done) {
-		require('../../seed');
 		browser.restart();
 		utils.stopApp(done);
 	});

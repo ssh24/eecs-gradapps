@@ -3,7 +3,7 @@
 var cp = require('child_process');
 var db = require('../config/db-type');
 
-var isApp = process.env.NODE_ENV === 'test' ? true : (process.argv[2] ? 
+var isApp = process.env.NODE_ENV === 'test' ? false : (process.argv[2] ? 
 	process.argv[2] : false);
 var sql, dbType, dropStmt, createStmt, useStmt, setStmt;
 

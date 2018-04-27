@@ -467,6 +467,12 @@ Review.prototype.setReviewStatus = function(appId, committeeId, status, cb) {
     
 	var self = this;
 	var updateStatement;
+	var statusArray = ['New', 'Draft', 'Submitted'];
+
+	if(!statusArray.includes(status)) {
+		var err = new Error('Invalid status');
+		return cb(err);
+	}
     
 	this.isAssigned(appId, committeeId, function(err, result) {
 		if (err) return cb(err);

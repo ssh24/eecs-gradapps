@@ -1,5 +1,7 @@
 'use strict';
 
+process.env.NODE_ENV = 'test';
+
 var assert = require('assert');
 var config = require('../../lib/utils/config');
 var mysql = require('mysql2');
@@ -147,13 +149,13 @@ describe('Faculty Member Trigger', function() {
 		});
 
 		it('create a valid user as an admin', function(done) {
-			faculty_member.createUser({fm_Lname: 'Bar', fm_Fname: 'Foo'}, 20, 
-				function(err, result) {
-					if (err) done(err);
-					assert(result, 'Result should exist');
-					insertId = result['insertId'];
-					done();
-				});
+			faculty_member.createUser({fm_Username: 'foobar', fm_Lname: 'Bar', 
+				fm_Fname: 'Foo'}, 20, function(err, result) {
+				if (err) done(err);
+				assert(result, 'Result should exist');
+				insertId = result['insertId'];
+				done();
+			});
 		});
 
 		it('create an invalid user as an admin', function(done) {
@@ -165,12 +167,12 @@ describe('Faculty Member Trigger', function() {
 		});
 
 		it('create a valid user as not an admin', function(done) {
-			faculty_member.createUser({fm_Lname: 'Bar', fm_Fname: 'Foo'}, 4, 
-				function(err, result) {
-					assert(err, 'Error should exist');
-					assert(!result, 'Result should not exist');
-					done();
-				});
+			faculty_member.createUser({fm_Username: 'foobar', fm_Lname: 'Bar', 
+				fm_Fname: 'Foo'}, 4, function(err, result) {
+				assert(err, 'Error should exist');
+				assert(!result, 'Result should not exist');
+				done();
+			});
 		});
 
 		it('create an invalid user as not an admin', function(done) {
@@ -195,13 +197,13 @@ describe('Faculty Member Trigger', function() {
 		var insertId;
 
 		before(function setUp(done) {
-			faculty_member.createUser({fm_Lname: 'Bar', fm_Fname: 'Foo'}, 20, 
-				function(err, result) {
-					if (err) done(err);
-					assert(result, 'Result should exist');
-					insertId = result['insertId'];
-					done();
-				});
+			faculty_member.createUser({fm_Username: 'foobar', fm_Lname: 'Bar', 
+				fm_Fname: 'Foo'}, 20, function(err, result) {
+				if (err) done(err);
+				assert(result, 'Result should exist');
+				insertId = result['insertId'];
+				done();
+			});
 		});
 
 		after(function cleanUp(done) {
@@ -278,13 +280,13 @@ describe('Faculty Member Trigger', function() {
 		var insertId;
 
 		before(function setUp(done) {
-			faculty_member.createUser({fm_Lname: 'Bar', fm_Fname: 'Foo'}, 20, 
-				function(err, result) {
-					if (err) done(err);
-					assert(result, 'Result should exist');
-					insertId = result['insertId'];
-					done();
-				});
+			faculty_member.createUser({fm_Username: 'foobar', fm_Lname: 'Bar', 
+				fm_Fname: 'Foo'}, 20, function(err, result) {
+				if (err) done(err);
+				assert(result, 'Result should exist');
+				insertId = result['insertId'];
+				done();
+			});
 		});
 
 		it('delete a valid user as an admin', function(done) {
@@ -328,13 +330,13 @@ describe('Faculty Member Trigger', function() {
 		var insertId;
 
 		before(function setUp(done) {
-			faculty_member.createUser({fm_Lname: 'Bar', fm_Fname: 'Foo'}, 20, 
-				function(err, result) {
-					if (err) done(err);
-					assert(result, 'Result should exist');
-					insertId = result['insertId'];
-					done();
-				});
+			faculty_member.createUser({fm_Username: 'foobar', fm_Lname: 'Bar', 
+				fm_Fname: 'Foo'}, 20, function(err, result) {
+				if (err) done(err);
+				assert(result, 'Result should exist');
+				insertId = result['insertId'];
+				done();
+			});
 		});
 
 		after(function cleanUp(done) {

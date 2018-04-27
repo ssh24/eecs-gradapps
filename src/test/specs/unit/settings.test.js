@@ -85,7 +85,6 @@ describe('User Settings Test', function() {
 			.then(utils.closeBrowserAlert.call(utils))
 			.then(utils.logOut.call(utils))
 			.then(function() {
-				require('../../pretest');
 				browser.restart();
 				utils.stopApp(done);
 			});

@@ -41,7 +41,6 @@ describe('Manage Reviews Test', function() {
 	after(function cleanUp(done) {
 		utils.logOut()
 			.then(function() {
-				require('../../pretest');
 				browser.restart();
 				utils.stopApp(done);
 			});
@@ -68,7 +67,7 @@ describe('Manage Reviews Test', function() {
 		expect(browser.getCurrentUrl()).to.eventually.contain('/reviews')
 			.then(review.refreshTable.call(review));
 	});
-    
+
 	it('- assign a visa review', function() {
 		var appIndex = 7;
 		var cmIndex = 1;

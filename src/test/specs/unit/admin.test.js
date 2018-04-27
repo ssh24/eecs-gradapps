@@ -36,7 +36,6 @@ describe('Admin Test', function() {
 	after(function cleanUp(done) {
 		utils.logOut()
 			.then(function() {
-				require('../../pretest');
 				browser.restart();
 				utils.stopApp(done);
 			});

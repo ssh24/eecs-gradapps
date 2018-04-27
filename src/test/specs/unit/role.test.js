@@ -21,6 +21,7 @@ describe('Role Test', function() {
 	var welcome = new Welcome();
 
 	before(function () {
+		require('../../seed');
 		utils.startApp();
 		utils.openView('#');
 		utils.maximizeBrowserWindow();
