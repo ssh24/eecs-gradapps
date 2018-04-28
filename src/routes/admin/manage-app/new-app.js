@@ -1,5 +1,6 @@
 'use strict';
 
+var _ = require('lodash');
 var async = require('async');
 var fileUpload = require('express-fileupload');
 
@@ -43,7 +44,9 @@ module.exports = function(config, fns) {
 	function getAppl(req, res, next) {
 		utils.getAllCommitteeMembers(function(err, rcms) {
 			if (err) res.redirect(route);
-			req.apps.cms = cms = rcms;
+			req.apps.cms = cms = _.filter(rcms, function(e) { 
+				return e.id != req.user.id;
+			});
 			next();
 		});
 	}

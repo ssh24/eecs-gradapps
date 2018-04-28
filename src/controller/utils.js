@@ -569,6 +569,10 @@ Utils.prototype.getVisaStatus = function(appId, cb) {
 			if (err) return cb(err);
 			if (result.length === 1) {
 				return cb(err, result[0]['VStatus']);
+			} else {
+				err = new Error('Cannot find visa status for given appId: ' + 
+				JSON.stringify(appId));
+				return cb(err);
 			}
 		});
 };

@@ -630,4 +630,53 @@ describe('Application Triggers', function() {
 			});
 		});
 	});
+
+	describe('get an applicants review', function() {
+		it('valid application as a admin', function(done){
+			application.getApplicationReview(1,1,function(err,result){
+				if (err) done(err);
+				assert(result, 'Result should exist');
+				done();
+			});
+		});
+
+		it('valid application as a committee member', function(done){
+			application.getApplicationReview(1,10,function(err,result){
+				assert(err, 'Error should exist');
+				assert(!result, 'Result shouldn\'t exist');
+				done();
+			});
+		});
+
+		it('valid application as a professor', function(done){
+			application.getApplicationReview(1,20,function(err,result){
+				if (err) done(err);
+				assert(result, 'Result should exist');
+				done();
+			});
+		});
+		it('invalid application as a admin', function(done){
+			application.getApplicationReview(20,1,function(err,result){
+				assert(err, 'Error should exist');
+				assert(!result, 'Result shouldn\'t exist');
+				done();
+			});
+		});
+
+		it('invalid application as a committee member', function(done){
+			application.getApplicationReview(20,10,function(err,result){
+				assert(err, 'Error should exist');
+				assert(!result, 'Result shouldn\'t exist');
+				done();
+			});
+		});
+
+		it('invalid application as a professor', function(done){
+			application.getApplicationReview(20,20,function(err,result){
+				assert(err, 'Error should exist');
+				assert(!result, 'Result shouldn\'t exist');
+				done();
+			});
+		});
+	});
 });

@@ -256,6 +256,24 @@ describe('Util Functionalities', function() {
 		});
 	});
 
+	describe('get visa status function', function(){
+		it('get visa status of an invalid app', function(done) {
+			utils.getVisaStatus(0, function(err, result) {
+				assert(err, 'Error should exist');
+				assert(!result, 'Result should not exist');
+				done();
+			});
+		});
+
+		it('get visa status of a valid app', function(done) {
+			utils.getVisaStatus(1, function(err, result) {
+				if (err) done (err);
+				assert(result, 'Result should exist');
+				done();
+			});
+		});
+	});
+
 	describe('build committee rank function', function(){
 		it('build committee rank: > B', function(done) {
 			utils.buildCommitteeRankFilter('>', 'B', function(err, result) {

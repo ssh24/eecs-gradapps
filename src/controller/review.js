@@ -537,11 +537,14 @@ Review.prototype.getCommitteeRanks = function(appId, cb) {
 	function(err, results) {
 		if (err) return cb(err);
 		var cRanks = [];
-		if (results.length === 2) {
+		if (results.length === 2) { // domestic students
 			_.forEach(results, function(res) {
 				var rank = res['c_Rank'];
 				cRanks.push(rank); 
 			});
+		} else {
+			// visa students
+			cRanks.push(results[0]['c_Rank']);
 		}
 		return cb(err, cRanks);
 	});
