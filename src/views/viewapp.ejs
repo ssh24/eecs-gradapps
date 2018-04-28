@@ -13,21 +13,21 @@
             <div class="row">
               <div class="col-md-4">
                 <h4>Applicant Name</h4>
-                <p><%= app[0]['Applicant Name'] %></p>
+                <p id="name"><%= app[0]['Applicant Name'] %></p>
               </div>
               <div class="col-md-4">
                 <h4>Session</h4>
-                <p><%= app[0]['Session'] %></p>
+                <p id="session"><%= app[0]['Session'] %></p>
               </div>
               <div class="col-md-4">
                 <h4>Email</h4>
-                <p><%= app[0]['Email'] %></p>
+                <p id="email"><%= app[0]['Email'] %></p>
               </div>
             </div>
             <div class="row">
               <div class="col-md-4">
                 <h4>Gender</h4>
-                <p><%= app[0]['Gender'] %></p>
+                <p id="gender"><%= app[0]['Gender'] %></p>
               </div>
               <div class="col-md-4">
                 <h4>GPA - <% if(app[0]['GPA_FINAL'] === 1) {%>
@@ -36,11 +36,11 @@
                   Interim
                 <% } %>
                 </h4>
-                <p><%= app[0]['GPA'] %></p>
+                <p id="gpa"><%= app[0]['GPA'] %></p>
               </div>
               <div class="col-md-4">
                 <h4>GRE | TOEFL | IELTS | YELT</h4>
-                <p>
+                <p id="grades">
                 <% if (app[0]['GRE'] === null ||  app[0]['GRE'] === '' || typeof app[0]['GRE'] == 'undefined') { %>
                     -
                 <% } else { %>
@@ -67,52 +67,54 @@
             <div class="row">
               <div class="col-md-4">
                 <h4>Degree</h4>
-                <p><%= app[0]['Degree'] %></p>
+                <p id="degree"><%= app[0]['Degree'] %></p>
               </div>
               <div class="col-md-4">
                 <h4>Visa Status</h4>
-                <p><%= app[0]['Visa Status'] %></p>
+                <p id="visa"><%= app[0]['Visa Status'] %></p>
               </div>
               <div class="col-md-4">
                 <h4>Fields of Interest</h4>
-                <p><%= app[0]['Fields of Interest'] %></p>
+                <p id="foi"><%= app[0]['Fields of Interest'] %></p>
               </div>
             </div>
             <div class="row">
               <div class="col-md-3">
                 <h4>Preferred Professor(s)</h4>
-                <p><%= app[0]['Preferred Professors'] %></p>
+                <p id="profs"><%= app[0]['Preferred Professors'] %></p>
               </div>
               <div class="col-md-3">
                 <h4>Program Decision</h4>
-                <p><%= app[0]['Program Decision'] %></p>
+                <p id="pdecision"><%= app[0]['Program Decision'] %></p>
               </div>
               <div class="col-md-3">
                 <h4>Contacted By</h4>
-                <p><%= app[0]['Contacted By'] %></p>
+                <p id="contacted"><%= app[0]['Contacted By'] %></p>
               </div>
               <div class="col-md-3">
                 <h4>Requested By</h4>
-                <p><%= app[0]['Requested By'] %></p>
+                <p id="requested"><%= app[0]['Requested By'] %></p>
               </div>
             </div>
           </div>
           <% for(var i=0; i < reviews.length; i++) { %>
             <h2 class="text-center">Committee Review #<%= i+1 %></h2>
             <h3>Background</h3>
-            <p> <%= reviews[i]['Background'] %> </p>
+            <p id="background-<%= i %>"> <%= reviews[i]['Background'] %> </p>
             <h3>Research Experience</h3>
-            <p> <%= reviews[i]['Research Experience'] %></p>
+            <p id="research-<%= i %>"> <%= reviews[i]['Research Experience'] %></p>
             <h3>University Quality</h3>
             <ol>
               <% if(reviews[i]['UniAssessment']) { %>
                 <% for(var j=0; j < reviews[i]['UniAssessment'].length; j++) {%>
-                <li><%= reviews[i]['UniAssessment'][j]['u_Name'] %>
+                <li id="uni-<%= i %>-<%= j %>"><%= reviews[i]['UniAssessment'][j]['u_Name'] %>
                 <ul>
-                <% if(reviews[i]['UniAssessment'][j]['u_Assessments']) { %>
+                <% if(Array.isArray(reviews[i]['UniAssessment'][j]['u_Assessments'])) { %>
                   <% for(var k=0; k < reviews[i]['UniAssessment'][j]['u_Assessments'].length; k++) {%>
-                    <li><%= reviews[i]['UniAssessment'][j]['u_Assessments'][k] %></li>
+                    <li id="asssmt-<%= i %>-<%= j %>-<%= k %>"><%= reviews[i]['UniAssessment'][j]['u_Assessments'][k] %></li>
                   <% } %>
+                <% } else { %>
+                  <li id="asssmt-<%= i %>-<%= j %>"><%= reviews[i]['UniAssessment'][j]['u_Assessments'] %></li>
                 <% } %>
                 </ul>
                 </li>
@@ -121,11 +123,11 @@
 
             </ol>
             <h3>Letter</h3>
-            <p><%= reviews[i]['Letter'] %>
+            <p id="letter-<%= i %>"><%= reviews[i]['Letter'] %>
             <h3>Comments</h3>
-            <p><%= reviews[i]['Comments'] %></p>
+            <p  id="comments-<%= i %>"><%= reviews[i]['Comments'] %></p>
             <h3>Committee Rank</h3>
-            <p><%= reviews[i]['Committee Ranking'] %></p>
+            <p  id="rank-<%= i %>"><%= reviews[i]['Committee Ranking'] %></p>
           <% } %>
         <% } %>
     </div>

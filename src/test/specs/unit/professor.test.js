@@ -10,7 +10,6 @@ var ms = require('ms');
 var mysql = require('mysql2');
 
 var Application = require('../../../controller/application');
-//var Faculty_Member = require('../../../controller/faculty_member');
 
 var Filter = require('../../views/filter-view');
 var Login = require('../../views/login-view');
@@ -292,6 +291,220 @@ describe('Professor Test', function() {
 			.then(prof.closeSetToDropDown.call(prof))
 			.then(expect(prof.getInterestedData.call(prof)).to.eventually.not
 				.equal('Interested'));
+	});
+
+	describe('- view application', function() {
+		var appIndex = 0;
+		describe('- check for fields', function() {
+			before(function() {
+				prof.viewApplication(appIndex)
+					.then(utils.switchTab.call(utils, 1))
+					.then(expect(browser.getCurrentUrl()).to.eventually.contain('viewapp'));
+			});
+
+			after(function() {
+				utils.goToTab(0);
+			});
+
+			it('- check for application pdf file', function() {
+				expect(prof.checkForApplicationPDF.call(prof)).to.eventually.be.true;
+			});
+
+			it('- check for name', function() {
+				expect(prof.checkForName.call(prof)).to.eventually.be.true;
+			});
+
+			it('- check for application pdf file', function() {
+				expect(prof.checkForSession.call(prof)).to.eventually.be.true;
+			});
+
+			it('- check for email field', function() {
+				expect(prof.checkForEmail.call(prof)).to.eventually.be.true;
+			});
+
+			it('- check for gender field', function() {
+				expect(prof.checkForGender.call(prof)).to.eventually.be.true;
+			});
+
+			it('- check for gpa field', function() {
+				expect(prof.checkForGPA.call(prof)).to.eventually.be.true;
+			});
+
+			it('- check for other grades field', function() {
+				expect(prof.checkForGrades.call(prof)).to.eventually.be.true;
+			});
+
+			it('- check for degree field', function() {
+				expect(prof.checkForDegree.call(prof)).to.eventually.be.true;
+			});
+
+			it('- check for visa status field', function() {
+				expect(prof.checkForVStatus.call(prof)).to.eventually.be.true;
+			});
+
+			it('- check for foi field', function() {
+				expect(prof.checkForFOI.call(prof)).to.eventually.be.true;
+			});
+
+			it('- check for professor requested field', function() {
+				expect(prof.checkForProfs.call(prof)).to.eventually.be.true;
+			});
+
+			it('- check for program decision field', function() {
+				expect(prof.checkForPDecision.call(prof)).to.eventually.be.true;
+			});
+
+			it('- check for contacted field', function() {
+				expect(prof.checkForContacted.call(prof)).to.eventually.be.true;
+			});
+
+			it('- check for requested field', function() {
+				expect(prof.checkForRequested.call(prof)).to.eventually.be.true;
+			});
+
+			it('- check for background field', function() {
+				expect(prof.checkForBackground.call(prof, 0)).to.eventually.be.true;
+			});
+
+			it('- check for research field', function() {
+				expect(prof.checkForResearch.call(prof, 0)).to.eventually.be.true;
+			});
+
+			it('- check for comments field', function() {
+				expect(prof.checkForComments.call(prof, 0)).to.eventually.be.true;
+			});
+
+			it('- check for letter field', function() {
+				expect(prof.checkForLetter.call(prof, 0)).to.eventually.be.true;
+			});
+
+			it('- check for rank field', function() {
+				expect(prof.checkForRank.call(prof, 0)).to.eventually.be.true;
+			});
+
+			it('- check for university name', function() {
+				expect(prof.checkForUni.call(prof, 0, 0)).to.eventually.be.true;
+			});
+
+			it('- check for university assessment', function() {
+				expect(prof.checkForAsssmt.call(prof, 0, 0, 0)).to.eventually.be.true;
+			});
+		});
+
+		describe('- check for data', function() {
+			var text = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed luctus aliquam sollicitudin. Mauris ullamcorper.';
+			var data = {
+				name: 'Went Rubina',
+				session: 'Fall',
+				email: 'rwent0@discovery.com',
+				gender: 'F',
+				gpa: 'A',
+				grades: '- | - | - | -',
+				degree: 'MASc',
+				visa: 'Visa',
+				foi: 'Artificial Intelligence,Embedded Systems,Data Mining',
+				profs: 'Sheff Boneham,Buiron Truran',
+				pdecision: 'Accepted',
+				contacted: 'Sheff Boneham',
+				requested: 'Sheff Boneham',
+				background: text,
+				research: text,
+				letter: text,
+				comments: text,
+				rank: 'B',
+				uni: 'Lincoln University',
+				assmt: 'Some comment'
+			};
+			before(function() {
+				prof.viewApplication(appIndex)
+					.then(utils.switchTab.call(utils, 1))
+					.then(expect(browser.getCurrentUrl()).to.eventually.contain('viewapp'));
+			});
+
+			after(function() {
+				utils.goToTab(0);
+			});
+
+			it('- get name value', function() {
+				expect(prof.getName.call(prof)).to.eventually.be.equal(data.name);
+			});
+
+			it('- get session value', function() {
+				expect(prof.getSession.call(prof)).to.eventually.be.equal(data.session);
+			});
+
+			it('- get email value', function() {
+				expect(prof.getEmail.call(prof)).to.eventually.be.equal(data.email);
+			});
+
+			it('- get gender value', function() {
+				expect(prof.getGender.call(prof)).to.eventually.be.equal(data.gender);
+			});
+
+			it('- get gpa value', function() {
+				expect(prof.getGPA.call(prof)).to.eventually.be.equal(data.gpa);
+			});
+
+			it('- get other grades value', function() {
+				expect(prof.getGrades.call(prof)).to.eventually.be.equal(data.grades);
+			});
+
+			it('- get degree value', function() {
+				expect(prof.getDegree.call(prof)).to.eventually.be.equal(data.degree);
+			});
+
+			it('- get visa status value', function() {
+				expect(prof.getVisa.call(prof)).to.eventually.be.equal(data.visa);
+			});
+
+			it('- get foi value', function() {
+				expect(prof.getFOI.call(prof)).to.eventually.be.equal(data.foi);
+			});
+
+			it('- get profs value', function() {
+				expect(prof.getProfs.call(prof)).to.eventually.be.equal(data.profs);
+			});
+
+			it('- get pdecision value', function() {
+				expect(prof.getPDecision.call(prof)).to.eventually.be.equal(data.pdecision);
+			});
+
+			it('- get contacted value', function() {
+				expect(prof.getContacted.call(prof)).to.eventually.be.equal(data.contacted);
+			});
+
+			it('- get requested value', function() {
+				expect(prof.getRequested.call(prof)).to.eventually.be.equal(data.requested);
+			});
+
+			it('- get background value', function() {
+				expect(prof.getBackground.call(prof, 0)).to.eventually.be.equal(data.background);
+			});
+
+			it('- get research value', function() {
+				expect(prof.getResearch.call(prof, 0)).to.eventually.be.equal(data.research);
+			});
+
+			it('- get university value', function() {
+				expect(prof.getUniversity.call(prof, 0, 0)).to.eventually.be.contain(data.uni);
+			});
+
+			it('- get assessment value', function() {
+				expect(prof.getAssessment.call(prof, 0, 0)).to.eventually.be.equal(data.assmt);
+			});
+
+			it('- get letter value', function() {
+				expect(prof.getLetter.call(prof, 0)).to.eventually.be.equal(data.letter);
+			});
+
+			it('- get comments value', function() {
+				expect(prof.getComments.call(prof, 0)).to.eventually.be.equal(data.comments);
+			});
+
+			it('- get rank value', function() {
+				expect(prof.getRank.call(prof, 0)).to.eventually.be.equal(data.rank);
+			});
+		});
 	});
 
 	describe('- refresh table', function() {
