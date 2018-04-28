@@ -5,7 +5,8 @@
   "scripts": {
     "lint": "eslint . --fix && ejslint views/*",
     "start": "node ./bin/www",
-    "dev:start": "npm run seed:app && nodemon ./bin/www",
+    "seed:start": "npm run seed:app && nodemon ./bin/www",
+    "dev:start": "nodemon ./bin/www",
     "seed:test": "node ./test/seed.js",
     "seed:app": "node ./test/seed.js true",
     "test": "nyc --reporter=html --reporter=text npm run run:test",

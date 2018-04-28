@@ -111,7 +111,9 @@ module.exports = function(config, fns) {
 
 				utils.getAllCommitteeMembers(function(err, rcms) {
 					if (err) res.redirect(route);
-					req.apps.edit.cms = cms = rcms;
+					req.apps.edit.cms = cms = _.filter(rcms, function(e) { 
+						return e.id != req.user.id;
+					});
 
 					review.getReviewAssigneeID(appId, function(err, ids) {
 						if (err) res.redirect(route);

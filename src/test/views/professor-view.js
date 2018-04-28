@@ -35,7 +35,225 @@ function Professor(timeout) {
 	this.tables.data.interested = by.id('data-0-12');
 
 	this.userManual = by.id('prof-manual');
+
+	this.view = {};
+	this.view.pdf = by.id('view-app');
 }
+
+Professor.prototype.viewApplication = function(appId) {
+	var elem = by.id('view-application-'+appId);
+
+	return this.utils.waitForElementClickable(elem, this.timeout)
+		.then(element(elem).click());
+};
+
+Professor.prototype.checkForApplicationPDF = function() {
+	return this.utils.waitForElementDisplayed(this.view.pdf, this.timeout);
+};
+
+Professor.prototype.checkForName = function() {
+	var elem = by.id('name');
+	return this.utils.waitForElementDisplayed(elem, this.timeout);
+};
+
+Professor.prototype.checkForSession = function() {
+	var elem = by.id('session');
+	return this.utils.waitForElementDisplayed(elem, this.timeout);
+};
+
+Professor.prototype.checkForEmail = function() {
+	var elem = by.id('email');
+	return this.utils.waitForElementDisplayed(elem, this.timeout);
+};
+
+Professor.prototype.checkForGender = function() {
+	var elem = by.id('gender');
+	return this.utils.waitForElementDisplayed(elem, this.timeout);
+};
+
+Professor.prototype.checkForGPA = function() {
+	var elem = by.id('gpa');
+	return this.utils.waitForElementDisplayed(elem, this.timeout);
+};
+
+Professor.prototype.checkForGrades = function() {
+	var elem = by.id('grades');
+	return this.utils.waitForElementDisplayed(elem, this.timeout);
+};
+
+Professor.prototype.checkForDegree = function() {
+	var elem = by.id('degree');
+	return this.utils.waitForElementDisplayed(elem, this.timeout);
+};
+
+Professor.prototype.checkForVStatus = function() {
+	var elem = by.id('visa');
+	return this.utils.waitForElementDisplayed(elem, this.timeout);
+};
+
+Professor.prototype.checkForFOI = function() {
+	var elem = by.id('foi');
+	return this.utils.waitForElementDisplayed(elem, this.timeout);
+};
+
+Professor.prototype.checkForProfs = function() {
+	var elem = by.id('profs');
+	return this.utils.waitForElementDisplayed(elem, this.timeout);
+};
+
+Professor.prototype.checkForPDecision = function() {
+	var elem = by.id('pdecision');
+	return this.utils.waitForElementDisplayed(elem, this.timeout);
+};
+
+Professor.prototype.checkForContacted = function() {
+	var elem = by.id('contacted');
+	return this.utils.waitForElementDisplayed(elem, this.timeout);
+};
+
+Professor.prototype.checkForRequested = function() {
+	var elem = by.id('requested');
+	return this.utils.waitForElementDisplayed(elem, this.timeout);
+};
+
+Professor.prototype.checkForBackground = function(id) {
+	var elem = by.id('background-' + id);
+	return this.utils.waitForElementDisplayed(elem, this.timeout);
+};
+
+Professor.prototype.checkForResearch = function(id) {
+	var elem = by.id('research-' + id);
+	return this.utils.waitForElementDisplayed(elem, this.timeout);
+};
+
+Professor.prototype.checkForLetter = function(id) {
+	var elem = by.id('letter-' + id);
+	return this.utils.waitForElementDisplayed(elem, this.timeout);
+};
+
+Professor.prototype.checkForComments = function(id) {
+	var elem = by.id('comments-' + id);
+	return this.utils.waitForElementDisplayed(elem, this.timeout);
+};
+
+Professor.prototype.checkForRank = function(id) {
+	var elem = by.id('rank-' + id);
+	return this.utils.waitForElementDisplayed(elem, this.timeout);
+};
+
+Professor.prototype.checkForUni = function(id1, id2) {
+	var elem = by.id('uni-' + id1 + '-' + id2);
+	return this.utils.waitForElementDisplayed(elem, this.timeout);
+};
+
+Professor.prototype.checkForAsssmt = function(id1, id2, id3) {
+	var elem;
+	if (!id3) elem = by.id('asssmt-' + id1 + '-' + id2);
+	else elem = by.id('asssmt-' + id1 + '-' + id2 + '-' + id3);
+	return this.utils.waitForElementDisplayed(elem, this.timeout);
+};
+
+Professor.prototype.getName = function() {
+	var elem = by.id('name');
+	return element(elem).getText();
+};
+
+Professor.prototype.getSession = function() {
+	var elem = by.id('session');
+	return element(elem).getText();
+};
+
+Professor.prototype.getEmail = function() {
+	var elem = by.id('email');
+	return element(elem).getText();
+};
+
+Professor.prototype.getGender = function() {
+	var elem = by.id('gender');
+	return element(elem).getText();
+};
+
+Professor.prototype.getGPA = function() {
+	var elem = by.id('gpa');
+	return element(elem).getText();
+};
+
+Professor.prototype.getGrades = function() {
+	var elem = by.id('grades');
+	return element(elem).getText();
+};
+
+Professor.prototype.getDegree = function() {
+	var elem = by.id('degree');
+	return element(elem).getText();
+};
+
+Professor.prototype.getVisa = function() {
+	var elem = by.id('visa');
+	return element(elem).getText();
+};
+
+Professor.prototype.getFOI = function() {
+	var elem = by.id('foi');
+	return element(elem).getText();
+};
+
+Professor.prototype.getProfs = function() {
+	var elem = by.id('profs');
+	return element(elem).getText();
+};
+
+Professor.prototype.getPDecision = function() {
+	var elem = by.id('pdecision');
+	return element(elem).getText();
+};
+
+Professor.prototype.getContacted = function() {
+	var elem = by.id('contacted');
+	return element(elem).getText();
+};
+
+Professor.prototype.getRequested = function() {
+	var elem = by.id('requested');
+	return element(elem).getText();
+};
+
+Professor.prototype.getBackground = function(id) {
+	var elem = by.id('background-' + id);
+	return element(elem).getText();
+};
+
+Professor.prototype.getResearch = function(id) {
+	var elem = by.id('research-' + id);
+	return element(elem).getText();
+};
+
+Professor.prototype.getLetter = function(id) {
+	var elem = by.id('letter-' + id);
+	return element(elem).getText();
+};
+
+Professor.prototype.getComments = function(id) {
+	var elem = by.id('comments-' + id);
+	return element(elem).getText();
+};
+
+Professor.prototype.getRank = function(id) {
+	var elem = by.id('rank-' + id);
+	return element(elem).getText();
+};
+
+Professor.prototype.getUniversity = function(id1, id2) {
+	var elem = by.id('uni-' + id1 + '-' + id2);
+	return element(elem).getText();
+};
+
+Professor.prototype.getAssessment = function(id1, id2, id3) {
+	var elem;
+	if (!id3) elem = by.id('asssmt-' + id1 + '-' + id2);
+	else elem = by.id('asssmt-' + id1 + '-' + id2 + '-' + id3);
+	return element(elem).getText();
+};
 
 Professor.prototype.applicationTableIsDisplayed = function() {
 	return element(this.tables.table).isPresent();
