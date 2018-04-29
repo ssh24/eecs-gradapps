@@ -241,9 +241,9 @@
                 <div class ="row">
                             <div class="col-sm-2">
                                 <h5 for="Rank">Committee Rank</h5>
-                                <select id="Rank" name="Rank" class="form-control selectpicker" data-live-search="true" title="Select Committee Rank" multiple>
+                                <select id="Rank" name="Rank" class="form-control selectpicker" data-live-search="true" title="Select Committee Rank" data-max-options=<%= vstatus === 'Domestic' ? 2 : 1 %> multiple>
                                     <% for(var i = 0; i < gpa.length; i++){ %>
-                                        <% if (gpa[i] === 'A+' || gpa[i] === 'A' || gpa[i] === 'B+' || gpa[i] === 'B' || gpa === 'C') { %>
+                                        <% if (gpa[i] === 'A+' || gpa[i] === 'A' || gpa[i] === 'B+' || gpa[i] === 'B' || gpa[i] === 'C') { %>
                                             <% if (rank && rank.includes(gpa[i])) { %>
                                                 <option selected><%= gpa[i]%></option>
                                             <% } else { %>

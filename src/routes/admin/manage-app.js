@@ -58,7 +58,7 @@ module.exports = function(config, fns) {
 		var sql = 'SELECT app_Id, DATE_FORMAT(app_Date, "%m/%d/%Y") as `Date Uploaded`, student_Id as `Student Number`, CONCAT_WS(\' \', `FName`, `LName`) AS `Applicant Name`, ' +
 		'GPA, Degree as `Degree Applied For`, ' +
 		'VStatus as `Visa Status`, programDecision as `Program Decision` ' +
-		'FROM APPLICATION order by app_Date';
+		'FROM application order by app_Date';
 		getApplications(sql, {}, req, res, next);
 	}
 
@@ -269,7 +269,7 @@ module.exports = function(config, fns) {
 		var defaultSql = 'select application.app_Id, application.student_Id as `Student Number`, DATE_FORMAT(application.app_Date, "%m/%d/%Y") as `Date Uploaded`, ' + 
 		'CONCAT_WS(\' \', application.FName, application.LName) AS `Applicant Name`, application.GPA, application.Degree as `Degree Applied For`, ' + 
 		'application.VStatus as `Visa Status`, application.programDecision as `Program Decision`';
-		var gpaSql = ' INNER JOIN GPA on APPLICATION.GPA = GPA.letter_grade';
+		var gpaSql = ' INNER JOIN gpa on application.GPA = gpa.letter_grade';
 		
 		/* build columns */
 		if (cols) {

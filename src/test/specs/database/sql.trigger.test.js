@@ -83,7 +83,7 @@ describe('SQL Triggers', function() {
 					if(err) done(err);
 					assert(res);
 					oldReview = res[0]['committeeReviewed'];
-					connection.query('DELETE FROM `APPLICATION_REVIEW` ' + 
+					connection.query('DELETE FROM `application_review` ' + 
                         'WHERE appId = ? AND ' + 
                         'committeeId = ?', [app_id, committee_id], 
 					function(err, res) {

@@ -104,7 +104,7 @@ module.exports = function(config, fns) {
 		var sql = 'SELECT app_Id, VStatus as `Visa Status`, FOI as `Field(s) of ' + 
 		'Interest`, prefProfs as `Preferred Professor(s)`,' + case_assigned + 
 		' as `Reviews Assigned`,' + case_pending + ' as `Reviews Pending` ' + 
-		'FROM APPLICATION where committeeReviewed = 0;';
+		'FROM application where committeeReviewed = 0;';
 		getApplications(sql, {}, req, res, next);
 	}
 
@@ -118,7 +118,7 @@ module.exports = function(config, fns) {
 				var fields = [];
 				var hidden = ['app_Id'];
 				var obj = results[0];
-			
+
 				for (var key in obj)
 					fields.push(key);
 			
@@ -127,6 +127,7 @@ module.exports = function(config, fns) {
 						fields.splice(options.actionFieldNum, 0, 'Actions');
 					else 
 						fields.push('Actions');
+					if (!options.visaSelected) hidden.push('Visa Status');
 				}
 
 				req.apps.appls = results;
@@ -238,7 +239,7 @@ module.exports = function(config, fns) {
 		var sqlCol = '';
 		var sqlFilt = '';
 	
-		var actionFieldNum;
+		var actionFieldNum, visaSelected;
 		var highlightText = {};
 			
 		// default sql
@@ -250,10 +251,10 @@ module.exports = function(config, fns) {
 		if (cols) {
 			sqlCol = 'SELECT ';
 			for (var i = 0; i < cols.length; i++) {
-				if (i === 0) sqlCol += 'application.app_Id';
+				if (i === 0) sqlCol += 'application.app_Id, application.VStatus as `Visa Status`';
 			
 				if (cols[i] === 'btn_col_visa') {
-					sqlCol += ',application.VStatus as `Visa Status`';
+					visaSelected = true;
 				} else if (cols[i] === 'btn_col_foi') {
 					sqlCol += ',application.FOI as `Field(s) of Interest`';
 				} else if (cols[i] === 'btn_col_prof') {
@@ -294,7 +295,8 @@ module.exports = function(config, fns) {
 		sql = sqlFilt ? sql + whereClause + sqlFilt : sql + whereClause;
 	
 		var options = {
-			actionFieldNum: actionFieldNum
+			actionFieldNum: actionFieldNum,
+			visaSelected: visaSelected
 		};
 	
 		if (!(_.isEmpty(req.body))) {

@@ -87,11 +87,15 @@
                                         <td>
                                             <% if(assignees[i]['status'] != 'Submitted') { %>
                                                 <form id="unassign-review-<%= i %>" action="/roles/admin/reviews/manage" method="POST">
-                                                    <button id="unassign-review-<%= i %>" type="submit" name="unassign" value="<%= assignees[i]['id'] %>" class="btn btn-danger btn-default pull-center"><span class="glyphicon glyphicon-remove-sign"></span> Unassign Review</button>
+                                                    <% if (assignees[i]['id'] != user) {%> 
+                                                        <button id="unassign-review-<%= i %>" type="submit" name="unassign" value="<%= assignees[i]['id'] %>" class="btn btn-danger btn-default pull-center"><span class="glyphicon glyphicon-remove-sign"></span> Unassign Review</button>
+                                                    <%}%>
                                                 </form>
                                             <%} else { %>
                                                 <form id="dismiss-review-<%= i %>" action="/roles/admin/reviews/manage" method="POST">
-                                                    <button id="dismiss-review-<%= i %>" type="submit" name="dismiss" value="<%= assignees[i]['id'] %>" class="btn btn-danger btn-default pull-center"><span class="glyphicon glyphicon-trash"></span> Dismiss Review</button>
+                                                    <% if (assignees[i]['id'] != user) {%> 
+                                                        <button id="dismiss-review-<%= i %>" type="submit" name="dismiss" value="<%= assignees[i]['id'] %>" class="btn btn-danger btn-default pull-center"><span class="glyphicon glyphicon-trash"></span> Dismiss Review</button>
+                                                    <%}%>
                                                 </form>
                                             <%} %>
                                         </td>

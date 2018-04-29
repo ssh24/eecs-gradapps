@@ -4,8 +4,9 @@
 
 var Utils = require('../lib/utils/shared-utils');
 
-function Login() {
+function Login(timeout) {
 	this.utils = new Utils();
+	this.timeout = timeout;
     
 	this.login = {};
 	this.login.header = by.id('login-header');
@@ -20,15 +21,20 @@ Login.prototype.getLoginText = function() {
 };
 
 Login.prototype.enterUsername = function(username) {
-	return this.utils.clearThenSendKeys(element(this.login.username), username);
+	var elem = element(this.login.username);
+	return this.utils.waitForElement(elem, this.timeout)
+		.then(this.utils.clearThenSendKeys.call(this.utils, elem, username));
 };
 
 Login.prototype.enterPassword = function(password) {
-	return this.utils.clearThenSendKeys(element(this.login.password), password);
+	var elem = element(this.login.password);
+	return this.utils.waitForElement(elem, this.timeout)
+		.then(this.utils.clearThenSendKeys.call(this.utils, elem, password));
 };
 
 Login.prototype.clickLogIn = function() {
-	return element(this.login.submit).click();
+	return this.utils.waitForElementClickable(this.login.submit, this.timeout)
+		.then(element(this.login.submit).click());
 };
 
 Login.prototype.getErrorMessage = function() {
@@ -39,10 +45,9 @@ Login.prototype.fullSignIn = function(credentials) {
 	var username = credentials.username;
 	var password = credentials.password;
 
-	return this.utils.clearThenSendKeys(element(this.login.username), username)
-		.then(this.utils.clearThenSendKeys.call(this.utils, element(this.login.
-			password), password))
-		.then(element(this.login.submit).click());
+	return this.enterUsername(username)
+		.then(this.enterPassword.call(this, password))
+		.then(this.clickLogIn.call(this));
 };
 
 module.exports = Login;
