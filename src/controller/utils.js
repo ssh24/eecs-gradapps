@@ -569,8 +569,46 @@ Utils.prototype.getVisaStatus = function(appId, cb) {
 			if (err) return cb(err);
 			if (result.length === 1) {
 				return cb(err, result[0]['VStatus']);
+			} else {
+				err = new Error('Cannot find visa status for given appId: ' + 
+				JSON.stringify(appId));
+				return cb(err);
 			}
 		});
+};
+
+/**
+ * Build committee rank
+ * @param {String} operand 
+ * @param {String} grade 
+ * @param {Function} cb 
+ */
+Utils.prototype.buildCommitteeRankFilter = function(operand, grade, cb) {
+	assert(typeof operand === 'string');
+	assert(typeof grade === 'string');
+	assert(typeof cb === 'function');
+
+	var selectSql = 'Select letter_grade from gpa where grade_point ' + operand + 
+	' (select grade_point from gpa where letter_grade="' + grade + '")';
+	var resultSql = '(';
+
+	this.conn.query(selectSql, function(err, grades) {
+		if (err) return cb(err);
+		if (grades.length > 0) {
+			for(var i = 0; i < grades.length; i++) {
+				var chosen = grades[i]['letter_grade'];
+				resultSql += ('JSON_CONTAINS(Rank, \'"'+chosen+'"\')');
+				if (i != grades.length - 1)
+					resultSql += (' OR ');
+				else
+					resultSql += ')';
+			}
+			return cb(err, resultSql);
+		} else {
+			err = new Error('No grades found with range %s %s', operand, grade);
+			return cb(err);
+		}
+	});
 };
 
 module.exports = Utils;

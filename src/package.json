@@ -5,7 +5,8 @@
   "scripts": {
     "lint": "eslint . --fix && ejslint views/*",
     "start": "node ./bin/www",
-    "dev:start": "npm run seed:app && nodemon ./bin/www",
+    "seed:start": "npm run seed:app && nodemon ./bin/www",
+    "dev:start": "nodemon ./bin/www",
     "seed:test": "node ./test/seed.js",
     "seed:app": "node ./test/seed.js true",
     "test": "nyc --reporter=html --reporter=text npm run run:test",
@@ -42,6 +43,7 @@
     "htpasswd": "^2.4.0",
     "jshint": "^2.9.5",
     "mocha": "^4.1.0",
+    "ms": "^2.1.1",
     "mysql2": "^1.5.1",
     "nodemon": "^1.14.12",
     "nyc": "^11.4.1",

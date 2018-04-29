@@ -1,0 +1,305 @@
+% !TEX encoding = UTF-8
+%Koma article
+\documentclass[fontsize=12pt,paper=letter,twoside]{scrartcl}
+\usepackage{float}
+\usepackage{listings}
+
+%Standard Pre-amble
+\input{sty/defns.tex}
+%Useful definitions
+%\newcommand{\mv}[1]{\textit{m\_#1}}
+%\newcommand{\cv}[1]{\textit{c\_#1}}
+%\newcommand{\degree}[1]{^{\circ}\mathrm{#1}}
+%\newcommand{\comment}[1]{{\footnotesize \quad\texttt{--}\textrm{#1}}}
+
+% Set the header
+\ihead[]{\small Gradapps}
+
+
+%%%%%%%%%%%%Enter your names here%%%%%%%%
+\author{\textbf{Edward Vaisman}
+\and \textbf{Sadman Sakib Hasan}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\date{\today} % Display a given date or no date
+
+\begin{document}
+\title{Grad Apps 2.0 \\ Professor User Manual}
+\maketitle
+
+\newpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\tableofcontents
+
+\newpage
+
+
+%%%%Rest of your document goes here%%%%%%%%%%%%%%%%%%%
+
+\clearpage
+\section{Logging In}
+
+To access the gradapps portal you'll first need to be authenticated into the system. To begin simply click on the ``Sign In" button on the welcome page.
+
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.99\textwidth]{images/welcome.png}
+\end{center}
+\caption{Welcome Page}
+\label{fig:welcome}
+\end{figure}
+
+\bigskip
+
+You will then be redirected to the login page. Input your username, password and click on the ``Login" button. If you are successfully authenticated you will be redirected to the role selection page.
+
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.99\textwidth]{images/login.png}
+\end{center}
+\caption{Login Page}
+\label{fig:login}
+\end{figure}
+\noindent \textbf{Note:} If the credentials you have provided are invalid you will be greeted with an error message.
+
+\clearpage
+
+\section{Selecting a Role}
+The subsections below describe the methods for selecting the a role.
+
+\subsection{Role Selection Page}
+From the role selection page click on the ``Continue as Professor" button to be redirected to the professor portal.
+
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.99\textwidth]{images/role-selection.png}
+\end{center}
+\caption{Role Selection Page}
+\label{fig:role_selection1}
+\end{figure}
+
+\noindent \textbf{Note:} To access the administrator/committee/professor portal you must be granted access from an administrator.
+
+\subsection{Navigation Bar}
+If you have selected another role and wish to switch roles you will be presented with an option on the navigation bar. Click on the dropdown menu that displays your current role and click on your desired role.
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.99\textwidth]{images/role-selection2.png}
+\end{center}
+\caption{Switch Roles}
+\label{fig:role_selection2}
+\end{figure}
+
+\noindent \textbf{Note:} To access the administrator/committee/professor portal you must be granted access from an administrator.
+
+\clearpage
+
+Once you have selected the professor role you will see a page similar to the one below
+
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.99\textwidth]{images/professor.png}
+\end{center}
+\caption{Professor Portal}
+\label{fig:professor}
+\end{figure}
+
+\clearpage
+
+\section{User Settings}
+\label{user-settings}
+To customize personal user settings, simply click on the ``Settings" button from the navigation bar on any page. The following are the required fields when update personal user settings:
+\begin{itemize}
+\item Username
+\item Last Name
+\item First Name
+\item Email
+\end{itemize}
+
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.99\textwidth]{images/click_settings.png}
+\end{center}
+\caption{Open User Settings}
+\label{fig:click_settings}
+\end{figure}
+
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.99\textwidth]{images/settings_form.png}
+\end{center}
+\caption{User Settings Form}
+\label{fig:settings_form}
+\end{figure}
+
+\clearpage
+\section{Professor Portal}
+After logging in and selecting the professor role you will have access to the professor portal. In this portal you will be presented with a table containing all the students who have applied to be a graduate student. Here you can perform the following:
+\begin{itemize}
+\item Filter the table to only display applications based on a criteria of your choosing
+\item Sort the table on certain columns
+\item View applications and their respective committee review
+\item Set application attributes such as notifying others if you have contacted/requested an applicant or indicate to yourself if you find an applicant interesting or not.
+\end{itemize} 
+\subsection{Filtering the Table}
+This section describes how you would use/build/save/load a filter on the table.
+
+
+\begin{figure}[!htb]
+\subsubsection{Opening the Modal}
+To begin with filtering you must open the modal. To do so click on the ``Filter" button on the navigation bar.
+\begin{center}
+\includegraphics[width=.99\textwidth]{images/open_modal.png}
+\end{center}
+\caption{Opening the  Modal}
+\label{fig:open_modal}
+\end{figure}
+\clearpage
+
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.99\textwidth]{images/filter_view.png}
+\end{center}
+\caption{Filter View}
+\label{fig:filter_view}
+\end{figure}
+
+\clearpage
+\begin{figure}[!htb]
+\subsubsection{Choose Your Columns}
+Once the modal is opened you can then choose the columns you wish to be displayed on the table. To do so, click on the button indicating which column you wish to see. Once clicked the button will display the order that column will appear in the table.\begin{center}
+\includegraphics[width=.99\textwidth]{images/choose_columns.png}
+\end{center}
+\caption{Choose Your Columns}
+\label{fig:choose_columns}
+\textbf{Note:} Not selecting any column will use the same columns and order as the default table. If the \emph{Actions} column is not selected it will automatically be placed as the right most column. \emph{My Interest Status} is account specific and can only be seen by you.
+\end{figure}
+
+\clearpage
+
+\begin{figure}[!htb]
+\subsubsection{Choose Your Filters}
+After selecting your columns, you can then choose the attributes by which you wish to filter your table. Begin by clicking on the drop down of the attribute you wish to filter and select an option from a list of generated options.
+\begin{center}
+\includegraphics[width=.99\textwidth]{images/choose_filters.png}
+\end{center}
+\caption{Choose Your Filters}
+\textbf{Note:} You can use the search bar to help locate values. Begin by typing in the text box displayed. You can only select an option that appears in the dropdown.
+\label{fig:choose_filters}
+\end{figure}
+
+\clearpage 
+\begin{figure}[!htb]
+\subsubsection{Submitting a Filter}
+Once you have chosen your columns and filter attributes confirm your filter by reading the text under ``Selected Filter'' and click ``Submit". The text under the ``Selected Filter'' will change based on your filter attributes.
+\begin{center}
+\includegraphics[width=.99\textwidth]{images/submit_filter.png}
+\end{center}
+\caption{Submit Filter}
+\label{fig:submit_filter}
+\end{figure}
+
+\clearpage
+After you submit a filter you will be provided with a new table to match your filter.
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.99\textwidth]{images/filtered_table.png}
+\end{center}
+\caption{Filtered Table}
+\textbf{Pro-tip:} Attributes that satisfy your filter will be highlighted. Make sure to include the right column to see those highlights!
+\label{fig:filtered_table}
+\end{figure}
+
+\begin{figure}[!htb]
+\subsubsection{Saving a Filter}
+Once you have chosen your columns and filter attributes confirm your filter by reading the text under ``Selected Filter'' and give the preset a name by typing in the text box between the ``Submit'' and the ``Save Preset'' button. Once that is done click ``Save Preset''.
+\begin{center}
+\includegraphics[width=.99\textwidth]{images/save_filter.png}
+\end{center}
+\caption{Save a Filter}
+Once you have saved a filter you will be provided with a new table to match your filter and it will appear in the dropdown to be used for loading a filter.\\
+\textbf{Pro-tip:} You can update a filter by typing in the same name as an existing filter.
+\label{fig:save_filter}
+\end{figure}
+
+\subsubsection{Deleting a Filter}
+You can delete a filter by going into your settings. See Section \ref{user-settings}.
+
+\begin{figure}[!htb]
+\subsubsection{Loading a Filter}
+To load a saved filter click the dropdown under ``Load a Preset'' and select the preset you wish to use. Once selected the modal will auto-populate.
+\begin{center}
+\includegraphics[width=.99\textwidth]{images/load_filter.png}
+\end{center}
+\caption{Loading a Filter}
+\textbf{Pro-tip:} Create a preset called \emph{Default} with no columns or filters selected. You can then use this to load the default table or help clear any data you put in the modal.
+\label{fig:save_filter}
+\end{figure}
+
+\clearpage
+
+\subsection{Sorting the Table}
+If you wish to sort the table displayed simply click on the columns that display arrows next to the name. The table can be sorted in Ascending/Descending order described below.
+\begin{itemize}
+\item \textbf{Name:} Descending Order = Z to A, Ascending order = A to Z
+\item \textbf{Gender:} Descending Order = Z to A, Ascending order = A to Z
+\item \textbf{Committee Rank:} Descending Order = A+ to C, Ascending order = C to A+
+\item \textbf{GPA:} Descending Order = A+ to C, Ascending order = C to A+
+\item \textbf{Degree Applied For:} Descending Order = Z to A, Ascending order = A to Z
+\item \textbf{Visa Status:} Descending Order = Z to A, Ascending order = A to Z
+\item \textbf{Program Decision:} Descending Order = Z to A, Ascending order = A to Z
+\item \textbf{Interest Status:} Descending Order = Z to A, Ascending order = A to Z
+\end{itemize}
+\textbf{Pro-tip:} To sort by multiple columns hold the shift key while clicking on the columns. For example to sort by Committee Rank and then GPA, hold onto shift and left click Committee Rank and then GPA.
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.99\textwidth]{images/sorted_table.png}
+\end{center}
+\caption{Sort Table}
+\label{fig:sorted_table}
+\end{figure}
+\clearpage
+\subsection{Viewing an Application}
+To view an application click on ``View Application'' at the row corresponding to the applicant you wish to view.
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.99\textwidth]{images/view_app.png}
+\end{center}
+\caption{Viewing an Application}
+\end{figure}
+\begin{figure}[!htb]
+You will be redirected to an application summary page that will contain a summary of the application and the committee review. If you wish to see more click on ``View Application PDF".
+\begin{center}
+\includegraphics[width=.99\textwidth]{images/viewapp.png}
+\end{center}
+\caption{Application Summary}
+\label{fig:sorted_table}
+\end{figure}
+\clearpage
+
+\subsection{Setting Application Attributes}
+Clicking on the ``Set To" drop down on an applicant row will provide you options to update the following fields on an application.
+\begin{itemize}
+\item \textbf{Contacted/Requested:} Indicate to others whether or not you have contacted/requested a student (default not contacted and not requested).
+\item \textbf{My Interest Status:} This is a personal field to help you keep track of applications you have/haven't viewed and your opinion of them. It can only be seen by you.
+\end{itemize}
+
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.99\textwidth]{images/set_attribute.png}
+\end{center}
+\caption{Setting Application Attribute}
+\label{fig:set_attribute}
+\end{figure}
+
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=.99\textwidth]{images/set_attribute2.png}
+\end{center}
+\caption{Results}
+\label{fig:set_attribute_results}
+\end{figure}
+
+\end{document}

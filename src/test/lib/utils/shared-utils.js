@@ -5,7 +5,9 @@ var EC = protractor.ExpectedConditions;
 
 // Utility functions that are shared across views and specs
 
-var Utils = function() {
+var Utils = function(timeout) {
+	this.timeout = timeout;
+
 	this.shared = {};
 	this.shared.logout = by.id('logout-btn');
 	this.shared.user = by.id('logged-in-as');
@@ -30,7 +32,7 @@ Utils.prototype.openView = function(link) {
 };
 
 Utils.prototype.logOut = function() {
-	return this.waitForElementClickable(this.shared.logout, 2000)
+	return this.waitForElementClickable(this.shared.logout, this.timeout)
 		.then(element(this.shared.logout).click());
 };
 

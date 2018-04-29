@@ -4,8 +4,9 @@
 
 var Utils = require('../lib/utils/shared-utils');
 
-function Role() {
+function Role(timeout) {
 	this.utils = new Utils();
+	this.timeout = timeout;
     
 	this.roles = {};
 	this.roles.admin = by.id('admin-role');
