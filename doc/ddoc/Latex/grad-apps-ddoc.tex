@@ -3,7 +3,43 @@
 \documentclass[fontsize=12pt,paper=letter,twoside]{scrartcl}
 \usepackage{float}
 \usepackage{url}
+\usepackage{listings}
 
+%For Code Stylings
+\usepackage{listings}
+\usepackage{color}
+
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+
+\lstset{ 
+  backgroundcolor=\color{white},   % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}; should come as last argument
+  basicstyle=\tiny,        % the size of the fonts that are used for the code
+  breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+  breaklines=true,                 % sets automatic line breaking
+  captionpos=b,                    % sets the caption-position to bottom
+  commentstyle=\color{mygreen},    % comment style
+  deletekeywords={...},            % if you want to delete keywords from the given language
+  escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+  extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+  frame=single,	                   % adds a frame around the code
+  keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
+  keywordstyle=\color{blue},       % keyword style
+  language=Octave,                 % the language of the code
+  morekeywords={*,...},            % if you want to add more keywords to the set
+  numbers=left,                    % where to put the line-numbers; possible values are (none, left, right)
+  numbersep=5pt,                   % how far the line-numbers are from the code
+  numberstyle=\tiny\color{mygray}, % the style that is used for the line-numbers
+  rulecolor=\color{black},         % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
+  showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
+  showstringspaces=false,          % underline spaces within strings only
+  showtabs=false,                  % show tabs within strings adding particular underscores
+  stepnumber=2,                    % the step between two line-numbers. If it's 1, each line will be numbered
+  stringstyle=\color{mymauve},     % string literal style
+  tabsize=1,	                   % sets default tabsize to 2 spaces
+  title=\lstname                   % show the filename of files included with \lstinputlisting; also try caption instead of title
+}
 %Standard Pre-amble
 \input{sty/defns.tex}
 %Useful definitions
@@ -65,6 +101,10 @@ Date & Revision & Description \\
 & 1.6
 & Updated Data Dictionary and Model Diagram \\
 \hline
+\hl{28 April, 2018}
+& 1.7
+& Updated Data Dictionary, ER Diagram, and added File Structure. Removed Requirements Matrix \& Appendices\\
+\hline
 \end{tabular}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -73,7 +113,6 @@ Date & Revision & Description \\
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \tableofcontents
 \listoffigures
-\listoftables
 \newpage
 
 
@@ -111,8 +150,6 @@ This document is divided into 9 sections,
 \item Data Design
 \item Component Design
 \item Human Interface Design
-\item Requirement Matrix
-\item Appendices
 \end{itemize}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -155,6 +192,16 @@ Given the current restrictions with York admissions office some things such as a
 \end{figure}
 
 \newpage
+\subsection{File Structure}
+\hl{The next page contains a condensed version of the current file structure of our application. The system is currently run on Node.js and uses the app.js file to start the application. Authentication is done through passport.js. \\ \\ To view all \emph{Controller} related the main folders of focus will be the \emph{routes} and \emph{controller} folder. The routes handles the management of users that traverse to the website and separates what the user can and cannot do based on their role. Each route makes use of the files in the controller  that will directly interact with our model. This is all done on the server. \\
+\\ To view all \emph{Model} related files you will need to see the mysql database in addition to the .private folder. the .private folder contains a .htpasswd file of all our users in the system with the files in the model folder to handle the manipulation of the file. \\
+\\ Lastly, the \emph{View} related files can be seen in the views folder. All the files contain a html template that will change according to the data received by the model and will provide forms and buttons for the user to communicate with the controller via GET and POST requests. It's stylings can be found in the public folder which contains any client sided javascript, css, images, fonts, and documents.}
+
+\clearpage
+\newpage 
+\lstinputlisting[caption=File Structure]{images/tree.txt}
+\clearpage
+\newpage 
 \subsection{Decomposition Description}
 
 The System Architecture was designed with the MVC Pattern in mind.
@@ -209,10 +256,11 @@ The following diagram illustrates the UML Entity Relationship. The design of eac
 
 \begin{figure}[!htb]
 \subsection{Data Dictionary}
+
 \begin{center}
-\includegraphics[width=\textwidth]{images/data_dictionary1.pdf}
+\includegraphics[width=\textwidth, page=1]{images/data_dictionary.pdf}
 \end{center}
-\caption{Data Dictionary Part.1}
+\caption{\hl{Data Dictionary Part.1}}
 \label{fig:dd1}
 \end{figure}
 
@@ -220,10 +268,11 @@ The following diagram illustrates the UML Entity Relationship. The design of eac
 \newpage
 
 \begin{figure}[!htb]
+\hl{The below figure shows two tables \emph{Fields\_of\_Interest} and \emph{GPA} that are not displayed in our ER-diagram. These two tables are beneficial for the internal logic of our system such as being able to properly sort GPA and to have a more flexibility for things we expect to change throughout the years like fields of interest.}
 \begin{center}
-\includegraphics[width=\textwidth]{images/data_dictionary2.pdf}
+\includegraphics[width=\textwidth, page=2]{images/data_dictionary.pdf}
 \end{center}
-\caption{Data Dictionary Part.2}
+\caption{\hl{Data Dictionary Part.2}}
 \label{fig:dd2}
 \end{figure}
 
@@ -348,7 +397,7 @@ The following sequence diagrams describe the communication between our actors an
 
 \subsection{Overview of User Interface}
 
-Refer to \url{http://www.cse.yorku.ca/~eddyv/gradapps/index.html}
+Refer to \url{http://cambridge.eecs.yorku.ca:3000/}
 
 \subsection{Screen Images}
 
@@ -434,351 +483,5 @@ The screenshots un the previous section from Figure \ref{fig:login_page_view} to
 \end{itemize}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\newpage
-\section{Requirements Matrix}
-
-The following table traces the primary R-descriptions from the Requirement Documentation which satisfies the design specified from Figure \ref{fig:login_page_view} to \ref{fig:committee_filter}. The R-descriptions are included in Appendix \ref{r-decs} to make it convenient for the reader.
-
-\begin{table}[h]
-\centering
-\begin{tabular}{| c | c | c | c | c | c | c | c | c |}
-	\cline{1-9}
-	\textbf{REQ} & \textbf{Fig. \ref{fig:login_page_view}} & \textbf{Fig. \ref{fig:role_selection_view}} & \textbf{Fig. \ref{fig:admin_view1}} & \textbf{Fig. \ref{fig:admin_view2}} & \textbf{Fig. \ref{fig:admin_prof_view}} & \textbf{Fig. \ref{fig:admin_prof_filter}} & \textbf{Fig. \ref{fig:committee_view}} & \textbf{Fig. \ref{fig:committee_filter}}\\ \hline
-	REQ1 & X & & & & & & & \\ \hline
-	REQ2 & X & X & X & X & X & X & X & X \\ \hline
-	REQ3 & X & X & X & X & X & X & X & X \\ \hline
-	REQ4 & & X & X & X & X & X & X & X \\ \hline
-	REQ5 & & X & & & & & & \\ \hline
-	
-	REQ6 & & X & X & X & X & X & X & X \\ \hline
-	REQ7 & & & & X & & & & \\ \hline
-	REQ8 & & & & X & & & & \\ \hline
-	REQ9 & & & & X & & & & \\ \hline
-	REQ10 & & & X & & & & & \\ \hline
-	
-	REQ11 & & & & & X & & & \\ \hline
-	REQ12 & & & & & X & & & \\ \hline
-	REQ13 & & & & & X & & & \\ \hline
-	REQ14 & & & X & & & & & \\ \hline
-	REQ15 & & & & & X & & & \\ \hline
-	
-	REQ16 & & & & & & & X & \\ \hline
-	REQ17 & & & & & & & X & \\ \hline
-	REQ18 & & & & & & & & X \\ \hline
-	REQ19 & & & & & & & X & \\ \hline
-	REQ20 & & & & & & & X & \\ \hline
-	
-	REQ21 & & & & & X & & & \\ \hline
-	REQ22 & & & & & X & & & \\ \hline
-	REQ23 & & & & & X & & & \\ \hline
-	REQ24 & & & & & X & & & \\ \hline
-	REQ25 & & & & & & X & & \\ \hline
-	
-	REQ26 & & & & & & & X & \\ \hline
-	REQ27 & & & & X & & & & \\ \hline
-	REQ28 & & & & & & & X & \\ \hline
-\end{tabular}
-\caption {Traceability Matrix for R-descriptions}
-\label{tbl:trace_matrix}
-\end{table}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\clearpage
-\newpage
-\section{Appendices}
-\appendix
-
-\section{E/R-Descriptions} \label{r-decs}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%E/R USE CASE 1%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Use Case 1 Authentication - E/R Descriptions}
-
-\genenv{Each EECS graduate program member must have an unique username and password associated with their account via PPY.\\}{}
-\label{E1}
-
-\smallskip
-\noindent \textbf{Rationale}: The login credentials will be handled through the Passport York. This is to simplify login uses and since this business system is under York University, PPY is the most secure option.
-
-\edescription
-{If the PPY is down for maintenance service, the system must not be accessible.\\}
-{See Env. \ref{E1}}
-\label{E2}
-
-\smallskip
-\noindent \textbf{Rationale}: Since the system heavily relies on PPY authentication, if PPY is scheduled down for maintenance, the system becomes inaccessible.
-
-\rdescription
-{A user shall be able to login to the system \emph{iff} they are a member of the EECS graduate program with a role assigned.\\}
-{$user \in FM$}
-\label{R1}
-
-\smallskip
-\noindent \textbf{Rationale}: A user shall be able to log into the system if they are a member of the EECS graduate program and have a role assigned to them. The login will be completed using Passport York Authentication (PPY).
-
-\genreq
-{A user shall be able to logout of the system \emph{iff} they are already logged in.\\}
-{}
-\label{R2}
-
-\smallskip
-\noindent \textbf{Rationale}: A user shall be able to log out of the system iff they are logged into the system through PPY.
-
-\rdescription
-{A user shall be not both logged in and logged out at the same time.\\}
-{$(m\_loggedIn) \iff \neg (m\_loggedOut)$}
-\label{R3}
-
-\smallskip
-\noindent \textbf{Rationale}: For security reasons a user cannot be both logged in and logged out at the same time. If a logged in account gets idle after 15 minutes, the user is automatically logged out (refer to Req. \ref{R4}).
-
-\genreq
-{A user shall be logged out of the system after a maximum of 15 minutes of idleness.\\}
-{}
-\label{R4}
-
-\smallskip
-\noindent \textbf{Rationale}: It is best practice to log out an idle user from a business critical system. This is to make sure the user does not stay logged on forever and to ensure liveness property on a user account.
-
-\rdescription
-{A user shall select a role from the list of roles they are assigned to once logged into the system.\\}
-{List of all the roles are as specified in Section \ref{roles}.}
-\label{R5}
-
-\smallskip
-\noindent \textbf{Rationale}: The roles available to the user upon logging into the system are the roles the user have been assigned to. A user cannot select a role that has not been assigned to them.
-
-\rdescription
-{A user shall be logged in with exactly \emph{one} role at any given time.\\}
-{$\forall role1, role2 : (user.role = role1 \land user.role = role2) \implies (role1 = role2)$}
-\label{R6}
-
-\smallskip
-\noindent \textbf{Rationale}: A logged in user cannot be logged in with two different roles. This is to avoid conflicting access control between two different roles.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%END E/R USE CASE 1%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%E/R USE CASE 2%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Use Case 2 Add Student Application- E/R Descriptions}
-
-\genenv
-{The \emph{GPA} must manually compile an application received from the graduate office before sending it for review. \\}
-{}
-\label{E3}
-
-\smallskip
-\noindent \textbf{Rationale}: This is the manual work that needs to be done by the Graduate Program Assistant. The GPA has agreed it is in their best interest to manually compile all bits of information into one file before proceeding with the application.
-
-\genreq
-{An \emph{admin} shall be able to upload a student application to the portal.\\}
-{}
-\label{R7}
-
-\smallskip
-\noindent \textbf{Rationale}: Only an \emph{admin} user shall be able to assign applications for review to a graduate committee member. For simplicity, there is no maximum cap enforced for reviewing an application by a committee member.
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%END E/R USE CASE 2%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%E/R USE CASE 3%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Use Case 3 Add/Remove Members and Assign Roles- E/R Descriptions}
-
-\genreq
-{An \emph{admin} shall be able to add a new member to the list of EECS graduate program staff.\\}
-{}
-\label{R8}
-
-\smallskip
-\noindent \textbf{Rationale}: Only an \emph{admin} user shall be able to add a new member to the list of EECS graduate program staffs and assign one or more role(s) to them. In fact, an \emph{admin} shall be able to add a new member and assign them to the role of \emph{admin} as well.
-
-\genreq
-{An \emph{admin} shall be able to remove a member from the list of EECS graduate program staff except themselves.\\}
-{}
-\label{R9}
-
-\smallskip
-\noindent \textbf{Rationale}: Only an \emph{admin} user shall be able to remove an existing member from the list of EECS graduate program staffs. An \emph{admin} \textbf{cannot} remove themselves from the system.
-
-\genreq
-{An \emph{admin} shall be able to assign a new role to an existing faculty member with an old role except for themselves.\\}
-{}
-\label{R10}
-
-\smallskip
-\noindent \textbf{Rationale}: Only an \emph{admin} user shall be able to change existing roles of a registered user. An \emph{admin} \textbf{cannot} change their own role in the system.
-
-\genreq
-{An \emph{admin} shall be able to remove a role from an existing graduate program member with a at least one role assigned.\\}
-{}
-\label{R11}
-
-\smallskip
-\noindent \textbf{Rationale}: A \emph{admin} shall be able to remove a role assigned to an existing graduate member. This is to take away privileges on performing certain actions in the system. 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%END E/R USE CASE 3%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%E/R USE CASE 4%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Use Case 4 Assign Application to Committee Member - E/R Descriptions}
-
-\rdescription
-{An \emph{admin} shall be able to assign applications for review to a graduate committee member.\\}
-{The set $GC$ denotes the set of all graduate committee members which is a subset of all members in the system, $GC \subseteq FM$.}
-\label{R12}
-
-\smallskip
-\noindent \textbf{Rationale}: Only an \emph{admin} user shall be able to assign applications for review to a graduate committee member. For simplicity, there is no maximum cap enforced for reviewing an application by a committee member.
-
-\genreq
-{A \emph{committee member} shall be notified when a batch of applications come in for review.\\}
-{}
-\label{R13}
-
-\smallskip
-\noindent \textbf{Rationale}: After an \emph{admin} sends out application(s) for review to a committee member, the \emph{committee member} gets an in app notification associated with their PPY.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%END E/R USE CASE 4%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%E/R USE CASE 5%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Use Case 5 View/Filter Applications - E/R Descriptions}
-
-\genreq
-{An \emph{admin} shall be able to export the applications to CSV format.\\}
-{}
-\label{R14}
-
-\smallskip
-\noindent \textbf{Rationale}: Only an \emph{admin} user shall be able to download a CSV format of the applications and make changes to the file. Being able to import the changed CSV file is an optional requirement that may be implemented if time permits and all required deliverables have been achieved.
-
-\genreq
-{A \emph{committee member} shall be able to see the list of assigned application(s).\\}
-{}
-\label{R15}
-
-\smallskip
-\noindent \textbf{Rationale}: A \emph{committee member} shall be allowed to view a list of new (to be reviewed) and previously reviewed application(s). This will allow the committee members to have an organized view of the applications left to review and the applications that have been reviewed already.
-
-\rdescription
-{A \emph{committee member} shall be able to apply filtering only on selected attributes.\\}
-{Refer to Table \ref{tbl:attr_reviewed}}
-\label{R16}
-
-\smallskip
-\noindent \textbf{Rationale}: Allowing extra filtering on assigned application will cause favouritism of some student X while student Y will never get reviewed. Thus, it has been decided to only allow filtering on already reviewed application(s).
-
-\rdescription
-{An \emph{admin} shall be able to view a list of all student application(s).\\}
-{refer to Req. \ref{R19}}
-\label{R17}
-
-\rdescription
-{An \emph{professor} shall be able to view a list of student application(s) approved by an admin.\\}
-{refer to Req. \ref{R19}}
-\label{R18}
-
-\smallskip
-\noindent \textbf{Rationale}: An \emph{admin} and \emph{professor} shall be allowed to view a list of student application(s). The list of students shown can be narrowed/expanded using filters (refer to Req. \ref{R19}).
-
-\genreq
-{An \emph{admin} and \emph{professor} shall be able to filter on all student applications including personal attributes such as review status.\\}
-{}
-\label{R19}
-
-\smallskip
-\noindent \textbf{Rationale}: An \emph{admin} and a \emph{professor} shall be able to apply filters on a list of student applications. This is to allow narrow/expand searches of student on various attributes.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%END E/R USE CASE 5%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%E/R USE CASE 6%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Use Case 6 Update Application- E/R Descriptions}
-
-\genenv
-{The \emph{GPA} must contact the institutions graduate admission office whenever there needs to be a form of communication. \\}
-{}
-\label{E4}
-
-\smallskip
-\noindent \textbf{Rationale}: The GPA can contact the institutions graduate admission office for further information on application if needed.
-
-\genenv
-{The \emph{GPA} must send the final decision of a student application to the institutions graduate admission office. \\}
-{}
-\label{E5}
-
-\smallskip
-\noindent \textbf{Rationale}: The GPA must send the final decision of an application to the institutions graduate admission office.
-
-\rdescription
-{An \emph{admin} shall be able to update all attributes of a student application.\\}
-{refer to Table \ref{tbl:attr_uploaded}}
-\label{R20}
-
-\smallskip
-\noindent \textbf{Rationale}: Only an \emph{admin} user shall be able to update all attributes of an application (refer to Table \ref{tbl:attr_uploaded}). This to allow updating secured information on the application that maybe confidential.
-
-\rdescription
-{The \emph{GPA} shall be notified when a \emph{professor} has requested a student for admission.\\}
-{refer to Env. \ref{E5}}
-\label{R21}
-
-\smallskip
-\noindent \textbf{Rationale}: The \emph{GPA} shall be notified when a \emph{professor} requests a student for admission. The graduate program assistant can then contact the graduate office with further information (refer to Env. \ref{E5}).
-
-\genreq
-{A \emph{professor} shall be able to review a student application.\\}
-{}
-\label{R22}
-
-\smallskip
-\noindent \textbf{Rationale}: A \emph{professor} shall be allowed to view a posted student application. Once an application has been viewed by the professor, it is automatically checked \textbf{Reviewed} and this status is only visible to the professor user who have viewed it. For all not reviewed applications, the \textbf{Reviewed Status} field is left empty.
-
-\genreq
-{A \emph{professor} shall be able to contact a student.\\}
-{}
-\label{R23}
-
-\smallskip
-\noindent \textbf{Rationale}: A \emph{professor} shall be allowed to contact a student once their application satisfies the professor's need. The contact shall need to be made through external email and the professor needs to update the application to \textbf{Contacted}. We leave this upto the user to use this feature correctly. The contacted status is visible to all graduate program members who have access to the portal (i.e all \emph{admins} and \emph{professors}).
-
-\rdescription
-{A \emph{professor} shall be able to request a student for admission.\\}
-{refer to Req. \ref{R21} and Env. \ref{E5}}
-\label{R24}
-
-\smallskip
-\noindent \textbf{Rationale}: A \emph{professor} shall be allowed to request a student for admission. Once the request has been sent in, the \emph{GPA} will receive a notification (refer to Req. \ref{R21}) and then can reach out the institutions graduate office with a request for admission (refer to Env. \ref{E5}).
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%END E/R USE CASE 6%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%E/R USE CASE 7%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Use Case 7 Review Student Application- E/R Descriptions}
-
-\genreq
-{The \emph{GPA} shall be notified when reviews for an application have been completed.\\}
-{}
-\label{R25}
-
-\smallskip
-\noindent \textbf{Rationale}: Only the \emph{GPA} shall be notified when the review has been completed. It shall be a 1-to-1 relation to avoid multiple levels of notification between users.
-
-\genreq
-{A \emph{committee member} shall be able to save ongoing reviews as a draft for future completion.\\}
-{}
-\label{R26}
-
-\smallskip
-\noindent \textbf{Rationale}: A \emph{committee member} shall be allowed to save ongoing reviews as a draft. A draft can be later resumed for completion. This gives the committee member an opportunity to not rush through the review.
-
-\genreq
-{A \emph{committee member} shall be able to view, use, add or modify a university assessment if it has already been provided.\\}
-{}
-\label{R27}
-
-\smallskip
-\noindent \textbf{Rationale}: A \emph{committee member} shall be allowed to view, use or modify a previous university assessment used in a review. This removes the work of typing in the same university assessment or even a modified assessment of a previously assessed university.
-
-\rdescription
-{A \emph{committee member} shall be able to submit a completed review to the \emph{GPA}.\\}
-{Refer to Req. \ref{R25}}
-\label{R28}
-
-\smallskip
-\noindent \textbf{Rationale}: A \emph{committee member} shall be able to submit a completed review to the \emph{GPA}. The \emph{GPA} can then upload the application to the portal for professors to access the application.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%END E/R USE CASE 7%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \end{document}  
