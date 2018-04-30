@@ -101,9 +101,13 @@ Date & Revision & Description \\
 & 1.6
 & Updated Data Dictionary and Model Diagram \\
 \hline
-\hl{28 April, 2018}
+28 April, 2018
 & 1.7
 & Updated Data Dictionary, ER Diagram, and added File Structure. Removed Requirements Matrix \& Appendices\\
+\hline
+30 April, 2018
+& 1.8
+& Grammar \& Spelling Fixes \hl{highlighted}\\
 \hline
 \end{tabular}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -193,9 +197,9 @@ Given the current restrictions with York admissions office some things such as a
 
 \newpage
 \subsection{File Structure}
-\hl{The next page contains a condensed version of the current file structure of our application. The system is currently run on Node.js and uses the app.js file to start the application. Authentication is done through passport.js. \\ \\ To view all \emph{Controller} related the main folders of focus will be the \emph{routes} and \emph{controller} folder. The routes handles the management of users that traverse to the website and separates what the user can and cannot do based on their role. Each route makes use of the files in the controller  that will directly interact with our model. This is all done on the server. \\
-\\ To view all \emph{Model} related files you will need to see the mysql database in addition to the .private folder. the .private folder contains a .htpasswd file of all our users in the system with the files in the model folder to handle the manipulation of the file. \\
-\\ Lastly, the \emph{View} related files can be seen in the views folder. All the files contain a html template that will change according to the data received by the model and will provide forms and buttons for the user to communicate with the controller via GET and POST requests. It's stylings can be found in the public folder which contains any client sided javascript, css, images, fonts, and documents.}
+The next page contains a condensed version of the current file structure of our application. The system is currently run on Node.js and uses the app.js file to start the application. Authentication is done through passport.js. \\ \\ \hl{To view all \emph{Controller} related files the main folders of focus will be the \emph{routes} and \emph{controller} folder.} The routes handles the management of users that traverse to the website and separates what the user can and cannot do based on their role. Each route makes use of the files in the controller  that will directly interact with our model. This is all done on the server. \\
+\\ To view all \emph{Model} related files you will need to see the mysql database in addition to the .private folder. \hl{The} .private folder contains a .htpasswd file of all our users in the system with the files in the model folder to handle the manipulation of the file. \\
+\\ Lastly, the \emph{View} related files can be seen in the views folder. All the files contain a html template that will change according to the data received by the model and will provide forms and buttons for the user to communicate with the controller via GET and POST requests. \hl{Its} stylings can be found in the public folder which contains any client sided javascript, css, images, fonts, and documents.
 
 \clearpage
 \newpage 
@@ -260,7 +264,7 @@ The following diagram illustrates the UML Entity Relationship. The design of eac
 \begin{center}
 \includegraphics[width=\textwidth, page=1]{images/data_dictionary.pdf}
 \end{center}
-\caption{\hl{Data Dictionary Part.1}}
+\caption{Data Dictionary Part.1}
 \label{fig:dd1}
 \end{figure}
 
@@ -268,11 +272,11 @@ The following diagram illustrates the UML Entity Relationship. The design of eac
 \newpage
 
 \begin{figure}[!htb]
-\hl{The below figure shows two tables \emph{Fields\_of\_Interest} and \emph{GPA} that are not displayed in our ER-diagram. These two tables are beneficial for the internal logic of our system such as being able to properly sort GPA and to have a more flexibility for things we expect to change throughout the years like fields of interest.}
+The below figure shows two tables \emph{Fields\_of\_Interest} and \emph{GPA} that are not displayed in our ER-diagram. These two tables are beneficial for the internal logic of our system such as being able to properly sort GPA and to have a more flexibility for things we expect to change throughout the years like fields of interest.
 \begin{center}
 \includegraphics[width=\textwidth, page=2]{images/data_dictionary.pdf}
 \end{center}
-\caption{\hl{Data Dictionary Part.2}}
+\caption{Data Dictionary Part.2}
 \label{fig:dd2}
 \end{figure}
 
