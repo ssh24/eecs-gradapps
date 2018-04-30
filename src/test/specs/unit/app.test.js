@@ -18,7 +18,7 @@ var Welcome = require('../../views/welcome-view');
 
 var config = require('../../lib/utils/config');
 
-describe.only('Manage Applications Test', function() {
+describe('Manage Applications Test', function() {
 	var timeout = ms('60s');
 	this.timeout(timeout);
 

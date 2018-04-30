@@ -11,6 +11,7 @@ module.exports = function(config, fns) {
 	var utils = config.utils;
 	var role = config.role;
 	var route = config.route = '/roles/admin/reviews';
+	var filterRoute =  route + '/filter';
 	var view = 'view-review';
 	var max_domestic = 2;
 	var max_visa = 1;
@@ -31,7 +32,8 @@ module.exports = function(config, fns) {
 
 	var filterReviewGET, filterReviewPOST;
 	filterReviewGET = filterReviewPOST = fns.concat([setLiveSearchData, filterApps]);
-	
+
+	var filterReviewPost = fns.concat([postReview]);
 	
 	require('../view-app')({app: app, application: application, route: route});
 	require('./manage-review')(config, fns);
@@ -43,8 +45,12 @@ module.exports = function(config, fns) {
 	app.post(route, postReviews, defaultView);
 	
 	// filter - GET & POST
-	app.get(route + '/filter', filterReviewGET, filterView);
-	app.post(route + '/filter', filterReviewPOST, filterView);
+	app.get(filterRoute, filterReviewGET, filterView);
+	app.post(filterRoute, filterReviewPOST, filterView);
+
+	app.post(filterRoute + '/assign', filterReviewPost, function(req, res) {
+		res.redirect(filterRoute);
+	});
 	
 	// default view of the table
 	function defaultView(req, res) {
@@ -94,7 +100,7 @@ module.exports = function(config, fns) {
 			max_visa: max_visa,
 			highlightText: req.apps.highlightText,
 			highlightFunc: highlight,
-			url: req.originalUrl
+			url: req.originalUrl + '/assign'
 		});
 	}
 
@@ -105,7 +111,7 @@ module.exports = function(config, fns) {
 		'Interest`, prefProfs as `Preferred Professor(s)`,' + case_assigned + 
 		' as `Reviews Assigned`,' + case_pending + ' as `Reviews Pending` ' + 
 		'FROM application where committeeReviewed = 0;';
-		getApplications(sql, {}, req, res, next);
+		getApplications(sql, {default: true}, req, res, next);
 	}
 
 	// calls the actual controller. gets triggered by `getApps`
@@ -113,7 +119,7 @@ module.exports = function(config, fns) {
 		application.getApplications(sql, req.user.id, function(err, results) {
 			if (err) {
 				req.flash('tableMessage', 
-					'Error loading table.  Reason: ' + err.message);
+					'Error loading table. Reason: ' + err.message);
 			} else {
 				var fields = [];
 				var hidden = ['app_Id'];
@@ -121,13 +127,18 @@ module.exports = function(config, fns) {
 
 				for (var key in obj)
 					fields.push(key);
-			
+
 				if (options) {
-					if (options.actionFieldNum) 
-						fields.splice(options.actionFieldNum, 0, 'Actions');
-					else 
+					if (options.default) {
 						fields.push('Actions');
-					if (!options.visaSelected) hidden.push('Visa Status');
+					} else {
+						if (options.actionFieldNum) 
+							fields.splice(options.actionFieldNum, 0, 'Actions');
+						else 
+							fields.push('Actions');
+						if (!options.visaSelected)
+							hidden.push('Visa Status');
+					}
 				}
 
 				req.apps.appls = results;
@@ -232,7 +243,7 @@ module.exports = function(config, fns) {
 	// filter apps middleware
 	function filterApps(req, res, next) {
 		req.apps = {filter: true};
-			
+		
 		var cols = req.body.selectedCol;
 	
 		var sql;
@@ -241,7 +252,7 @@ module.exports = function(config, fns) {
 	
 		var actionFieldNum, visaSelected;
 		var highlightText = {};
-			
+		
 		// default sql
 		var defaultSql = 'SELECT app_Id, VStatus as `Visa Status`, FOI as `Field(s) of ' + 
 		'Interest`, prefProfs as `Preferred Professor(s)`,' + case_assigned + 
@@ -251,7 +262,9 @@ module.exports = function(config, fns) {
 		if (cols) {
 			sqlCol = 'SELECT ';
 			for (var i = 0; i < cols.length; i++) {
-				if (i === 0) sqlCol += 'application.app_Id, application.VStatus as `Visa Status`';
+				if (i === 0) {
+					sqlCol += 'application.app_Id,application.VStatus as `Visa Status`';
+				}
 			
 				if (cols[i] === 'btn_col_visa') {
 					visaSelected = true;
@@ -267,6 +280,8 @@ module.exports = function(config, fns) {
 					actionFieldNum = i + 1; // offset of the appId
 				}
 			}
+		} else {
+			visaSelected = true;
 		}
 	
 		var fromClause = ' from application';
@@ -289,14 +304,13 @@ module.exports = function(config, fns) {
 			highlightText.prof = req.body.btn_filter_prof;
 		}
 	
-		
 		var whereClause = ' where committeeReviewed = 0';
 	
 		sql = sqlFilt ? sql + whereClause + sqlFilt : sql + whereClause;
 	
 		var options = {
 			actionFieldNum: actionFieldNum,
-			visaSelected: visaSelected
+			visaSelected: visaSelected || false
 		};
 	
 		if (!(_.isEmpty(req.body))) {

@@ -109,18 +109,22 @@ describe('Manage Reviews Test', function() {
 
 	it('- open review manage page', function() {
 		review.manageReview(0)
+			.then(utils.switchTab.call(utils, 1))
 			.then(expect(browser.getCurrentUrl()).to.eventually.contain('/manage'))
-			.then(review.closeReviewForm.call(review))
+			.then(utils.goToTab.call(utils, 0))
 			.then(expect(browser.getCurrentUrl()).to.eventually.not.contain('/manage'));
 	});
 
 	describe('- check for fields', function() {
 		before(function setUp() {
-			review.manageReview(0);
+			review.manageReview(0)
+				.then(utils.switchTab.call(utils, 1))
+				.then(expect(browser.getCurrentUrl()).to.eventually.contain('/manage'));
 		});
 
 		after(function cleanUp() {
-			review.closeReviewForm();
+			utils.goToTab(0)
+				.then(expect(browser.getCurrentUrl()).to.eventually.not.contain('/manage'));
 		});
 
 		describe('- general information section', function() {
@@ -173,35 +177,43 @@ describe('Manage Reviews Test', function() {
 
 		describe('- unassigning a review', function() {
 			before(function setUp() {
-				review.manageReview(appId);
+				review.manageReview(appId)
+					.then(utils.switchTab.call(utils, 1))
+					.then(expect(browser.getCurrentUrl()).to.eventually.contain('/manage'));
 			});
     
 			after(function cleanUp() {
-				expect(browser.getCurrentUrl()).to.eventually.contain('/reviews')
+				utils.goToTab(0)
+					.then(expect(browser.getCurrentUrl()).to.eventually.not.contain('/manage'))
+					.then(review.refreshTable.call(review))
 					.then(review.selectReviewer.call(review, appId, cmIndex.first))
 					.then(review.assignReview.call(review, appId));
 			});
 
 			it('- unassign a review', function() {
 				review.unassignReview(unassign)
-					.then(expect(browser.getCurrentUrl()).to.eventually.not.contain('/manage'));
+					.then(expect(browser.getCurrentUrl()).to.eventually.contain('/manage'));
 			});
 		});
         
 		describe('- dismissing a review', function() {
 			before(function setUp() {
-				review.manageReview(appId);
+				review.manageReview(appId)
+					.then(utils.switchTab.call(utils, 1))
+					.then(expect(browser.getCurrentUrl()).to.eventually.contain('/manage'));
 			});
     
 			after(function cleanUp() {
-				expect(browser.getCurrentUrl()).to.eventually.contain('/reviews')
+				utils.goToTab(0)
+					.then(expect(browser.getCurrentUrl()).to.eventually.not.contain('/manage'))
+					.then(review.refreshTable.call(review))
 					.then(review.selectReviewer.call(review, appId, cmIndex.second))
 					.then(review.assignReview.call(review, appId));
 			});
 
 			it('- unassign a review', function() {
 				review.dismissReview(dismiss)
-					.then(expect(browser.getCurrentUrl()).to.eventually.not.contain('/manage'));
+					.then(expect(browser.getCurrentUrl()).to.eventually.contain('/manage'));
 			});
 		});
 	});
@@ -660,7 +672,6 @@ describe('Manage Reviews Test', function() {
 		describe('- apply filtering and assign a review', function() {
 			var unassign;
 			var appIndex = unassign = 0;
-			var regAppIndex = 2;
 			var cmIndex = 1;
 			
 			before(function setUp() {
@@ -716,9 +727,12 @@ describe('Manage Reviews Test', function() {
 						.contain('Field(s) of Interest = Artificial Intelligence'))
 					.then(filter.submitFilter.call(filter))
 					.then(review.manageReview.call(review, appIndex))
+					.then(utils.switchTab.call(utils, 1))
+					.then(expect(browser.getCurrentUrl()).to.eventually.contain('/manage'))
 					.then(review.unassignReview.call(review, unassign))
-					.then(expect(browser.getCurrentUrl()).to.eventually.not.contain('/manage'));
-
+					.then(utils.goToTab.call(utils, 0))
+					.then(expect(browser.getCurrentUrl()).to.eventually.not.contain('/manage'))
+					.then(review.loadDefaultTable.call(review));
 			});
 
 			it('- assign a review after filtering', function() {
@@ -727,25 +741,24 @@ describe('Manage Reviews Test', function() {
 					.then(expect(review.isOptionSelected.call(review, 'Byrom Allbones')).to.eventually.be.true)
 					.then(review.assignReview.call(review, appIndex))
 					.then(expect(browser.getCurrentUrl()).to.eventually.contain('/reviews'))
-					.then(expect(review.getReviewAssigned.call(review, regAppIndex)).to.eventually.contain('2 / 2'))
-					.then(expect(review.getReviewPending.call(review, regAppIndex)).to.eventually.contain('1 / 2'));
+					.then(expect(review.getReviewAssigned.call(review, appIndex)).to.eventually.contain('2 / 2'))
+					.then(expect(review.getReviewPending.call(review, appIndex)).to.eventually.contain('1 / 2'));
 			});
 		});
 
 		describe('- apply filtering and unassign a review', function() {
 			var unassign;
 			var appIndex = unassign = 0;
-			var regAppIndex = 2;
 			var cmIndex = 5;
 			
 			before(function setUp() {
-				expect(review.getReviewAssigned(regAppIndex)).to.eventually.contain('1 / 2')
-					.then(review.selectReviewer.call(review, regAppIndex, cmIndex))
+				expect(review.getReviewAssigned(appIndex)).to.eventually.contain('1 / 2')
+					.then(review.selectReviewer.call(review, appIndex, cmIndex))
 					.then(expect(review.isOptionSelected.call(review, 'Hillier Laville')).to.eventually.be.true)
-					.then(review.assignReview.call(review, regAppIndex))
+					.then(review.assignReview.call(review, appIndex))
 					.then(expect(browser.getCurrentUrl()).to.eventually.contain('/reviews'))
-					.then(expect(review.getReviewAssigned.call(review, regAppIndex)).to.eventually.contain('2 / 2'))
-					.then(expect(review.getReviewPending.call(review, regAppIndex)).to.eventually.contain('1 / 2'))
+					.then(expect(review.getReviewAssigned.call(review, appIndex)).to.eventually.contain('2 / 2'))
+					.then(expect(review.getReviewPending.call(review, appIndex)).to.eventually.contain('1 / 2'))
 					.then(filter.openFilterModal.call(filter))
 					.then(filter.waitForModalOpen.call(filter))
 					.then(filter.openFieldDD.call(filter, filter.filter.fields
@@ -775,16 +788,19 @@ describe('Manage Reviews Test', function() {
 
 			it('- unassign a review after filtering', function() {
 				review.manageReview(appIndex)
+					.then(utils.switchTab.call(utils, 1))
+					.then(expect(browser.getCurrentUrl()).to.eventually.contain('/manage'))
 					.then(review.unassignReview.call(review, unassign))
+					.then(utils.goToTab.call(utils, 0))
 					.then(expect(browser.getCurrentUrl()).to.eventually.not.contain('/manage'))
-					.then(expect(review.getReviewAssigned(regAppIndex)).to.eventually.contain('1 / 2'));
+					.then(review.refreshTable.call(review))
+					.then(expect(review.getReviewAssigned(appIndex)).to.eventually.contain('1 / 2'));
 			});
 		});
 
 		describe('- apply filtering and dismiss a review', function() {
 			var dismiss;
 			var appIndex = dismiss = 0;
-			var regAppIndex = 2;
 			
 			before(function setUp() {
 				filter.openFilterModal().then(filter.waitForModalOpen.call(filter))
@@ -815,9 +831,13 @@ describe('Manage Reviews Test', function() {
 
 			it('- dismiss a review after filtering', function() {
 				review.manageReview(appIndex)
+					.then(utils.switchTab.call(utils, 1))
+					.then(expect(browser.getCurrentUrl()).to.eventually.contain('/manage'))
 					.then(review.dismissReview.call(review, dismiss))
+					.then(utils.goToTab.call(utils, 0))
 					.then(expect(browser.getCurrentUrl()).to.eventually.not.contain('/manage'))
-					.then(expect(review.getReviewAssigned(regAppIndex)).to.eventually.contain('0 / 2'));
+					.then(review.refreshTable.call(review))
+					.then(expect(review.getReviewAssigned(appIndex)).to.eventually.contain('0 / 2'));
 			});
 		});
 	});
