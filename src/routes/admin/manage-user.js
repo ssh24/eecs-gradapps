@@ -38,7 +38,7 @@ module.exports = function(config, fns) {
 		fm.getUserInfo(req.user.id, function(err, results) {
 			if (err) {
 				req.flash('tableMessage', 
-					'Error loading table. Fatal reason: ' + err.message);
+					'Error loading table. Reason: ' + err.message);
 			} else {
 				var fields = [];
 				var hidden = ['fm_Id'];

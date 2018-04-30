@@ -239,33 +239,7 @@
                 </div>
 
                 <div class ="row">
-                            <div class="col-sm-2">
-                                <h5 for="Rank">Committee Rank</h5>
-                                <select id="Rank" name="Rank" class="form-control selectpicker" data-live-search="true" title="Select Committee Rank" multiple>
-                                    <% for(var i = 0; i < gpa.length; i++){ %>
-                                        <% if (gpa[i] === 'A+' || gpa[i] === 'A' || gpa[i] === 'B+' || gpa[i] === 'B' || gpa === 'C') { %>
-                                            <% if (rank && rank.includes(gpa[i])) { %>
-                                                <option selected><%= gpa[i]%></option>
-                                            <% } else { %>
-                                                <option><%= gpa[i]%></option>
-                                            <% } %>
-                                        <%}%>
-                                    <%}%>
-                                </select>
-                            </div>
-
-                            <div class="col-sm-2">
-                                <h5 for="committeeReviewed">Application Reviewed</h5>
-                                <label class="radio-inline"><input type="radio" id="yes-reviewed" name="committeeReviewed" value="1" <% if(reviewed === 1) {%> checked="true" <% } %>>Yes</label>
-                                <label class="radio-inline"><input type="radio" id="no-reviewed" name="committeeReviewed" value="0" <% if(reviewed === 0) {%> checked="true" <% } %>>No</label>
-                            </div>
-
-                            <div class="col-sm-2">
-                                <h5 for="ygsAwarded">YGS Awarded</h5>
-                                <label class="radio-inline"><input type="radio" id="yes-ygs" name="ygsAwarded" value="1" <% if(ygsAwarded === 1) {%> checked="true" <% } %>>Yes</label>
-                                <label class="radio-inline"><input type="radio" id="no-ygs" name="ygsAwarded" value="0" <% if(ygsAwarded === 0) {%> checked="true" <% } %>>No</label>
-                            </div>
-
+                            <div class="col-sm-1"></div>
                             <div class="col-sm-2">
                                 <h5 for="programDecision">Program Decision</h5>
                                 <select id="programDecision" name="programDecision" class="form-control selectpicker show-menu-arrow" title="Select Program Decision" data-live-search="true">
@@ -313,25 +287,21 @@
                                 <h5 for="declineReason">Decline Reason</h5>
                                 <textarea class="form-control" id="declineReason" name="declineReason" rows="2" placeholder="Decline Reason" style="margin-bottom:5px"><%- declineReason %></textarea>
                             </div>
+
+                            <div class="col-sm-2">
+                                <h5 for="committeeReviewed">Application Reviewed</h5>
+                                <label class="radio-inline"><input type="radio" id="yes-reviewed" name="committeeReviewed" value="1" <% if(reviewed === 1) {%> checked="true" <% } %>>Yes</label>
+                                <label class="radio-inline"><input type="radio" id="no-reviewed" name="committeeReviewed" value="0" <% if(reviewed === 0) {%> checked="true" <% } %>>No</label>
+                            </div>
+
+                            <div class="col-sm-2">
+                                <h5 for="ygsAwarded">YGS Awarded</h5>
+                                <label class="radio-inline"><input type="radio" id="yes-ygs" name="ygsAwarded" value="1" <% if(ygsAwarded === 1) {%> checked="true" <% } %>>Yes</label>
+                                <label class="radio-inline"><input type="radio" id="no-ygs" name="ygsAwarded" value="0" <% if(ygsAwarded === 0) {%> checked="true" <% } %>>No</label>
+                            </div>
+                            <div class="col-sm-1"></div>
                 </div>
     
-            </div>
-
-            <div class="row" style="margin-bottom:20px">
-                <fieldset><legend style="color:blue;font-weight:bold;">Application Reviews</legend></fieldset>
-                    
-                <div class="col-sm-5">
-                    <h5 for="Reviewers">Reviewers</h5>
-                    <select id="Reviewers" name="Reviewers" class="form-control selectpicker show-menu-arrow" data-live-search="true" title="Assign Reviewer(s)" data-max-options=<%= vstatus === 'Domestic' ? 2 : 1 %> multiple>
-                        <% for(var i = 0; i < cms.length; i++) { %>
-                            <% if(assignees.includes(cms[i]['name'])) { %> 
-                                <option selected><%= cms[i]['name'] %></option>
-                            <% } else { %>
-                                <option><%= cms[i]['name'] %></option>
-                            <%} %>
-                        <%} %>
-                    </select>
-                </div>
             </div>
 
             <div class="row">

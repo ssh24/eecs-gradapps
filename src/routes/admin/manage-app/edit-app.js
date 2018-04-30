@@ -7,12 +7,10 @@ var async = require('async');
 module.exports = function(config, fns) {
 	var app = config.app;
 	var application = config.application;
-	var review = config.review;
-	var utils = config.utils;
 	var role = config.role;
 	var route = config.route;
 	var main = '/edit';
-	var appId, assignees, cms;
+	var appId;
     
 	var getEditApplication = fns.concat([getApplicationData]);
 	var postEditApplication = fns.concat([updateAppl]);
@@ -44,7 +42,6 @@ module.exports = function(config, fns) {
 			yelt: req.apps.edit.YELT,
 			degree: req.apps.edit.Degree,
 			vstatus: req.apps.edit.VStatus,
-			rank: req.apps.edit.Rank,
 			reviewed: req.apps.edit.committeeReviewed,
 			selected_foi: req.apps.edit.FOI,
 			selected_profs: req.apps.edit.prefProfs,
@@ -55,7 +52,6 @@ module.exports = function(config, fns) {
 			declineReason: req.apps.edit.declineReason,
 			ygsAwarded: req.apps.edit.ygsAwarded,
 			app_file: req.apps.edit.app_file,
-			assignees: req.apps.edit.assignees,
 			cms: req.apps.edit.cms,
 			showfilter: false,
 		});
@@ -93,7 +89,6 @@ module.exports = function(config, fns) {
 				req.apps.edit.YELT = result['YELT'];
 				req.apps.edit.Degree = result['Degree'];
 				req.apps.edit.VStatus = result['VStatus'];
-				req.apps.edit.Rank = result['Rank'];
 				
 				req.apps.edit.committeeReviewed = result['committeeReviewed'];
 				req.apps.edit.FOI = result['FOI'];
@@ -106,30 +101,8 @@ module.exports = function(config, fns) {
 				req.apps.edit.declineReason = result['declineReason'];
 				req.apps.edit.ygsAwarded = result['ygsAwarded'];
 				req.apps.edit.app_file = result['app_file'];
-	
-				req.apps.edit.assignees = assignees = [];
 
-				utils.getAllCommitteeMembers(function(err, rcms) {
-					if (err) res.redirect(route);
-					req.apps.edit.cms = cms = _.filter(rcms, function(e) { 
-						return e.id != req.user.id;
-					});
-
-					review.getReviewAssigneeID(appId, function(err, ids) {
-						if (err) res.redirect(route);
-						ids = _.map(ids, 'committeeId');
-	
-						async.each(ids, getMemberName, next);
-					});
-				});
-
-				function getMemberName(id, cb) {
-					utils.getMemberFullName(id, function(err, res1) {
-						if (err) return cb(err);
-						req.apps.edit.assignees.push(res1);
-						cb();
-					});
-				}
+				next();
 			});
 		}
 	}
@@ -162,50 +135,7 @@ module.exports = function(config, fns) {
 				}
 			}
 			
-			application.updateApplication(data, appId, req.user.id, function(err) {
-				if (err) res.redirect(route);
-				var rev_ids = [];
-				var diffIn = _.differenceWith(reviewers, assignees, _.isEqual);
-				var diffOut = _.differenceWith(assignees, reviewers, _.isEqual);
-	
-				if (!(_.isEmpty(diffIn))) {
-					// assign a review
-					async.each(cms, function(cm, cb1) {
-						if (diffIn.includes(cm['name'])) rev_ids.push(cm['id']);
-						cb1();
-					}, function() {
-						async.each(rev_ids, function(id, cb2) {
-							review.assignReview(appId, id, req.user.id, cb2);
-						}, function() {
-							if (!(_.isEmpty(diffOut))) {
-								rev_ids = [];
-								unassignOrDismissReview(next);
-							} else {
-								next();
-							}
-						});
-					});
-				} else {
-					unassignOrDismissReview(next);
-				}
-
-				function unassignOrDismissReview(cb) {
-					// unassign or dismiss a review
-					async.each(cms, function(cm, cb1) {
-						if (diffOut.includes(cm['name'])) rev_ids.push(cm['id']);
-						cb1();
-					}, function() {
-						async.each(rev_ids, function(id, cb2) {
-							review.getReviewStatus(appId, id, function(err, status) {
-								if (err) return cb2(err);
-								else if (status === 'Submitted')
-									review.dismissReview(appId, id, req.user.id, cb2);
-								else review.unassignReview(appId, id, req.user.id, cb2);
-							});	
-						}, cb);
-					});
-				}
-			});
+			application.updateApplication(data, appId, req.user.id, next);
 		} else if (body.delete === '') {
 			application.deleteApplication(appId, req.user.id, next);
 		}

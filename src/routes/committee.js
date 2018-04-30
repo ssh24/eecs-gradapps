@@ -364,14 +364,14 @@ module.exports = function(app, utils, application, faculty_member, fns) {
 					prevAppId = prevStatus = null;
 					if (err) {
 						req.flash('tableMessage', 
-							'Could not load table. Fatal reason: ' + err.message);
+							'Could not load table. Reason: ' + err.message);
 					}
 					if (isSet) {
 						next();
 					}
 					else {
 						req.flash('tableMessage', 
-							'Could not load table. Fatal reason: Invalid Review Status');
+							'Could not load table. Reason: Invalid Review Status');
 					}
 				});
 		} else if (body.hasOwnProperty('draft')) {
@@ -379,41 +379,41 @@ module.exports = function(app, utils, application, faculty_member, fns) {
 				prevAppId = prevStatus = null;
 				if (err) {
 					req.flash('tableMessage', 
-						'Could not load table. Fatal reason: ' + err.message);
+						'Could not load table. Reason: ' + err.message);
 				}
 				if (isSaved) {
 					next();
 				}
 				else {
 					req.flash('tableMessage', 
-						'Fatal reason: Could not save review');
+						'Reason: Could not save review');
 				}
 			});
 		} else if (body.hasOwnProperty('upload')) {
 			review.saveReview(prevAppId, req.user.id, data, function(err, isSaved) {
 				if (err) {
 					req.flash('tableMessage', 
-						'Could not load table. Fatal reason: ' + err.message);
+						'Could not load table. Reason: ' + err.message);
 				}
 				if (isSaved) {
 					review.submitReview(prevAppId, req.user.id, function(err, result) {
 						prevAppId = prevStatus = null;
 						if (err) {
 							req.flash('tableMessage', 
-								'Could not load table. Fatal reason: ' + err.message);
+								'Could not load table. Reason: ' + err.message);
 						}
 						if (result && result.affectedRows === 1) {
 							next();
 						}
 						else {
 							req.flash('tableMessage', 
-								'Fatal reason: Could not submit review');
+								'Reason: Could not submit review');
 						}
 					});
 				}
 				else {
 					req.flash('tableMessage', 
-						'Fatal reason: Could not save review');
+						'Reason: Could not save review');
 				}
 			});
 		} else {
@@ -425,7 +425,7 @@ module.exports = function(app, utils, application, faculty_member, fns) {
 		application.getReviewApplications(sql, req.user.id, function(err, results) {
 			if (err) {
 				req.flash('tableMessage', 
-					'Error loading table. Fatal reason: ' + err.message);
+					'Error loading table. Reason: ' + err.message);
 			} else {
 				var fields = [];
 				var hidden = ['app_Id'];

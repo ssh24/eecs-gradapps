@@ -18,7 +18,7 @@ var Welcome = require('../../views/welcome-view');
 
 var config = require('../../lib/utils/config');
 
-describe('Manage Applications Test', function() {
+describe.only('Manage Applications Test', function() {
 	var timeout = ms('60s');
 	this.timeout(timeout);
 
@@ -1418,10 +1418,6 @@ describe('Manage Applications Test', function() {
 					expect(app.checkForProfRequested.call(app)).to.eventually.be.true;
 				});
 
-				it('- check for rank field', function() {
-					expect(app.checkForRank.call(app)).to.eventually.be.true;
-				});
-
 				it('- check for application reviewed field', function() {
 					expect(app.checkForAppReviewed.call(app)).to.eventually.be.true;
 				});
@@ -1440,12 +1436,6 @@ describe('Manage Applications Test', function() {
 
 				it('- check for decline reason field', function() {
 					expect(app.checkForDeclineReason.call(app)).to.eventually.be.true;
-				});
-			});
-
-			describe('- application reviews section', function() {
-				it('- check for reviewers field', function() {
-					expect(app.checkForReviewers.call(app)).to.eventually.be.true;
 				});
 			});
 		});
@@ -1584,22 +1574,6 @@ describe('Manage Applications Test', function() {
 					.then(expect(app.isOptionSelected.call(app, student.profRequested[1].name))
 						.to.eventually.be.true);
 			});
-
-			it('- select rank', function() {
-				student['rank'] = [{
-					index: 1,
-					name: 'A'
-				}, {
-					index: 3,
-					name: 'B'
-				}];
-				app.selectRank(student.rank[0].index)
-					.then(expect(app.isOptionSelected.call(app, student.rank[0].name))
-						.to.eventually.be.true)
-					.then(app.selectRank.call(app, student.rank[1].index))
-					.then(expect(app.isOptionSelected.call(app, student.rank[1].name))
-						.to.eventually.be.true);
-			});
             
 			it('- select application reviewed', function() {
 				student['reviewed'] = 'yes';
@@ -1674,11 +1648,6 @@ describe('Manage Applications Test', function() {
 			name: 'Joeann Edgeon'
 		};
 
-		var update = {
-			index: 1,
-			name: 'Byrom Allbones'
-		};
-
 		describe('- creating an app with application reviewrs', function() {
 			after(function cleanUp() {
 				expect(app.getSortType.call(app, 1)).to.eventually.equal('none')
@@ -1703,46 +1672,6 @@ describe('Manage Applications Test', function() {
 					.then(expect(app.isOptionSelected.call(app, student.reviewers.name))
 						.to.eventually.be.true)
 					.then(app.submitApplication.call(app));
-			});
-		});
-
-		describe('- editing an app with application reviewrs', function() {
-			before(function setUp () {
-				app.openNewApplicationForm()
-					.then(app.fillApplication.call(app, student))
-					.then(app.selectFOI.call(app, student.foi[0].index))
-					.then(app.selectFOI.call(app, student.foi[1].index))
-					.then(app.selectProfs.call(app, student.profs[0].index))
-					.then(app.selectProfs.call(app, student.profs[1].index))
-					.then(app.selectReviewer.call(app, student.reviewers.index))
-					.then(expect(app.isOptionSelected.call(app, student.reviewers.name))
-						.to.eventually.be.true)
-					.then(app.submitApplication.call(app));
-			});
-
-			after(function cleanUp() {
-				expect(app.getSortType.call(app, 1)).to.eventually.equal('none')
-					.then(app.orderColumn.call(app, 1, 1))
-					.then(expect(app.getSortType.call(app, 1)).to.eventually.equal('ascending'))
-					.then(app.editApplication.call(app, appId))
-					.then(expect(app.getStudentNumber.call(app)).to.eventually.equal(student.sid))
-					.then(expect(app.getLName.call(app)).to.eventually.equal(student.lname))
-					.then(expect(app.getFName.call(app)).to.eventually.equal(student.fname))
-					.then(app.deleteApplication.call(app))
-					.then(utils.closeBrowserAlert.call(utils));
-			});
-
-			it('- edit an app with reviewers', function() {
-				expect(app.getSortType.call(app, 1)).to.eventually.equal('none')
-					.then(app.orderColumn.call(app, 1, 1))
-					.then(expect(app.getSortType.call(app, 1)).to.eventually.equal('ascending'))
-					.then(app.editApplication.call(app, appId))
-					.then(app.selectReviewer.call(app, update.index))
-					.then(expect(app.isOptionSelected.call(app, update.name))
-						.to.eventually.be.true)
-					.then(expect(app.isOptionSelected.call(app, student.reviewers.name))
-						.to.eventually.be.false)
-					.then(app.saveApplication.call(app));
 			});
 		});
 	});

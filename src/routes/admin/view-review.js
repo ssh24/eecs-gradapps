@@ -113,7 +113,7 @@ module.exports = function(config, fns) {
 		application.getApplications(sql, req.user.id, function(err, results) {
 			if (err) {
 				req.flash('tableMessage', 
-					'Error loading table. Fatal reason: ' + err.message);
+					'Error loading table.  Reason: ' + err.message);
 			} else {
 				var fields = [];
 				var hidden = ['app_Id'];

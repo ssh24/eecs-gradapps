@@ -56,7 +56,7 @@ module.exports = function(app, utils, application, faculty_member, fns) {
 
 	app.get('/roles/' + route + '/filter', filterProfessor, function(req, res) {
 		var userInfo = req.user;
-		res.render(route, {
+		res.render('professor', {
 			title: 'Filtered Applications',
 			message: req.flash('tableMessage'),
 			user: userInfo.id,
@@ -80,7 +80,7 @@ module.exports = function(app, utils, application, faculty_member, fns) {
 
 	app.post('/roles/' + route + '/filter', filterPost, function(req, res) {
 		var userInfo = req.user;
-		res.render(route, {
+		res.render('professor', {
 			title: 'Filtered Applications',
 			message: req.flash('tableMessage'),
 			user: userInfo.id,
@@ -104,7 +104,7 @@ module.exports = function(app, utils, application, faculty_member, fns) {
 
 	app.get('/roles/' + route + '/savePreset', presetProfessor, function(req, res) {
 		var userInfo = req.user;
-		res.render(route, {
+		res.render('professor', {
 			title: 'Filtered Applications',
 			message: req.flash('tableMessage'),
 			user: userInfo.id,
@@ -128,7 +128,7 @@ module.exports = function(app, utils, application, faculty_member, fns) {
 
 	app.post('/roles/' + route + '/savePreset', presetPost, function(req, res) {
 		var userInfo = req.user;
-		res.render(route, {
+		res.render('professor', {
 			title: 'Filtered Applications',
 			message: req.flash('tableMessage'),
 			user: userInfo.id,
@@ -170,7 +170,7 @@ module.exports = function(app, utils, application, faculty_member, fns) {
 		application.getApplications(sql, req.user.id, function(err, results) {
 			if (err) {
 				req.flash('tableMessage',
-					'Error loading table. Fatal reason: ' + err.message);
+					'Error loading table. Reason: ' + err.message);
 			} else {
 				var fields = [];
 				var hidden = ['app_Id'];
@@ -226,7 +226,8 @@ module.exports = function(app, utils, application, faculty_member, fns) {
       'Rank as `Committee Rank`, GPA, Degree, ' +
       ' VStatus as `Visa Status`, programDecision as `Program Decision`, ' +
       'profContacted as `Contacted By`,' +
-      ' profRequested as `Requested By`' +
+      ' profRequested as `Requested By`,' +
+      ' GRE, TOEFL, IELTS, YELT' +
       ' from application' +
       ' where committeeReviewed=1 and Rank is not null' +
       ' and app_Id=' + application.conn.escape(query.appId);
@@ -234,7 +235,7 @@ module.exports = function(app, utils, application, faculty_member, fns) {
 		application.getApplications(sql, req.user.id, function(err, results) {
 			if (err) {
 				req.flash('viewMessage',
-					'Error loading Application. Fatal reason: ' + err.message);
+					'Error loading Application. Reason: ' + err.message);
 				next();
 			} else {
 				req.application = results;
@@ -250,7 +251,7 @@ module.exports = function(app, utils, application, faculty_member, fns) {
 		application.getApplicationReview(query.appId, req.user.id, function(err, results) {
 			if (err) {
 				req.flash('viewMessage',
-					'Error loading Reviews. Fatal reason: ' + err.message);
+					'Error loading Reviews. Reason: ' + err.message);
 			} else {
 				req.reviews = results;
 			}
