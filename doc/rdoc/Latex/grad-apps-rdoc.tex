@@ -91,7 +91,11 @@ Date & Revision & Description \\
 \hline
 23 April, 2018
 & 8.0
-& Final revision of the document after product implementation. New additions from v7.0 are \hl{highlighted}. \\
+& Final revision of the document after product implementation. \\
+\hline
+30 April, 2018
+& 8.1
+& Grammar \& Spelling Fixes \hl{highlighted}\\
 \hline
 \end{tabular}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -155,7 +159,7 @@ The current system in place for the the EECS Graduate Program completes the bare
 \end{mylist}
 
 \smallskip
-\noindent \hl{The type of application for our business system will be a \textbf{Graphical User Interface Web Application}.} 
+\noindent The type of application for our business system will be a \textbf{Graphical User Interface Web Application}.
 
 
 \newpage
@@ -232,7 +236,7 @@ The \emph{admin} in our system under description are  the \emph{Graduate Program
 \item Can assign applications to be reviewed by a graduate committee member
 \item Can upload a student application to the portal
 \item Can update all attributes of a student application
-\item \hl{Can filter student applications}
+\item Can filter student applications
 \end{mylist}
 
 \subsection{Committee Member}
@@ -246,7 +250,7 @@ The \emph{committee member} in our system under description is a subset of EECS 
 \item Can review an assigned application(s)
 \item Can view past reviewed application(s)
 \item Can use/add university descriptions in the system to be used for all applications
-\item \hl{Can filter review applications}
+\item Can filter review applications
 \end{mylist}
 
 \subsection{Professor}
@@ -259,11 +263,11 @@ The \emph{professors} in our system are a subset of EECS graduate program member
 \begin{mylist}
 \item Can contact a student, once interested
 \item Can request a student for admission, once	contacted
-\item \hl{Can filter student applications}
+\item Can filter student applications
 \end{mylist}
 
 \bigskip
-\noindent \hl{In addition to the above, all users in the system can manage their personal user settings (i.e change username, password, user informations such as first and last name, email address and their field(s) of specialization).}
+\noindent In addition to the above, all users in the system can manage their personal user settings (i.e change username, password, user informations such as first and last name, email address and their field(s) of specialization).
 
 \newpage
 \section{Deliverables}
@@ -282,15 +286,15 @@ The \emph{Required} deliverables were decided by the majority vote on a list of 
 \item Any user shall be able to log into the system if and only if they are a member of the EECS graduate program
 \item Any user shall be able to log out of the system if and only if they are logged in
 \item Any user shall be logged out of the system after a maximum of 15 minutes of idleness
-\item \hl{Any user can manage their personal user settings such as username, password and etc.}
-\item \hl{Any user with filtering abilities on applications or reviews shall be able to save filter presets}
+\item Any user can manage their personal user settings such as username, password and etc.
+\item Any user with filtering abilities on applications or reviews shall be able to save filter presets
 \item An \emph{admin} shall be able to add a new member to the list of EECS graduate program members
 \item An \emph{admin} shall be able to remove a member from the list of EECS graduate program members except for themselves
 \item An \emph{admin} shall be able to assign a new role to an existing faculty member
-\item \hl{An \emph{admin} shall be able to unassign a role from an existing faculty member except for themselves}
+\item An \emph{admin} shall be able to unassign a role from an existing faculty member except for themselves
 \item An \emph{admin} shall be able to assign applications to be reviewed by committee members
-\item \hl{An \emph{admin} shall be able to unassign applications to be reviewed by committee members (only if they are still in \emph{New} or \emph{Draft} stage of the review)}
-\item \hl{An \emph{admin} shall be able to dismiss applications to be reviewed by committee members (only if they are still in \emph{Submitted} stage of the review)}
+\item An \emph{admin} shall be able to unassign applications to be reviewed by committee members (only if they are still in \emph{New} or \emph{Draft} stage of the review)
+\item An \emph{admin} shall be able to dismiss applications to be reviewed by committee members (only if they are still in \emph{Submitted} stage of the review)
 \item An \emph{admin} shall be able to upload a student application to the portal
 \item An \emph{admin} shall be able to update all attributes of a student application
 \item An \emph{admin} shall be able to export the applications to CSV format
@@ -394,8 +398,8 @@ The \emph{Required} deliverables were decided by the majority vote on a list of 
 \end{enumerate}
 \item Interest Status (Similar to application status but is user specific)
 \begin{enumerate}
-\item \hl{Interested - once a professor has seen a student application and has shortlisted to be contacted}
-\item \hl{Not Interested - once a professor has seen a student application and decided to not move on to contact them}
+\item Interested - once a professor has seen a student application and has shortlisted to be contacted
+\item Not Interested - once a professor has seen a student application and decided to not move on to contact them
 \end{enumerate}
 \end{enumerate}
 \item An \emph{admin} and \emph{professor} shall be able to perform advanced filtering on all of the above attributes
@@ -427,10 +431,10 @@ The \emph{Required} deliverables were decided by the majority vote on a list of 
 \end{mylist}
 
 \smallskip
-\noindent \hl{\textbf{Note on Field(s) of Interest:} In order to add a new entry to field(s) of interest, the query has to be done through the backend of the system. A table is manipulated which consisting a list of current field(s) of interest. With a simple insert, delete or update action one could change the corresponding field(s) of interest.}
+\noindent \textbf{Note on Field(s) of Interest:} In order to add a new entry to field(s) of interest, the query has to be done through the backend of the system. \hl{A table is manipulated which consists of a list of current field(s) of interest.} With a simple insert, delete or update action one could change the corresponding field(s) of interest.
 
 \smallskip
-\noindent \hl{\textbf{Note on Enumerated Type Attributes:} Attributes such as \emph{Session}, \emph{Gender}, \emph{Degree Applied For}, \emph{Visa Status} are enumerated type attributes. The validation of the enumerated values are to be done in the client and server side before being stored in the database allowing a steady flow of modularity. Hence, removing/adding options for any of the enumerated attributes can be easily incorporated.}
+\noindent \textbf{Note on Enumerated Type Attributes:} Attributes such as \emph{Session}, \emph{Gender}, \emph{Degree Applied For}, \emph{Visa Status} are enumerated type attributes. The validation of the enumerated values are to be done in the client and server side before being stored in the database allowing a steady flow of modularity. Hence, removing/adding options for any of the enumerated attributes can be easily incorporated.
 
 \bigskip
 \noindent\textbf{Application Attributes}
@@ -486,7 +490,7 @@ The \emph{Required} deliverables were decided by the majority vote on a list of 
 The \emph{Optional} deliverables were decided by the minority vote on a list of questionnaires conducted on the EECS graduate program staffs. Following are the \textbf{\emph{Optional}} deliverables for the System Under Description:\\
 
 \begin{mylist}
-\item \hl{\textbf{Achieved:} A \emph{committee member} completing a review form shall be able to have a head start on the form with information automatically extracted and filled such as Name, Student No., GPA}
+\item \textbf{Achieved:} A \emph{committee member} completing a review form shall be able to have a head start on the form with information automatically extracted and filled such as Name, Student No., GPA
 \item An \emph{admin} may be able to import a CSV file and extend the database with the new data
 \item A \emph{committee member} may be able to download offline forms (XML format) and upload it back into the server
 \item A \emph{professor} might be interested in other attributes that are to be provided in an organized table and used for advanced filtering
@@ -542,7 +546,7 @@ The following three use case textual representation describes the \emph{Authenti
 \item Table \ref{tbl:uc1Atd} describes a user is logging into the system
 \item Table \ref{tbl:uc1Btd} describes a user once validated, selecting a role to log in as.
 \item Table \ref{tbl:uc1Ctd} describes a user logging out of the system.
-\item \hl{Table} \ref{tbl:uc1Dtd} \hl{describes a user updating their email address.}
+\item Table \ref{tbl:uc1Dtd} describes a user updating their email address.
 \end{itemize}
 
 \begin{table}[!htb]
@@ -639,22 +643,22 @@ The following three use case textual representation describes the \emph{Authenti
 \begin{center}
 \begin{tabular}{|l|l|}
 \hline
-\textbf{Use Case ID:} \hl{UC-1D} \\ \hline
-\textbf{Use Case Name:} \hl{Update Email Address} \\ \hline
-\textbf {Primary Actor:} \hl{Admin, Professor, Committee Member}\\ \hline
-\textbf{Description:} \hl{A user is already logged into the system. The user clicks on the }\\ \hl{settings button. The user is redirected to the settings page. The user updates }\\ \hl{the email and clicks submit. The user is brought back to the role selection page.}\\ \hline
-\textbf{Trigger:} \hl{User indicates to update the email.}\\ \hline
+\textbf{Use Case ID:} UC-1D \\ \hline
+\textbf{Use Case Name:} Update Email Address \\ \hline
+\textbf {Primary Actor:} Admin, Professor, Committee Member\\ \hline
+\textbf{Description:} A user is already logged into the system. The user clicks on the \\ settings button. The user is redirected to the settings page. The user updates \\ the email and clicks submit. The user is brought back to the role selection page.\\ \hline
+\textbf{Trigger:} User indicates to update the email.\\ \hline
 \textbf{Precondition:}
-\\ PRE-1. \hl{The user is logged in to the system.}\\ \hline
+\\ PRE-1. The user is logged in to the system.\\ \hline
 \textbf{Postcondition:}
-\\ POST-1. \hl{The user has updated their email address.}\\ \hline
+\\ POST-1. The user has updated their email address.\\ \hline
 \textbf{Normal Flow: 1C.0 Update Email Address}
-\\ \hl{1. User clicks on the settings button.}
-\\ \hl{2. User is redirected to the settings page.}
-\\ \hl{3. User inputs a new email address.}
-\\ \hl{4. User clicks on submit.}
-\\ \hl{5. System updates the user email address and returns a valid response back.}
-\\ \hl{6. The user is redirected to the roles page.}\\ \hline
+\\ 1. User clicks on the settings button.
+\\ 2. User is redirected to the settings page.
+\\ 3. User inputs a new email address.
+\\ 4. User clicks on submit.
+\\ 5. System updates the user email address and returns a valid response back.
+\\ 6. The user is redirected to the roles page.\\ \hline
 \end{tabular}
 \end{center}
 \caption {Use Case Textual Description for Updating Email Address}
@@ -1260,11 +1264,11 @@ The following are the E/R Descriptions elicited from Use Case 1, refer to Sectio
 \noindent \textbf{Rationale}: A logged in user cannot be logged in with two different roles. This is to avoid conflicting access control between two different roles.
 
 \rdescription
-{\hl{A user shall be able to manage their personal user settings such as username, password and etc.}\\}
-{\hl{The fields available to update are: username, password, last name, first name, email, field(s) of specialization}}
+{A user shall be able to manage their personal user settings such as username, password and etc.\\}
+{The fields available to update are: username, password, last name, first name, email, field(s) of specialization}
 
 \smallskip
-\noindent \hl{\textbf{Rationale}: A logged in user can update their own user settings. The fields mentioned above can be modified by the user to personalize their settings.}
+\noindent \textbf{Rationale}: A logged in user can update their own user settings. The fields mentioned above can be modified by the user to personalize their settings.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%END E/R USE CASE 1%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -1345,18 +1349,18 @@ Following are the E/R Descriptions elicited from Use Case 4, refer to Section \r
 \noindent \textbf{Rationale}: Only an \emph{admin} user shall be able to assign applications for review to a graduate committee member. For simplicity, there is no maximum cap enforced for reviewing an application by a committee member.
 
 \rdescription
-{\hl{An \emph{admin} shall be able to unassign reviews assigned to a graduate committee member.\\}}
-{\hl{The set $GC$ denotes the set of all graduate committee members which is a subset of all members in the system, $GC \subseteq FM$.}}
+{An \emph{admin} shall be able to unassign reviews assigned to a graduate committee member.\\}
+{The set $GC$ denotes the set of all graduate committee members which is a subset of all members in the system, $GC \subseteq FM$.}
 
 \smallskip
-\noindent \hl{\textbf{Rationale}: Only an \emph{admin} user shall be able to unassign an application review from a graduate committee member iff the review is either in \emph{New} or \emph{Draft} state.}
+\noindent \textbf{Rationale}: Only an \emph{admin} user shall be able to unassign an application review from a graduate committee member iff the review is either in \emph{New} or \emph{Draft} state.
 
 \rdescription
-{\hl{An \emph{admin} shall be able to dismiss reviews assigned to a graduate committee member.\\}}
-{\hl{The set $GC$ denotes the set of all graduate committee members which is a subset of all members in the system, $GC \subseteq FM$.}}
+{An \emph{admin} shall be able to dismiss reviews assigned to a graduate committee member.\\}
+{The set $GC$ denotes the set of all graduate committee members which is a subset of all members in the system, $GC \subseteq FM$.}
 
 \smallskip
-\hl{\noindent \textbf{Rationale}: Only an \emph{admin} user shall be able to dismiss an application review from a graduate committee member iff the review is in \emph{Submitted} state.}
+\noindent \textbf{Rationale}: Only an \emph{admin} user shall be able to dismiss an application review from a graduate committee member iff the review is in \emph{Submitted} state.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%END E/R USE CASE 4%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -1471,18 +1475,18 @@ Following are the E/R Descriptions elicited from Use Case 6, refer to Section \r
 Following are the E/R Descriptions elicited from Use Case 7, refer to Section \ref{subsec:uc7}
 
 \genenv
-{\hl{The maximum number of review quota for Visa (International) Applicants is 1.}}
+{The maximum number of review quota for Visa (International) Applicants is 1.}
 
 \smallskip
-\noindent \hl{\textbf{Rationale}: This is the maximum quota set by the Graduate Committee for Visa students. This means an applicant who is international can be only assigned to a maximum 1 review.}
+\noindent \textbf{Rationale}: This is the maximum quota set by the Graduate Committee for Visa students. This means an applicant who is international can be only assigned to a maximum 1 review.
 \label{E6}
 
 \genenv
-{\hl{The maximum number of review quota for Domestic Applicants is 2.}}
+{The maximum number of review quota for Domestic Applicants is 2.}
 \label{E7}
 
 \smallskip
-\noindent \hl{\textbf{Rationale}: This is the maximum quota set by the Graduate Committee for Domestic students. This means an applicant who is domestic can be only assigned to a maximum 2 reviews.}
+\noindent \textbf{Rationale}: This is the maximum quota set by the Graduate Committee for Domestic students. This means an applicant who is domestic can be only assigned to a maximum 2 reviews.
 
 \genreq
 {A \emph{committee member} shall be able to save ongoing reviews as a draft for future completion.\\}

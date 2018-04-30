@@ -197,7 +197,7 @@ GradApps 2.0 has a list of exhaustive test suites to make sure the application w
 
 \begin{itemize}
 \item \textbf{Database Tests}: suite consists of running test cases against the test database to make sure the underlying backend system works as expected.
-\item \textbf{Application Tests}: suite consisting of a combination of acceptance tests with respect to the software requirement documentation and unit tests with respect to the software implementation. This suite is much more stronger than just an acceptance test suite as it covers more paths than an acceptance test suite would.
+\item \textbf{Application Tests}: suite consisting of a combination of acceptance tests with respect to the software requirement documentation and unit tests with respect to the software implementation. This suite is \hl{much stronger} than just an acceptance test suite as it covers more paths than an acceptance test suite would.
 \item \textbf{Overall Tests}: suite consisting both the database and application tests.
 \end{itemize}
 
@@ -488,7 +488,7 @@ Once the test suite has completed running it will give a resulted output of the 
 SQL injection is a code injection technique that may corrupt the underlying database of an application. It is one of the most common web hacking techniques in the world today. It works by simply placing malicious code in SQL statements, via web page inputs.
 
 \bigskip
-\noindent Our test suite, both database and application, covers protection against SQL injection. The application code for each of the controller in our MVC model asserts the input to be of the specified type we are hoping for. Any unmatched types will throw an exception making such asserts a crucial part of the application code.
+\noindent Our test suite, both database and application, covers protection against SQL injection. The application code for \hl{each of the controllers} in our MVC model asserts the input to be of the specified type we are hoping for. Any unmatched types will throw an exception making such asserts a crucial part of the application code.
 
 \bigskip
 \noindent Injecting malicious SQL statements through the controller will result in throwing such exceptions. This is because the SQL call is built by escaping the user inputs in a safe manner after the input is verified. Since, it can never reach the stage of a malicious type input within the controller, our application is safe from SQL injection.
@@ -506,7 +506,7 @@ The final execution after running a test suite is to lint the code to fix any sy
 ``Program testing can be used to show the presence of bugs, but never to show their absence!'' - Dijkstra.
 \end{quote}
 
-\noindent Testers live and breed trade-off's. Coverage measurements is a good tool to show \emph{how far} you are from complete testing, but a lousy tool to be used for investigating how close you are to complete testing. The time needed for tests related tasks is infinitely larger than the time available. Hence, it is impossible to fully test a software system in a reasonable amount of time or money.
+\noindent Testers live and breed \hl{trade-offs}. Coverage measurements is a good tool to show \emph{how far} you are from complete testing, but a lousy tool to be used for investigating how close you are to complete testing. The time needed for tests related tasks is infinitely larger than the time available. Hence, it is impossible to fully test a software system in a reasonable amount of time or money.
 
 \bigskip
 \noindent That being said for the purpose of this project we have chosen to meet a minimum requirement of 80\% code coverage. With that we are confident enough to release a usable application.
