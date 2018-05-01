@@ -731,5 +731,25 @@ describe('Review Triggers', function() {
 					});
 				});
 		});
+
+		describe('getAppCount', function() {
+			it('get app count of an invalid member', 
+				function(done) {
+					review.getAppCount(0, function(err, result) {
+						if (err) done(err);
+						assert(!result, 'Result should be false');
+						done();
+					});
+				});
+
+			it('get app count of a valid member', 
+				function(done) {
+					review.getAppCount(11, function(err, result) {
+						if (err) done(err);
+						assert(result, 'Result should exist');
+						done();
+					});
+				});
+		});
 	});
 });

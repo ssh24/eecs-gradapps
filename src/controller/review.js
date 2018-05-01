@@ -673,4 +673,21 @@ Review.prototype.getReviewCount = function(appId, cb) {
 	});
 };
 
+/**
+ * Get app count for a reviewer
+ * @param {Number} committeeId 
+ * @param {Function} cb
+ */
+Review.prototype.getAppCount = function(committeeId, cb) {
+	assert(typeof committeeId === 'number');
+	assert(typeof cb === 'function');
+
+	this.conn.query('Select * from application_review where ' + 
+    'committeeId = ?', [committeeId], 
+	function(err, results) {
+		if (err) return cb(err);
+		return cb(err, results.length);
+	});
+};
+
 module.exports = Review;
