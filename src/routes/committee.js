@@ -422,35 +422,45 @@ module.exports = function(app, utils, application, faculty_member, fns) {
 	}
 
 	function getApplications(sql, options, req, res, next) {
-		application.getReviewApplications(sql, req.user.id, function(err, results) {
+		review.getAppCount(req.user.id, function(err, count) {
 			if (err) {
 				req.flash('tableMessage', 
 					'Error loading table. Reason: ' + err.message);
+			} else if(count === 0) {
+				req.flash('tableMessage', 'You currently have no reviewes assigned.');
+				next();
 			} else {
-				var fields = [];
-				var hidden = ['app_Id'];
-				var obj = results[0];
-			
-				for (var key in obj)
-					fields.push(key);
-			
-				if (options) {
-					if (options.actionFieldNum)
-						fields.splice(options.actionFieldNum, 0, 'Actions');
-					else 
-						fields.push('Actions');
-
-					if (!options.reviewField)
-						hidden.push('My Review Status');
-				}
-			
-				req.apps.appls = results;
-			
-				req.apps.flds = {};
-				req.apps.flds.fields = fields;
-				req.apps.flds.hidden = hidden;
+				application.getReviewApplications(sql, req.user.id, function(err, results) {
+					if (err) {
+						req.flash('tableMessage', 
+							'Error loading table. Reason: ' + err.message);
+					} else {
+						var fields = [];
+						var hidden = ['app_Id'];
+						var obj = results[0];
+					
+						for (var key in obj)
+							fields.push(key);
+					
+						if (options) {
+							if (options.actionFieldNum)
+								fields.splice(options.actionFieldNum, 0, 'Actions');
+							else 
+								fields.push('Actions');
+		
+							if (!options.reviewField)
+								hidden.push('My Review Status');
+						}
+					
+						req.apps.appls = results;
+					
+						req.apps.flds = {};
+						req.apps.flds.fields = fields;
+						req.apps.flds.hidden = hidden;
+					}
+					setLiveSearchData(req, res, next);	
+				});	
 			}
-			setLiveSearchData(req, res, next);	
 		});
 	}
 
