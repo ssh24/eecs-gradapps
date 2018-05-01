@@ -694,12 +694,12 @@ describe('Committee Test', function() {
 					.then(expect(filter.isFieldDDOpen.call(filter, filter.filter
 						.fields.rstatus.openDD)).to
 						.eventually.be.true)
-					.then(filter.searchText.call(filter, 't'))
-					.then(filter.selectIthElement.call(filter, 3))
+					.then(filter.searchText.call(filter, 'e'))
+					.then(filter.selectIthElement.call(filter, 1))
 					.then(expect(filter.getSelectedElement.call(filter)).to
-						.eventually.contain('Submitted'))
+						.eventually.contain('New'))
 					.then(expect(filter.getSelectedFilter.call(filter)).to.eventually
-						.contain('My Review Status = Submitted'))
+						.contain('My Review Status = New'))
 					.then(filter.submitFilter.call(filter))
 					.then(expect(browser.getCurrentUrl()).to.eventually.contain('filter'))
 					.then(expect(committee.applicationTableIsDisplayed.call(committee)).to.eventually.be.false)
