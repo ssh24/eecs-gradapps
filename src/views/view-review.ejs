@@ -58,7 +58,7 @@
                                                             <%} %>
                                                         <% } else { %>
                                                             <td class="text-center">
-                                                                <form id="review-form-<%=i%>" action="/roles/admin/reviews" method="POST">
+                                                                <form id="review-form-<%=i%>" action=<%= url %> method="POST">
                                                                     <% if(apps[i]['Visa Status'] === 'Domestic' && apps[i]['Reviews Assigned'] != max_dom) { %> 
                                                                         <select id="cms-<%=i%>" name="cms" class="form-control selectpicker" data-live-search="true" title="Pick one or more assignee" multiple data-max-options= <%= max_dom - apps[i]['Reviews Assigned'] %> >
                                                                             <% for(var k = 0; k < cms.length; k++){ %>
@@ -76,7 +76,7 @@
                                                                     <% } %>
                                                                 </form>
                                                                     <% if (apps[i]['Reviews Assigned'] > 0) { %>
-                                                                        <a id="manage-review-<%=i%>" href="/roles/admin/reviews/manage?appId=<%= apps[i][fields[0]]%>" class="btn btn-primary" style="margin-bottom: 5px">Manage Reviews &raquo;</a></li>
+                                                                        <a id="manage-review-<%=i%>" href="/roles/admin/reviews/manage?appId=<%= apps[i][fields[0]]%>" target="_blank" class="btn btn-primary" style="margin-bottom: 5px">Manage Reviews &raquo;</a></li>
                                                                     <% } %>
                                                                     <a id="view-app-<%=i%>" href="/roles/admin/reviews/view?appId=<%= apps[i][fields[0]] %>" target="_blank" class="btn btn-primary" style="margin-bottom: 5px">View Application PDF &raquo;</a></li>
                                                             </td>

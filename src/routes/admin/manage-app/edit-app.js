@@ -1,9 +1,5 @@
 'use strict';
 
-var _ = require('lodash');
-
-var async = require('async');
-
 module.exports = function(config, fns) {
 	var app = config.app;
 	var application = config.application;

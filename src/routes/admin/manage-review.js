@@ -24,7 +24,7 @@ module.exports = function(config, fns) {
 
 	// managing review route - GET
 	app.post(route, postEditReviews, function(req, res) {
-		res.redirect(default_route);
+		res.redirect('/roles/admin/reviews/manage?appId=' + appId);
 	});
 
 	function defaultView(req, res)  {

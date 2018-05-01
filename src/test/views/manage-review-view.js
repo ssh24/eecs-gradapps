@@ -14,6 +14,7 @@ function Review(timeout) {
 	this.tables.table.columns = by.css('#table-head > tr > th');
     
 	this.tables.refresh = by.id('refresh-table');
+	this.tables.default = by.id('reset-table');
 
 	this.tables.error = by.id('error-message');
 
@@ -308,6 +309,11 @@ Review.prototype.getRefreshTableText = function() {
 
 Review.prototype.refreshTable = function() {
 	return this.utils.waitForElementClickable(this.tables.refresh, this.timeout)
+		.then(element(this.tables.refresh).click());
+};
+
+Review.prototype.loadDefaultTable = function() {
+	return this.utils.waitForElementClickable(this.tables.default, this.timeout)
 		.then(element(this.tables.refresh).click());
 };
 
