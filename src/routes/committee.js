@@ -476,7 +476,12 @@ module.exports = function(app, utils, application, faculty_member, fns) {
 		if (cols) {
 			sqlCol = 'SELECT ';
 			for (var i = 0; i < cols.length; i++) {
-				if (i === 0) sqlCol += 'application.app_Id';
+				if (i === 0) {
+					if (!cols.includes('btn_col_review'))
+						sqlCol += 'application.app_Id,application_review.Status as `My Review Status`';
+					else
+						sqlCol += 'application.app_Id';
+				}
 		
 				if (cols[i] === 'btn_col_date') {
 					sqlCol += ',DATE_FORMAT(application_review.assignDate, "%m/%d/%Y") as `Date Assigned`';
@@ -550,13 +555,13 @@ module.exports = function(app, utils, application, faculty_member, fns) {
 		var patternHighlight = null;
 		var returnString = app[field];
 	
-		if (field === 'Applicant Name' && highlightText.name && 
+		if (field === 'Applicant Name' && highlightText && highlightText.name && 
 		highlightText.name !== '') {
 			patternHighlight = new RegExp('('+highlightText.name+')', 'gi');
-		} else if (field === 'Degree Applied For' && highlightText.degree && 
+		} else if (field === 'Degree Applied For' && highlightText && highlightText.degree && 
 		highlightText.degree !== '') {
 			patternHighlight = new RegExp('('+highlightText.degree+')', 'gi');
-		} else if (field === 'My Review Status' && highlightText.review && 
+		} else if (field === 'My Review Status' && highlightText && highlightText.review && 
 		highlightText.review !== '') {
 			patternHighlight = new RegExp('('+highlightText.review+')', 'gi');
 		} else {
