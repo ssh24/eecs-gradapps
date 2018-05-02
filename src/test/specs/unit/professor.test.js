@@ -412,7 +412,7 @@ describe('Professor Test', function() {
 				research: text,
 				letter: text,
 				comments: text,
-				rank: 'B',
+				rank: 'A',
 				uni: 'Lincoln University',
 				assmt: 'Some comment'
 			};
