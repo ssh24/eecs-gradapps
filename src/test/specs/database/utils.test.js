@@ -246,16 +246,6 @@ describe('Util Functionalities', function() {
 		});
 	});
 
-	describe('get gpa function', function(){
-		it('return all gpas', function(done) {
-			utils.getGPA(function(err, result) {
-				if (err) done(err);
-				assert(result, 'Result should exist');
-				done();
-			});
-		});
-	});
-
 	describe('get visa status function', function(){
 		it('get visa status of an invalid app', function(done) {
 			utils.getVisaStatus(0, function(err, result) {

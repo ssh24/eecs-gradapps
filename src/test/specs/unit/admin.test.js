@@ -69,6 +69,7 @@ describe('Admin Test', function() {
 		utils.openUserManual(admin.userManual)
 			.then(utils.switchTab.call(utils, 1))
 			.then(expect(browser.getCurrentUrl()).to.eventually.contain('admin-manual'))
-			.then(utils.goToTab.call(utils, 0));
+			.then(utils.goToTab.call(utils, 0))
+			.then(utils.scollUpPage.call(utils));
 	});
 });

@@ -75,7 +75,8 @@ describe('Committee Test', function() {
 		utils.openUserManual(committee.userManual)
 			.then(utils.switchTab.call(utils, 1))
 			.then(expect(browser.getCurrentUrl()).to.eventually.contain('committee-manual'))
-			.then(utils.goToTab.call(utils, 0));
+			.then(utils.goToTab.call(utils, 0))
+			.then(utils.scollUpPage.call(utils));
 	});
 
 	it('- open application view page', function() {
