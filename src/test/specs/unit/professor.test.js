@@ -59,7 +59,8 @@ describe('Professor Test', function() {
 		utils.openUserManual(prof.userManual)
 			.then(utils.switchTab.call(utils, 1))
 			.then(expect(browser.getCurrentUrl()).to.eventually.contain('professor-manual'))
-			.then(utils.goToTab.call(utils, 0));
+			.then(utils.goToTab.call(utils, 0))
+			.then(utils.scollUpPage.call(utils));
 	});
 
 	it('- table loads properly', function() {

@@ -145,4 +145,8 @@ Utils.prototype.closeBrowserAlert = function() {
 	});
 };
 
+Utils.prototype.scollUpPage = function() {
+	return browser.executeScript('window.scrollTo(0,0);');
+};
+
 module.exports = Utils;
