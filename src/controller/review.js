@@ -99,7 +99,8 @@ Review.prototype.unassignReview = function(appId, committeeId, adminId, cb) {
  * @param {Number} adminId 
  * @param {Function} cb 
  */
-Review.prototype.dismissReview = function(appId, committeeId, adminId, cb) {
+Review.prototype.dismissReview = Review.prototype.deleteReview = 
+function(appId, committeeId, adminId, cb) {
 	assert(typeof appId == 'number');
 	assert(typeof committeeId == 'number');
 	assert(typeof adminId == 'number');

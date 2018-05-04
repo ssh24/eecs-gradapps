@@ -294,7 +294,7 @@ The \emph{Required} deliverables were decided by the majority vote on a list of 
 \item An \emph{admin} shall be able to unassign a role from an existing faculty member except for themselves
 \item An \emph{admin} shall be able to assign applications to be reviewed by committee members
 \item An \emph{admin} shall be able to unassign applications to be reviewed by committee members (only if they are still in \emph{New} or \emph{Draft} stage of the review)
-\item An \emph{admin} shall be able to dismiss applications to be reviewed by committee members (only if they are still in \emph{Submitted} stage of the review)
+\item An \emph{admin} shall be able to delete applications to be reviewed by committee members (only if they are still in \emph{Submitted} stage of the review)
 \item An \emph{admin} shall be able to upload a student application to the portal
 \item An \emph{admin} shall be able to update all attributes of a student application
 \item An \emph{admin} shall be able to export the applications to CSV format
@@ -1356,11 +1356,11 @@ Following are the E/R Descriptions elicited from Use Case 4, refer to Section \r
 \noindent \textbf{Rationale}: Only an \emph{admin} user shall be able to unassign an application review from a graduate committee member iff the review is either in \emph{New} or \emph{Draft} state.
 
 \rdescription
-{An \emph{admin} shall be able to dismiss reviews assigned to a graduate committee member.\\}
+{An \emph{admin} shall be able to delete reviews assigned to a graduate committee member.\\}
 {The set $GC$ denotes the set of all graduate committee members which is a subset of all members in the system, $GC \subseteq FM$.}
 
 \smallskip
-\noindent \textbf{Rationale}: Only an \emph{admin} user shall be able to dismiss an application review from a graduate committee member iff the review is in \emph{Submitted} state.
+\noindent \textbf{Rationale}: Only an \emph{admin} user shall be able to delete an application review from a graduate committee member iff the review is in \emph{Submitted} state.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%END E/R USE CASE 4%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

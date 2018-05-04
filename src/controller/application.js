@@ -278,7 +278,8 @@ Application.prototype.getApplicationFile = function(appId, memberId, cb) {
 	var self = this;
 	this.utils.getRoles(memberId, function(err, roles) {
 		if (err) return cb(err);
-		if (roles.includes('Admin')) {
+		if (roles.includes('Admin') || roles.includes('Committee Member') || 
+		roles.includes('Professor')) {
 			self.conn.query('SELECT app_file from application where app_Id=?',
 				appId, function(err, result) {
 					if (err) return cb(err);
