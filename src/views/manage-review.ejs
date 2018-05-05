@@ -94,7 +94,7 @@
                                             <%} else { %>
                                                 <form id="dismiss-review-<%= i %>" action="/roles/admin/reviews/manage" method="POST">
                                                     <% if (assignees[i]['id'] != user) {%> 
-                                                        <button id="dismiss-review-<%= i %>" type="submit" name="dismiss" value="<%= assignees[i]['id'] %>" class="btn btn-danger btn-default pull-center"><span class="glyphicon glyphicon-trash"></span> Dismiss Review</button>
+                                                        <button id="dismiss-review-<%= i %>" type="submit" name="dismiss" value="<%= assignees[i]['id'] %>" class="btn btn-danger btn-default pull-center"><span class="glyphicon glyphicon-trash"></span> Delete Review</button>
                                                     <%}%>
                                                 </form>
                                             <%} %>

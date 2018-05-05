@@ -294,7 +294,7 @@ The \emph{Required} deliverables were decided by the majority vote on a list of 
 \item An \emph{admin} shall be able to unassign a role from an existing faculty member except for themselves
 \item An \emph{admin} shall be able to assign applications to be reviewed by committee members
 \item An \emph{admin} shall be able to unassign applications to be reviewed by committee members (only if they are still in \emph{New} or \emph{Draft} stage of the review)
-\item An \emph{admin} shall be able to dismiss applications to be reviewed by committee members (only if they are still in \emph{Submitted} stage of the review)
+\item An \emph{admin} shall be able to \hl{delete applications} reviewed by committee members (only if they are still in \emph{Submitted} stage of the review)
 \item An \emph{admin} shall be able to upload a student application to the portal
 \item An \emph{admin} shall be able to update all attributes of a student application
 \item An \emph{admin} shall be able to export the applications to CSV format
@@ -431,7 +431,7 @@ The \emph{Required} deliverables were decided by the majority vote on a list of 
 \end{mylist}
 
 \smallskip
-\noindent \textbf{Note on Field(s) of Interest:} In order to add a new entry to field(s) of interest, the query has to be done through the backend of the system. \hl{A table is manipulated which consists of a list of current field(s) of interest.} With a simple insert, delete or update action one could change the corresponding field(s) of interest.
+\noindent \textbf{Note on Field(s) of Interest:} In order to add a new entry to field(s) of interest, the query has to be done through the backend of the system. A table is manipulated which consists of a list of current field(s) of interest. With a simple insert, delete or update action one could change the corresponding field(s) of interest.
 
 \smallskip
 \noindent \textbf{Note on Enumerated Type Attributes:} Attributes such as \emph{Session}, \emph{Gender}, \emph{Degree Applied For}, \emph{Visa Status} are enumerated type attributes. The validation of the enumerated values are to be done in the client and server side before being stored in the database allowing a steady flow of modularity. Hence, removing/adding options for any of the enumerated attributes can be easily incorporated.
@@ -1356,11 +1356,11 @@ Following are the E/R Descriptions elicited from Use Case 4, refer to Section \r
 \noindent \textbf{Rationale}: Only an \emph{admin} user shall be able to unassign an application review from a graduate committee member iff the review is either in \emph{New} or \emph{Draft} state.
 
 \rdescription
-{An \emph{admin} shall be able to dismiss reviews assigned to a graduate committee member.\\}
+{An \emph{admin} shall be able to \hl{delete reviews} assigned to a graduate committee member.\\}
 {The set $GC$ denotes the set of all graduate committee members which is a subset of all members in the system, $GC \subseteq FM$.}
 
 \smallskip
-\noindent \textbf{Rationale}: Only an \emph{admin} user shall be able to dismiss an application review from a graduate committee member iff the review is in \emph{Submitted} state.
+\noindent \textbf{Rationale}: Only an \emph{admin} user shall be able to \hl{delete an application review} from a graduate committee member iff the review is in \emph{Submitted} state.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%END E/R USE CASE 4%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

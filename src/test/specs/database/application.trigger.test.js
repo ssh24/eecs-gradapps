@@ -566,15 +566,6 @@ describe('Application Triggers', function() {
 					});
 			});
 	
-			it('get application file as incorrect member', function(done) {
-				application.getApplicationFile(insertId, 4, 
-					function(err, result) {
-						assert(err, 'Error should exist');
-						assert(!result, 'Result should not exist');
-						done();
-					});
-			});
-	
 			it('get application file with valid data', function(done) {
 				application.getApplicationFile(insertId, memberId, 
 					function(err, result) {
